@@ -1,0 +1,205 @@
+button, a {
+	outline:0;
+}
+
+.btn { 
+	font-family: $primary-font-light;
+	letter-spacing: 1px;
+	font-size: 0.9rem;
+	padding: 15px 30px;
+	border-radius: 8px;
+	font-weight: 100;  
+	text-decoration: none; 
+	outline:0;
+
+	@include media-breakpoint-down(sm) {
+		width: 100%;
+	}
+
+	&.btn-link {
+		color:  $primary-color;
+		font-family: $primary-font-bold;
+		text-decoration: underline !important; 
+		padding: 0;
+		font-size: 1em;
+		
+		&:hover {
+			color: $primary-text-color;
+		}
+	}
+	
+	@include media-breakpoint-up(md) {
+		+ .btn {
+			margin-left: 2em;
+		}
+	}
+
+	i {
+		font-size: 1.5em;
+		line-height: .8;
+		padding-left: 8px;
+		position: relative;
+		display: inline;
+
+		&:before {
+			position: absolute;
+			left: -8px;
+			font-size: 1.3em;
+		}
+	}
+
+	&.btn-primary {
+		background: $primary-color;
+		color: $primary-bg-color; 
+		text-decoration: none;
+		border: none; 
+		
+		i {
+			color: $primary-bg-color;
+		}
+
+		&:hover {
+			background: $primary-color-light; 
+			color: $primary-bg-color;
+			i {
+				color: $primary-color;
+			}
+		}
+		
+	   
+	}
+
+	&.btn-secondary {
+		color: $primary-text-color;
+		background-color: $secondary-color;
+		border: none;
+
+		&:hover {
+			background-color: $primary-color-light;
+			color: $secondary-color;
+		}
+
+		&:focus {
+			background-color: $primary-color-light;
+			color: $primary-bg-color;
+		}
+	}
+
+   
+}    
+
+
+.woocommerce {
+	a.button,
+	button.button.single_add_to_cart_button {
+		@extend .btn;
+		background: $product-button-blue;
+		color: $primary-bg-color;
+		text-decoration: none;
+		border: none;
+
+		&:hover {
+			color: $primary-bg-color; 
+			background: $product-button-blue-dark; 
+		}
+
+		&:focus {
+			color: $primary-bg-color; 
+			background: $product-button-blue-dark;
+		}
+	}
+
+	a.button.checkout-button,
+	{ 
+		@extend .btn-primary;
+	}
+
+	button.button { 
+		@extend .btn;
+		@extend .btn-primary;
+
+		&:disabled {
+			padding: 12px 20px !important;
+		}
+	}
+
+	.button.add_to_cart_button,
+	button.button.single_add_to_cart_button {
+		font-size: .9rem;
+		display: inline-block;
+		max-width: initial;
+
+		@include media-breakpoint-down(xs) {
+			padding: 1rem;
+		}
+
+		&:after {
+			content: ' +';
+		}
+
+		&.loading {
+			padding: 1rem;
+
+			&:after {
+				content: '\e01c';
+				font-size: .55em;
+	    		vertical-align: unset;
+	    		position: relative;
+			    top: 0;
+			    right: 0;
+			    margin-left: 5px; 
+			}
+		}
+
+		&.added:after {
+			content: '\e017';
+			font-size: .55em;
+    		vertical-align: unset;
+		}
+		
+	}
+	
+	@include media-breakpoint-down(md) {
+		a.btn, 
+		.button.add_to_cart_button {
+			width: auto;
+			text-align: center !important;
+		}
+	}
+
+	@include media-breakpoint-down(xs) {
+		a.btn, 
+		.button.add_to_cart_button {
+			width: 100%;
+		}
+	}
+
+}
+
+.woocommerce a.button.checkout-button {
+	padding: .6rem;
+}
+
+img[aria-expanded="true"] {
+	transform: rotate(180deg);
+}
+
+img[data-toggle]:hover {
+	cursor: pointer;
+}
+
+// #header_btn {
+// 	color: $primary-text-color;
+// 	background-color: $secondary-color;
+// 	border: none;
+
+// 	&:hover {
+// 		background-color: $primary-color-light;
+// 		color: $secondary-color;
+// 	}
+
+// 	&:focus {
+// 		background-color: $primary-color-light;
+// 		color: $primary-bg-color;
+// 	}
+// }

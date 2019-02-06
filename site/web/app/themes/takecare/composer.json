@@ -1,0 +1,17 @@
+{
+    "name": "Greylabel",
+    "description": "Greylabel theme",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Pim",
+            "email": "pim.plaatsman@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Greylabel\\": "func/"
+        }
+    }
+}

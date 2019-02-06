@@ -1,0 +1,48 @@
+ul.socials {
+	padding: 0;
+	
+	li {
+		display: inline-block;
+		padding: 0 2px;
+	}
+	
+	a {
+		position: relative; 
+		border: 1px solid darken($tertiary-bg-color, 20%);
+		display: inline-block; 
+		height: 30px;
+		width: 30px;
+		border-radius: 50%; 
+		background: darken($tertiary-bg-color, 20%); 
+		color: $primary-color;
+		padding: 5px; 
+
+		&:hover {
+			background: $primary-bg-color;	
+			color: $primary-color;
+		}
+
+		i {
+			position: absolute; 
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%); 
+		}
+	}
+
+	#footer & { 
+		display: inline;
+
+		a {
+			border: 1px darken($tertiary-bg-color, 20%);
+			transform: translateY(30%);
+    		font-size: 1rem;
+			color: $primary-color;
+
+    		&:hover {
+    			background: $secondary-color;
+				color: $primary-color;
+			}
+		}
+	}
+}

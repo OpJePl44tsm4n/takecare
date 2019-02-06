@@ -1,0 +1,195 @@
+
+article.page-content {
+
+	.content {
+		width: 100%;
+		text-align: left;
+
+		.header_txt_gone {
+			@include media-breakpoint-down(xs) {
+			}
+		}
+
+		p {
+			&:last-child {
+			}
+		}
+	}
+
+	> section.row {
+		padding: 2em 0;
+
+		@include media-breakpoint-down(xs) {
+			padding: 3rem 1rem;
+		}
+		
+		@include media-breakpoint-up(sm) {
+			padding: 2em 0 3em;
+		}
+
+		&:last-child {
+			/*padding-bottom: 2em;*/
+		}
+
+		&:first-child {
+			padding: 1rem 1rem 1rem;
+		}
+
+	}
+
+	section.row {
+		
+		&.bg {
+			&__lightning-down {
+				padding-top: 0;
+			}
+		}
+
+		header {
+			text-align: center;
+			margin: 0 auto;
+			padding-bottom: 1em;
+
+			p {
+				max-width: 500px;
+				margin: auto; 
+			}
+
+			a {
+				i {
+					padding-left: 6px;
+				}
+			}
+		}
+
+		&.content-block {
+			
+			p {
+				a:not(.btn) {
+					text-decoration: underline;	
+				}
+			}
+			
+			.editor {
+				h2 {
+					font-size: 2rem;
+					line-height: 1.2em;
+					font-family: $primary-font-bold;
+					color: $primary-color;
+					
+					
+					@include media-breakpoint-up(sm) {
+						font-size: 1.5rem;
+					}
+				}
+
+				h3 {
+					font-family: $primary-font-black;
+					font-size: 1.25rem;
+					margin-bottom: 1.5rem;
+				}
+				
+			}
+
+			@include media-breakpoint-down(sm) {
+				.faq_list + .faq_list {
+					margin: 2em 0 -2em;
+				}
+			}
+
+			.vertical-align {
+				display: flex;
+	    		align-items: center;
+	    		// padding: 0;
+			}
+
+			.single_image {
+				
+				.content {
+					text-align: center;
+				}
+			}
+
+		}
+
+		&.block-carousel h2 {
+			position: relative;
+		}
+
+		&.product-grid {
+			header {
+				text-align: left;
+
+				@include media-breakpoint-down(xs) {
+					text-align: center;
+				}
+			}
+		}
+		
+		@include media-breakpoint-up(lg) {
+			&.narrow > .container {
+				max-width: 800px;
+			}
+		}
+
+		@include media-breakpoint-up(sm) {
+
+			&.video-header {
+				margin-bottom: 6em;
+
+				> .container {
+					margin-bottom: -8em;
+				}
+			}
+		}
+	}
+}
+
+#header_content {
+	@include media-breakpoint-down(xs) {
+		text-align: left;
+	}
+}
+
+.d-flex.justify-content-start {
+	@include media-breakpoint-down(xs) {
+		display: block!important;
+	}
+}
+
+body.home {
+	article.page-content {
+		> section.row {
+			@include media-breakpoint-up(lg) {
+				padding: 2em 0 3em;
+			}
+			
+			@include media-breakpoint-down(sm) {
+				&.top-shadow .grid-item.editor {
+					order: 2;
+				}
+			}	
+		}
+	}
+}
+
+body.archive {
+	article.page-content {
+		> section.row {
+
+			&:last-child {
+				/*padding: 0;*/
+			}
+
+			div.container-fluid {
+				/*width: auto; */
+			}
+		}
+	}
+}
+
+// div.row {
+// 	@include media-breakpoint-up(xs) {
+// 		margin: 0;
+// 	}
+// }

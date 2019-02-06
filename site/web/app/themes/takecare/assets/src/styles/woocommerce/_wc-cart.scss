@@ -1,0 +1,42 @@
+body.woocommerce-cart {
+	
+	#content {
+		form.woocommerce-cart-form {
+			
+			h3 {
+				font-size: 1em;
+			}
+			
+			td.actions {
+				background: rgba($primary-color, 0.2);
+				display: none;
+
+				input.input-text {
+					width: 130px;
+					padding: 10px 15px
+				}
+
+				#coupon_code {
+					min-width: 140px;
+				}
+			}
+
+			table {
+				thead {
+					tr {
+						th.product-thumbnail {
+							display: none;
+						}
+					}
+				}
+			}
+		}
+
+		.cart_totals {
+			table.shop_table {
+				background: rgba($primary-color, 0.2);
+				border: none;
+			}
+		}
+	}
+}

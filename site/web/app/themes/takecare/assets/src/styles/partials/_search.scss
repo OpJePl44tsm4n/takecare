@@ -1,0 +1,21 @@
+form.search-form 
+{	
+	outline: none;
+
+	input {
+		border-radius: 6px;
+		width: 100%;
+		height: 54px;
+	}
+
+	input[type="submit"] {
+		height: 54px;
+		width: 136px;
+		font-size: 1em;
+		border-radius: 1px 6px 6px 1px;
+
+		@include media-breakpoint-down(sm) {
+			width: 98px;
+		}
+	}
+}

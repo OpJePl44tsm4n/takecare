@@ -1,0 +1,73 @@
+
+
+ul.faq {
+  	list-style: none; 
+  	padding-left: 0;
+
+  	li {
+	  	
+	  	&:not(:last-child) {
+	  		border-bottom: 1px solid rgba($primary-color, 0.2);
+		}
+
+	  	button.btn {
+	  		padding-left: 0;
+	  		font-size: 1em;
+	  		font-family:  $primary-font-bold;
+			background: none; 
+			white-space: initial;
+			text-align: left;
+
+	  		&:focus {
+	  			box-shadow: none;
+			}
+
+	  		&:before {
+	  			content: '\f106';
+	  			font-family: FontAwesome;
+	  			font-weight: 900;
+	  			font-size: 1.3em;
+    			line-height: 1em;
+	  		}
+
+	  		&.collapsed:before {
+	  			content: '\f107';
+	  		}
+	  	}
+
+	  	.answer p {
+	  		font-size: 1rem;
+	  		padding: 0.2em 1.2em;
+	  		margin-left: .2rem;
+	  	}
+	}
+}
+
+ol:not(.flex-control-nav) {
+    counter-reset: list-counter;
+    list-style: none;
+    padding-left: 0;
+    
+    li {
+        padding: .5em 0;
+	    padding-left: 3em;
+	    position: relative;
+	    min-height: 3em;
+        &:before {
+            content: counter(list-counter);
+            counter-increment: list-counter;
+            background: $secondary-color;
+            font-family: $primary-font-bold;
+            width: 2em;
+            height: 2em; 
+            border-radius: 50%; 
+            display: inline-block;
+            text-align: center;
+            line-height: 2em; 
+            margin-right: 1em;
+            left: 0;
+		    top: .2em;
+		    position: absolute; 
+        }
+    }
+}

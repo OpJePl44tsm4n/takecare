@@ -1,0 +1,85 @@
+header.site-header {
+
+	#main-nav.navbar {
+		background: #000;
+    	border: none;
+    	padding: 0;
+    	margin-bottom: 0;
+		top: 0;
+    	transition: top 0.3s, background 0.5s;
+    	height: 4rem;
+
+    	&.transparant {
+			background: $background-gradient-black;
+    	}
+
+		.admin-bar & {
+			top: 32px;
+		}
+
+		&.scroll-down {
+			top: -62px; 
+
+			@include media-breakpoint-up(md) {
+				top: -65px;
+			}	
+		}
+
+    	> .container {
+    		position: relative;
+    		padding: .5rem .5rem;
+    		max-width: 1130px;
+    	}
+	
+		.brand-wrapper {
+			@include media-breakpoint-down(md) {
+				margin: 0 auto;
+			}
+			
+			h1.brand-name {
+				display: none;
+			}
+		}
+
+		.menu-toggler {
+			color: $primary-text-color;
+			position: absolute;
+
+			button.navbar-toggler {
+				border: none;
+				font-size: 1em;
+				padding: 0;
+				font-size: 1.3rem;
+				outline: none;
+
+				.navbar-toggler-icon {
+				  	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+				}
+			}
+		}
+
+		.wpml-ls.wpml-ls-legacy-list-horizontal {
+  			padding: .4em 1em;
+    		font-size: .8em;
+
+    		ul {
+    			li {
+    				a.wpml-ls-link {
+    					color: white;
+
+    					&:active {
+    						text-decoration: underline;
+    					}
+    				}
+    			}
+    		}
+		}
+
+	}
+
+}
+
+.close-btn .d-flex {
+	height: 4rem;
+	background-color: #000;
+}

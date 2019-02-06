@@ -1,0 +1,151 @@
+// list view 
+article.page-content .post_list {
+    margin-bottom: 2em;
+
+    > .content { 
+        margin-bottom: 5px;
+        padding: 1em 1em 3em;
+        text-align: center; 
+
+        @include media-breakpoint-up(sm) {
+            border: 1px solid lighten($primary-text-color, 90%);
+            padding: 1em;
+            background-repeat: no-repeat;
+            background-position: 96% 96%;
+            background-size: 80px auto;
+        }
+        
+        @include media-breakpoint-down(xs) {
+            > section {
+                margin: 0 -16px;
+            }
+        }    
+
+        header {
+            margin: -16px -16px 0;
+            padding: 4em 0;
+            margin-bottom: 1em;
+            position: relative; 
+            text-align: left;
+
+            @extend .bg;
+            @extend .bg__lightning-up;
+
+            &:after, &:before {
+                height: 20px;
+                left: 49%;
+                width: 52%;
+                bottom: -13px;
+                box-shadow: unset;
+            }
+
+            &:before { 
+                left: -10px;
+            }
+            
+            h2 {
+                position: absolute;
+                color: $primary-bg-color;
+                text-shadow: 1px 1px 2px rgba($primary-text-color, 0.66);
+                font-size: 2em;
+                top: 1.2em;
+                left: 0;
+                width: 100%; 
+                text-align: left;
+                padding-left: 1em;
+                z-index: 1; 
+            }
+            
+            .thumb {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+            }
+        }
+
+        .post {
+            display: inline;
+            padding: 0;
+            text-align: left;
+
+            .card {
+                height: 100px;
+                display: block;
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                padding: 5px 0;
+                background: none; 
+                
+                > a {
+                    width: 100px;
+                    float: left; 
+
+                    .thumb {
+                        height: 90px;
+                    }
+
+                    @include media-breakpoint-down(xs) {
+                        width: 70px;
+
+                         .thumb {
+                            height: 70px;
+                        }
+
+                    }
+
+                }
+
+                .content {
+                    float: left;
+                    height: 100%;
+                    width: calc(100% - 100px);
+                    padding: 2px 12px; 
+
+                    h1 {
+                        font-size: .95em;
+                        min-height: 3em;
+                        text-transform: unset;
+                        line-height: 1.3em;
+                        font-family: $primary-font;
+                        margin-bottom: 0;
+                    }
+
+                    .meta {
+                        font-size: .8em;
+                        span {
+                            color: lighten($primary-text-color, 70%);
+                        }
+
+                        a {
+                            padding-left: 0.4em;
+                            text-decoration: none; 
+                            font-family: $primary-font-medium;
+                        }
+                    }
+
+                    @include media-breakpoint-down(xs) {
+                        width: calc(100% - 70px);
+
+                        h1 {
+                            font-size: .85em;
+                            line-height: 1.3em;
+                            font-family: $primary-font;
+                        }
+
+                        .meta {
+                            font-size: .7em;
+                        }
+                    }
+                }
+            }
+        }
+
+        a.btn {
+            margin: 2em 0;
+            font-size: 1em;
+        }
+    }
+}    
