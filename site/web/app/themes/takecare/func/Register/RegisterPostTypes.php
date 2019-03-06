@@ -53,9 +53,9 @@ class RegisterPostTypes {
                 'show_in_admin_bar'   => true,
                 'menu_position'       => 5,
                 'can_export'          => true,
-                'has_archive'         => false,
+                'has_archive'         => true,
                 'exclude_from_search' => false,
-                'publicly_queryable'  => false,
+                'publicly_queryable'  => true,
                 'capability_type'     => 'post',
                 'taxonomies'          => array( 'category', 'post_tag' ),
                 'menu_icon'           => $post_type['icon'],
@@ -92,6 +92,20 @@ class RegisterPostTypes {
             array(
                 'label'                 => __( 'City', Greylabel::THEME_SLUG ),
                 'rewrite'               => array( 'slug' => 'city' ),
+                'hierarchical'          => true,
+                'show_admin_column'     => true,
+                'public'                => true,
+                'show_in_rest'          => false,
+                'has_archive'           => false,
+            )
+        );
+
+        register_taxonomy(
+            'style',
+            'company',
+            array(
+                'label'                 => __( 'Style', Greylabel::THEME_SLUG ),
+                'rewrite'               => array( 'slug' => 'style' ),
                 'hierarchical'          => true,
                 'show_admin_column'     => true,
                 'public'                => true,

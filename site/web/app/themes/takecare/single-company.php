@@ -5,7 +5,9 @@
         <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> itemscope itemtype="http://schema.org/Article">
+                
 
+                <h1>halloo !!! </h1>
                 <?php if( have_rows('page_rows') ):
                     $row_count = 0;
                     while ( have_rows('page_rows') ) : the_row();
