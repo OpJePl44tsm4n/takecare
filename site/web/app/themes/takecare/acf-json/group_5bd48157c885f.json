@@ -398,7 +398,7 @@
         },
         {
             "key": "field_5c8a98e8f1bde",
-            "label": "Funnding",
+            "label": "Funding",
             "name": "",
             "type": "tab",
             "instructions": "",
@@ -1193,5 +1193,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1552587767
+    "modified": 1552588081
 }
