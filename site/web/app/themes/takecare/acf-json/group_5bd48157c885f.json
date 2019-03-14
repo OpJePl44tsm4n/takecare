@@ -1,23 +1,6 @@
 {
     "key": "group_5bd48157c885f",
     "title": "Company info",
-    "location": [
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "company"
-            }
-        ]
-    ],
-    "menu_order": 0,
-    "position": "normal",
-    "style": "default",
-    "label_placement": "top",
-    "instruction_placement": "label",
-    "hide_on_screen": "",
-    "active": 1,
-    "description": "",
     "fields": [
         {
             "key": "field_5bd4817a44baf",
@@ -414,6 +397,174 @@
             "height": ""
         },
         {
+            "key": "field_5c8a98e8f1bde",
+            "label": "Funnding",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5c8a9902f1bdf",
+            "label": "Recipient",
+            "name": "funding_recipient",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5c8a9922f1be0",
+            "label": "Investors",
+            "name": "funding_investors",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5c8a99a1f1be2",
+            "label": "Currency",
+            "name": "funding_currency",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "EUR": "EUR",
+                "USD": "USD"
+            },
+            "default_value": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_5c8a9939f1be1",
+            "label": "Raised",
+            "name": "funding_raised",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "80",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_5c8a99f3f1be3",
+            "label": "Type",
+            "name": "funding_type",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Angel": "Angel",
+                "Seed fund": "Seed fund",
+                "Venture Capital": "Venture Capital",
+                "Crowdfunding": "Crowdfunding",
+                "Equity Crowdfunding": "Equity Crowdfunding",
+                "Debt financing": "Debt financing",
+                "Grant": "Grant",
+                "IPO": "IPO",
+                "Private equity": "Private equity",
+                "Unknown": "Unknown",
+                "Token Sale": "Token Sale",
+                "ICO": "ICO"
+            },
+            "default_value": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_5c8a9a19f1be4",
+            "label": "Date",
+            "name": "funding_date",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "d\/m\/Y",
+            "return_format": "F j, Y",
+            "first_day": 1
+        },
+        {
+            "key": "field_5c8a9a69f1be5",
+            "label": "Source",
+            "name": "funding_source",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
             "key": "field_5c7533ff3ef97",
             "label": "Calls to action",
             "name": "",
@@ -504,7 +655,7 @@
         {
             "key": "field_5c4a242a4f2af",
             "label": "Type",
-            "name": "type",
+            "name": "location_type",
             "type": "select",
             "instructions": "",
             "required": 0,
@@ -525,8 +676,8 @@
             "allow_null": 0,
             "multiple": 0,
             "ui": 0,
-            "ajax": 0,
             "return_format": "array",
+            "ajax": 0,
             "placeholder": ""
         },
         {
@@ -1025,5 +1176,22 @@
             "placeholder": ""
         }
     ],
-    "modified": 1551952058
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "company"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1552587767
 }
