@@ -18,6 +18,4 @@ wordpress_sites:
       enabled: false
       provider: letsencrypt
     cache:
-      enabled: false 
-    env: 
-      db_prefix: tkcr_
+      enabled: false
