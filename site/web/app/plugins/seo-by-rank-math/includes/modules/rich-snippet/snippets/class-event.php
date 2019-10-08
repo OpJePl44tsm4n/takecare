@@ -1,6 +1,6 @@
 <?php
 /**
- * The Event Class
+ * The Event Class.
  *
  * @since      1.0.13
  * @package    RankMath
@@ -22,7 +22,7 @@ class Event implements Snippet {
 	/**
 	 * Event rich snippet.
 	 *
-	 * @param array  $data   Array of json-ld data.
+	 * @param array  $data   Array of JSON-LD data.
 	 * @param JsonLD $jsonld JsonLD Instance.
 	 *
 	 * @return array
@@ -38,7 +38,7 @@ class Event implements Snippet {
 			'location'    => [
 				'@type' => 'Place',
 				'name'  => Helper::get_post_meta( 'snippet_event_venue' ),
-				'url'   => Helper::get_post_meta( 'snippet_event_venueurl' ),
+				'url'   => Helper::get_post_meta( 'snippet_event_venue_url' ),
 			],
 			'offers'      => [
 				'@type'    => 'Offer',
@@ -48,10 +48,10 @@ class Event implements Snippet {
 		];
 
 		if ( $start_date = Helper::get_post_meta( 'snippet_event_startdate' ) ) { // phpcs:ignore
-			$entity['startDate'] = str_replace( ' ', 'T', date( 'Y-m-d H:i', $start_date ) );
+			$entity['startDate'] = str_replace( ' ', 'T', date_i18n( 'Y-m-d H:i', $start_date ) );
 		}
 		if ( $end_date = Helper::get_post_meta( 'snippet_event_enddate' ) ) { // phpcs:ignore
-			$entity['endDate'] = str_replace( ' ', 'T', date( 'Y-m-d H:i', $end_date ) );
+			$entity['endDate'] = str_replace( ' ', 'T', date_i18n( 'Y-m-d H:i', $end_date ) );
 		}
 
 		$jsonld->set_address( 'event', $entity['location'] );
@@ -66,15 +66,35 @@ class Event implements Snippet {
 		], $entity['offers'] );
 
 		if ( ! empty( $entity['offers']['validFrom'] ) ) {
-			$entity['offers']['validFrom'] = str_replace( ' ', 'T', date( 'Y-m-d H:i', $entity['offers']['validFrom'] ) );
-		}
-		if ( $performer = Helper::get_post_meta( 'snippet_event_performer' ) ) { // phpcs:ignore
-			$entity['performer'] = [
-				'@type' => 'Person',
-				'name'  => $performer,
-			];
+			$entity['offers']['validFrom'] = str_replace( ' ', 'T', date_i18n( 'Y-m-d H:i', $entity['offers']['validFrom'] ) );
 		}
 
+		if ( empty( $entity['offers']['price'] ) ) {
+			$entity['offers']['price'] = 0;
+		}
+
+		$entity = $this->add_performer( $entity );
+
+		return $entity;
+	}
+
+	/**
+	 * Add Performer data.
+	 *
+	 * @param array $entity   Array of json-ld data.
+	 *
+	 * @return array
+	 */
+	public function add_performer( $entity ) {
+		if ( $performer = Helper::get_post_meta( 'snippet_event_performer' ) ) { // phpcs:ignore
+			$entity['performer'] = [
+				'@type' => Helper::get_post_meta( 'snippet_event_performer_type' ) ? Helper::get_post_meta( 'snippet_event_performer_type' ) : 'Person',
+				'name'  => $performer,
+			];
+			if ( $performer_url = Helper::get_post_meta( 'snippet_event_performer_url' ) ) { // phpcs:ignore
+				$entity['performer']['sameAs'] = $performer_url;
+			}
+		}
 		return $entity;
 	}
 }

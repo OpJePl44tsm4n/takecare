@@ -29,46 +29,43 @@ class Helper {
 	use Api, Attachment, Conditional, Choices, Post_Type, Options, Taxonomy, WordPress;
 
 	/**
-	 * Replace `%variable_placeholders%` with their real value based on the current requested page/post/cpt.
+	 * Replace `%variables%` with context-dependent value.
 	 *
-	 * @param  string $content The string to replace the variables in.
-	 * @param  array  $args    The object some of the replacement values might come from, could be a post, taxonomy or term.
-	 * @param  array  $omit    Variables that should not be replaced by this function.
+	 * @param  string $content The string containing the %variables%.
+	 * @param  array  $args    Context object, can be post, taxonomy or term.
+	 * @param  array  $exclude Excluded variables won't be replaced.
 	 * @return string
 	 */
-	public static function replace_vars( $content, $args = array(), $omit = array() ) {
+	public static function replace_vars( $content, $args = [], $exclude = [] ) {
 		$replacer = new Replace_Vars();
 
-		return $replacer->replace( $content, $args, $omit );
+		return $replacer->replace( $content, $args, $exclude );
 	}
 
 	/**
-	 * Register new replacement %variables%.
-	 * For use by other plugins/themes to register extra variables.
+	 * Register extra %variables%. For developers.
 	 *
 	 * @codeCoverageIgnore
 	 *
-	 * @param  string $var       The name of the variable to replace, i.e. '%var%'
-	 *                           - the surrounding % are optional.
-	 * @param  mixed  $callback  Function or method to call to retrieve the replacement value for the variable
-	 *                           and should *return* the replacement value. DON'T echo it.
-	 * @param  array  $args      Array with title, desc and example values.
+	 * @param  string $var       Variable name, for example %custom%. '%' signs are optional.
+	 * @param  mixed  $callback  Replacement callback. Should return value, not output it.
+	 * @param  array  $args      Array with additional title, description and example values for the variable.
 	 *
-	 * @return bool Whether the replacement function was succesfully registered.
+	 * @return bool Replacement was registered successfully or not.
 	 */
-	public static function register_var_replacement( $var, $callback, $args = array() ) {
+	public static function register_var_replacement( $var, $callback, $args = [] ) {
 		return Replace_Vars::register_replacement( $var, $callback, $args );
 	}
 
 	/**
-	 * Get midnight time for date.
+	 * Get midnight time for the date variables.
 	 *
 	 * @param  int $time Timestamp of date.
 	 * @return int
 	 */
 	public static function get_midnight( $time ) {
 		if ( is_numeric( $time ) ) {
-			$time = date( 'Y-m-d H:i:s', $time );
+			$time = date_i18n( 'Y-m-d H:i:s', $time );
 		}
 		$date = new \DateTime( $time );
 		$date->setTime( 0, 0, 0 );
@@ -77,11 +74,11 @@ class Helper {
 	}
 
 	/**
-	 * Returns the value that is part of the given url.
+	 * Extract URL part.
 	 *
-	 * @param  string $url  The url to parse.
-	 * @param  string $part The url part to use.
-	 * @return string The value of the url part.
+	 * @param  string $url  The URL to parse.
+	 * @param  string $part The URL part to retrieve.
+	 * @return string The extracted URL part.
 	 */
 	public static function get_url_part( $url, $part ) {
 		$url_parts = wp_parse_url( $url );
@@ -94,9 +91,9 @@ class Helper {
 	}
 
 	/**
-	 * Get current page full url.
+	 * Get current page URL.
 	 *
-	 * @param  bool $ignore_qs Ignore Query String.
+	 * @param  bool $ignore_qs Ignore query string.
 	 * @return string
 	 */
 	public static function get_current_page_url( $ignore_qs = false ) {
@@ -112,7 +109,7 @@ class Helper {
 	}
 
 	/**
-	 * Get search console api config.
+	 * Get RM Search Console API config.
 	 *
 	 * @return array
 	 */
@@ -131,7 +128,7 @@ class Helper {
 	}
 
 	/**
-	 * Get auth url.
+	 * Get Search Console auth url.
 	 *
 	 * @return string
 	 */
@@ -149,7 +146,7 @@ class Helper {
 	}
 
 	/**
-	 * Get/Update search console data.
+	 * Get or update Search Console data.
 	 *
 	 * @param  bool|array $data Data to save.
 	 * @return bool|array
@@ -162,11 +159,11 @@ class Helper {
 			return false;
 		}
 
-		$saved = get_option( $key, array() );
+		$saved = get_option( $key, [] );
 		if ( is_null( $data ) ) {
 			return wp_parse_args( $saved, array(
 				'authorized' => false,
-				'profiles'   => array(),
+				'profiles'   => [],
 			) );
 		}
 
@@ -186,7 +183,7 @@ class Helper {
 	}
 
 	/**
-	 * Get module by id.
+	 * Get module by ID.
 	 *
 	 * @param  string $id ID to get module.
 	 * @return object Module class object.
@@ -205,7 +202,7 @@ class Helper {
 
 		foreach ( $modules as $module => $action ) {
 			if ( 'off' === $action ) {
-				if ( in_array( $module, $stored ) ) {
+				if ( in_array( $module, $stored, true ) ) {
 					$stored = array_diff( $stored, array( $module ) );
 				}
 				continue;
@@ -215,5 +212,73 @@ class Helper {
 		}
 
 		update_option( 'rank_math_modules', array_unique( $stored ) );
+	}
+
+	/**
+	 * Clear cache from:
+	 *  - WordPress Total Cache
+	 *  - W3 Total Cache
+	 *  - WP Super Cache
+	 *  - SG CachePress
+	 *  - WPEngine
+	 *  - Varnish
+	 */
+	public static function clear_cache() {
+		// Clean WordPress cache.
+		if ( function_exists( 'wp_cache_clear_cache' ) ) {
+			wp_cache_clear_cache();
+		}
+
+		// If W3 Total Cache is being used, clear the cache.
+		if ( function_exists( 'w3tc_pgcache_flush' ) ) {
+			w3tc_pgcache_flush();
+		}
+
+		// If WP Super Cache is being used, clear the cache.
+		if ( function_exists( 'wp_cache_clean_cache' ) ) {
+			global $file_prefix;
+			wp_cache_clean_cache( $file_prefix );
+		}
+
+		// If SG CachePress is installed, rese its caches.
+		if ( class_exists( 'SG_CachePress_Supercacher' ) && is_callable( array( 'SG_CachePress_Supercacher', 'purge_cache' ) ) ) {
+			\SG_CachePress_Supercacher::purge_cache();
+		}
+
+		// Clear caches on WPEngine-hosted sites.
+		if ( class_exists( 'WpeCommon' ) ) {
+			\WpeCommon::purge_memcached();
+			\WpeCommon::clear_maxcdn_cache();
+			\WpeCommon::purge_varnish_cache();
+		}
+
+		// Clear Varnish caches.
+		self::clear_varnish_cache();
+	}
+
+	/**
+	 * Clear varnish cache for the dynamic files.
+	 */
+	private static function clear_varnish_cache() {
+		// Parse the URL for proxy proxies.
+		$parsed_url = wp_parse_url( home_url() );
+
+		// Build a varniship.
+		$varniship = get_option( 'vhp_varnish_ip' );
+		if ( defined( 'VHP_VARNISH_IP' ) && false !== VHP_VARNISH_IP ) {
+			$varniship = VHP_VARNISH_IP;
+		}
+
+		// If we made varniship, let it sail.
+		$purgeme = ( isset( $varniship ) && null !== $varniship ) ? $varniship : $parsed_url['host'];
+		wp_remote_request( 'http://' . $purgeme,
+			array(
+				'method'  => 'PURGE',
+				'headers' => array(
+					'host'           => $parsed_url['host'],
+					'X-Purge-Method' => 'default',
+				),
+			)
+		);
 	}
 }

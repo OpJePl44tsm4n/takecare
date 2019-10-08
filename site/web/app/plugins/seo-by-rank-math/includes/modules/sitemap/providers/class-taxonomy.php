@@ -11,10 +11,11 @@
 namespace RankMath\Sitemap\Providers;
 
 use RankMath\Helper;
+use RankMath\Traits\Hooker;
 use RankMath\Sitemap\Router;
 use RankMath\Sitemap\Sitemap;
 use RankMath\Sitemap\Image_Parser;
-use RankMath\Traits\Hooker;
+use MyThemeShop\Helpers\Str;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -42,11 +43,13 @@ class Taxonomy implements Provider {
 		if ( is_a( $type, 'WP_Taxonomy' ) ) {
 			$type = $type->name;
 		}
+
 		if (
+			empty( $type ) ||
 			false === taxonomy_exists( $type ) ||
 			false === Helper::is_taxonomy_viewable( $type ) ||
 			false === Helper::is_taxonomy_indexable( $type ) ||
-			in_array( $type, array( 'link_category', 'nav_menu', 'post_format' ), true )
+			in_array( $type, [ 'link_category', 'nav_menu', 'post_format' ], true )
 		) {
 			return false;
 		}
@@ -68,9 +71,9 @@ class Taxonomy implements Provider {
 	 */
 	public function get_index_links( $max_entries ) {
 		$taxonomies = Helper::get_accessible_taxonomies();
-		$taxonomies = array_filter( $taxonomies, array( $this, 'handles_type' ) );
+		$taxonomies = array_filter( $taxonomies, [ $this, 'handles_type' ] );
 		if ( empty( $taxonomies ) ) {
-			return array();
+			return [];
 		}
 
 		// Retrieve all the taxonomies and their terms so we can do a proper count on them.
@@ -82,15 +85,15 @@ class Taxonomy implements Provider {
 		 */
 		$hide_empty = $this->do_filter( 'sitemap/exclude_empty_terms', true, $taxonomies );
 
-		$all_taxonomies = array();
+		$all_taxonomies = [];
 		foreach ( $taxonomies as $taxonomy_name => $object ) {
-			$all_taxonomies[ $taxonomy_name ] = get_terms( $taxonomy_name, array(
+			$all_taxonomies[ $taxonomy_name ] = get_terms( $taxonomy_name, [
 				'hide_empty' => $hide_empty,
 				'fields'     => 'ids',
-			) );
+			]);
 		}
 
-		$index = array();
+		$index = [];
 		foreach ( $all_taxonomies as $tax_name => $terms ) {
 			if ( is_wp_error( $terms ) ) {
 				continue;
@@ -115,22 +118,22 @@ class Taxonomy implements Provider {
 					continue;
 				}
 
-				$query   = new \WP_Query( array(
+				$query   = new \WP_Query([
 					'post_type'      => $tax->object_type,
-					'tax_query'      => array(
-						array(
+					'tax_query'      => [
+						[
 							'taxonomy' => $tax_name,
 							'terms'    => $terms_page,
-						),
-					),
+						],
+					],
 					'orderby'        => 'modified',
 					'order'          => 'DESC',
 					'posts_per_page' => 1,
-				));
-				$index[] = array(
+				]);
+				$index[] = [
 					'loc'     => Router::get_base_url( $tax_name . '-sitemap' . $current_page . '.xml' ),
 					'lastmod' => $query->have_posts() ? $query->posts[0]->post_modified_gmt : $last_modified_gmt,
-				);
+				];
 			}
 		}
 
@@ -146,19 +149,19 @@ class Taxonomy implements Provider {
 	 * @return array
 	 */
 	public function get_sitemap_links( $type, $max_entries, $current_page ) {
-		$links    = array();
+		$links    = [];
 		$taxonomy = get_taxonomy( $type );
 		$terms    = $this->get_terms( $taxonomy, $max_entries, $current_page );
 
 		foreach ( $terms as $term ) {
-			$url = array();
+			$url = [];
 			if ( ! Helper::is_term_indexable( $term ) ) {
 				continue;
 			}
 
 			$url['loc']    = $this->get_term_link( $term );
 			$url['mod']    = $term->lastmod;
-			$url['images'] = ! is_null( $this->get_image_parser() ) ? $this->get_image_parser()->get_term_images( $term ) : array();
+			$url['images'] = ! is_null( $this->get_image_parser() ) ? $this->get_image_parser()->get_term_images( $term ) : [];
 
 			/** This filter is documented at inc/sitemaps/class-post-type-sitemap-provider.php */
 			$url = $this->do_filter( 'sitemap/entry', $url, 'term', $term );
@@ -222,17 +225,17 @@ class Taxonomy implements Provider {
 
 		// Getting terms.
 		$this->filter( 'get_terms_fields', 'filter_terms_query', 20 );
-		$terms = get_terms( array(
+		$terms = get_terms([
 			'taxonomy'   => $taxonomy->name,
 			'hide_empty' => $hide_empty,
 			'offset'     => $offset,
 			'number'     => $max_entries,
 			'exclude'    => wp_parse_id_list( Helper::get_settings( 'sitemap.exclude_terms' ) ),
-		));
+		]);
 		$this->remove_filter( 'get_terms_fields', 'filter_terms_query', 20 );
 
 		if ( is_wp_error( $terms ) || empty( $terms ) ) {
-			return array();
+			return [];
 		}
 
 		return $terms;
@@ -246,6 +249,6 @@ class Taxonomy implements Provider {
 	 */
 	private function get_term_link( $term ) {
 		$url = Helper::get_term_meta( 'canonical', $term, $term->taxonomy );
-		return is_string( $url ) && '' !== $url ? $url : get_term_link( $term, $term->taxonomy );
+		return Str::is_non_empty( $url ) ? $url : get_term_link( $term, $term->taxonomy );
 	}
 }

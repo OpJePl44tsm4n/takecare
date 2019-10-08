@@ -11,6 +11,7 @@
 namespace RankMath\OpenGraph;
 
 use RankMath\Helper;
+use MyThemeShop\Helpers\Str;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -98,13 +99,13 @@ class Twitter extends OpenGraph {
 		$this->tag( 'twitter:card', $this->type );
 
 		$remove_tags = false;
-		if ( is_singular() && ! is_front_page() && in_array( $this->type, array( 'app', 'player' ) ) ) {
+		if ( is_singular() && ! is_front_page() && in_array( $this->type, [ 'app', 'player' ], true ) ) {
 			$remove_tags = 'app' === $this->type;
 			$this->action( 'rank_math/opengraph/twitter', $this->type, 15 );
 		}
 
 		$is_archive  = is_archive() && ! ( is_author() || is_category() || is_tag() || is_tax() || is_post_type_archive() );
-		$remove_tags = $is_archive && in_array( $this->type, array( 'summary', 'summary_large_image' ) );
+		$remove_tags = $is_archive && in_array( $this->type, [ 'summary', 'summary_large_image' ], true );
 		if ( $remove_tags ) {
 			$this->remove_tags();
 		}
@@ -171,7 +172,7 @@ class Twitter extends OpenGraph {
 	 */
 	public function website() {
 		$this->site = $this->get_twitter_id( Helper::get_settings( 'titles.social_url_twitter' ) );
-		if ( is_string( $this->site ) && '' !== $this->site ) {
+		if ( Str::is_non_empty( $this->site ) ) {
 			$this->tag( 'twitter:site', '@' . $this->site );
 		}
 	}
@@ -199,9 +200,9 @@ class Twitter extends OpenGraph {
 		}
 		$author = $this->get_twitter_id( ltrim( trim( $author ), '@' ) );
 
-		if ( is_string( $author ) && '' !== $author ) {
+		if ( Str::is_non_empty( $author ) ) {
 			$this->tag( 'twitter:creator', '@' . $author );
-		} elseif ( is_string( $this->site ) && '' !== $this->site ) {
+		} elseif ( Str::is_non_empty( $this->site ) ) {
 			$this->tag( 'twitter:creator', '@' . $this->site );
 		}
 	}

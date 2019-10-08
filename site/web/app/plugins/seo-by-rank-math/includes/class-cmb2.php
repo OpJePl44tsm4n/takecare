@@ -12,8 +12,10 @@
 
 namespace RankMath;
 
-use MyThemeShop\Helpers\Str;
 use RankMath\Admin\Admin_Helper;
+use MyThemeShop\Helpers\Str;
+use MyThemeShop\Helpers\Param;
+use MyThemeShop\Helpers\Conditional;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -32,9 +34,9 @@ class CMB2 {
 			$type  = $field_args['type'];
 			$field = $cmb->get_field( $id );
 
-			if ( in_array( $type, array( 'meta_tab_container_open', 'tab_container_open', 'tab_container_close', 'tab_open', 'tab_close', 'raw' ) ) ) {
+			if ( in_array( $type, [ 'meta_tab_container_open', 'tab_container_open', 'tab_container_close', 'tab_open', 'tab_close', 'raw' ], true ) ) {
 				$field->args['save_field']    = false;
-				$field->args['render_row_cb'] = array( '\RankMath\CMB2', "render_{$type}" );
+				$field->args['render_row_cb'] = [ '\RankMath\CMB2', "render_{$type}" ];
 			}
 			if ( 'notice' === $type ) {
 				$field->args['save_field'] = false;
@@ -85,19 +87,19 @@ class CMB2 {
 		global $pagenow;
 		$type = 'post';
 
-		if ( in_array( $pagenow, array( 'user-edit.php', 'profile.php', 'user-new.php' ), true ) ) {
+		if ( in_array( $pagenow, [ 'user-edit.php', 'profile.php', 'user-new.php' ], true ) ) {
 			$type = 'user';
 		}
 
-		if ( in_array( $pagenow, array( 'edit-comments.php', 'comment.php' ), true ) ) {
+		if ( in_array( $pagenow, [ 'edit-comments.php', 'comment.php' ], true ) ) {
 			$type = 'comment';
 		}
 
-		if ( in_array( $pagenow, array( 'edit-tags.php', 'term.php' ), true ) ) {
+		if ( in_array( $pagenow, [ 'edit-tags.php', 'term.php' ], true ) ) {
 			$type = 'term';
 		}
 
-		if ( defined( 'DOING_AJAX' ) && isset( $_POST['action'] ) && 'add-tag' === $_POST['action'] ) {
+		if ( Conditional::is_ajax() && 'add-tag' === Param::post( 'action' ) ) {
 			$type = 'term';
 		}
 
@@ -107,12 +109,12 @@ class CMB2 {
 	/**
 	 * Render raw field.
 	 *
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object.
+	 * @param array      $field_args Array of field arguments.
+	 * @param CMB2_Field $field      The field object.
+	 *
 	 * @return CMB2_Field
 	 */
 	public static function render_raw( $field_args, $field ) {
-
 		if ( $field->args( 'file' ) ) {
 			include $field->args( 'file' );
 		} elseif ( $field->args( 'content' ) ) {
@@ -125,13 +127,13 @@ class CMB2 {
 	/**
 	 * Render tab container opening <div> for option panel.
 	 *
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object.
+	 * @param array      $field_args Array of field arguments.
+	 * @param CMB2_Field $field      The field object.
+	 *
 	 * @return CMB2_Field
 	 */
 	public static function render_tab_container_open( $field_args, $field ) {
-
-		$active = ! empty( $_GET['rank-math-tab'] ) ? $_GET['rank-math-tab'] : 'general';
+		$active = Param::get( 'rank-math-tab', 'general' );
 		echo '<div id="' . $field->prop( 'id' ) . '" class="rank-math-tabs">';
 		?>
 		<div class="rank-math-tabs-navigation wp-clearfix">
@@ -160,8 +162,9 @@ class CMB2 {
 	/**
 	 * Render tab container opening <div> for metabox.
 	 *
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object.
+	 * @param array      $field_args Array of field arguments.
+	 * @param CMB2_Field $field      The field object.
+	 *
 	 * @return CMB2_Field
 	 */
 	public static function render_meta_tab_container_open( $field_args, $field ) {
@@ -170,7 +173,7 @@ class CMB2 {
 			?>
 			<h2 class="rank-math-metabox-frame-title"><?php esc_html_e( 'Rank Math', 'rank-math' ); ?></h2>
 		<?php endif; ?>
-		<div class="rank-math-tabs-navigation custom wp-clearfix">
+		<div class="rank-math-tabs-navigation rank-math-custom wp-clearfix">
 
 			<?php
 			foreach ( $field->args( 'tabs' ) as $id => $tab ) :
@@ -182,7 +185,7 @@ class CMB2 {
 			<?php endforeach; ?>
 		</div>
 
-		<div class="rank-math-tabs-content custom">
+		<div class="rank-math-tabs-content rank-math-custom">
 		<?php
 		return $field;
 	}
@@ -190,8 +193,9 @@ class CMB2 {
 	/**
 	 * Render tab container closing <div>.
 	 *
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object.
+	 * @param array      $field_args Array of field arguments.
+	 * @param CMB2_Field $field      The field object.
+	 *
 	 * @return CMB2_Field
 	 */
 	public static function render_tab_container_close( $field_args, $field ) {
@@ -204,8 +208,9 @@ class CMB2 {
 	/**
 	 * Render tab content opening <div>.
 	 *
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object.
+	 * @param array      $field_args Array of field arguments.
+	 * @param CMB2_Field $field      The field object.
+	 *
 	 * @return CMB2_Field
 	 */
 	public static function render_tab_open( $field_args, $field ) {
@@ -217,8 +222,9 @@ class CMB2 {
 	/**
 	 * Render tab content closing <div>.
 	 *
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object.
+	 * @param array      $field_args Array of field arguments.
+	 * @param CMB2_Field $field      The field object.
+	 *
 	 * @return CMB2_Field
 	 */
 	public static function render_tab_close( $field_args, $field ) {
@@ -230,7 +236,8 @@ class CMB2 {
 	/**
 	 * Handles sanitization for HTML entities.
 	 *
-	 * @param  mixed $value The unsanitized value from the form.
+	 * @param mixed $value The unsanitized value from the form.
+	 *
 	 * @return mixed Sanitized value to be stored.
 	 */
 	public static function sanitize_htmlentities( $value ) {
@@ -238,9 +245,51 @@ class CMB2 {
 	}
 
 	/**
+	 * Handles sanitization for text fields.
+	 *
+	 * @param string $value The unsanitized value from the form.
+	 *
+	 * @return string Sanitized value to be stored.
+	 */
+	public static function sanitize_textfield( $value ) {
+		if ( is_object( $value ) || is_array( $value ) ) {
+			return '';
+		}
+
+		$value    = (string) $value;
+		$filtered = wp_check_invalid_utf8( $value );
+
+		if ( strpos( $filtered, '<' ) !== false ) {
+			$filtered = wp_pre_kses_less_than( $filtered );
+			// This will strip extra whitespace for us.
+			$filtered = wp_strip_all_tags( $filtered, false );
+
+			// Use html entities in a special case to make sure no later
+			// newline stripping stage could lead to a functional tag!
+			$filtered = str_replace( "<\n", "&lt;\n", $filtered );
+		}
+		$filtered = preg_replace( '/[\r\n\t ]+/', ' ', $filtered );
+		$filtered = trim( $filtered );
+
+		$found = false;
+		while ( preg_match( '/%[0-9]{2}/i', $filtered, $match ) ) {
+			$filtered = str_replace( $match[0], '', $filtered );
+			$found    = true;
+		}
+
+		if ( $found ) {
+			// Strip out the whitespace that may now exist after removing the octets.
+			$filtered = trim( preg_replace( '/ +/', ' ', $filtered ) );
+		}
+
+		return apply_filters( 'sanitize_text_field', $filtered, $value );
+	}
+
+	/**
 	 * Handles sanitization for webmaster tag and remove <meta> tag.
 	 *
-	 * @param  mixed $value The unsanitized value from the form.
+	 * @param mixed $value The unsanitized value from the form.
+	 *
 	 * @return mixed Sanitized value to be stored.
 	 */
 	public static function sanitize_webmaster_tags( $value ) {

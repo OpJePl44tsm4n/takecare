@@ -1,6 +1,6 @@
 <?php
 /**
- * The Redirections Form
+ * The Redirections Form.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -12,7 +12,7 @@ namespace RankMath\Redirections;
 
 use RankMath\Helper;
 use RankMath\Traits\Hooker;
-use MyThemeShop\Helpers\Util;
+use MyThemeShop\Helpers\Param;
 use RankMath\Monitor\DB as Monitor_DB;
 
 /**
@@ -61,17 +61,27 @@ class Form {
 	}
 
 	/**
+	 * Create box
+	 *
+	 * @return CMB2
+	 */
+	private function create_box() {
+		return new_cmb2_box(
+			[
+				'id'           => 'rank-math-redirections',
+				'object_types' => [ 'options-page' ],
+				'option_key'   => 'rank-math-redirections',
+				'hookup'       => false,
+				'save_fields'  => false,
+			]
+		);
+	}
+
+	/**
 	 * Register form for Add New Record.
 	 */
 	public function register_form() {
-
-		$cmb = new_cmb2_box([
-			'id'           => 'rank-math-redirections',
-			'object_types' => [ 'options-page' ],
-			'option_key'   => 'rank-math-redirections',
-			'hookup'       => false,
-			'save_fields'  => false,
-		]);
+		$cmb = $this->create_box();
 
 		$cmb->add_field([
 			'id'      => 'sources',
@@ -139,14 +149,15 @@ class Form {
 			return DB::get_redirection_by_id( $redirection_id );
 		}
 
-		if ( $url = Util::param_get( 'url' ) ) { // phpcs:ignore
+		if ( $url = Param::get( 'url' ) ) { // phpcs:ignore
+			$url = esc_attr( $url );
 			return [ 'sources' => [ [ 'pattern' => $url ] ] ];
 		}
 
 		if ( ! empty( $_REQUEST['log'] ) && is_array( $_REQUEST['log'] ) ) {
 			return [
 				'sources' => $this->get_sources_for_log(),
-				'url_to'  => home_url( '/' ),
+				'url_to'  => esc_url( home_url( '/' ) ),
 			];
 		}
 
@@ -154,7 +165,7 @@ class Form {
 	}
 
 	/**
-	 * Get sources for 404 log items
+	 * Get sources for 404 log items.
 	 *
 	 * @return array
 	 */
@@ -193,7 +204,7 @@ class Form {
 		$redirection = Redirection::from( $values );
 		if ( false === $redirection->save() ) {
 			Helper::add_notification( __( 'Please add at least one valid source URL.', 'rank-math' ), [ 'type' => 'error' ] );
-			wp_safe_redirect( wp_unslash( $_POST['_wp_http_referer'] ) );
+			wp_safe_redirect( Param::post( '_wp_http_referer' ) );
 			exit;
 		}
 
@@ -208,15 +219,15 @@ class Form {
 	 */
 	public function is_editing() {
 
-		if ( isset( $_GET['action'] ) && 'edit' !== $_GET['action'] ) {
+		if ( 'edit' !== Param::get( 'action' ) ) {
 			return false;
 		}
 
-		return isset( $_GET['redirection'] ) ? absint( $_GET['redirection'] ) : false;
+		return Param::get( 'redirection', false, FILTER_VALIDATE_INT );
 	}
 
 	/**
-	 * Stripslashes
+	 * Stripslashes wrapper.
 	 *
 	 * @param  mixed      $value      The unescaped value from the database.
 	 * @param  array      $field_args Array of field arguments.

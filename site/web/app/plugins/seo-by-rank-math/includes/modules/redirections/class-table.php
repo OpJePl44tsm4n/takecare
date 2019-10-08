@@ -11,7 +11,7 @@
 namespace RankMath\Redirections;
 
 use RankMath\Helper;
-use MyThemeShop\Helpers\Util;
+use MyThemeShop\Helpers\Param;
 use MyThemeShop\Admin\List_Table;
 
 /**
@@ -36,7 +36,7 @@ class Table extends List_Table {
 	public function prepare_items() {
 		global $per_page;
 
-		$per_page = $this->get_items_per_page( 'rank_math_redirections_per_page' );
+		$per_page = $this->get_items_per_page( 'rank_math_redirections_per_page', 100 );
 
 		$data = DB::get_redirections([
 			'limit'   => $per_page,
@@ -44,7 +44,7 @@ class Table extends List_Table {
 			'orderby' => $this->get_orderby( 'id' ),
 			'paged'   => $this->get_pagenum(),
 			'search'  => $this->get_search(),
-			'status'  => isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : 'any',
+			'status'  => Param::request( 'status', 'any' ),
 		]);
 
 		$this->items = $data['redirections'];
@@ -69,6 +69,26 @@ class Table extends List_Table {
 	}
 
 	/**
+	 * Handle the sources column.
+	 *
+	 * @param object $item The current item.
+	 */
+	protected function column_sources( $item ) {
+		return $this->get_sources_html( maybe_unserialize( $item['sources'] ) ) . $this->column_actions( $item );
+	}
+
+	/**
+	 * Handle the last accessed column.
+	 *
+	 * @param object $item The current item.
+	 */
+	protected function column_last_accessed( $item ) {
+		$no_last_accessed = ( empty( $item['last_accessed'] ) || '0000-00-00 00:00:00' === $item['last_accessed'] );
+
+		return $no_last_accessed ? '' : mysql2date( 'F j, Y, G:i', $item['last_accessed'] );
+	}
+
+	/**
 	 * Handles the default column output.
 	 *
 	 * @codeCoverageIgnore
@@ -77,17 +97,11 @@ class Table extends List_Table {
 	 * @param string $column_name The current column name.
 	 */
 	public function column_default( $item, $column_name ) {
-
-		if ( 'sources' === $column_name ) {
-			return $this->get_sources_html( maybe_unserialize( $item['sources'] ) ) . $this->column_actions( $item );
+		if ( in_array( $column_name, [ 'hits', 'header_code', 'url_to' ], true ) ) {
+			return $item[ $column_name ];
 		}
 
-		if ( 'last_accessed' === $column_name ) {
-			$no_last_accessed = ( empty( $item['last_accessed'] ) || '0000-00-00 00:00:00' === $item['last_accessed'] );
-			return $no_last_accessed ? '' : mysql2date( 'F j, Y, G:i', $item['last_accessed'] );
-		}
-
-		return in_array( $column_name, [ 'hits', 'header_code', 'url_to' ] ) ? $item[ $column_name ] : print_r( $item, true );
+		return print_r( $item, true );
 	}
 
 	/**
@@ -140,9 +154,9 @@ class Table extends List_Table {
 	 * @return string
 	 */
 	private function get_source_html( $source, $comparison_hash ) {
-		$html = '<span class="value-url_from"><strong><a href="' . home_url( $source['pattern'] ) . '" target="_blank">' . stripslashes( $source['pattern'] ) . '</a></strong></span>';
+		$html = '<span class="value-url_from"><strong><a href="' . esc_url( home_url( $source['pattern'] ) ) . '" target="_blank">' . esc_html( stripslashes( $source['pattern'] ) ) . '</a></strong></span>';
 		if ( 'exact' !== $source['comparison'] ) {
-			$html .= ' <span class="value-source-comparison">(' . $comparison_hash[ $source['comparison'] ] . ')</span>';
+			$html .= ' <span class="value-source-comparison">(' . esc_html( $comparison_hash[ $source['comparison'] ] ) . ')</span>';
 		}
 
 		return $html;
@@ -237,7 +251,7 @@ class Table extends List_Table {
 	public function get_views() {
 
 		$url     = Helper::get_admin_url( 'redirections' );
-		$current = Util::param_get( 'status', 'all' );
+		$current = Param::get( 'status', 'all' );
 		$counts  = DB::get_counts();
 		$labels  = [
 			'all'      => esc_html__( 'All', 'rank-math' ),
@@ -295,11 +309,11 @@ class Table extends List_Table {
 	}
 
 	/**
-	 * Checks if is in trashed page.
+	 * Checks if page status is set to trashed.
 	 *
 	 * @return bool
 	 */
 	protected function is_trashed_page() {
-		return 'trashed' === Util::param_get( 'status' );
+		return 'trashed' === Param::get( 'status' );
 	}
 }

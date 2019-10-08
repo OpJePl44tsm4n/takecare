@@ -1,6 +1,6 @@
 <?php
 /**
- * The Article Class
+ * The Article Class.
  *
  * @since      1.0.13
  * @package    RankMath
@@ -22,15 +22,19 @@ class Article implements Snippet {
 	/**
 	 * Article rich snippet.
 	 *
-	 * @param array  $data   Array of json-ld data.
+	 * @param array  $data   Array of JSON-LD data.
 	 * @param JsonLD $jsonld JsonLD Instance.
 	 *
 	 * @return array
 	 */
 	public function process( $data, $jsonld ) {
+		if ( ! $type = Helper::get_post_meta( 'snippet_article_type' ) ) { // phpcs:ignore
+			$type = Helper::get_settings( "titles.pt_{$jsonld->post->post_type}_default_article_type" );
+		}
+
 		$entity = [
 			'@context'         => 'https://schema.org',
-			'@type'            => Helper::get_post_meta( 'snippet_article_type' ),
+			'@type'            => $type,
 			'headline'         => $jsonld->parts['title'],
 			'description'      => $jsonld->parts['desc'],
 			'datePublished'    => $jsonld->parts['published'],

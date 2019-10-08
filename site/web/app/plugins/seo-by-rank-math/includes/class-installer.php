@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Activation and De-Activation
+ * Plugin activation and deactivation functionality.
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
@@ -27,19 +27,20 @@ class Installer {
 	use Hooker;
 
 	/**
-	 * Binding all events
+	 * Bind all events.
 	 */
 	public function __construct() {
 		register_activation_hook( RANK_MATH_FILE, [ $this, 'activation' ] );
 		register_deactivation_hook( RANK_MATH_FILE, [ $this, 'deactivation' ] );
 
+		$this->action( 'wp', 'create_cron_jobs' );
 		$this->action( 'wpmu_new_blog', 'activate_blog' );
 		$this->action( 'activate_blog', 'activate_blog' );
 		$this->filter( 'wpmu_drop_tables', 'on_delete_blog' );
 	}
 
 	/**
-	 * Does something when activating Rank Math.
+	 * Do things when activating Rank Math.
 	 *
 	 * @param bool $network_wide Whether the plugin is being activated network-wide.
 	 */
@@ -53,7 +54,7 @@ class Installer {
 	}
 
 	/**
-	 * Does something when deactivating Rank Math.
+	 * Do things when deactivating Rank Math.
 	 *
 	 * @param bool $network_wide Whether the plugin is being activated network-wide.
 	 */
@@ -101,7 +102,7 @@ class Installer {
 	}
 
 	/**
-	 * Run network-wide (de-)activation of the plugin.
+	 * Run network-wide activation/deactivation of the plugin.
 	 *
 	 * @param bool $activate True for plugin activation, false for de-activation.
 	 */
@@ -143,7 +144,7 @@ class Installer {
 		update_option( 'rank_math_db_version', rank_math()->db_version );
 
 		// Save install date.
-		if ( false == get_option( 'rank_math_install_date' ) ) {
+		if ( false === boolval( get_option( 'rank_math_install_date' ) ) ) {
 			update_option( 'rank_math_install_date', current_time( 'timestamp' ) );
 		}
 
@@ -152,22 +153,22 @@ class Installer {
 		$watcher->check_activated_plugin();
 
 		$this->clear_rewrite_rules( true );
-		$this->clear_cache();
+		Helper::clear_cache();
 		$this->do_action( 'activate' );
 	}
 
 	/**
-	 * Runs on deactivate of the plugin.
+	 * Runs on deactivation of the plugin.
 	 */
 	private function deactivate() {
 		$this->clear_rewrite_rules( false );
 		$this->remove_cron_jobs();
-		$this->clear_cache();
+		Helper::clear_cache();
 		$this->do_action( 'deactivate' );
 	}
 
 	/**
-	 * Set up the database tables which the plugin needs to function.
+	 * Set up the database tables.
 	 */
 	private function create_tables() {
 		global $wpdb;
@@ -189,7 +190,7 @@ class Installer {
 
 			"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}rank_math_redirections (
 				id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-				sources TEXT NOT NULL,
+				sources TEXT CHARACTER SET {$wpdb->charset} COLLATE {$wpdb->charset}_bin NOT NULL,
 				url_to TEXT NOT NULL,
 				header_code SMALLINT(4) UNSIGNED NOT NULL,
 				hits BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
@@ -203,7 +204,7 @@ class Installer {
 
 			"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}rank_math_redirections_cache (
 				id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-				from_url TEXT NOT NULL,
+				from_url TEXT CHARACTER SET {$wpdb->charset} COLLATE {$wpdb->charset}_bin NOT NULL,
 				redirection_id BIGINT(20) UNSIGNED NOT NULL,
 				object_id BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
 				object_type VARCHAR(10) NOT NULL DEFAULT 'post',
@@ -270,7 +271,7 @@ class Installer {
 			'profiles'   => [],
 		]);
 
-		// Update "known CPTs" list, So we can send notice about new ones later.
+		// Update "known CPTs" list, so we can send notice about new ones later.
 		add_option( 'rank_math_known_post_types', Helper::get_accessible_post_types() );
 
 		$modules = [
@@ -278,10 +279,9 @@ class Installer {
 			'search-console',
 			'seo-analysis',
 			'sitemap',
-
-			// Premium.
 			'rich-snippet',
 			'woocommerce',
+			'acf',
 		];
 
 		// Role Manager.
@@ -313,7 +313,7 @@ class Installer {
 			'attachment_redirect_default'         => get_home_url(),
 			'url_strip_stopwords'                 => 'off',
 			'nofollow_external_links'             => 'off',
-			'nofollow_image_links'                => 'on',
+			'nofollow_image_links'                => 'off',
 			'new_window_external_links'           => 'on',
 			'add_img_alt'                         => 'off',
 			'img_alt_format'                      => '%title% %count(alt)%',
@@ -343,9 +343,14 @@ class Installer {
 			'wc_remove_category_parent_slugs'     => 'off',
 			'rss_before_content'                  => '',
 			'rss_after_content'                   => '',
-			'usage_tracking'                      => 'on',
+			'usage_tracking'                      => 'off',
 			'wc_remove_generator'                 => 'on',
 			'remove_shop_snippet_data'            => 'on',
+			'frontend_seo_score'                  => 'off',
+			'frontend_seo_score_post_types'       => [ 'post' ],
+			'frontend_seo_score_position'         => 'top',
+			'frontend_seo_score'                  => 'off',
+			'enable_auto_update'                  => 'off',
 		]));
 	}
 
@@ -376,14 +381,15 @@ class Installer {
 			'homepage_custom_robots'     => 'off',
 			'disable_author_archives'    => 'off',
 			'url_author_base'            => 'author',
-			'noindex_author_archive'     => 'off',
+			'author_custom_robots'       => 'on',
+			'author_robots'              => [ 'noindex' ],
 			'author_archive_title'       => '%name% %sep% %sitename% %page%',
 			'author_add_meta_box'        => 'on',
 			'disable_date_archives'      => 'off',
 			'date_archive_title'         => '%date% %page% %sep% %sitename%',
 			'search_title'               => '%search_query% %page% %sep% %sitename%',
 			'404_title'                  => 'Page Not Found %sep% %sitename%',
-			'noindex_date'               => 'on',
+			'date_archive_robots'        => [ 'noindex' ],
 			'noindex_search'             => 'on',
 			'noindex_archive_subpages'   => 'off',
 			'noindex_password_protected' => 'off',
@@ -541,10 +547,12 @@ class Installer {
 	/**
 	 * Create cron jobs.
 	 */
-	private function create_cron_jobs() {
+	public function create_cron_jobs() {
 		$midnight = strtotime( 'tomorrow midnight' );
 		foreach ( $this->get_cron_jobs() as $job => $recurrence ) {
-			wp_schedule_event( $midnight, $this->do_filter( "{$job}_recurrence", $recurrence ), "rank_math/{$job}" );
+			if ( ! wp_next_scheduled( "rank_math/{$job}" ) ) {
+				wp_schedule_event( $midnight, $this->do_filter( "{$job}_recurrence", $recurrence ), "rank_math/{$job}" );
+			}
 		}
 	}
 
@@ -602,18 +610,6 @@ class Installer {
 	}
 
 	/**
-	 * Clears the WP or W3TC cache depending on which is used.
-	 */
-	private function clear_cache() {
-		if ( function_exists( 'w3tc_pgcache_flush' ) ) {
-			w3tc_pgcache_flush();
-		}
-		if ( function_exists( 'wp_cache_clear_cache' ) ) {
-			wp_cache_clear_cache();
-		}
-	}
-
-	/**
 	 * Clear rewrite rules.
 	 *
 	 * @param bool $activate True for plugin activation, false for de-activation.
@@ -621,6 +617,7 @@ class Installer {
 	private function clear_rewrite_rules( $activate ) {
 		if ( is_multisite() && ms_is_switched() ) {
 			delete_option( 'rewrite_rules' );
+			Helper::schedule_flush_rewrite();
 			return;
 		}
 

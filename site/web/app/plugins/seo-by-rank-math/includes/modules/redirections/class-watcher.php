@@ -12,6 +12,7 @@ namespace RankMath\Redirections;
 
 use RankMath\Helper;
 use RankMath\Traits\Hooker;
+use MyThemeShop\Helpers\Param;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -40,9 +41,8 @@ class Watcher {
 			if ( Helper::get_settings( 'general.redirections_post_redirect' ) ) {
 				$this->action( 'pre_post_update', 'pre_post_update' );
 				$this->action( 'post_updated', 'handle_post_update', 10, 3 );
-			} else {
-				$this->action( 'wp_trash_post', 'display_suggestion' );
 			}
+			$this->action( 'wp_trash_post', 'display_suggestion' );
 		}
 		$this->action( 'deleted_post', 'invalidate_post' );
 
@@ -56,7 +56,7 @@ class Watcher {
 	}
 
 	/**
-	 * Remember the previous post permalink
+	 * Remember the previous post permalink.
 	 *
 	 * @param integer $post_id Post ID.
 	 */
@@ -72,7 +72,7 @@ class Watcher {
 	 * @param WP_Post $before  Post object before update.
 	 */
 	public function handle_post_update( $post_id, $post, $before ) {
-		if ( ! in_array( $post->post_type, Helper::get_accessible_post_types() ) ) {
+		if ( ! in_array( $post->post_type, Helper::get_accessible_post_types(), true ) ) {
 			return;
 		}
 
@@ -99,7 +99,7 @@ class Watcher {
 			);
 
 			// Update the meta value as well.
-			if ( 'edit-post' === $_POST['screen'] ) {
+			if ( 'edit-post' === Param::post( 'screen' ) ) {
 				update_post_meta( $post_id, 'rank_math_permalink', $post->post_name );
 			}
 
@@ -109,7 +109,7 @@ class Watcher {
 	}
 
 	/**
-	 * Create redirection
+	 * Create redirection.
 	 *
 	 * @param  string  $from_url    Redirecting from url for cache.
 	 * @param  string  $url_to      Destination url.
@@ -118,7 +118,7 @@ class Watcher {
 	 * @return int Redirection id.
 	 */
 	private function create_redirection( $from_url, $url_to, $header_code, $object ) {
-		// Early Bail!
+		// Early bail.
 		if ( empty( $from_url ) || empty( $url_to ) ) {
 			return;
 		}
@@ -169,7 +169,7 @@ class Watcher {
 	}
 
 	/**
-	 * Changed if permalinks are different and the before wasn't the site url (we don't want to redirect the site URL)
+	 * Check if permalinks are different and if the before isn't the site URL.
 	 *
 	 * @param  WP_Post $before Post object before update.
 	 * @param  WP_Post $after  Post object after update.
@@ -179,12 +179,12 @@ class Watcher {
 		$before = parse_url( $before, PHP_URL_PATH );
 		$after  = parse_url( $after, PHP_URL_PATH );
 
-		// Are the URLs the same?
+		// Do the URLs the match?
 		if ( $before === $after ) {
 			return false;
 		}
 
-		// Check it's not redirecting from the root.
+		// Is the $before the site URL?
 		if ( $this->get_site_path() === $before || '/' === $before ) {
 			return false;
 		}
@@ -220,7 +220,7 @@ class Watcher {
 	}
 
 	/**
-	 * Display notice after a post has been deleted
+	 * Display a suggestion notice after a post has been deleted.
 	 *
 	 * @param int $post_id Deleted post ID.
 	 */
@@ -239,7 +239,7 @@ class Watcher {
 	}
 
 	/**
-	 * Can display ay_suggestion
+	 * Check if notice can be displayed or not.
 	 *
 	 * @param  WP_Post $post Current post.
 	 * @return bool

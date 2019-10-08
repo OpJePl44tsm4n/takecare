@@ -1,6 +1,6 @@
 <?php
 /**
- * The 404 Monitor Module
+ * The 404 Monitor Module.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -11,9 +11,12 @@
 namespace RankMath\Monitor;
 
 use RankMath\Helper;
-use RankMath\Traits\Hooker;
 use RankMath\Traits\Ajax;
+use RankMath\Traits\Hooker;
+use MyThemeShop\Helpers\Arr;
 use MyThemeShop\Helpers\Str;
+use MyThemeShop\Helpers\Param;
+use MyThemeShop\Helpers\Conditional;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -30,12 +33,11 @@ class Monitor {
 	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
-
 		if ( is_admin() ) {
 			$this->admin = new Admin;
 		}
 
-		if ( $this->is_ajax() ) {
+		if ( Conditional::is_ajax() ) {
 			$this->ajax( 'delete_log', 'delete_log' );
 		}
 
@@ -78,7 +80,7 @@ class Monitor {
 
 		$this->has_cap_ajax( '404_monitor' );
 
-		$id = isset( $_REQUEST['log'] ) ? $_REQUEST['log'] : 0;
+		$id = Param::request( 'log' );
 		if ( ! $id ) {
 			$this->error( esc_html__( 'No valid id found.', 'rank-math' ) );
 		}
@@ -109,25 +111,25 @@ class Monitor {
 			return;
 		}
 
-		// Mode = advance.
+		// Mode = advanced.
 		DB::add([
 			'uri'        => $uri,
-			'ip'         => ! empty( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '',
-			'referer'    => ! empty( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '',
+			'ip'         => Param::server( 'REMOTE_ADDR', '' ),
+			'referer'    => Param::server( 'HTTP_REFERER', '' ),
 			'user_agent' => $this->get_user_agent(),
 		]);
 	}
 
 	/**
-	 * Is current url excluded
+	 * Check if current URL is excluded.
 	 *
-	 * @param string $uri Check this uri for exclusion.
+	 * @param string $uri Check this URI for exclusion.
 	 *
 	 * @return boolean
 	 */
 	private function is_url_excluded( $uri ) {
 		$excludes = Helper::get_settings( 'general.404_monitor_exclude' );
-		if ( ! is_array( $excludes ) || empty( $excludes ) ) {
+		if ( ! is_array( $excludes ) ) {
 			return false;
 		}
 
@@ -146,13 +148,12 @@ class Monitor {
 	 * @return string
 	 */
 	private function get_user_agent() {
-		if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
+		$u_agent = Param::server( 'HTTP_USER_AGENT' );
+		if ( empty( $u_agent ) ) {
 			return '';
 		}
 
-		$u_agent = '';
-		$parsed  = $this->parse_user_agent( $_SERVER['HTTP_USER_AGENT'] );
-
+		$parsed = $this->parse_user_agent( $u_agent );
 		if ( ! empty( $parsed['browser'] ) ) {
 			$u_agent .= $parsed['browser'];
 		}
@@ -164,7 +165,7 @@ class Monitor {
 	}
 
 	/**
-	 * Parses a user agent string into its important parts.
+	 * Parses a user-agent string into its parts.
 	 *
 	 * @link https://github.com/donatj/PhpUserAgent
 	 *

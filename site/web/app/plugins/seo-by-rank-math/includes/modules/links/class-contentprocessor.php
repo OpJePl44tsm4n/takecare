@@ -2,7 +2,7 @@
 /**
  * The Content Processor.
  *
- * It will extract links from the content and saves them for the given post id.
+ * Extract and save links from the content of a given post.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -37,7 +37,7 @@ class ContentProcessor {
 	protected $classifier;
 
 	/**
-	 * [__construct description]
+	 * The Constructor
 	 */
 	public function __construct() {
 		$this->storage    = new Storage;
@@ -45,37 +45,23 @@ class ContentProcessor {
 	}
 
 	/**
-	 * Process the content for the given post id.
+	 * Process the content.
 	 *
-	 * @param int    $post_id The post id.
-	 * @param string $content The content to process.
+	 * @param int    $post_id The post ID.
+	 * @param string $content The content.
 	 */
 	public function process( $post_id, $content ) {
 		$links  = $this->extract( $content );
-		$counts = array(
+		$counts = [
 			'internal_link_count' => 0,
 			'external_link_count' => 0,
-		);
+		];
 
-		$new_links = array();
+		$new_links = [];
 		foreach ( $links as $link ) {
-			$link_type = $this->is_valid_link_type( $link );
-			if ( empty( $link_type ) ) {
-				continue;
-			}
-
-			$target_post_id = 0;
-			if ( Classifier::TYPE_INTERNAL === $link_type ) {
-				$counts['internal_link_count'] += 1;
-				$target_post_id                 = url_to_postid( $link );
-			} else {
-				$counts['external_link_count'] += 1;
-			}
-
-			$new_links[] = new Link( $link, $target_post_id, $link_type );
+			$this->process_link( $link, $new_links, $counts );
 		}
 
-		// Start processing.
 		$old_links = $this->get_stored_internal_links( $post_id );
 		$this->storage->cleanup( $post_id );
 		$this->storage->save_links( $post_id, $new_links );
@@ -83,20 +69,43 @@ class ContentProcessor {
 	}
 
 	/**
-	 * Extracts the hrefs from the content and returns them as an array.
+	 * Process a link.
 	 *
-	 * @param  string $content Content to extract links from.
-	 * @return array All the extracted links
+	 * @param string $link   Link to process.
+	 * @param array  $list   Links to add after process.
+	 * @param array  $counts Counts array.
+	 */
+	private function process_link( $link, &$list, &$counts ) {
+		$link_type = $this->is_valid_link_type( $link );
+		if ( empty( $link_type ) ) {
+			return;
+		}
+
+		$target_post_id = 0;
+		if ( Classifier::TYPE_INTERNAL === $link_type ) {
+			$target_post_id = url_to_postid( $link );
+		}
+		$counts[ "{$link_type}_link_count" ] += 1;
+
+		$list[] = new Link( $link, $target_post_id, $link_type );
+	}
+
+	/**
+	 * Extract href property values from HTML string.
+	 *
+	 * @param string $content Content to extract links from.
+	 *
+	 * @return array The extracted links.
 	 */
 	public function extract( $content ) {
-		$links = array();
+		$links = [];
 		if ( false === Str::contains( 'href', $content ) ) {
 			return $links;
 		}
 
 		$regexp = '<a\s[^>]*href=("??)([^" >]*?)\\1[^>]*>';
 
-		// Used modifiers iU to match case insensitive and make greedy quantifiers lazy.
+		// Case insensitive & ungreedy modifiers.
 		if ( preg_match_all( "/$regexp/iU", $content, $matches, PREG_SET_ORDER ) ) {
 			foreach ( $matches as $match ) {
 				$links[] = trim( $match[2], "'" );
@@ -115,23 +124,25 @@ class ContentProcessor {
 	 */
 	public function get_stored_internal_links( $post_id ) {
 		$links = $this->storage->get_links( $post_id );
-		return array_filter( $links, array( $this, 'filter_internal_link' ) );
+		return array_filter( $links, [ $this, 'filter_internal_link' ] );
 	}
 
 	/**
-	 * Filters on INTERNAL links.
+	 * Filter internal links.
 	 *
-	 * @param  Link $link Link to test type of.
-	 * @return bool True for internal link, false for external link.
+	 * @param Link $link Link to test.
+	 *
+	 * @return bool True if internal, false if external.
 	 */
 	protected function filter_internal_link( Link $link ) {
 		return $link->get_type() === Classifier::TYPE_INTERNAL;
 	}
 
 	/**
-	 * Check if link is valid
+	 * Check if link is valid.
 	 *
-	 * @param  string $link Link to evaluate.
+	 * @param string $link Link to check.
+	 *
 	 * @return boolean
 	 */
 	private function is_valid_link_type( $link ) {

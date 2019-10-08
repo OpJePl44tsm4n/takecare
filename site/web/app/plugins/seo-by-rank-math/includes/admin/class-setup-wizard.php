@@ -1,6 +1,6 @@
 <?php
 /**
- * The Setup Wizard - configure the SEO settings in a few steps.
+ * The Setup Wizard - configure the SEO settings in just a few steps.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -15,6 +15,7 @@ use RankMath\Helper;
 use RankMath\Traits\Hooker;
 use RankMath\Traits\Wizard;
 use RankMath\Admin\Importers\Detector;
+use MyThemeShop\Helpers\Param;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -54,7 +55,7 @@ class Setup_Wizard {
 	protected $slug = 'rank-math-wizard';
 
 	/**
-	 * CMB2 object
+	 * CMB2 object.
 	 *
 	 * @var \CMB2
 	 */
@@ -76,7 +77,7 @@ class Setup_Wizard {
 		$this->action( 'admin_menu', 'add_admin_menu' );
 		$this->action( 'admin_post_rank_math_save_wizard', 'save_wizard' );
 
-		// If not the page is not this page stop here.
+		// If the page is not this page stop here.
 		if ( ! $this->is_current_page() ) {
 			return;
 		}
@@ -138,9 +139,9 @@ class Setup_Wizard {
 				'class' => '\\RankMath\\Wizard\\Monitor_Redirection',
 			],
 
-			'misc'          => [
-				'name'  => esc_html__( 'Misc', 'rank-math' ),
-				'class' => '\\RankMath\\Wizard\\Misc',
+			'schema-markup' => [
+				'name'  => esc_html__( 'Schema Markup', 'rank-math' ),
+				'class' => '\\RankMath\\Wizard\\Schema_Markup',
 			],
 		];
 
@@ -151,14 +152,16 @@ class Setup_Wizard {
 	 * Register CMB2 option page for setup wizard.
 	 */
 	public function register_cmb2() {
-		$this->cmb = new_cmb2_box( array(
-			'id'           => 'rank-math-wizard',
-			'object_types' => array( 'options-page' ),
-			'option_key'   => 'rank-math-wizard',
-			'hookup'       => false,
-			'save_fields'  => false,
-			'classes'      => 'wp-core-ui rank-math-ui',
-		) );
+		$this->cmb = new_cmb2_box(
+			[
+				'id'           => 'rank-math-wizard',
+				'object_types' => [ 'options-page' ],
+				'option_key'   => 'rank-math-wizard',
+				'hookup'       => false,
+				'save_fields'  => false,
+				'classes'      => 'wp-core-ui rank-math-ui',
+			]
+		);
 
 		$this->wizard_step->form( $this );
 		CMB2::pre_init( $this->cmb );
@@ -202,8 +205,9 @@ class Setup_Wizard {
 	public function save_wizard() {
 
 		// If no form submission, bail.
+		$referer = Param::post( '_wp_http_referer' );
 		if ( empty( $_POST ) ) {
-			return wp_safe_redirect( $_POST['_wp_http_referer'] );
+			return wp_safe_redirect( $referer );
 		}
 
 		check_admin_referer( 'rank-math-wizard', 'security' );
@@ -211,7 +215,7 @@ class Setup_Wizard {
 		$values       = $this->cmb->get_sanitized_values( $_POST );
 		$show_content = $this->wizard_step->save( $values, $this );
 
-		$redirect = $show_content ? $this->step_next_link() : $_POST['_wp_http_referer'];
+		$redirect = $show_content ? $this->step_next_link() : $referer;
 		if ( is_string( $show_content ) ) {
 			$redirect = $show_content;
 		}
@@ -223,22 +227,22 @@ class Setup_Wizard {
 	 * Add the admin menu item, under Appearance.
 	 */
 	public function add_admin_menu() {
-		if ( empty( $_GET['page'] ) || $this->slug !== $_GET['page'] ) {
+		if ( Param::get( 'page' ) !== $this->slug ) {
 			return;
 		}
 
 		$this->hook_suffix = add_submenu_page(
-			null, esc_html__( 'Setup Wizard', 'rank-math' ), esc_html__( 'Setup Wizard', 'rank-math' ), 'manage_options', $this->slug, array( $this, 'admin_page' )
+			null, esc_html__( 'Setup Wizard', 'rank-math' ), esc_html__( 'Setup Wizard', 'rank-math' ), 'manage_options', $this->slug, [ $this, 'admin_page' ]
 		);
 	}
 
 	/**
-	 * Add the admin page.
+	 * Output the admin page.
 	 */
 	public function admin_page() {
 
-		// Do not proceed, if we're not on the right page.
-		if ( empty( $_GET['page'] ) || $this->slug !== $_GET['page'] ) {
+		// Do not proceed if we're not on the right page.
+		if ( Param::get( 'page' ) !== $this->slug ) {
 			return;
 		}
 
@@ -250,10 +254,10 @@ class Setup_Wizard {
 		\CMB2_hookup::enqueue_cmb_css();
 		\CMB2_hookup::enqueue_cmb_js();
 		rank_math()->admin_assets->register();
-		wp_enqueue_style( 'rank-math-wizard', rank_math()->plugin_url() . 'assets/admin/css/setup-wizard.css', array( 'wp-admin', 'buttons', 'cmb2-styles', 'select2-rm', 'rank-math-common', 'rank-math-cmb2' ), rank_math()->version );
+		wp_enqueue_style( 'rank-math-wizard', rank_math()->plugin_url() . 'assets/admin/css/setup-wizard.css', [ 'wp-admin', 'buttons', 'cmb2-styles', 'select2-rm', 'rank-math-common', 'rank-math-cmb2' ], rank_math()->version );
 
 		// Enqueue javascript.
-		wp_enqueue_script( 'rank-math-wizard', rank_math()->plugin_url() . 'assets/admin/js/wizard.js', array( 'media-editor', 'select2-rm', 'rank-math-common' ), rank_math()->version, true );
+		wp_enqueue_script( 'rank-math-wizard', rank_math()->plugin_url() . 'assets/admin/js/wizard.js', [ 'media-editor', 'select2-rm', 'rank-math-common', 'rank-math-validate' ], rank_math()->version, true );
 
 		Helper::add_json( 'currentStep', $this->step );
 		Helper::add_json( 'deactivated', esc_html__( 'Deactivated', 'rank-math' ) );
@@ -272,7 +276,7 @@ class Setup_Wizard {
 	}
 
 	/**
-	 * Is navigation item hidden or not.
+	 * Check if navigation item is hidden or not.
 	 *
 	 * @param string $slug Slug of nav item.
 	 *
@@ -284,9 +288,9 @@ class Setup_Wizard {
 		}
 
 		$is_advanced   = $this->is_advance();
-		$advance_steps = array( 'role', 'redirection', 'misc' );
+		$advance_steps = [ 'role', 'redirection', 'schema-markup' ];
 
-		return in_array( $slug, $advance_steps ) ? ! $is_advanced : $is_advanced;
+		return in_array( $slug, $advance_steps, true ) ? ! $is_advanced : $is_advanced;
 	}
 
 	/**
@@ -330,7 +334,7 @@ class Setup_Wizard {
 		}
 
 		$this->steps       = $this->do_filter( 'wizard/steps', $this->steps );
-		$this->step        = isset( $_REQUEST['step'] ) && ! empty( $_REQUEST['step'] ) ? sanitize_key( $_REQUEST['step'] ) : current( array_keys( $this->steps ) );
+		$this->step        = Param::request( 'step', current( array_keys( $this->steps ) ) );
 		$this->step_slug   = isset( $this->steps[ $this->step ]['slug'] ) ? $this->steps[ $this->step ]['slug'] : $this->step;
 		$this->wizard_step = new $this->steps[ $this->step ]['class'];
 	}
@@ -341,7 +345,8 @@ class Setup_Wizard {
 	 * @return bool
 	 */
 	private function is_advance() {
-		return isset( $_REQUEST['step'] ) && in_array( $_REQUEST['step'], array( 'role', 'redirection', 'misc' ) );
+		$step = Param::request( 'step' );
+		return $step && in_array( $step, [ 'role', 'redirection', 'schema-markup' ], true );
 	}
 
 	/**

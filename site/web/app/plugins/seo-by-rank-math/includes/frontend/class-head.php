@@ -8,11 +8,14 @@
  * @author     Rank Math <support@rankmath.com>
  */
 
-namespace RankMath;
+namespace RankMath\Frontend;
 
 use RankMath\Post;
+use RankMath\Helper;
+use RankMath\Paper\Paper;
 use RankMath\Traits\Hooker;
 use RankMath\Sitemap\Router;
+use MyThemeShop\Helpers\Str;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,20 +27,13 @@ class Head {
 	use Hooker;
 
 	/**
-	 * Hold generate instance.
-	 *
-	 * @var Generate
-	 */
-	public $generate = null;
-
-	/**
 	 * The Constructor.
 	 */
 	public function __construct() {
 
 		$this->action( 'wp_head', 'head', 1 );
 
-		if ( Helper::is_module_active( 'amp' ) ) {
+		if ( Helper::is_amp_active() ) {
 			$this->action( 'amphtml_template_head', 'head', 1 );
 			$this->action( 'weeblramp_print_meta_data', 'head', 1 );
 			$this->action( 'better-amp/template/head', 'head', 99 );
@@ -53,7 +49,7 @@ class Head {
 		$this->action( 'rank_math/head', 'robots', 10 );
 		$this->action( 'rank_math/head', 'canonical', 20 );
 		$this->action( 'rank_math/head', 'adjacent_rel_links', 21 );
-		$this->action( 'rank_math/head', 'publisher', 22 );
+		$this->action( 'rank_math/head', 'metakeywords', 22 );
 
 		$this->filter( 'wp_title', 'title', 15 );
 		$this->filter( 'thematic_doctitle', 'title', 15 );
@@ -63,14 +59,10 @@ class Head {
 		remove_action( 'wp_head', '_wp_render_title_tag', 1 );
 		add_action( 'rank_math/head', '_wp_render_title_tag', 1 );
 
-		// Initalize generate now.
-		$this->generate = new Generate;
-		add_action( 'wp', array( $this->generate, 'generate' ) );
-
 		// Force Rewrite title.
 		if ( Helper::get_settings( 'titles.rewrite_title' ) && ! current_theme_supports( 'title-tag' ) ) {
-			ob_start();
-			add_action( 'wp_head', array( $this, 'rewrite_title' ), 9999 );
+			$this->action( 'get_header', 'start_ob', 0 );
+			$this->action( 'wp_head', 'rewrite_title', 9999 );
 		}
 	}
 
@@ -86,10 +78,10 @@ class Head {
 	}
 
 	/**
-	 * Output Webmaster Tools authentication strings.
+	 * Output authentication codes for all the Webmaster Tools.
 	 */
 	public function webmaster_tools_authentication() {
-		$tools = array(
+		$tools = [
 			'google_verify'    => 'google-site-verification',
 			'bing_verify'      => 'msvalidate.01',
 			'baidu_verify'     => 'baidu-site-verification',
@@ -97,7 +89,7 @@ class Head {
 			'yandex_verify'    => 'yandex-verification',
 			'pinterest_verify' => 'p:domain_verify',
 			'norton_verify'    => 'norton-safeweb-site-verification',
-		);
+		];
 
 		foreach ( $tools as $id => $name ) {
 			$content = trim( Helper::get_settings( "general.{$id}" ) );
@@ -110,7 +102,7 @@ class Head {
 	}
 
 	/**
-	 * Add Search Result Page schema.
+	 * Add Search Result Page schema as language attributes for the <html> tag.
 	 *
 	 * @param  string $output A space-separated list of language attributes.
 	 * @return string
@@ -124,8 +116,7 @@ class Head {
 	}
 
 	/**
-	 * Main wrapper function attached to wp_head.
-	 * This combines all the output on the frontend of the plugin.
+	 * Main function attached to the wp_head hook.
 	 */
 	public function head() {
 		global $wp_query;
@@ -138,18 +129,21 @@ class Head {
 
 		$this->credits();
 
-		// Remove actions that we will handle through our rank_math/head call, and probably change the output of.
+		// Remove core actions, now handled by Rank Math.
 		remove_action( 'wp_head', 'rel_canonical' );
 		remove_action( 'wp_head', 'index_rel_link' );
 		remove_action( 'wp_head', 'start_post_rel_link' );
 		remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head' );
 		remove_action( 'wp_head', 'noindex', 1 );
-		if ( Helper::is_module_active( 'amp' ) ) {
-			remove_action( 'amp_post_template_head', 'amp_post_template_add_title' );	
-			remove_action( 'amp_post_template_head', 'amp_post_template_add_canonical' );	
+
+		if ( Helper::is_amp_active() ) {
+			remove_action( 'amp_post_template_head', 'amp_post_template_add_title' );
+			remove_action( 'amp_post_template_head', 'amp_post_template_add_canonical' );
+			remove_action( 'amp_post_template_head', 'amp_print_schemaorg_metadata' );
 		}
+
 		/**
-		 * Allow other plugins to output inside the Rank Math section of the head tag.
+		 * Add extra output in the head tag.
 		 */
 		$this->do_action( 'head' );
 
@@ -164,7 +158,7 @@ class Head {
 	/**
 	 * Main title function.
 	 *
-	 * @param  string $title Title that might have already been set.
+	 * @param  string $title Already set title or empty string.
 	 * @return string
 	 */
 	public function title( $title ) {
@@ -172,24 +166,17 @@ class Head {
 			return $title;
 		}
 
-		$generated = $this->generate->get( 'title' );
-		$generated = is_string( $generated ) && '' !== $generated ? $generated : $title;
-		return convert_smilies( $generated );
+		$generated = Paper::get()->get_title();
+		return Str::is_non_empty( $generated ) ? $generated : $title;
 	}
 
 	/**
-	 * Outputs the meta description element or returns the description text.
-	 *
-	 * @param  bool $echo Echo or return output flag.
-	 * @return string
+	 * Output the meta description tag with the generated description.
 	 */
-	public function metadesc( $echo = true ) {
-		if ( ! $echo ) {
-			return $this->generate->get( 'desc' );
-		}
+	public function metadesc() {
+		$generated = Paper::get()->get_description();
 
-		$generated = $this->generate->get( 'desc' );
-		if ( is_string( $generated ) && '' !== $generated ) {
+		if ( Str::is_non_empty( $generated ) ) {
 			echo '<meta name="description" content="', $generated, '"/>', "\n";
 		} elseif ( Helper::has_cap( 'general' ) && is_singular() ) {
 			echo '<!-- ', \html_entity_decode( esc_html__( 'Admin only notice: this page has no meta description set. Please edit the page to add one, or setup a template in Rank Math -> Titles &amp; Metas.', 'rank-math' ) ), ' -->', "\n";
@@ -197,80 +184,52 @@ class Head {
 	}
 
 	/**
-	 * Output the meta robots value.
+	 * Output the meta robots tag.
 	 */
 	public function robots() {
-		$robots    = $this->generate->get( 'robots' );
+		$robots    = Paper::get()->get_robots();
 		$robotsstr = join( ',', $robots );
-		if ( is_string( $robotsstr ) && $robotsstr ) {
+		if ( Str::is_non_empty( $robotsstr ) ) {
 			echo '<meta name="robots" content="', esc_attr( $robotsstr ), '"/>', "\n";
 		}
 
-		// If a page has a noindex, it should _not_ have a canonical, as these are opposing indexing directives.
-		if ( 'noindex' === $robots['index'] ) {
+		// If a page is noindex, let's remove the canonical URL.
+		// https://www.seroundtable.com/google-noindex-rel-canonical-confusion-26079.html .
+		if ( isset( $robots['index'] ) && 'noindex' === $robots['index'] ) {
 			$this->remove_action( 'rank_math/head', 'canonical', 20 );
 			$this->remove_action( 'rank_math/head', 'adjacent_rel_links', 21 );
 		}
 	}
 
 	/**
-	 * This function normally outputs the canonical but is also used in other places to retrieve
-	 * the canonical URL for the current page.
-	 *
-	 * @param  bool $echo        Whether or not to output the canonical element.
-	 * @param  bool $un_paged    Whether or not to return the canonical with or without pagination added to the URL.
-	 * @param  bool $no_override Whether or not to return a manually overridden canonical.
-	 * @return string  $canonical
+	 * Output the canonical URL tag.
 	 */
-	public function canonical( $echo = true, $un_paged = false, $no_override = false ) {
-		$canonical = $this->generate->get( 'canonical' );
-		if ( '' === $canonical ) {
-			$this->generate->generate_canonical();
-			$canonical = $this->generate->get( 'canonical' );
-		}
-
-		if ( $un_paged ) {
-			$canonical = $this->generate->get( 'canonical_unpaged' );
-		} elseif ( $no_override ) {
-			$canonical = $this->generate->get( 'canonical_no_override' );
-		}
-
-		if ( is_string( $canonical ) && '' !== $canonical && $echo ) {
+	public function canonical() {
+		$canonical = Paper::get()->get_canonical();
+		if ( Str::is_non_empty( $canonical ) ) {
 			echo '<link rel="canonical" href="' . esc_url( $canonical, null, 'other' ) . '" />' . "\n";
 		}
-
-		return $canonical;
 	}
 
 	/**
-	 * Output the rel=publisher code on every page of the site.
-	 */
-	public function publisher() {
-		if ( $publisher = Helper::get_settings( 'titles.social_url_gplus' ) ) { // phpcs:ignore
-			echo '<link rel="publisher" href="', esc_url( $publisher ), '"/>', "\n";
-		}
-	}
-
-	/**
-	 * Adds 'prev' and 'next' links to archives.
+	 * Add the rel 'prev' and 'next' links to archives or single posts.
 	 *
 	 * @link http://googlewebmastercentral.blogspot.com/2011/09/pagination-with-relnext-and-relprev.html
 	 */
 	public function adjacent_rel_links() {
-		// Don't do this for Genesis, as the way Genesis handles homepage functionality is different and causes issues sometimes.
 		/**
-		 * Allows devs to allow echoing rel="next" / rel="prev" by Rank Math on Genesis installs.
+		 * Enable rel "next" & "prev" tags on sites running Genesis.
 		 *
-		 * @param bool $unsigned Whether or not to rel=next / rel=prev .
+		 * @param bool $unsigned Whether or not to show rel next / prev .
 		 */
 		if ( is_home() && function_exists( 'genesis' ) && false === $this->do_filter( 'frontend/genesis/force_adjacent_rel_home', false ) ) {
 			return;
 		}
 
 		/**
-		 * Allows disabling of Rank Math adjacent links if this is being handled by other code.
+		 * Disable rel 'prev' and 'next' links.
 		 *
-		 * @param bool $links_generated Indicates if other code has handled adjacent links.
+		 * @param bool $disable Rel 'prev' and 'next' links should be disabled or not.
 		 */
 		if ( true === $this->do_filter( 'frontend/disable_adjacent_rel_links', false ) ) {
 			return;
@@ -284,7 +243,17 @@ class Head {
 	}
 
 	/**
-	 * Output the rel next/prev links for a single post / page.
+	 * Output the meta keywords value.
+	 */
+	public function metakeywords() {
+		$keywords = Paper::get()->get_keywords();
+		if ( Str::is_non_empty( $keywords ) ) {
+			echo '<meta name="keywords" content="', esc_attr( $keywords ), '"/>', "\n";
+		}
+	}
+
+	/**
+	 * Output the rel next/prev tags on a paginated single post.
 	 *
 	 * @return void
 	 */
@@ -313,10 +282,10 @@ class Head {
 	}
 
 	/**
-	 * Output the rel next/prev links for an archive page.
+	 * Output the rel next/prev tags on archives.
 	 */
 	private function adjacent_rel_links_archive() {
-		$url = $this->canonical( false, true, true );
+		$url = Paper::get()->get_canonical( true, true );
 		if ( ! is_string( $url ) || '' === $url ) {
 			return;
 		}
@@ -326,7 +295,6 @@ class Head {
 			$this->adjacent_rel_link( 'prev', $url, $paged - 1 );
 		}
 
-		// Make sure to use index.php when needed, done after paged == 2 check so the prev links to homepage will not have index.php erroneously.
 		if ( is_front_page() ) {
 			$url = Router::get_base_url( '' );
 		}
@@ -341,12 +309,12 @@ class Head {
 	}
 
 	/**
-	 * Get adjacent pages link for archives.
+	 * Build adjacent page link for archives.
 	 *
-	 * @param string $rel       Link relationship, prev or next.
-	 * @param string $url       The un-paginated URL of the current archive.
-	 * @param string $page      The page number to add on to $url for the $link tag.
-	 * @param string $query_arg Optional. The argument to use to set for the page to load.
+	 * @param string $rel       Prev or next.
+	 * @param string $url       The current archive URL without page parameter.
+	 * @param string $page      The page number added to the $url in the link tag.
+	 * @param string $query_arg The pagination query argument to use for the $url.
 	 */
 	private function adjacent_rel_link( $rel, $url, $page, $query_arg = 'paged' ) {
 		global $wp_rewrite;
@@ -356,18 +324,18 @@ class Head {
 		}
 
 		/**
-		 * Allow changing link rel output by Rank Math.
+		 * Change the link rel HTML output.
 		 *
-		 * @param string $link The full `<link` element.
+		 * @param string $link The `<link rel=""` tag.
 		 */
 		$link = $this->do_filter( "frontend/{$rel}_rel_link", '<link rel="' . esc_attr( $rel ) . '" href="' . esc_url( $url ) . "\" />\n" );
-		if ( is_string( $link ) && '' !== $link ) {
+		if ( Str::is_non_empty( $link ) ) {
 			echo $link;
 		}
 	}
 
 	/**
-	 * Return the base for pagination.
+	 * Get pagination base.
 	 *
 	 * @return string The pagination base.
 	 */
@@ -378,12 +346,17 @@ class Head {
 	}
 
 	/**
-	 * Credits
+	 * Credits.
 	 *
 	 * @param boolean $closing Is closing credits needed.
 	 */
 	private function credits( $closing = false ) {
 
+		/**
+		 * Disable credit in the HTML source.
+		 *
+		 * @param bool $remove
+		 */
 		if ( $this->do_filter( 'frontend/remove_credit_notice', false ) ) {
 			return;
 		}
@@ -401,12 +374,21 @@ class Head {
 	}
 
 	/**
-	 * Used in the force rewrite functionality this retrieves the output, replaces the title with the proper SEO
-	 * title and then flushes the output.
+	 * Start the Output Buffer.
+	 *
+	 * @since 1.0.29
+	 */
+	public function start_ob() {
+		ob_start();
+	}
+
+	/**
+	 * Use output buffering to force rewrite the title tag.
 	 */
 	public function rewrite_title() {
 		global $wp_query;
-		// Check if we're in the main query to support bad themes and plugins.
+
+		// Check if we're in the main query.
 		$old_wp_query = null;
 		if ( ! $wp_query->is_main_query() ) {
 			$old_wp_query = $wp_query;
@@ -414,12 +396,12 @@ class Head {
 		}
 
 		$content = ob_get_clean();
-		$title   = $this->generate->get( 'title' );
+		$title   = Paper::get()->get_title();
 		if ( empty( $title ) ) {
 			echo $content;
 		}
 
-		// Find all titles, strip them out and add the new one.
+		// Find all title tags, remove them, and add the new one.
 		$content = preg_replace( '/<title.*?\/title>/i', '', $content );
 		$content = str_replace( '<head>', '<head>' . "\n" . '<title>' . esc_html( $title ) . '</title>', $content );
 		if ( ! empty( $old_wp_query ) ) {

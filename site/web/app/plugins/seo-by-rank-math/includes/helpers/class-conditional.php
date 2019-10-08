@@ -26,22 +26,27 @@ trait Conditional {
 	 * @return boolean
 	 */
 	public static function is_whitelabel() {
+		/**
+		 * Enable whitelabel.
+		 *
+		 * @param bool $whitelabel Enable whitelabel.
+		 */
 		return apply_filters( 'rank_math/whitelabel', false );
 	}
 
 	/**
-	 * Is module active.
+	 * Check if module is active.
 	 *
-	 * @param  string $id ID to get module.
+	 * @param  string $id Module ID.
 	 * @return boolean
 	 */
 	public static function is_module_active( $id ) {
-		$active_modules = get_option( 'rank_math_modules', array() );
+		$active_modules = get_option( 'rank_math_modules', [] );
 		if ( ! is_array( $active_modules ) || ! isset( rank_math()->manager ) || is_null( rank_math()->manager ) ) {
 			return false;
 		}
 
-		return in_array( $id, $active_modules ) && array_key_exists( $id, rank_math()->manager->modules );
+		return in_array( $id, $active_modules, true ) && array_key_exists( $id, rank_math()->manager->modules );
 	}
 
 	/**
@@ -61,12 +66,14 @@ trait Conditional {
 	}
 
 	/**
-	 * Check if mythemeshop account is connected
+	 * Check if the site is connected to the Rank Math API.
 	 *
 	 * @return bool
 	 */
-	public static function is_mythemeshop_connected() {
-		return (bool) Admin_Helper::get_registration_data();
+	public static function is_site_connected() {
+		$registered = Admin_Helper::get_registration_data();
+
+		return false !== $registered && $registered['connected'];
 	}
 
 	/**
@@ -80,12 +87,11 @@ trait Conditional {
 			return false;
 		}
 
-		$options = get_option( 'rank_math_connect_data', false );
-		return empty( $options ) ? true : false;
+		return ! self::is_site_connected();
 	}
 
 	/**
-	 * Check if author archive are indexable
+	 * Check if author archives are indexable.
 	 *
 	 * @return bool
 	 */
@@ -94,7 +100,7 @@ trait Conditional {
 			return false;
 		}
 
-		if ( true === Helper::get_settings( 'titles.noindex_author_archive' ) ) {
+		if ( Helper::get_settings( 'titles.author_custom_robots' ) && in_array( 'noindex', (array) Helper::get_settings( 'titles.author_robots' ), true ) ) {
 			return false;
 		}
 
@@ -102,12 +108,47 @@ trait Conditional {
 	}
 
 	/**
-	 * Checks if the WP-REST-API is available.
+	 * Check if the AMP module is active.
 	 *
-	 * @param  string $minimum_version The minimum version the API should be.
-	 * @return bool Returns true if the API is available.
+	 * @return bool
+	 *
+	 * @since 1.0.24
 	 */
-	public static function is_api_available( $minimum_version = '2.0' ) {
-		return ( defined( 'REST_API_VERSION' ) && version_compare( REST_API_VERSION, $minimum_version, '>=' ) );
+	public static function is_amp_active() {
+		if ( ! self::is_module_active( 'amp' ) ) {
+			return false;
+		}
+
+		if ( function_exists( 'ampforwp_get_setting' ) && 'rank_math' === ampforwp_get_setting( 'ampforwp-seo-selection' ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if editing the file is allowed.
+	 *
+	 * @return bool
+	 *
+	 * @since 1.0.32
+	 */
+	public static function is_edit_allowed() {
+		return ( ! defined( 'DISALLOW_FILE_EDIT' ) || ! DISALLOW_FILE_EDIT ) && ( ! defined( 'DISALLOW_FILE_MODS' ) || ! DISALLOW_FILE_MODS );
+	}
+
+	/**
+	 * Check whether to show SEO score.
+	 *
+	 * @return boolean
+	 * @since 1.0.32
+	 */
+	public static function is_score_enabled() {
+		/**
+		 * Enable SEO Score.
+		 *
+		 * @param bool Enable SEO Score.
+		 */
+		return apply_filters( 'rank_math/show_score', true );
 	}
 }

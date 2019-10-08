@@ -27,7 +27,7 @@ class Cache_Watcher {
 	 *
 	 * @var array
 	 */
-	protected static $cache_clear = array();
+	protected static $cache_clear = [];
 
 	/**
 	 * Holds the flag to clear all cache.
@@ -41,7 +41,7 @@ class Cache_Watcher {
 	 *
 	 * @var array
 	 */
-	protected static $clear_types = array();
+	protected static $clear_types = [];
 
 	/**
 	 * Hook methods for invalidation on necessary events.
@@ -78,7 +78,7 @@ class Cache_Watcher {
 	 * @param int $post_id Post ID to possibly invalidate for.
 	 */
 	public function save_post( $post_id ) {
-		if ( false === Helper::is_post_type_indexable( get_post_type( $post_id ) ) ) {
+		if ( false === Helper::is_post_indexable( $post_id ) ) {
 			return false;
 		}
 
@@ -116,7 +116,7 @@ class Cache_Watcher {
 
 		// None of our interest..
 		// If the post type is excluded in options, we can stop.
-		if ( 'nav_menu_item' === $post_type || ! Helper::is_post_type_indexable( $post_type ) ) {
+		if ( 'nav_menu_item' === $post_type || ! Helper::is_post_indexable( $post->ID ) ) {
 			return;
 		}
 
@@ -181,10 +181,6 @@ class Cache_Watcher {
 			if ( 'nav_menu_item' === $post_type ) {
 				continue;
 			}
-
-			if ( ! Helper::is_post_type_indexable( $post_type ) ) {
-				$ping = true;
-			}
 		}
 
 		return $ping;
@@ -238,7 +234,7 @@ class Cache_Watcher {
 			update_user_meta( $user_id, 'last_update', time() );
 		}
 
-		if ( ! is_null( $user->roles ) && ! in_array( 'subscriber', $user->roles, true ) ) {
+		if ( $user && ! is_null( $user->roles ) && ! in_array( 'subscriber', $user->roles, true ) ) {
 			self::invalidate( 'author' );
 		}
 	}
@@ -248,7 +244,7 @@ class Cache_Watcher {
 	 *
 	 * @param array $types Set of sitemap types to delete cache transients for.
 	 */
-	public static function clear( $types = array() ) {
+	public static function clear( $types = [] ) {
 		if ( ! Sitemap::is_cache_enabled() ) {
 			return;
 		}
@@ -260,12 +256,12 @@ class Cache_Watcher {
 		}
 
 		// Always invalidate the index sitemap as well.
-		if ( ! in_array( '1', $types ) ) {
+		if ( ! in_array( '1', $types, true ) ) {
 			array_unshift( $types, '1' );
 		}
 
 		foreach ( $types as $type ) {
-			if ( ! in_array( $type, self::$clear_types ) ) {
+			if ( ! in_array( $type, self::$clear_types, true ) ) {
 				self::$clear_types[] = $type;
 			}
 		}
@@ -278,7 +274,7 @@ class Cache_Watcher {
 		if ( self::$clear_all ) {
 			Cache::invalidate_storage();
 			self::$clear_all   = false;
-			self::$clear_types = array();
+			self::$clear_types = [];
 			return;
 		}
 
@@ -286,7 +282,7 @@ class Cache_Watcher {
 			Cache::invalidate_storage( $type );
 		}
 
-		self::$clear_types = array();
+		self::$clear_types = [];
 	}
 
 	/**

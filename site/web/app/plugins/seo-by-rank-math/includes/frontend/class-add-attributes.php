@@ -8,9 +8,10 @@
  * @author     Rank Math <support@rankmath.com>
  */
 
-namespace RankMath;
+namespace RankMath\Frontend;
 
 use stdClass;
+use RankMath\Helper;
 use RankMath\Traits\Hooker;
 use MyThemeShop\Helpers\Str;
 use MyThemeShop\Helpers\Url;
@@ -203,7 +204,7 @@ class Add_Attributes {
 	 * @return boolean
 	 */
 	private function is_valid_image( $url ) {
-		foreach ( array( '.jpg', '.jpeg', '.png', '.gif' ) as $ext ) {
+		foreach ( [ '.jpg', '.jpeg', '.png', '.gif' ] as $ext ) {
 			if ( Str::contains( $ext, $url ) ) {
 				return true;
 			}

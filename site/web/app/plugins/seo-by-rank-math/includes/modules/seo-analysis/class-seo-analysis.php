@@ -4,7 +4,7 @@
  *
  * @since      0.9.0
  * @package    RankMath
- * @subpackage RankMath\modules
+ * @subpackage RankMath\SEO_Analysis
  * @author     Rank Math <support@rankmath.com>
  */
 
@@ -12,6 +12,7 @@ namespace RankMath\SEO_Analysis;
 
 use RankMath\Helper;
 use RankMath\Traits\Hooker;
+use MyThemeShop\Helpers\Param;
 use MyThemeShop\Helpers\Conditional;
 
 defined( 'ABSPATH' ) || exit;
@@ -45,26 +46,26 @@ class SEO_Analysis {
 	 * @return array
 	 */
 	public function admin_bar_items( $items ) {
-		$items['seo-analysis'] = array(
+		$items['seo-analysis'] = [
 			'id'        => 'rank-math-seo-analysis',
 			'title'     => esc_html__( 'SEO Analysis', 'rank-math' ),
 			'href'      => Helper::get_admin_url( 'seo-analysis' ),
 			'parent'    => 'rank-math',
-			'meta'      => array( 'title' => esc_html__( 'Site-wide analysis', 'rank-math' ) ),
+			'meta'      => [ 'title' => esc_html__( 'Site-wide analysis', 'rank-math' ) ],
 			'_priority' => 50,
-		);
+		];
 
 		if ( ! is_admin() && ! is_404() ) {
-			$link = is_front_page() ? '' : ( is_ssl() ? 'https' : 'http' ) . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			$link = is_front_page() ? '' : ( is_ssl() ? 'https' : 'http' ) . '://' . Param::server( 'HTTP_HOST' ) . Param::server( 'REQUEST_URI' );
 
-			$items['analyze'] = array(
+			$items['analyze'] = [
 				'id'        => 'rank-math-analyze-me',
 				'title'     => $link ? esc_html__( 'Analyze this Page', 'rank-math' ) : esc_html__( 'SEO Analysis', 'rank-math' ),
 				'href'      => Helper::get_admin_url( 'seo-analysis' ) . ( $link ? '&u=' . urlencode( $link ) : '' ),
 				'parent'    => 'rank-math-seo-analysis',
-				'meta'      => array( 'title' => esc_html__( 'SEO Analysis for this page', 'rank-math' ) ),
+				'meta'      => [ 'title' => esc_html__( 'SEO Analysis for this page', 'rank-math' ) ],
 				'_priority' => 52,
-			);
+			];
 		}
 
 		return $items;

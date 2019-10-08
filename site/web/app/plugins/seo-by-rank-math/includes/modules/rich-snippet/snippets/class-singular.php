@@ -1,6 +1,6 @@
 <?php
 /**
- * The Singular Class
+ * The Singular Class.
  *
  * @since      1.0.13
  * @package    RankMath
@@ -26,7 +26,7 @@ class Singular implements Snippet {
 	/**
 	 * Generate rich snippet.
 	 *
-	 * @param array  $data   Array of json-ld data.
+	 * @param array  $data   Array of JSON-LD data.
 	 * @param JsonLD $jsonld JsonLD Instance.
 	 *
 	 * @return array
@@ -67,23 +67,32 @@ class Singular implements Snippet {
 	}
 
 	/**
-	 * Can add schema.
+	 * Get Rich Snippet type.
 	 *
 	 * @param JsonLD $jsonld JsonLD Instance.
 	 *
 	 * @return boolean|string
 	 */
 	private function can_add_schema( $jsonld ) {
+		$pages = array_map( 'absint', array_filter( [ Helper::get_settings( 'titles.local_seo_about_page' ), Helper::get_settings( 'titles.local_seo_contact_page' ) ] ) );
+		if ( ! empty( $jsonld->post_id ) && in_array( $jsonld->post_id, $pages, true ) ) {
+			return false;
+		}
+
 		$schema = Helper::get_post_meta( 'rich_snippet' );
-		if ( ! $schema && Conditional::is_woocommerce_active() && is_product() && ! metadata_exists( 'post', $jsonld->post_id, 'rank_math_rich_snippet' ) ) {
-			$schema = Helper::get_settings( 'titles.pt_product_default_rich_snippet' );
+		if (
+			! $schema &&
+			! metadata_exists( 'post', $jsonld->post_id, 'rank_math_rich_snippet' ) &&
+			$schema = Helper::get_settings( "titles.pt_{$jsonld->post->post_type}_default_rich_snippet" ) // phpcs:ignore
+		) {
+			$schema = Conditional::is_woocommerce_active() && is_product() ? $schema : ( 'article' === $schema ? $schema : '' );
 		}
 
 		return $schema;
 	}
 
 	/**
-	 * Get Schema Class.
+	 * Get appropriate Schema Class.
 	 *
 	 * @param string $schema Schema type.
 	 * @return bool|Class

@@ -8,8 +8,9 @@
  * @author     Rank Math <support@rankmath.com>
  */
 
-namespace RankMath;
+namespace RankMath\Frontend;
 
+use RankMath\Helper;
 use RankMath\Traits\Hooker;
 
 defined( 'ABSPATH' ) || exit;
@@ -26,21 +27,37 @@ class Breadcrumbs {
 	 *
 	 * @var array
 	 */
-	private $crumbs = array();
+	private $crumbs = [];
 
 	/**
 	 * Breadcrumb settings.
 	 *
 	 * @var array
 	 */
-	private $settings = array();
+	private $settings = [];
 
 	/**
 	 * String.
 	 *
 	 * @var array
 	 */
-	private $strings = array();
+	private $strings = [];
+
+	/**
+	 * Get an instance of the class.
+	 *
+	 * @return Breadcrumb The instancec.
+	 */
+	public static function get() {
+		static $instance;
+
+		$instance = false;
+		if ( Helper::get_settings( 'general.breadcrumbs' ) && false === $instance ) {
+			$instance = new Breadcrumbs;
+		}
+
+		return $instance;
+	}
 
 	/**
 	 * Magic method to use in case the class would be send to string.
@@ -55,50 +72,55 @@ class Breadcrumbs {
 	 * The Constructor
 	 *
 	 * @codeCoverageIgnore
-	 *
-	 * @param array $settings (Optional) Breadcrumb settings.
-	 * @param array $strings  (Optional) Strings.
 	 */
-	public function __construct( $settings = array(), $strings = array() ) {
+	public function __construct() {
+		$this->settings = wp_parse_args(
+			$this->do_filter( 'frontend/breadcrumb/settings', [] ),
+			[
+				'home'            => Helper::get_settings( 'general.breadcrumbs_home' ),
+				'separator'       => Helper::get_settings( 'general.breadcrumbs_separator' ),
+				'remove_title'    => Helper::get_settings( 'general.breadcrumbs_remove_post_title' ),
+				'hide_tax_name'   => Helper::get_settings( 'general.breadcrumbs_hide_taxonomy_name' ),
+				'show_ancestors'  => Helper::get_settings( 'general.breadcrumbs_ancestor_categories' ),
+				'show_pagination' => true,
+			]
+		);
 
-		$this->settings = $this->do_filter( 'frontend/breadcrumb/settings', wp_parse_args( $settings, array(
-			'home'            => Helper::get_settings( 'general.breadcrumbs_home' ),
-			'separator'       => Helper::get_settings( 'general.breadcrumbs_separator' ),
-			'remove_title'    => Helper::get_settings( 'general.breadcrumbs_remove_post_title' ),
-			'hide_tax_name'   => Helper::get_settings( 'general.breadcrumbs_hide_taxonomy_name' ),
-			'show_ancestors'  => Helper::get_settings( 'general.breadcrumbs_ancestor_categories' ),
-			'show_pagination' => true,
-		) ) );
-
-		$this->strings = $this->do_filter( 'frontend/breadcrumb/strings', wp_parse_args( $strings, array(
-			'prefix'         => Helper::get_settings( 'general.breadcrumbs_prefix' ),
-			'home'           => Helper::get_settings( 'general.breadcrumbs_home_label' ),
-			'home_link'      => Helper::get_settings( 'general.breadcrumbs_home_link', home_url() ),
-			'error404'       => Helper::get_settings( 'general.breadcrumbs_404_label' ),
-			/* translators: archive title */
-			'archive_format' => Helper::get_settings( 'general.breadcrumbs_archive_format' ),
-			/* translators: search query */
-			'search_format'  => Helper::get_settings( 'general.breadcrumbs_search_format' ),
-		) ) );
-
-		// Breadcrumb shortcode.
-		add_shortcode( 'rank_math_breadcrumb', array( $this, 'get_breadcrumb' ) );
+		$this->strings = wp_parse_args(
+			$this->do_filter( 'frontend/breadcrumb/strings', [] ),
+			[
+				'prefix'         => Helper::get_settings( 'general.breadcrumbs_prefix' ),
+				'home'           => Helper::get_settings( 'general.breadcrumbs_home_label' ),
+				'home_link'      => Helper::get_settings( 'general.breadcrumbs_home_link', home_url() ),
+				'error404'       => Helper::get_settings( 'general.breadcrumbs_404_label' ),
+				/* translators: search query */
+				'search_format'  => Helper::get_settings( 'general.breadcrumbs_search_format' ),
+				/* translators: archive title */
+				'archive_format' => Helper::get_settings( 'general.breadcrumbs_archive_format' ),
+			]
+		);
 	}
 
 	/**
-	 * Get the breadcrumb
+	 * Get the breadcrumbs.
 	 *
 	 * @param array $args Arguments.
 	 * @return string
 	 */
-	public function get_breadcrumb( $args = array() ) {
-		$args = $this->do_filter( 'frontend/breadcrumb/args', wp_parse_args( $args, array(
-			'delimiter'   => '&nbsp;&#47;&nbsp;',
-			'wrap_before' => '<nav class="rank-math-breadcrumb"><p>',
-			'wrap_after'  => '</p></nav>',
-			'before'      => '',
-			'after'       => '',
-		)) );
+	public function get_breadcrumb( $args = [] ) {
+		$args = $this->do_filter(
+			'frontend/breadcrumb/args',
+			wp_parse_args(
+				$args,
+				[
+					'delimiter'   => '&nbsp;&#47;&nbsp;',
+					'wrap_before' => '<nav class="rank-math-breadcrumb"><p>',
+					'wrap_after'  => '</p></nav>',
+					'before'      => '',
+					'after'       => '',
+				]
+			)
+		);
 
 		$html   = '';
 		$crumbs = $this->get_crumbs();
@@ -128,17 +150,17 @@ class Breadcrumbs {
 		$html = $args['wrap_before'] . $html . $args['wrap_after'];
 
 		/**
-		 * Allow changing the HTML output of the breadcrumbs class
+		 * Change the breadcrumbs HTML output.
 		 *
 		 * @param string      $html   HTML output.
-		 * @param array       $crumbs The crumbs array.
-		 * @param Breadcrumbs $this   Current breadcrumb object.
+		 * @param array       $crumbs The breadcrumbs array.
+		 * @param Breadcrumbs $this   Current breadcrumb.
 		 */
 		return $this->do_filter( 'frontend/breadcrumb/html', $html, $crumbs, $this );
 	}
 
 	/**
-	 * Get the breadrumb trail
+	 * Get the breadrumb trail.
 	 *
 	 * @return array
 	 */
@@ -148,34 +170,34 @@ class Breadcrumbs {
 		}
 
 		/**
-		 * Allow changing the Breadcrumb items
+		 * Change the breadcrumb items.
 		 *
-		 * @param array       $crumbs The crumbs array.
-		 * @param Breadcrumbs $this   Current breadcrumb object.
+		 * @param array       $crumbs The breadcrumbs array.
+		 * @param Breadcrumbs $this   Current breadcrumb.
 		 */
 		return $this->do_filter( 'frontend/breadcrumb/items', $this->crumbs, $this );
 	}
 
 	/**
-	 * Add a crumb so we don't get lost
+	 * Add an item to the breadcrumbs.
 	 *
 	 * @param string $name           Name.
 	 * @param string $link           Link.
-	 * @param bool   $hide_in_schema Boolean.
+	 * @param bool   $hide_in_schema Don't include in JSON-LD.
 	 */
 	private function add_crumb( $name, $link = '', $hide_in_schema = false ) {
-		$this->crumbs[] = array(
+		$this->crumbs[] = [
 			strip_tags( $name ),
 			$link,
 			'hide_in_schema' => $hide_in_schema,
-		);
+		];
 	}
 
 	/**
-	 * Generate breadcrumb trail
+	 * Generate the breadcrumb trail.
 	 */
 	private function generate() {
-		$conditionals = array(
+		$conditionals = [
 			'is_home',
 			'is_404',
 			'is_search',
@@ -191,20 +213,17 @@ class Breadcrumbs {
 			'is_tax',
 			'is_date',
 			'is_author',
-		);
+		];
 
-		if ( ! empty( $this->settings['home'] ) ) {
-			$this->add_crumb( $this->strings['home'], $this->strings['home_link'] );
-		}
+		$this->maybe_add_home_crumb();
 
-		$condition = ( ! is_front_page() && ! ( is_post_type_archive() && function_exists( 'wc_get_page_id' ) && intval( get_option( 'page_on_front' ) ) === wc_get_page_id( 'shop' ) ) ) || is_paged();
-		if ( ! $condition ) {
+		if ( ! $this->can_generate() ) {
 			return;
 		}
 
 		foreach ( $conditionals as $conditional ) {
 			if ( function_exists( $conditional ) && call_user_func( $conditional ) ) {
-				call_user_func( array( $this, 'add_crumbs_' . substr( $conditional, 3 ) ) );
+				call_user_func( [ $this, 'add_crumbs_' . substr( $conditional, 3 ) ] );
 				break;
 			}
 		}
@@ -213,28 +232,44 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Is home trail
+	 * Can generate breadcrumb.
+	 *
+	 * @return bool
+	 */
+	private function can_generate() {
+		return (
+			! is_front_page() &&
+			! (
+				is_post_type_archive() &&
+				function_exists( 'wc_get_page_id' ) &&
+				intval( get_option( 'page_on_front' ) ) === wc_get_page_id( 'shop' ) )
+			) ||
+			is_paged();
+	}
+
+	/**
+	 * Is home trail.
 	 */
 	private function add_crumbs_home() {
 		$this->add_crumb( single_post_title( '', false ) );
 	}
 
 	/**
-	 * 404 trail
+	 * 404 trail.
 	 */
 	private function add_crumbs_404() {
 		$this->add_crumb( $this->strings['error404'] );
 	}
 
 	/**
-	 * Add a breadcrumb for search results
+	 * Search results trail.
 	 */
 	private function add_crumbs_search() {
 		$this->add_crumb( sprintf( $this->strings['search_format'], get_search_query() ), remove_query_arg( 'paged' ) );
 	}
 
 	/**
-	 * Attachment trail
+	 * Attachment trail.
 	 */
 	private function add_crumbs_attachment() {
 		global $post;
@@ -244,16 +279,16 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Single product trail
+	 * Single product trail.
 	 */
 	private function add_crumbs_product() {
 		global $post;
 
 		$this->prepend_shop_page();
-		$this->maybe_add_primary_term( wc_get_product_terms( $post->ID, 'product_cat', array(
-			'orderby' => 'parent',
-			'order'   => 'DESC',
-		)));
+		$main_tax = Helper::get_settings( 'titles.pt_product_primary_taxonomy' );
+		if ( $main_tax ) {
+			$this->maybe_add_primary_term( get_the_terms( $post->ID, $main_tax ) );
+		}
 
 		if ( isset( $post->ID ) ) {
 			$this->add_crumb( $this->get_breadcrumb_title( 'post', $post->ID, get_the_title( $post ) ), get_permalink( $post ) );
@@ -261,7 +296,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Single post trail
+	 * Single post trail.
 	 *
 	 * @param int    $post_id   Post ID.
 	 * @param string $permalink Post permalink.
@@ -290,7 +325,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Product category trail
+	 * Product category trail.
 	 */
 	private function add_crumbs_product_category() {
 		$term = $GLOBALS['wp_query']->get_queried_object();
@@ -300,7 +335,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Product tag trail
+	 * Product tag trail.
 	 */
 	private function add_crumbs_product_tag() {
 		$term = $GLOBALS['wp_query']->get_queried_object();
@@ -310,7 +345,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Shop breadcrumb
+	 * Shop trail.
 	 */
 	private function add_crumbs_shop() {
 		$shop_page_id = wc_get_page_id( 'shop' );
@@ -327,7 +362,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Post type archive trail
+	 * Post type archive trail.
 	 *
 	 * @param string $post_type Post type.
 	 */
@@ -347,7 +382,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Category trail
+	 * Category trail.
 	 */
 	private function add_crumbs_category() {
 		$term = $GLOBALS['wp_query']->get_queried_object();
@@ -356,7 +391,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Tag trail
+	 * Tag trail.
 	 */
 	private function add_crumbs_tag() {
 		$term = $GLOBALS['wp_query']->get_queried_object();
@@ -364,7 +399,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Add crumbs for taxonomies
+	 * Taxonomies trail.
 	 */
 	private function add_crumbs_tax() {
 		$term = $GLOBALS['wp_query']->get_queried_object();
@@ -378,7 +413,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Add crumbs for date based archives
+	 * Trail for date based archives.
 	 */
 	private function add_crumbs_date() {
 		if ( is_year() || is_month() || is_day() ) {
@@ -393,7 +428,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Add a breadcrumb for author archives
+	 * Trail for author archives.
 	 */
 	private function add_crumbs_author() {
 		global $author;
@@ -403,16 +438,16 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Add crumbs for a post
+	 * Single post trail.
 	 *
 	 * @param WP_Post $post Post object.
 	 */
 	private function add_post_ancestors( $post ) {
-		$ancestors = array();
+		$ancestors = [];
 		if ( isset( $post->ancestors ) ) {
-			$ancestors = is_array( $post->ancestors ) ? array_values( $post->ancestors ) : array( $post->ancestors );
+			$ancestors = is_array( $post->ancestors ) ? array_values( $post->ancestors ) : [ $post->ancestors ];
 		} elseif ( isset( $post->post_parent ) ) {
-			$ancestors = array( $post->post_parent );
+			$ancestors = [ $post->post_parent ];
 		}
 
 		if ( ! is_array( $ancestors ) ) {
@@ -427,7 +462,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Prepend the shop page to shop breadcrumbs
+	 * Prepend the shop page to the shop trail.
 	 */
 	private function prepend_shop_page() {
 		$permalinks   = wc_get_permalink_structure();
@@ -441,7 +476,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Get the primary term
+	 * Get the primary term.
 	 *
 	 * @param array $terms Terms attached to the current post.
 	 */
@@ -463,13 +498,13 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Add parent taxonomy crumbs to the crumb property for hierachical taxonomy
+	 * Add ancestor taxonomy crumbs to the hierachical taxonomy trails.
 	 *
 	 * @param object $term Term data object.
 	 */
 	private function maybe_add_term_ancestors( $term ) {
 		// Early Bail!
-		if ( 0 === $term->parent || false === $this->settings['show_ancestors'] || false === is_taxonomy_hierarchical( $term->taxonomy ) ) {
+		if ( ! $this->can_add_term_ancestors( $term ) ) {
 			return;
 		}
 
@@ -485,7 +520,22 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Adds a page crumb to the visible breadcrumbs.
+	 * Can add ancestor taxonomy crumbs to the hierachical taxonomy trails.
+	 *
+	 * @param object $term Term data object.
+	 *
+	 * @return bool
+	 */
+	private function can_add_term_ancestors( $term ) {
+		if ( 0 === $term->parent || false === $this->settings['show_ancestors'] || false === is_taxonomy_hierarchical( $term->taxonomy ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Add a page crumb to paginated trails.
 	 *
 	 * @since 1.0.8
 	 */
@@ -504,7 +554,16 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Get Breadcrumb Title
+	 * Add home label.
+	 */
+	private function maybe_add_home_crumb() {
+		if ( ! empty( $this->settings['home'] ) ) {
+			$this->add_crumb( $this->strings['home'], $this->strings['home_link'] );
+		}
+	}
+
+	/**
+	 * Get the breadcrumb title.
 	 *
 	 * @param  string $object_type Object type.
 	 * @param  int    $object_id   Object ID to get the title for.

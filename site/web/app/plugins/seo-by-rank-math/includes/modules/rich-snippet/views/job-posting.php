@@ -15,18 +15,27 @@ $cmb->add_field([
 	'type'       => 'text',
 	'name'       => esc_html__( 'Salary (Recommended)', 'rank-math' ),
 	'desc'       => esc_html__( 'Insert amount, e.g. "50.00", or a salary range, e.g. "40.00-50.00".', 'rank-math' ),
-	'classes'    => 'cmb-row-33',
+	'classes'    => 'cmb-row-33 rank-math-validate-field',
 	'dep'        => $jobposting,
-	'attributes' => [ 'type' => 'number' ],
+	'attributes' => [
+		'data-rule-regex'       => 'true',
+		'data-validate-pattern' => '[\d -]+',
+		'data-msg-regex'        => esc_html__( 'Please use the correct format. Example: 50000', 'rank-math' ),
+	],
 ]);
 
 $cmb->add_field([
-	'id'      => 'rank_math_snippet_jobposting_currency',
-	'type'    => 'text',
-	'name'    => esc_html__( 'Salary Currency', 'rank-math' ),
-	'desc'    => esc_html__( 'ISO 4217 Currency Code', 'rank-math' ),
-	'classes' => 'cmb-row-33',
-	'dep'     => $jobposting,
+	'id'         => 'rank_math_snippet_jobposting_currency',
+	'type'       => 'text',
+	'name'       => esc_html__( 'Salary Currency', 'rank-math' ),
+	'desc'       => esc_html__( 'ISO 4217 Currency code. Example: EUR', 'rank-math' ),
+	'classes'    => 'cmb-row-33 rank-math-validate-field',
+	'attributes' => [
+		'data-rule-regex'       => 'true',
+		'data-validate-pattern' => '^[A-Z]{3}$',
+		'data-msg-regex'        => esc_html__( 'Please use the correct format. Example: EUR', 'rank-math' ),
+	],
+	'dep'        => $jobposting,
 ]);
 
 $cmb->add_field([
@@ -117,12 +126,15 @@ $cmb->add_field([
 ]);
 
 $cmb->add_field([
-	'id'      => 'rank_math_snippet_jobposting_url',
-	'type'    => 'text_url',
-	'name'    => esc_html__( 'Organization URL (Recommended)', 'rank-math' ),
-	'desc'    => esc_html__( 'The URL of the organization offering the job position. Leave empty to use your own company information.', 'rank-math' ),
-	'classes' => 'cmb-row-50',
-	'dep'     => $jobposting,
+	'id'         => 'rank_math_snippet_jobposting_url',
+	'type'       => 'text_url',
+	'name'       => esc_html__( 'Organization URL (Recommended)', 'rank-math' ),
+	'desc'       => esc_html__( 'The URL of the organization offering the job position. Leave empty to use your own company information.', 'rank-math' ),
+	'classes'    => 'cmb-row-50 rank-math-validate-field',
+	'attributes' => [
+		'data-rule-url' => 'true',
+	],
+	'dep'        => $jobposting,
 ]);
 
 $cmb->add_field([

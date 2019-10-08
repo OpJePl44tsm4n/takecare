@@ -15,6 +15,8 @@ use RankMath\Helper;
 use RankMath\Traits\Ajax;
 use RankMath\Traits\Hooker;
 use MyThemeShop\Helpers\Str;
+use MyThemeShop\Helpers\Param;
+use MyThemeShop\Helpers\Conditional;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -32,7 +34,7 @@ class Admin implements Runner {
 	 */
 	public function hooks() {
 		$this->action( 'init', 'flush', 999 );
-		$this->filter( 'user_contactmethods', 'update_contactmethods' );
+		$this->filter( 'user_contactmethods', 'update_user_contactmethods' );
 		$this->action( 'save_post', 'canonical_check_notice' );
 		$this->action( 'wp_dashboard_setup', 'add_dashboard_widgets' );
 		$this->action( 'cmb2_save_options-page_fields', 'update_is_configured_value', 10, 2 );
@@ -44,7 +46,7 @@ class Admin implements Runner {
 	}
 
 	/**
-	 * If the flush option is set, flush the rewrite rules.
+	 * Flush the rewrite rules once if the rank_math_flush_rewrite option is set.
 	 */
 	public function flush() {
 		if ( get_option( 'rank_math_flush_rewrite' ) ) {
@@ -54,16 +56,14 @@ class Admin implements Runner {
 	}
 
 	/**
-	 * Filter the $contactmethods array and add Facebook, Google+ and Twitter.
-	 * These are used with the Facebook author, rel="author" and Twitter cards implementation.
+	 * Add Facebook and Twitter as user contact methods.
 	 *
-	 * @param array $contactmethods Currently set contactmethods.
-	 * @return array $contactmethods with added contactmethods.
+	 * @param array $contactmethods Current contact methods.
+	 * @return array New contact methods with extra items.
 	 */
-	public function update_contactmethods( $contactmethods ) {
-		$contactmethods['googleplus'] = esc_html__( 'Google+', 'rank-math' );
-		$contactmethods['twitter']    = esc_html__( 'Twitter username (without @)', 'rank-math' );
-		$contactmethods['facebook']   = esc_html__( 'Facebook profile URL', 'rank-math' );
+	public function update_user_contactmethods( $contactmethods ) {
+		$contactmethods['twitter']  = esc_html__( 'Twitter username (without @)', 'rank-math' );
+		$contactmethods['facebook'] = esc_html__( 'Facebook profile URL', 'rank-math' );
 
 		return $contactmethods;
 	}
@@ -72,6 +72,11 @@ class Admin implements Runner {
 	 * Register dashboard widget.
 	 */
 	public function add_dashboard_widgets() {
+		// Early Bail if action is not registered for the dashboard widget hook.
+		if ( ! has_action( 'rank_math/dashboard/widget' ) ) {
+			return;
+		}
+
 		wp_add_dashboard_widget( 'rank_math_dashboard_widget', esc_html__( 'Rank Math', 'rank-math' ), [ $this, 'render_dashboard_widget' ] );
 	}
 
@@ -90,7 +95,6 @@ class Admin implements Runner {
 	 * Display dashabord tabs.
 	 */
 	public function display_dashboard_nav() {
-		$current = isset( $_GET['view'] ) ? $_GET['view'] : 'modules';
 		?>
 		<h2 class="nav-tab-wrapper">
 			<?php
@@ -99,7 +103,7 @@ class Admin implements Runner {
 					continue;
 				}
 				?>
-			<a class="nav-tab<?php echo $id === $current ? ' nav-tab-active' : ''; ?>" href="<?php echo esc_url( Helper::get_admin_url( $link['url'], $link['args'] ) ); ?>" title="<?php echo $link['title']; ?>"><?php echo $link['title']; ?></a>
+			<a class="nav-tab<?php echo Param::get( 'view', 'modules' ) === sanitize_html_class( $id ) ? ' nav-tab-active' : ''; ?>" href="<?php echo esc_url( Helper::get_admin_url( $link['url'], $link['args'] ) ); ?>" title="<?php echo esc_attr( $link['title'] ); ?>"><?php echo esc_html( $link['title'] ); ?></a>
 			<?php endforeach; ?>
 		</h2>
 		<?php
@@ -111,16 +115,14 @@ class Admin implements Runner {
 	 * @param int $post_id The post id.
 	 */
 	public function canonical_check_notice( $post_id ) {
-		$post_type      = get_post_type( $post_id );
-		$is_allowed     = in_array( $post_type, Helper::get_allowed_post_types() );
-		$doing_ajax     = defined( 'DOING_AJAX' ) && DOING_AJAX;
-		$doing_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
+		$post_type  = get_post_type( $post_id );
+		$is_allowed = in_array( $post_type, Helper::get_allowed_post_types(), true );
 
-		if ( ! $is_allowed || $doing_autosave || $doing_ajax || isset( $_REQUEST['bulk_edit'] ) ) {
+		if ( ! $is_allowed || Conditional::is_autosave() || Conditional::is_ajax() || isset( $_REQUEST['bulk_edit'] ) ) {
 			return $post_id;
 		}
 
-		if ( ! empty( $_POST['rank_math_canonical_url'] ) && false === filter_var( $_POST['rank_math_canonical_url'], FILTER_VALIDATE_URL ) ) {
+		if ( ! empty( $_POST['rank_math_canonical_url'] ) && false === Param::post( 'rank_math_canonical_url', false, FILTER_VALIDATE_URL ) ) {
 			$message = esc_html__( 'The canonical URL you entered does not seem to be a valid URL. Please double check it in the SEO meta box &raquo; Advanced tab.', 'rank-math' );
 			Helper::add_notification( $message, [ 'type' => 'error' ] );
 		}
@@ -137,7 +139,7 @@ class Admin implements Runner {
 			return;
 		}
 
-		$layout  = $_POST['layout'];
+		$layout  = Param::post( 'layout', [], FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 		$allowed = [
 			'basic'               => 1,
 			'advanced'            => 1,
@@ -151,7 +153,7 @@ class Admin implements Runner {
 	}
 
 	/**
-	 * CHeck if the keyword already used or not.
+	 * Check if the keyword has been used before for another post.
 	 */
 	public function is_keyword_new() {
 		global $wpdb;
@@ -163,22 +165,22 @@ class Admin implements Runner {
 			$this->success( $result );
 		}
 
-		$keyword     = $_GET['keyword'];
-		$object_id   = $_GET['objectID'];
-		$object_type = $_GET['objectType'];
+		$keyword     = Param::get( 'keyword' );
+		$object_id   = Param::get( 'objectID' );
+		$object_type = Param::get( 'objectType' );
 		$column_ids  = [
 			'post' => 'ID',
 			'term' => 'term_id',
 			'user' => 'ID',
 		];
-		if ( ! in_array( $object_type, [ 'post', 'term', 'user' ] ) ) {
+		if ( ! in_array( $object_type, [ 'post', 'term', 'user' ], true ) ) {
 			$object_type = 'post';
 		}
 
 		$main = $wpdb->{$object_type . 's'};
 		$meta = $wpdb->{$object_type . 'meta'};
 
-		$query = sprintf( 'select %1$s from %2$s inner join %3$s on %2$s.%1$s = %3$s.%4$s_id where ', $column_ids[ $object_type ], $main, $meta, $object_type );
+		$query = sprintf( 'select %2$s.%1$s from %2$s inner join %3$s on %2$s.%1$s = %3$s.%4$s_id where ', $column_ids[ $object_type ], $main, $meta, $object_type );
 		if ( 'post' === $object_type ) {
 			$query .= sprintf( '%s.post_status = \'publish\' and ', $main );
 		}
@@ -215,25 +217,11 @@ class Admin implements Runner {
 			'tax_query'      => [ 'relation' => 'OR' ],
 		];
 
-		$taxonomies         = Helper::get_object_taxonomies( $post, 'names' );
-		$exclude_taxonomies = [ 'post_format', 'product_shipping_class' ];
+		$taxonomies = Helper::get_object_taxonomies( $post, 'names' );
+		$taxonomies = array_filter( $taxonomies, [ $this, 'is_taxonomy_allowed' ] );
 
 		foreach ( $taxonomies as $taxonomy ) {
-
-			if ( Str::starts_with( 'pa_', $taxonomy ) || in_array( $taxonomy, $exclude_taxonomies ) ) {
-				continue;
-			}
-
-			$terms = wp_get_post_terms( $post->ID, $taxonomy, [ 'fields' => 'ids' ] );
-			if ( empty( $terms ) ) {
-				continue;
-			}
-
-			$args['tax_query'][] = [
-				'taxonomy' => $taxonomy,
-				'field'    => 'term_id',
-				'terms'    => $terms,
-			];
+			$this->set_term_query( $args, $post->ID, $taxonomy );
 		}
 
 		$posts = get_posts( $args );
@@ -251,6 +239,42 @@ class Admin implements Runner {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Is taxonomy allowed
+	 *
+	 * @param string $taxonomy Taxonomy to check.
+	 *
+	 * @return bool
+	 */
+	public function is_taxonomy_allowed( $taxonomy ) {
+		$exclude_taxonomies = [ 'post_format', 'product_shipping_class' ];
+		if ( Str::starts_with( 'pa_', $taxonomy ) || in_array( $taxonomy, $exclude_taxonomies, true ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Set term query.
+	 *
+	 * @param array  $query    Array of query.
+	 * @param int    $post_id  Post ID to get terms from.
+	 * @param string $taxonomy Taxonomy to get terms for.
+	 */
+	private function set_term_query( &$query, $post_id, $taxonomy ) {
+		$terms = wp_get_post_terms( $post_id, $taxonomy, [ 'fields' => 'ids' ] );
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			return;
+		}
+
+		$query['tax_query'][] = [
+			'taxonomy' => $taxonomy,
+			'field'    => 'term_id',
+			'terms'    => $terms,
+		];
 	}
 
 	/**
@@ -308,17 +332,13 @@ class Admin implements Runner {
 	 */
 	public function deactivate_plugins() {
 		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
-		if ( 'all' !== $_POST['plugin'] ) {
-			deactivate_plugins( $_POST['plugin'] );
+		$plugin = Param::post( 'plugin' );
+		if ( 'all' !== $plugin ) {
+			deactivate_plugins( $plugin );
 			die( '1' );
 		}
 
-		$detector = new Importers\Detector();
-		$plugins  = $detector->get();
-		foreach ( $plugins as $plugin ) {
-			deactivate_plugins( $plugin['file'] );
-		}
-
+		Importers\Detector::deactivate_all();
 		die( '1' );
 	}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Updates related functions and actions.
+ * Functions and actions related to updates.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -33,6 +33,9 @@ class Updates implements Runner {
 		'1.0.14' => 'updates/update-1.0.14.php',
 		'1.0.15' => 'updates/update-1.0.15.php',
 		'1.0.18' => 'updates/update-1.0.18.php',
+		'1.0.24' => 'updates/update-1.0.24.php',
+		'1.0.28' => 'updates/update-1.0.28.php',
+		'1.0.30' => 'updates/update-1.0.30.php',
 	];
 
 	/**
@@ -43,12 +46,12 @@ class Updates implements Runner {
 	}
 
 	/**
-	 * Check if need any update is required.
+	 * Check if any update is required.
 	 */
 	public function do_updates() {
 		$installed_version = get_option( 'rank_math_version' );
 
-		// may be it's the first install.
+		// Maybe it's the first install.
 		if ( ! $installed_version ) {
 			return;
 		}
@@ -72,7 +75,7 @@ class Updates implements Runner {
 		}
 
 		// Save install date.
-		if ( false == get_option( 'rank_math_install_date' ) ) {
+		if ( false === boolval( get_option( 'rank_math_install_date' ) ) ) {
 			update_option( 'rank_math_install_date', current_time( 'timestamp' ) );
 		}
 

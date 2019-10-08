@@ -1,6 +1,6 @@
 <?php
 /**
- * The WooCommerce Product Class
+ * The WooCommerce Product Class.
  *
  * @since      1.0.13
  * @package    RankMath
@@ -29,7 +29,7 @@ class Product_WooCommerce {
 	/**
 	 * Set product data for rich snippet.
 	 *
-	 * @param array  $entity Array of json-ld entity.
+	 * @param array  $entity Array of JSON-LD entity.
 	 * @param JsonLD $jsonld JsonLD Instance.
 	 */
 	public function set_product( &$entity, $jsonld ) {
@@ -37,15 +37,15 @@ class Product_WooCommerce {
 		$this->attributes = new WC_Attributes( $product );
 
 		if ( Helper::is_module_active( 'woocommerce' ) ) {
-			$wc    = new \RankMath\WooCommerce\Woocommerce;
-			$brand = $wc->get_product_var_brand();
+			$brands = \RankMath\WooCommerce\Woocommerce::get_brands( $product->get_id() );
 
 			// Brand.
-			if ( $brand ) {
-				$entity['mpn']   = $brand;
+			if ( ! empty( $brands ) ) {
+				$brands          = $brands[0]->name;
+				$entity['mpn']   = $brands;
 				$entity['brand'] = [
 					'@type' => 'Thing',
-					'name'  => $brand,
+					'name'  => $brands,
 				];
 			}
 		}
@@ -288,7 +288,7 @@ class Product_WooCommerce {
 			'itemCondition'   => 'NewCondition',
 			'seller'          => $seller,
 			'url'             => $product->get_permalink(),
-			'priceValidUntil' => ! empty( $product->get_date_on_sale_to() ) ? date( 'Y-m-d', strtotime( $product->get_date_on_sale_to() ) ) : '',
+			'priceValidUntil' => ! empty( $product->get_date_on_sale_to() ) ? date_i18n( 'Y-m-d', strtotime( $product->get_date_on_sale_to() ) ) : '',
 		];
 
 		$this->attributes->assign_property( $offer, 'itemCondition' );
@@ -321,7 +321,7 @@ class Product_WooCommerce {
 				'availability'    => $variation['is_in_stock'] ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
 				'itemCondition'   => 'NewCondition',
 				'seller'          => $seller,
-				'priceValidUntil' => $price_valid_until ? date( 'Y-m-d', $price_valid_until ) : '',
+				'priceValidUntil' => $price_valid_until ? date_i18n( 'Y-m-d', $price_valid_until ) : '',
 				'url'             => $permalink,
 			];
 
@@ -372,7 +372,7 @@ class Product_WooCommerce {
 	}
 
 	/**
-	 * If product is variable send variations.
+	 * If product is variable, send variations.
 	 *
 	 * @param object $product Current product.
 	 *

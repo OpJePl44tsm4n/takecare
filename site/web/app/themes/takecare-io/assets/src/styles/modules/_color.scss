@@ -1,0 +1,13 @@
+/* Defining the color palet */
+
+$primary-color: #3e9b92;
+$primary-color-light: lighten($primary-color, 30%);
+$secondary-color: #dedede;
+
+$primary-text-color: #000;
+
+$primary-bg-color: #fff;
+$secondary-bg-color: #0085A3;
+$tertiary-bg-color: #f8f7f8;
+
+$background-gradient-black: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(49,49,49,1) 100%);

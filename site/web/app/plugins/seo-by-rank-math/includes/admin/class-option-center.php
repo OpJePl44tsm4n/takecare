@@ -10,13 +10,14 @@
 
 namespace RankMath\Admin;
 
+use RankMath\KB;
 use RankMath\CMB2;
 use RankMath\Helper;
 use RankMath\Runner;
 use RankMath\Traits\Hooker;
 use MyThemeShop\Helpers\Arr;
+use MyThemeShop\Helpers\Param;
 use MyThemeShop\Helpers\WordPress;
-use RankMath\KB;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -71,12 +72,6 @@ class Option_Center implements Runner {
 				/* translators: Link to kb article */
 				'desc'  => sprintf( esc_html__( 'Here you can enter verification codes for various third-party webmaster tools. %s You can safely paste the full HTML tags, or just the ID codes.', 'rank-math' ), '<a href="' . KB::get( 'webmaster-tools' ) . '" target="_blank">' . esc_html__( 'Learn more', 'rank-math' ) . '</a>.<br />' ),
 			],
-			'robots'      => [
-				'icon'  => 'fa fa-simplybuilt',
-				'title' => esc_html__( 'Edit robots.txt', 'rank-math' ),
-				/* translators: Link to kb article */
-				'desc'  => sprintf( esc_html__( 'Here you can edit the virtual robots.txt file. Leave the field empty to let WordPress handle the contents dynamically. If an actual robots.txt file is present in the root folder of your site, this option won\'t take effect and you have to edit the file directly, or delete it and then edit from here. %s.', 'rank-math' ), '<a href="' . KB::get( 'edit-robotstxt' ) . '" target="_blank">' . esc_html__( 'Learn more', 'rank-math' ) . '</a>' ),
-			],
 			'htaccess'    => [
 				'icon'  => 'fa fa-file',
 				'title' => esc_html__( 'Edit .htaccess', 'rank-math' ),
@@ -92,7 +87,7 @@ class Option_Center implements Runner {
 		];
 
 		/**
-		 * Allow developers to add new section into general setting option panel.
+		 * Allow developers to add new sections in the General Settings.
 		 *
 		 * @param array $tabs
 		 */
@@ -109,7 +104,7 @@ class Option_Center implements Runner {
 	}
 
 	/**
-	 * Remove general tabs.
+	 * Remove unneeded tabs from the General Settings.
 	 *
 	 * @param  array $tabs Hold tabs for optional panel.
 	 * @return array
@@ -152,7 +147,7 @@ class Option_Center implements Runner {
 			'homepage' => [
 				'icon'  => 'fa fa-home',
 				'title' => esc_html__( 'Homepage', 'rank-math' ),
-				'desc'  => 'page' == get_option( 'show_on_front' ) ?
+				'desc'  => 'page' === get_option( 'show_on_front' ) ?
 					/* translators: something */
 					sprintf( wp_kses_post( __( 'A static page is used as front page (as set in Settings &gt; Reading). To set up the title, description, and meta of the homepage, use the meta box in the page editor.<br><br><a href="%1$s">Edit Page: %2$s</a>', 'rank-math' ) ), admin_url( 'post.php?post=' . get_option( 'page_on_front' ) ) . '&action=edit', get_the_title( get_option( 'page_on_front' ) ) ) :
 					/* translators: Link to KB article */
@@ -173,7 +168,7 @@ class Option_Center implements Runner {
 		];
 
 		/**
-		 * Allow developers to add new section into title setting option panel.
+		 * Allow developers to add new section in the Title Settings.
 		 *
 		 * @param array $tabs
 		 */
@@ -196,9 +191,9 @@ class Option_Center implements Runner {
 	}
 
 	/**
-	 * Add post type tabs into title option panel
+	 * Add post type tabs in the Title Settings panel.
 	 *
-	 * @param  array $tabs Hold tabs for optional panel.
+	 * @param  array $tabs Holds the tabs of the options panel.
 	 * @return array
 	 */
 	public function title_post_type_settings( $tabs ) {
@@ -241,9 +236,9 @@ class Option_Center implements Runner {
 	}
 
 	/**
-	 * Add taxonomy tabs into title option panel
+	 * Add taxonomy tabs in the Title Settings panel.
 	 *
-	 * @param  array $tabs Hold tabs for optional panel.
+	 * @param  array $tabs Holds the tabs of the options panel.
 	 * @return array
 	 */
 	public function title_taxonomy_settings( $tabs ) {
@@ -305,10 +300,9 @@ class Option_Center implements Runner {
 	public function check_updated_fields( $object_id, $updated ) {
 
 		/**
-		 * Allow developers to add option fields to check against updatation.
-		 * And if updated flush the rewrite rules.
+		 * Filter: Allow developers to add option fields which will flush the rewrite rules when updated.
 		 *
-		 * @param array $flush_fields Array of fields id for which we need to flush.
+		 * @param array $flush_fields Array of field IDs for which we need to flush.
 		 */
 		$flush_fields = $this->do_filter(
 			'flush_fields',
@@ -331,7 +325,7 @@ class Option_Center implements Runner {
 		);
 
 		foreach ( $flush_fields as $field_id ) {
-			if ( in_array( $field_id, $updated ) ) {
+			if ( in_array( $field_id, $updated, true ) ) {
 				Helper::schedule_flush_rewrite();
 				break;
 			}
@@ -344,11 +338,15 @@ class Option_Center implements Runner {
 	 * Update .htaccess.
 	 */
 	private function update_htaccess() {
-		if ( ! isset( $_POST['htaccess_accept_changes'] ) || ! isset( $_POST['htaccess_content'] ) ) {
+		if ( empty( Param::post( 'htaccess_accept_changes' ) ) ) {
 			return;
 		}
 
-		$content = stripslashes( $_POST['htaccess_content'] );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Writing to .htaccess file and escaping for HTML will break functionality.
+		$content = wp_unslash( $_POST['htaccess_content'] );
+		if ( empty( $content ) ) {
+			return;
+		}
 
 		if ( ! $this->do_htaccess_backup() ) {
 			Helper::add_notification(

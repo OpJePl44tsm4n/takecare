@@ -2,7 +2,7 @@
 /**
  * Admin helper Functions.
  *
- * This file contains functions need during the admin screens.
+ * This file contains functions needed on the admin screens.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -12,7 +12,8 @@
 
 namespace RankMath\Admin;
 
-use RankMath\Helper as GlobalHelper;
+use RankMath\Helper;
+use MyThemeShop\Helpers\Param;
 use MyThemeShop\Helpers\WordPress;
 
 defined( 'ABSPATH' ) || exit;
@@ -23,40 +24,7 @@ defined( 'ABSPATH' ) || exit;
 class Admin_Helper {
 
 	/**
-	 * Get robots.txt related data.
-	 *
-	 * @return array
-	 */
-	public static function get_robots_data() {
-		$wp_filesystem = WordPress::get_filesystem();
-
-		if ( $wp_filesystem->exists( ABSPATH . 'robots.txt' ) ) {
-			return [
-				'exists'  => true,
-				'default' => $wp_filesystem->get_contents( ABSPATH . 'robots.txt' ),
-			];
-		}
-
-		$default  = '# This file is automatically added by Rank Math SEO plugin to help a website index better';
-		$default .= "\n# More info: https://s.rankmath.com/home\n";
-		$default .= "User-Agent: *\n";
-		$public   = get_option( 'blog_public' );
-		if ( '0' === $public ) {
-			$default .= "Disallow: /\n";
-		} else {
-			$site_url = parse_url( site_url() );
-			$default .= "Disallow: /wp-admin/\n";
-			$default .= "Allow: /wp-admin/admin-ajax.php\n";
-		}
-
-		return [
-			'exists'  => false,
-			'default' => apply_filters( 'robots_txt', $default, $public ),
-		];
-	}
-
-	/**
-	 * Get htaccess related data.
+	 * Get .htaccess related data.
 	 *
 	 * @return array
 	 */
@@ -71,7 +39,7 @@ class Admin_Helper {
 	}
 
 	/**
-	 * Get tooltip html.
+	 * Get tooltip HTML.
 	 *
 	 * @param  string $message Message to show in tooltip.
 	 * @return string
@@ -99,8 +67,7 @@ class Admin_Helper {
 	public static function get_taxonomies_options( $args = [] ) {
 		global $wp_taxonomies;
 
-		$args = wp_parse_args( $args, [ 'public' => true ] );
-
+		$args       = wp_parse_args( $args, [ 'public' => true ] );
 		$taxonomies = wp_filter_object_list( $wp_taxonomies, $args, 'and', 'label' );
 
 		return empty( $taxonomies ) ? false : [ 'off' => esc_html__( 'None', 'rank-math' ) ] + $taxonomies;
@@ -126,7 +93,7 @@ class Admin_Helper {
 		}
 
 		// Getter.
-		$options = GlobalHelper::is_plugin_active_for_network() ? get_blog_option( get_main_site_id(), $key, false ) : get_option( $key, false );
+		$options = Helper::is_plugin_active_for_network() ? get_blog_option( get_main_site_id(), $key, false ) : get_option( $key, false );
 		return empty( $options ) ? false : $options;
 	}
 
@@ -142,12 +109,12 @@ class Admin_Helper {
 
 		if ( empty( $username ) ) {
 			$error = true;
-			GlobalHelper::add_notification( esc_html__( 'Username is not entered.', 'rank-math' ), [ 'type' => 'error' ] );
+			Helper::add_notification( esc_html__( 'Username is not entered.', 'rank-math' ), [ 'type' => 'error' ] );
 		}
 
 		if ( empty( $password ) ) {
 			$error = true;
-			GlobalHelper::add_notification( esc_html__( 'Password is not entered.', 'rank-math' ), [ 'type' => 'error' ] );
+			Helper::add_notification( esc_html__( 'Password is not entered.', 'rank-math' ), [ 'type' => 'error' ] );
 		}
 
 		if ( $error ) {
@@ -162,7 +129,7 @@ class Admin_Helper {
 				'api_key'   => $body['token'],
 				'connected' => true,
 			]);
-			GlobalHelper::add_notification( esc_html__( 'Thank you for connecting your Rank Math account.', 'rank-math' ), 'success' );
+			Helper::add_notification( esc_html__( 'Thank you for connecting your Rank Math account.', 'rank-math' ), 'success' );
 
 			return true;
 		}
@@ -171,7 +138,7 @@ class Admin_Helper {
 	}
 
 	/**
-	 * Authenticate user routine.
+	 * Authenticate user on RankMath.com.
 	 *
 	 * @param  string $username Username for registration.
 	 * @param  string $password Password for registration.
@@ -184,6 +151,7 @@ class Admin_Helper {
 			'body'       => [
 				'username' => $username,
 				'password' => $password,
+				'site_url' => esc_url( site_url() ),
 			],
 		]);
 
@@ -194,7 +162,7 @@ class Admin_Helper {
 			$message = is_wp_error( $response ) ? $response->get_error_message() : $body['message'];
 
 			foreach ( (array) $message as $e ) {
-				GlobalHelper::add_notification( $e, [ 'type' => 'error' ] );
+				Helper::add_notification( $e, [ 'type' => 'error' ] );
 			}
 
 			return false;
@@ -207,14 +175,8 @@ class Admin_Helper {
 	 * Change tracking status.
 	 */
 	public static function allow_tracking() {
-		$allow = 'off';
-		if ( isset( $_POST['rank-math-usage-tracking'] ) ) {
-			$allow = filter_input( INPUT_POST, 'rank-math-usage-tracking', FILTER_VALIDATE_BOOLEAN );
-			$allow = $allow ? 'on' : 'off';
-		}
-
 		$settings                   = get_option( 'rank-math-options-general' );
-		$settings['usage_tracking'] = $allow;
+		$settings['usage_tracking'] = Param::post( 'rank-math-usage-tracking', false, FILTER_VALIDATE_BOOLEAN ) ? 'on' : 'off';
 
 		update_option( 'rank-math-options-general', $settings );
 	}
@@ -254,7 +216,7 @@ class Admin_Helper {
 	public static function is_post_edit() {
 		global $pagenow;
 
-		return in_array( $pagenow, [ 'post.php', 'post-new.php' ] );
+		return in_array( $pagenow, [ 'post.php', 'post-new.php' ], true );
 	}
 
 	/**
@@ -264,7 +226,7 @@ class Admin_Helper {
 	 */
 	public static function is_term_edit() {
 		global $pagenow;
-		return ( 'term.php' === $pagenow );
+		return 'term.php' === $pagenow;
 	}
 
 	/**
@@ -275,7 +237,7 @@ class Admin_Helper {
 	public static function is_user_edit() {
 		global $pagenow;
 
-		return in_array( $pagenow, [ 'profile.php', 'user-edit.php' ] );
+		return in_array( $pagenow, [ 'profile.php', 'user-edit.php' ], true );
 	}
 
 	/**
@@ -286,7 +248,7 @@ class Admin_Helper {
 	public static function is_term_profile_page() {
 		global $pagenow;
 
-		return in_array( $pagenow, [ 'term.php', 'profile.php', 'user-edit.php' ] );
+		return in_array( $pagenow, [ 'term.php', 'profile.php', 'user-edit.php' ], true );
 	}
 
 	/**
@@ -295,20 +257,20 @@ class Admin_Helper {
 	 * @codeCoverageIgnore
 	 */
 	public static function get_social_share() {
-		if ( GlobalHelper::is_whitelabel() ) {
+		if ( Helper::is_whitelabel() ) {
 			return;
 		}
 
 		$tw_link = 'https://s.rankmath.com/twitter';
 		$fb_link = urlencode( 'https://s.rankmath.com/suite-free' );
 		/* translators: sitename */
-		$tw_message = urlencode( sprintf( esc_html__( 'I just installed Rank Math #SEO #WordPress Plugin. It looks promising! %s', 'rank-math' ), $tw_link ) );
+		$tw_message = urlencode( sprintf( esc_html__( 'I just installed @RankMathSEO #WordPress Plugin. It looks great! %s', 'rank-math' ), $tw_link ) );
 		/* translators: sitename */
 		$fb_message = urlencode( esc_html__( 'I just installed Rank Math SEO WordPress Plugin. It looks promising!', 'rank-math' ) );
 
 		$tweet_url = add_query_arg([
 			'text'     => $tw_message,
-			'hashtags' => 'rankmath',
+			'hashtags' => 'SEO',
 		], 'https://twitter.com/intent/tweet' );
 
 		$fb_share_url = add_query_arg([

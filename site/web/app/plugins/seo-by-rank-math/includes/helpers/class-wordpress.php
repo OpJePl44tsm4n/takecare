@@ -120,7 +120,7 @@ trait WordPress {
 			return add_query_arg( $args, admin_url( 'admin.php' ) );
 		}
 
-		// Makes sure the plugin is defined before trying to use it.
+		// Makes sure the plugin functions are defined before trying to use them.
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		}
@@ -129,7 +129,7 @@ trait WordPress {
 	}
 
 	/**
-	 * Get dashboard url.
+	 * Get Rank Math Dashboard url.
 	 *
 	 * @codeCoverageIgnore
 	 *
@@ -139,7 +139,7 @@ trait WordPress {
 		$site_type     = get_transient( '_rank_math_site_type' );
 		$business_type = [ 'news', 'business', 'webshop', 'otherbusiness' ];
 
-		if ( in_array( $site_type, $business_type ) ) {
+		if ( in_array( $site_type, $business_type, true ) ) {
 			return self::get_admin_url( 'options-titles#setting-panel-local' );
 		}
 		return admin_url( 'admin.php?page=rank-math&view=modules' );
@@ -190,21 +190,33 @@ trait WordPress {
 		$caps = array_keys( self::get_capabilities() );
 
 		foreach ( WP_Helper::get_roles() as $slug => $role ) {
-			$role = get_role( $slug );
-			if ( ! $role ) {
-				continue;
-			}
-
-			$slug = esc_attr( $slug );
-			foreach ( $caps as $cap ) {
-				$granted = $role->has_cap( $cap );
-				if ( $granted ) {
-					$data[ $slug ][] = $cap;
-				}
-			}
+			self::get_role_capabilities( $slug, $caps, $data );
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Get active capabilities for role.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @param string $slug Role slug.
+	 * @param array  $caps Array of capabilities.
+	 * @param array  $data Data instance.
+	 */
+	private static function get_role_capabilities( $slug, $caps, &$data ) {
+		$role = get_role( $slug );
+		if ( ! $role ) {
+			return;
+		}
+
+		$slug = esc_attr( $slug );
+		foreach ( $caps as $cap ) {
+			if ( $role->has_cap( $cap ) ) {
+				$data[ $slug ][] = $cap;
+			}
+		}
 	}
 
 	/**
@@ -313,11 +325,39 @@ trait WordPress {
 	 */
 	public static function get_formatted_duration( $iso8601 ) {
 		$end = substr( $iso8601, -1 );
-		if ( ! in_array( $end, [ 'D', 'H', 'M', 'S' ] ) ) {
+		if ( ! in_array( $end, [ 'D', 'H', 'M', 'S' ], true ) ) {
 			return '';
 		}
 
 		// The format starts with the letter P, for "period".
 		return ( ! Str::starts_with( 'P', $iso8601 ) ) ? 'PT' . $iso8601 : $iso8601;
+	}
+
+	/**
+	 * Get robots default.
+	 *
+	 * @return array
+	 */
+	public static function get_robots_defaults() {
+		$screen = get_current_screen();
+		$robots = Helper::get_settings( 'titles.robots_global', [] );
+
+		if ( 'post' === $screen->base && Helper::get_settings( "titles.pt_{$screen->post_type}_custom_robots" ) ) {
+			$robots = Helper::get_settings( "titles.pt_{$screen->post_type}_robots", [] );
+		}
+
+		if ( 'term' === $screen->base && Helper::get_settings( "titles.tax_{$screen->taxonomy}_custom_robots" ) ) {
+			$robots = Helper::get_settings( "titles.tax_{$screen->taxonomy}_robots", [] );
+		}
+
+		if ( 'profile' === $screen->base && Helper::get_settings( 'titles.author_custom_robots' ) ) {
+			$robots = Helper::get_settings( 'titles.author_robots', [] );
+		}
+
+		if ( is_array( $robots ) && ! in_array( 'noindex', $robots, true ) ) {
+			$robots[] = 'index';
+		}
+
+		return $robots;
 	}
 }

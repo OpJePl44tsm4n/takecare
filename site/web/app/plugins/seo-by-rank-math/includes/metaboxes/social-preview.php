@@ -8,6 +8,7 @@
 
 use RankMath\Helper;
 use RankMath\Admin\Admin_Helper;
+use MyThemeShop\Helpers\Param;
 
 global $post;
 
@@ -18,7 +19,7 @@ $fb_thumbnail = '';
 if ( Admin_Helper::is_post_edit() ) {
 	$fb_thumbnail = get_post_meta( $post->ID, 'rank_math_facebook_image_id', true );
 } elseif ( Admin_Helper::is_term_edit() ) {
-	$term_id      = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0;
+	$term_id      = Param::request( 'tag_ID', 0, FILTER_VALIDATE_INT );
 	$fb_thumbnail = get_term_meta( $term_id, 'rank_math_facebook_image_id', true );
 } elseif ( Admin_Helper::is_user_edit() ) {
 	global $user_id;
@@ -35,7 +36,7 @@ $tw_thumbnail = '';
 if ( Admin_Helper::is_post_edit() ) {
 	$tw_thumbnail = get_post_meta( $post->ID, 'rank_math_twitter_image_id', true );
 } elseif ( Admin_Helper::is_term_edit() ) {
-	$term_id      = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0;
+	$term_id      = Param::request( 'tag_ID', 0, FILTER_VALIDATE_INT );
 	$tw_thumbnail = get_term_meta( $term_id, 'rank_math_twitter_image_id', true );
 } elseif ( Admin_Helper::is_user_edit() ) {
 	global $user_id;
@@ -60,7 +61,7 @@ $twitter_username = $twitter_username ? $twitter_username : esc_html( 'username'
 <div id="setting-panel-container-social-tabs" class="rank-math-tabs">
 
 	<div class="social-tabs-navigation-wrapper">
-		<div class="rank-math-tabs-navigation custom social-tabs-navigation wp-clearfix" data-active-class="tab-active">
+		<div class="rank-math-tabs-navigation rank-math-custom social-tabs-navigation wp-clearfix" data-active-class="tab-active">
 			<a href="#setting-panel-social-facebook" class="preview-network tab-facebook"><span class="dashicons dashicons-facebook-alt"></span><?php esc_html_e( 'Facebook', 'rank-math' ); ?></a><a href="#setting-panel-social-twitter" class="preview-network tab-twitter"><span class="dashicons dashicons-twitter"></span><?php esc_html_e( 'Twitter', 'rank-math' ); ?></a>
 		</div>
 	</div>
@@ -75,13 +76,12 @@ $twitter_username = $twitter_username ? $twitter_username : esc_html( 'username'
 				<div class="social-profile-image"></div>
 				<div class="social-name"><?php echo $name; ?></div>
 				<div class="social-time"><span><?php esc_html_e( '2hrs', 'rank-math' ); ?></span><span class="dashicons dashicons-admin-site"></span></div>
-				<div class="social-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
 			</div>
 
 			<div class="rank-math-social-preview-social-meta twitter-meta">
 				<div class="social-profile-image"></div>
 				<div class="social-name"><?php echo $name; ?><span class="social-username">@<?php echo $twitter_username; ?></span><span class="social-time"><?php esc_html_e( '2h', 'rank-math' ); ?></span></div>
-				<div class="social-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+				<div class="social-text">The card for your website will look little something like this!</div>
 			</div>
 
 			<div class="rank-math-social-preview-item-wrapper">
@@ -104,6 +104,7 @@ $twitter_username = $twitter_username ? $twitter_username : esc_html( 'username'
 			<div class="error-msg">
 				<?php
 				printf(
+					/* translators: Link to global title setting */
 					__( 'Set your default image for Facebook & Twitter by adding <a href="%s" target="_blank">OpenGraph Thumbnail</a>', 'rank-math' ),
 					Helper::get_admin_url( 'options-titles#setting-panel-global' )
 				);

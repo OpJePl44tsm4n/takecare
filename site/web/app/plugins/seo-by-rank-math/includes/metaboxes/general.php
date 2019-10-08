@@ -21,7 +21,7 @@ $cmb->add_field( array(
 	'type'            => 'text',
 	'desc'            => esc_html__( 'This is what will appear in the first line when this post shows up in the search results.', 'rank-math' ),
 	'classes'         => 'rank-math-supports-variables',
-	'sanitization_cb' => false,
+	'sanitization_cb' => [ '\RankMath\CMB2', 'sanitize_textfield' ],
 	'attributes'      => array(
 		'class'             => 'regular-text wp-exclude-emoji',
 		'data-gramm_editor' => 'false',
@@ -39,7 +39,7 @@ $cmb->add_field( array(
 	'type'            => 'textarea',
 	'desc'            => esc_html__( 'This is what will appear as the description when this post shows up in the search results.', 'rank-math' ),
 	'classes'         => 'rank-math-supports-variables',
-	'sanitization_cb' => false,
+	'sanitization_cb' => true,
 	'attributes'      => array(
 		'class'             => 'cmb2_textarea wp-exclude-emoji',
 		'rows'              => 2,
@@ -55,12 +55,6 @@ $cmb->add_field( array(
 	/* translators: Link to kb article */
 	'desc'        => sprintf( wp_kses_post( __( 'Insert keywords you want to rank for. Try to <a href="%s" target="_blank">attain 100/100 points</a> for better chances of ranking.', 'rank-math' ) ), \RankMath\KB::get( 'score-100' ) ),
 	'classes'     => 'nob',
-	'after_field' => Helper::is_mythemeshop_connected() ? '' :
-		'<div class="notice notice-warning inline"><p>' . sprintf(
-			/* translators: link to connect page. */
-			__( 'Get keyword suggestions from Google & optimize upto 5 Focus Keywords by <a href="%s" target="_blank">linking your Rank Math account</a>.', 'rank-math' ),
-			Helper::get_connect_url()
-		) . '</p></div>',
 	'attributes'  => array(
 		'placeholder' => esc_html__( 'Example: Rank Math SEO', 'rank-math' ),
 	),
@@ -85,9 +79,8 @@ if ( Helper::has_cap( 'onpage_analysis' ) ) {
 	) );
 }
 
-// Primary Category.
 /**
- * Filter: Allow disabling the primary term feature.
+ * Allow disabling the primary term feature.
  *
  * @param bool $return True to disable.
  */

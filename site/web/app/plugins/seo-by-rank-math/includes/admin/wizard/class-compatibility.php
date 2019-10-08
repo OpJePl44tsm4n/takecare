@@ -1,6 +1,6 @@
 <?php
 /**
- * The Compatibility wizard step
+ * The Compatibility wizard step.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -62,7 +62,7 @@ class Compatibility implements Wizard_Step {
 		$active_plugins      = get_option( 'active_plugins' );
 		$conflicting_plugins = $this->get_conflicting_plugins_list();
 		foreach ( $conflicting_plugins as $plugin_slug => $plugin_name ) {
-			if ( in_array( $plugin_slug, $active_plugins ) !== false ) {
+			if ( in_array( $plugin_slug, $active_plugins, true ) !== false ) {
 				$plugins_found[ $plugin_slug ] = $plugin_name;
 			}
 		}
@@ -71,10 +71,9 @@ class Compatibility implements Wizard_Step {
 	}
 
 	/**
-	 * Return list of possibly conflicting plugins.
-	 * Used in SEO Analysis & Setup Wizard.
+	 * Return list of conflicting plugins.
 	 *
-	 * @return array List of plugins in path => name format
+	 * @return array List of plugins in path => name format.
 	 */
 	private function get_conflicting_plugins_list() {
 
@@ -111,6 +110,8 @@ class Compatibility implements Wizard_Step {
 			'wordbooker/wordbooker.php'                    => 'Wordbooker.',
 			'wordpress-seo/wp-seo.php'                     => 'Yoast SEO',
 			'wordpress-seo-premium/wp-seo-premium.php'     => 'Yoast SEO Premium',
+			'wp-seopress/seopress.php'                     => 'SEOPress',
+			'wp-seopress-pro/seopress-pro.php'             => 'SEOPress Pro',
 			'wpsso/wpsso.php'                              => 'WordPress Social Sharing Optimization.',
 			'wp-caregiver/wp-caregiver.php'                => 'WP Caregiver.',
 			'wp-facebook-like-send-open-graph-meta/wp-facebook-like-send-open-graph-meta.php' => 'WP Facebook Like Send & Open Graph Meta.',
@@ -131,7 +132,7 @@ class Compatibility implements Wizard_Step {
 	}
 
 	/**
-	 * Redirection conflicting plugins
+	 * Redirection: conflicting plugins.
 	 *
 	 * @return array
 	 */
@@ -142,7 +143,7 @@ class Compatibility implements Wizard_Step {
 	}
 
 	/**
-	 * Sitemap conflicting plugins
+	 * Sitemap: conflicting plugins.
 	 *
 	 * @return array
 	 */

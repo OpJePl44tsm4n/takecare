@@ -1,6 +1,6 @@
 <?php
 /**
- * The Breadcrumbs Class
+ * The Breadcrumbs Class.
  *
  * @since      1.0.13
  * @package    RankMath
@@ -9,6 +9,8 @@
  */
 
 namespace RankMath\RichSnippet;
+
+use RankMath\Frontend\Breadcrumbs as BreadcrumbTrail;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,14 +24,13 @@ class Breadcrumbs implements Snippet {
 	 *
 	 * @link https://schema.org/BreadcrumbList
 	 *
-	 * @param array  $data   Array of json-ld data.
+	 * @param array  $data   Array of JSON-LD data.
 	 * @param JsonLD $jsonld JsonLD Instance.
 	 *
 	 * @return array
 	 */
 	public function process( $data, $jsonld ) {
-		$breadcrumbs = rank_math()->breadcrumbs;
-		$crumbs      = $breadcrumbs ? $breadcrumbs->get_crumbs() : false;
+		$crumbs = BreadcrumbTrail::get() ? BreadcrumbTrail::get()->get_crumbs() : false;
 		if ( empty( $crumbs ) ) {
 			return $data;
 		}

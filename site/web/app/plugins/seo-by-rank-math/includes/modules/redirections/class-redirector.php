@@ -1,6 +1,6 @@
 <?php
 /**
- * The Redirector
+ * The Redirector.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -14,6 +14,7 @@ use WP_Query;
 use RankMath\Helper;
 use RankMath\Traits\Hooker;
 use MyThemeShop\Helpers\Str;
+use MyThemeShop\Helpers\Param;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -32,18 +33,32 @@ class Redirector {
 	private $matched = false;
 
 	/**
-	 * Redirect to this url.
+	 * Redirect to this URL.
 	 *
 	 * @var string
 	 */
 	private $redirect_to;
 
 	/**
-	 * Current request uri.
+	 * Current request URI.
 	 *
 	 * @var string
 	 */
 	private $uri = '';
+
+	/**
+	 * Current request uri with querystring.
+	 *
+	 * @var string
+	 */
+	private $full_uri = '';
+
+	/**
+	 * Current query string.
+	 *
+	 * @var string
+	 */
+	private $query_string = '';
 
 	/**
 	 * From cache.
@@ -60,7 +75,7 @@ class Redirector {
 	protected $template_file_path;
 
 	/**
-	 * The Construct
+	 * The Constructor.
 	 */
 	public function __construct() {
 		$this->start();
@@ -72,17 +87,30 @@ class Redirector {
 	 * Set the required values.
 	 */
 	private function start() {
-		$this->uri = str_replace( site_url( '/' ), '', $_SERVER['REQUEST_URI'] );
-		$this->uri = trim( $this->uri, '/' );
+		$this->uri = str_replace( site_url( '/' ), '', Param::server( 'REQUEST_URI' ) );
 		$this->uri = urldecode( $this->uri );
 		$this->uri = trim( Redirection::strip_subdirectory( $this->uri ), '/' );
+
+		// Complete request uri.
+		$this->full_uri = $this->uri;
+
+		// Remove query string.
+		$this->uri = explode( '?', $this->uri );
+		if ( isset( $this->uri[1] ) ) {
+			$this->query_string = $this->uri[1];
+		}
+		$this->uri = trim( $this->uri[0], '/' );
+
+		if ( $this->is_amp_endpoint() ) {
+			$this->uri = \str_replace( '/' . amp_get_slug(), '', $this->uri );
+		}
 	}
 
 	/**
 	 * Run the system flow.
 	 */
 	private function flow() {
-		$flow = [ 'from_cahce', 'everything', 'fallback' ];
+		$flow = [ 'pre_filter', 'from_cahce', 'everything', 'fallback' ];
 		foreach ( $flow as $func ) {
 			if ( false !== $this->matched ) {
 				break;
@@ -93,15 +121,14 @@ class Redirector {
 	}
 
 	/**
-	 * If we got a match redirect.
+	 * If we got a match, redirect.
 	 */
 	private function redirect() {
-		// Early Bail!
 		if ( false === $this->matched ) {
 			return;
 		}
 
-		if ( is_array( $this->matched ) && isset( $this->matched['id'], $this->matched['url_to'] ) ) {
+		if ( isset( $this->matched['id'], $this->matched['url_to'] ) ) {
 			DB::update_access( $this->matched );
 		}
 
@@ -115,11 +142,11 @@ class Redirector {
 		$this->do_debugging();
 
 		// @codeCoverageIgnoreStart
-		if ( true === $this->do_filter( 'redirection/add_redirect_header', true ) ) {
-			header( 'X-Redirect-By: Rank Math SEO' );
+		if ( true === $this->do_filter( 'redirection/add_query_string', true ) && Str::is_non_empty( $this->query_string ) ) {
+			$this->redirect_to .= '?' . $this->query_string;
 		}
 
-		if ( wp_redirect( $this->redirect_to, $header_code ) ) {
+		if ( wp_redirect( esc_url_raw( $this->redirect_to ), $header_code, $this->get_redirect_header() ) ) {
 			exit;
 		}
 		// @codeCoverageIgnoreEnd
@@ -184,13 +211,32 @@ class Redirector {
 	}
 
 	/**
+	 * Pre filter
+	 */
+	private function pre_filter() {
+		$pre = $this->do_filter(
+			'redirection/pre_search',
+			null,
+			$this->uri,
+			$this->full_uri
+		);
+
+		if ( null === $pre || ! is_array( $pre ) ) {
+			return;
+		}
+
+		$this->matched     = $pre;
+		$this->redirect_to = $pre['url_to'];
+	}
+
+	/**
 	 * Search from cache.
 	 */
 	private function from_cahce() {
 		// If there is a queried object.
 		$object_id = get_queried_object_id();
 		if ( $object_id ) {
-			$redirection = Cache::get_by_object_id( $object_id, $this->current_object_type() );
+			$redirection = Cache::get_by_object_id( $object_id, $this->get_current_object_type() );
 			if ( $redirection && trim( $redirection->from_url, '/' ) === $this->uri ) {
 				$this->cache = true;
 				$this->set_redirection( $redirection->redirection_id );
@@ -211,6 +257,10 @@ class Redirector {
 	 */
 	private function everything() {
 		$redirection = DB::match_redirections( $this->uri );
+		if ( ! $redirection ) {
+			$redirection = DB::match_redirections( $this->full_uri );
+		}
+
 		if ( $redirection ) {
 			Cache::add([
 				'from_url'       => $this->uri,
@@ -239,20 +289,20 @@ class Redirector {
 		}
 
 		if ( 'homepage' === $behavior ) {
-			$this->matched     = true;
+			$this->matched     = [];
 			$this->redirect_to = site_url();
 			return;
 		}
 
 		$custom_url = Helper::get_settings( 'general.redirections_custom_url' );
 		if ( ! empty( $custom_url ) ) {
-			$this->matched     = true;
+			$this->matched     = [];
 			$this->redirect_to = $custom_url;
 		}
 	}
 
 	/**
-	 * Do debugging
+	 * Show debugging interstitial if enabled.
 	 *
 	 * @codeCoverageIgnore
 	 */
@@ -273,9 +323,9 @@ class Redirector {
 	}
 
 	/**
-	 * Set redirection by id.
+	 * Set redirection by ID.
 	 *
-	 * @param integer $redirection Redirection id to set for.
+	 * @param integer $redirection Redirection ID to set for.
 	 */
 	private function set_redirection( $redirection ) {
 		if ( ! is_array( $redirection ) ) {
@@ -286,6 +336,10 @@ class Redirector {
 			$this->matched = $redirection;
 			$this->set_redirect_to();
 		}
+
+		if ( $this->is_amp_endpoint() ) {
+			$this->redirect_to = $this->redirect_to . amp_get_slug() . '/';
+		}
 	}
 
 	/**
@@ -294,34 +348,24 @@ class Redirector {
 	private function set_redirect_to() {
 		$this->redirect_to = $this->matched['url_to'];
 		foreach ( $this->matched['sources'] as $source ) {
-			if ( 'regex' !== $source['comparison'] ) {
-				continue;
-			}
-
-			$pattern = DB::get_clean_pattern( $source['pattern'], $source['comparison'] );
-			if ( Str::comparison( $pattern, $this->uri, $source['comparison'] ) ) {
-				$this->redirect_to = preg_replace( $pattern, $this->redirect_to, $this->uri );
-			}
+			$this->set_redirect_to_regex( $source );
 		}
 	}
 
 	/**
-	 * Get the object type for the current page.
+	 * Set redirect to by replacing using regex.
 	 *
-	 * @codeCoverageIgnore
-	 *
-	 * @return string object type name.
+	 * @param array $source Source to check.
 	 */
-	private function current_object_type() {
-		$hash   = [
-			'WP_Post' => 'post',
-			'WP_Term' => 'term',
-			'WP_User' => 'user',
-		];
-		$object = get_queried_object();
-		$object = get_class( $object );
+	private function set_redirect_to_regex( $source ) {
+		if ( 'regex' !== $source['comparison'] ) {
+			return;
+		}
 
-		return isset( $hash[ $object ] ) ? $hash[ $object ] : 'any';
+		$pattern = DB::get_clean_pattern( $source['pattern'], $source['comparison'] );
+		if ( Str::comparison( $pattern, $this->uri, $source['comparison'] ) ) {
+			$this->redirect_to = preg_replace( $pattern, $this->redirect_to, $this->uri );
+		}
 	}
 
 	/**
@@ -335,6 +379,25 @@ class Redirector {
 	}
 
 	/**
+	 * Get the object type for the current page.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return string object type name.
+	 */
+	private function get_current_object_type() {
+		$hash   = [
+			'WP_Post' => 'post',
+			'WP_Term' => 'term',
+			'WP_User' => 'user',
+		];
+		$object = get_queried_object();
+		$object = get_class( $object );
+
+		return isset( $hash[ $object ] ) ? $hash[ $object ] : 'any';
+	}
+
+	/**
 	 * Get header code.
 	 *    1. From matched redirection.
 	 *    2. From optgeneral options.
@@ -342,7 +405,29 @@ class Redirector {
 	 * @return int
 	 */
 	private function get_header_code() {
-		$header_code = is_array( $this->matched ) && isset( $this->matched['header_code'] ) ? $this->matched['header_code'] : Helper::get_settings( 'general.redirections_header_code' );
+		$header_code = isset( $this->matched['header_code'] ) ? $this->matched['header_code'] : Helper::get_settings( 'general.redirections_header_code' );
 		return absint( $header_code );
+	}
+
+	/**
+	 * Get redirect header.
+	 *
+	 * @return string
+	 */
+	private function get_redirect_header() {
+		if ( true === $this->do_filter( 'redirection/add_redirect_header', true ) ) {
+			return 'Rank Math SEO';
+		}
+
+		return 'WordPress';
+	}
+
+	/**
+	 * Is AMP url.
+	 *
+	 * @return bool
+	 */
+	private function is_amp_endpoint() {
+		return \function_exists( 'is_amp_endpoint' ) && \function_exists( 'amp_is_canonical' ) && is_amp_endpoint() && ! amp_is_canonical();
 	}
 }

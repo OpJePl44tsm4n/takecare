@@ -12,20 +12,21 @@ namespace RankMath\Redirections;
 
 use CMB2_hookup;
 use RankMath\Helper;
-use RankMath\Module;
+use RankMath\Module\Base;
 use RankMath\Traits\Ajax;
 use RankMath\Traits\Hooker;
 use RankMath\Admin\Admin_Helper;
 use MyThemeShop\Admin\Page;
 use MyThemeShop\Helpers\Arr;
 use MyThemeShop\Helpers\Str;
-use MyThemeShop\Helpers\Util;
+use MyThemeShop\Helpers\Param;
 use MyThemeShop\Helpers\WordPress;
+use MyThemeShop\Helpers\Conditional;
 
 /**
  * Admin class.
  */
-class Admin extends Module {
+class Admin extends Base {
 
 	use Ajax, Hooker;
 
@@ -35,7 +36,6 @@ class Admin extends Module {
 	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
-
 		$directory = dirname( __FILE__ );
 		$this->config([
 			'id'             => 'redirect',
@@ -52,14 +52,15 @@ class Admin extends Module {
 		]);
 		parent::__construct();
 
-		$this->action( 'rank_math/dashboard/widget', 'dashboard_widget', 12 );
-		$this->filter( 'rank_math/settings/general', 'add_settings' );
+		$this->ajax_hooks();
+		$this->load_metabox();
 
-		if ( Admin_Helper::is_post_edit() || Admin_Helper::is_term_edit() ) {
-			new Metabox;
+		if ( Helper::has_cap( 'redirections' ) ) {
+			$this->action( 'rank_math/dashboard/widget', 'dashboard_widget', 12 );
+			$this->filter( 'rank_math/settings/general', 'add_settings' );
 		}
 
-		if ( $this->page->is_current_page() || 'rank_math_save_redirections' === Util::param_post( 'action' ) ) {
+		if ( $this->page->is_current_page() || 'rank_math_save_redirections' === Param::post( 'action' ) ) {
 			$this->form = new Form;
 			$this->form->hooks();
 		}
@@ -72,15 +73,31 @@ class Admin extends Module {
 			Helper::add_json( 'emptyError', __( 'This field must not be empty.', 'rank-math' ) );
 		}
 
-		if ( $this->is_ajax() ) {
-			$this->ajax( 'redirection_delete', 'handle_ajax' );
-			$this->ajax( 'redirection_activate', 'handle_ajax' );
-			$this->ajax( 'redirection_deactivate', 'handle_ajax' );
-			$this->ajax( 'redirection_trash', 'handle_ajax' );
-			$this->ajax( 'redirection_restore', 'handle_ajax' );
+		add_action( 'rank_math/redirection/clean_trashed', 'RankMath\\Redirections\\DB::periodic_clean_trash' );
+	}
+
+	/**
+	 * Load metabox.
+	 */
+	private function load_metabox() {
+		if ( Admin_Helper::is_post_edit() || Admin_Helper::is_term_edit() ) {
+			new Metabox;
+		}
+	}
+
+	/**
+	 * Hooks for ajax.
+	 */
+	private function ajax_hooks() {
+		if ( ! Conditional::is_ajax() ) {
+			return;
 		}
 
-		add_action( 'rank_math/redirection/clean_trashed', 'RankMath\\Redirections\\DB::periodic_clean_trash' );
+		$this->ajax( 'redirection_delete', 'handle_ajax' );
+		$this->ajax( 'redirection_activate', 'handle_ajax' );
+		$this->ajax( 'redirection_deactivate', 'handle_ajax' );
+		$this->ajax( 'redirection_trash', 'handle_ajax' );
+		$this->ajax( 'redirection_restore', 'handle_ajax' );
 	}
 
 	/**
@@ -130,7 +147,7 @@ class Admin extends Module {
 	}
 
 	/**
-	 * Add module settings into general optional panel.
+	 * Add module settings in the General Options panel.
 	 *
 	 * @param  array $tabs Array of option panel tabs.
 	 * @return array
@@ -193,7 +210,7 @@ class Admin extends Module {
 
 		check_admin_referer( 'bulk-redirections' );
 
-		$ids = (array) $_REQUEST['redirection'];
+		$ids = (array) wp_parse_id_list( $_REQUEST['redirection'] );
 		if ( empty( $ids ) ) {
 			Helper::add_notification( 'No valid id found.' );
 			return;
@@ -222,7 +239,7 @@ class Admin extends Module {
 		check_ajax_referer( 'redirection_list_action', 'security' );
 		$this->has_cap_ajax( 'redirections' );
 
-		$id     = isset( $_REQUEST['redirection'] ) ? absint( $_REQUEST['redirection'] ) : 0;
+		$id     = Param::request( 'redirection', 0, FILTER_VALIDATE_INT );
 		$action = str_replace( 'rank_math_redirection_', '', $action );
 
 		if ( ! $id ) {
@@ -238,7 +255,7 @@ class Admin extends Module {
 	}
 
 	/**
-	 * Perform action on db.
+	 * Perform action on database.
 	 *
 	 * @codeCoverageIgnore
 	 *

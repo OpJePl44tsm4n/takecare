@@ -1,6 +1,6 @@
 <?php
 /**
- * The Product Class
+ * The Product Class.
  *
  * @since      1.0.13
  * @package    RankMath
@@ -32,7 +32,7 @@ class Product implements Snippet {
 	/**
 	 * Product rich snippet.
 	 *
-	 * @param array  $data   Array of json-ld data.
+	 * @param array  $data   Array of JSON-LD data.
 	 * @param JsonLD $jsonld JsonLD Instance.
 	 *
 	 * @return array
@@ -40,6 +40,7 @@ class Product implements Snippet {
 	public function process( $data, $jsonld ) {
 		$this->json = $jsonld;
 		$sku        = Helper::get_post_meta( 'snippet_product_sku' );
+		$price      = Helper::get_post_meta( 'snippet_product_price' );
 		$entity     = [
 			'@context'    => 'https://schema.org/',
 			'@type'       => 'Product',
@@ -50,7 +51,7 @@ class Product implements Snippet {
 			'offers'      => [
 				'@type'           => 'Offer',
 				'priceCurrency'   => Helper::get_post_meta( 'snippet_product_currency' ),
-				'price'           => Helper::get_post_meta( 'snippet_product_price' ),
+				'price'           => $price ? $price : '0',
 				'url'             => get_the_permalink(),
 				'priceValidUntil' => Helper::get_post_meta( 'snippet_product_price_valid' ),
 				'availability'    => Helper::get_post_meta( 'snippet_product_instock' ) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
@@ -85,7 +86,7 @@ class Product implements Snippet {
 	}
 
 	/**
-	 * Get seller
+	 * Get seller.
 	 *
 	 * @param JsonLD $jsonld JsonLD Instance.
 	 *

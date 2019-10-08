@@ -14,6 +14,7 @@ namespace RankMath;
 
 use RankMath\Traits\Hooker;
 use MyThemeShop\Helpers\Str;
+use MyThemeShop\Helpers\Param;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -45,7 +46,7 @@ class Tracking {
 		 * @param array
 		 */
 		$data = $this->do_filter( 'tracker_data', [
-			'@timestamp'  => (int) date( 'Uv' ),
+			'@timestamp'  => (int) date_i18n( 'Uv' ),
 			'name'        => get_option( 'blogname' ),
 			'url'         => home_url(),
 			'admin_url'   => admin_url(),
@@ -74,7 +75,7 @@ class Tracking {
 
 		$server = [];
 		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) && ! empty( $_SERVER['SERVER_SOFTWARE'] ) ) {
-			$server['software'] = $_SERVER['SERVER_SOFTWARE'];
+			$server['software'] = Param::server( 'SERVER_SOFTWARE' );
 		}
 
 		if ( function_exists( 'phpversion' ) ) {
@@ -89,7 +90,7 @@ class Tracking {
 		}
 
 		// Validate if the server address is a valid IP-address.
-		$ipaddress = filter_input( INPUT_SERVER, 'SERVER_ADDR', FILTER_VALIDATE_IP );
+		$ipaddress = Param::server( 'SERVER_ADDR', false, FILTER_VALIDATE_IP );
 		if ( $ipaddress ) {
 			$server['ip']       = $ipaddress;
 			$server['hostname'] = gethostbyaddr( $ipaddress );
@@ -177,9 +178,9 @@ class Tracking {
 	}
 
 	/**
-	 * Returns details about the curl version.
+	 * Get curl version and SSL support.
 	 *
-	 * @return array|null The curl info. Or null when curl isn't available..
+	 * @return array|null The curl info in an array or null when curl isn't available.
 	 */
 	private function get_curl_info() {
 
@@ -201,9 +202,9 @@ class Tracking {
 	}
 
 	/**
-	 * Formats the plugin array.
+	 * Format the plugin array.
 	 *
-	 * @param  array $plugin The plugin details.
+	 * @param  array $plugin The plugin info.
 	 * @return array The formatted array.
 	 */
 	protected function format_plugin( array $plugin ) {

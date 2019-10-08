@@ -70,7 +70,7 @@ class Post_Type implements Provider {
 	public function handles_type( $type ) {
 		if (
 			false === post_type_exists( $type ) ||
-			false === Helper::is_post_type_indexable( $type ) ||
+			false === Helper::get_settings( 'sitemap.pt_' . $type . '_sitemap' ) ||
 			( 'attachment' === $type && Helper::get_settings( 'general.attachment_redirect_urls', true ) )
 		) {
 			return false;
@@ -97,7 +97,7 @@ class Post_Type implements Provider {
 		$post_types          = Helper::get_accessible_post_types();
 		$post_types          = array_filter( $post_types, array( $this, 'handles_type' ) );
 		$last_modified_times = Sitemap::get_last_modified_gmt( $post_types, true );
-		$index               = array();
+		$index               = [];
 
 		foreach ( $post_types as $post_type ) {
 
@@ -111,7 +111,7 @@ class Post_Type implements Provider {
 				$max_pages = (int) ceil( $total_count / $max_entries );
 			}
 
-			$all_dates = array();
+			$all_dates = [];
 			if ( $max_pages > 1 ) {
 				$sql = "
 				SELECT post_modified_gmt
@@ -155,7 +155,7 @@ class Post_Type implements Provider {
 	 * @return array
 	 */
 	public function get_sitemap_links( $type, $max_entries, $current_page ) {
-		$links     = array();
+		$links     = [];
 		$steps     = min( 100, $max_entries );
 		$offset    = ( $current_page > 1 ) ? ( ( $current_page - 1 ) * $max_entries ) : 0;
 		$total     = ( $offset + $max_entries );
@@ -173,7 +173,7 @@ class Post_Type implements Provider {
 			return $links;
 		}
 
-		$stacked_urls = array();
+		$stacked_urls = [];
 		while ( $total > $offset ) {
 			$posts   = $this->get_posts( $type, $steps, $offset );
 			$offset += $steps;
@@ -183,8 +183,8 @@ class Post_Type implements Provider {
 			}
 
 			foreach ( $posts as $post ) {
-
-				if ( ! Helper::is_post_indexable( $post->ID ) ) {
+				$post_id = (int) $post->ID;
+				if ( ! Helper::is_post_indexable( $post_id ) ) {
 					continue;
 				}
 
@@ -206,7 +206,7 @@ class Post_Type implements Provider {
 				}
 
 				$stacked_urls[] = $url['loc'];
-				if ( $post->ID === $this->get_page_for_posts_id() || $post->ID === $this->get_page_on_front_id() ) {
+				if ( $post_id === $this->get_page_for_posts_id() || $post_id === $this->get_page_on_front_id() ) {
 					array_unshift( $links, $url );
 					continue;
 				}
@@ -268,7 +268,7 @@ class Post_Type implements Provider {
 	 */
 	protected function get_first_links( $post_type ) {
 
-		$links         = array();
+		$links         = [];
 		$needs_archive = true;
 
 		if ( ! $this->get_page_on_front_id() && ( 'post' === $post_type || 'page' === $post_type ) ) {
@@ -349,7 +349,7 @@ class Post_Type implements Provider {
 
 		$posts = $wpdb->get_results( $wpdb->prepare( $sql, $count, $offset ) ); // phpcs:ignore
 
-		$post_ids = array();
+		$post_ids = [];
 		foreach ( $posts as $post ) {
 			$post->post_status = 'publish';
 			$post->filter      = 'sample';
@@ -374,7 +374,7 @@ class Post_Type implements Provider {
 		$status = "{$wpdb->posts}.post_status = 'publish'";
 
 		// Based on WP_Query->get_posts(). R.
-		if ( in_array( 'attachment', $post_types ) ) {
+		if ( in_array( 'attachment', $post_types, true ) ) {
 			$join   = " LEFT JOIN {$wpdb->posts} AS p2 ON ({$wpdb->posts}.post_parent = p2.ID) ";
 			$status = "p2.post_status = 'publish'";
 		}
@@ -396,7 +396,7 @@ class Post_Type implements Provider {
 	 * @return array|boolean
 	 */
 	protected function get_url( $post ) {
-		$url = array();
+		$url = [];
 
 		/**
 		 * Filter the URL Rank Math SEO uses in the XML sitemap.
@@ -436,7 +436,7 @@ class Post_Type implements Provider {
 		if ( 'post' !== $post->post_type ) {
 			$url['loc'] = trailingslashit( $url['loc'] );
 		}
-		$url['images'] = ! is_null( $this->get_image_parser() ) ? $this->get_image_parser()->get_images( $post ) : array();
+		$url['images'] = ! is_null( $this->get_image_parser() ) ? $this->get_image_parser()->get_images( $post ) : [];
 
 		return $url;
 	}

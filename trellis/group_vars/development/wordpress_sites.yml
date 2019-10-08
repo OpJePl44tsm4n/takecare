@@ -17,3 +17,5 @@ wordpress_sites:
       provider: self-signed
     cache:
       enabled: false
+    env:
+      db_prefix: tkcr_

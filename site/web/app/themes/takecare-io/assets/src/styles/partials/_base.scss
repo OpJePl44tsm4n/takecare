@@ -1,0 +1,192 @@
+
+
+body {
+
+	font-family: $primary-font-light;
+	font-size: $base-font-size;
+	font-smoothing: antialiased;
+	line-height: $base-line-height;
+	letter-spacing: $base-letter-spacing;
+	overflow-x: hidden;
+
+	h1 {
+		font-size: 2rem;
+		line-height: 1.5em;
+		font-family: $primary-font-black;
+		text-transform: uppercase;
+		color: #000;
+		
+		@include media-breakpoint-up(sm) {
+			font-size: 3rem;
+
+			&.large {
+				font-size: 3.6rem;
+			}	
+		}
+		
+	}
+	
+	h2 {
+		font-size: 1.5rem;
+		font-family: $primary-font-bold;
+
+		@include media-breakpoint-up(xs) {
+			font-size: 1.5rem;
+		}
+
+		@include media-breakpoint-down(xs) {
+			font-size: 1.5rem;
+		}
+	}
+
+	h3 {
+		font-family: $primary-font-bold;
+	}
+
+	h4 {
+		font-size: 1.2rem;
+		font-family: $primary-font-light;
+		margin-bottom: 1.2rem;
+	}
+
+	p {
+		line-height: 2rem;
+	}
+
+	a {
+		color: $primary-text-color;
+	}
+
+	a:hover {
+		color: $primary-color;
+	}
+
+	ul {
+		padding: 0px 1em;
+	}
+
+	img, 
+	input {
+		max-width: 100%;
+		height: auto;
+	}
+
+	iframe {
+  		max-width: 100% !important;
+  		width: 100%;
+	}
+
+	b, strong {
+	  	font-family: $primary-font-bold;
+	}
+	
+	.hidden {
+		display: none; 
+	}
+
+	.mobile-center {
+		@include media-breakpoint-down(sm) {
+			text-align: center;
+		}
+	}
+
+	.secondary-bg-color {
+		background: $secondary-bg-color;
+	}
+
+	.tertiary-bg-color {
+		background: $tertiary-bg-color;
+	}
+
+	.quaternary-bg-color {
+		background: black;
+	}
+
+	.quinary-bg-color {
+		background: linear-gradient(90deg,#000 0,#313131 100%);
+	}
+
+	div.wpcf7 .ajax-loader { 
+		background: none;
+		font-family: 'FontAwesome';
+		position: relative;
+		&::before {
+			color: $primary-color;
+			content: '\f110';
+			position: absolute;
+			animation: rotate 2s infinite;
+			animation-timing-function: linear;
+		}
+	}
+
+	.brand-wrapper {
+		text-align: center;
+		display: inline-block;
+		width: 330px;
+
+		@include media-breakpoint-down(md) {
+		    transform: scale(0.85);
+		    z-index: 22;
+		    margin-top: 0;
+		    margin-left: -1.25rem;
+		}
+
+		@include media-breakpoint-down(sm) {
+		    transform: scale(0.6);
+		    z-index: 22;
+		    margin-top: 0;
+		    margin-left: -4.3rem;
+		}
+	}
+
+	.thumb {
+	    overflow: hidden;
+	    position: relative;
+
+		img {
+			width: 100%;
+			height: 100%;
+		    object-fit: cover;
+		    transform: translateY(-50%);
+		    top: 50%;
+		    left: 0;
+		    position: absolute;
+		}
+	}
+
+
+}
+
+.swap-order {
+	@include media-breakpoint-down(sm) {
+		.grid-item {
+			&:first-child {
+				order: 2;
+			}
+		}
+	}	
+}
+
+
+/* =WordPress Core
+-------------------------------------------------------------- */
+.alignnone {
+    margin: 5px 0 20px 0;
+}
+
+.aligncenter,
+div.aligncenter {
+    display: block;
+    margin: 5px auto 5px auto;
+}
+
+.alignright {
+    float:right;
+    margin: 5px 0 20px 20px;
+}
+
+.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}
+

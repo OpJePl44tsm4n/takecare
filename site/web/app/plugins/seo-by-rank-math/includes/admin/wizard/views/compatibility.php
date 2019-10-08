@@ -130,7 +130,7 @@ if ( $all_good ) :
 			<?php foreach ( $conflicting_plugins as $pk => $plugin ) { ?>
 				<tr>
 					<td><span class="dashicons dashicons-warning"></span></td>
-					<td><?php echo $plugin . ( in_array( $pk, [ 'all-in-one-schemaorg-rich-snippets/index.php', 'wordpress-seo/wp-seo.php', 'wordpress-seo-premium/wp-seo-premium.php', 'all-in-one-seo-pack/all_in_one_seo_pack.php' ] ) ? '<span class="import-info">' . esc_html__( 'You can import settings in the next step.', 'rank-math' ) . '</span>' : '' ); ?></td>
+					<td><?php echo $plugin . ( in_array( $pk, [ 'all-in-one-schemaorg-rich-snippets/index.php', 'wordpress-seo/wp-seo.php', 'wordpress-seo-premium/wp-seo-premium.php', 'all-in-one-seo-pack/all_in_one_seo_pack.php' ], true ) ? '<span class="import-info">' . esc_html__( 'You can import settings in the next step.', 'rank-math' ) . '</span>' : '' ); ?></td>
 					<td><a href="#" class="button button-small wizard-deactivate-plugin" data-plugin="<?php echo esc_attr( $pk ); ?>"><?php esc_html_e( 'Deactivate Plugin', 'rank-math' ); ?></a></td>
 				</tr>
 			<?php } ?>
@@ -147,7 +147,7 @@ if ( $all_good ) :
 </div> <!-- /collapsible -->
 <?php endif; ?>
 
-<footer class="form-footer custom wp-core-ui rank-math-ui text-center">
+<footer class="form-footer rank-math-custom wp-core-ui rank-math-ui text-center">
 	<?php if ( $all_good ) : ?>
 	<button type="submit" class="button button-primary"><?php esc_html_e( 'Start Wizard', 'rank-math' ); ?> <i class="dashicons dashicons-arrow-right-alt2"></i></button>
 	<?php endif; ?>

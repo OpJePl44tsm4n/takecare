@@ -1,6 +1,6 @@
 <?php
 /**
- * This code handles the category and author rewrites.
+ * This class handles the category and author rewrites.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -30,7 +30,7 @@ class Rewrite {
 			$this->filter( 'query_vars', 'query_vars' );
 			$this->filter( 'request', 'request' );
 			$this->filter( 'category_rewrite_rules', 'category_rewrite_rules' );
-			$this->filter( 'category_link', 'no_category_base' );
+			$this->filter( 'term_link', 'no_category_base', 10, 3 );
 
 			add_action( 'created_category', 'RankMath\\Helper::schedule_flush_rewrite' );
 			add_action( 'delete_category', 'RankMath\\Helper::schedule_flush_rewrite' );
@@ -65,9 +65,10 @@ class Rewrite {
 	}
 
 	/**
-	 * Redirect the user permalink properly for the new one.
+	 * Redirect the old user permalink to the new one.
 	 *
-	 * @param  array $query_vars Query vars to check for existence of redirect var.
+	 * @param  array $query_vars Query vars to check for author_name var.
+	 *
 	 * @return array
 	 */
 	public function author_request( $query_vars ) {
@@ -87,25 +88,25 @@ class Rewrite {
 	}
 
 	/**
-	 * Removes rewrite rules.
+	 * Remove the rewrite rules.
 	 */
 	public function remove_rules() {
 		$this->remove_filter( 'query_vars', 'query_vars' );
 		$this->remove_filter( 'request', 'request' );
 		$this->remove_filter( 'category_rewrite_rules', 'category_rewrite_rules' );
-		$this->remove_filter( 'category_link', 'no_category_base' );
+		$this->remove_filter( 'term_link', 'no_category_base', 10 );
 
 		remove_action( 'init', 'RankMath\\Rewrite::change_author_base', 4 );
 	}
 
 	/**
-	 * Change author permalink base.
+	 * Change the base for author permalinks.
 	 */
 	public static function change_author_base() {
 		global $wp_rewrite;
 
 		/**
-		 * Allow developers to change the author base.
+		 * Filter: Change the author base.
 		 *
 		 * @param string $base The author base.
 		 */
@@ -119,9 +120,10 @@ class Rewrite {
 	}
 
 	/**
-	 * Update the query vars with the redirect var when stripcategorybase is active.
+	 * Add the redirect var to the query vars if the "strip category bases" option is enabled.
 	 *
-	 * @param  array $query_vars Main query vars to filter.
+	 * @param  array $query_vars Query vars to filter.
+	 *
 	 * @return array
 	 */
 	public function query_vars( $query_vars ) {
@@ -131,9 +133,9 @@ class Rewrite {
 	}
 
 	/**
-	 * Redirect the "old" category URL to the new one.
+	 * Redirect the original category URL to the new one.
 	 *
-	 * @param  array $query_vars Query vars to check for existence of redirect var.
+	 * @param  array $query_vars Query vars to check for redirect var.
 	 * @return array
 	 */
 	public function request( $query_vars ) {
@@ -147,7 +149,7 @@ class Rewrite {
 	}
 
 	/**
-	 * This function taken and only slightly adapted from WP No Category Base plugin by Saurabh Gupta.
+	 * This function was taken and slightly adapted from WP No Category Base plugin by Saurabh Gupta.
 	 *
 	 * @return array
 	 */
@@ -189,15 +191,22 @@ class Rewrite {
 	}
 
 	/**
-	 * Override the category link to remove the category base.
+	 * Remove the category base from the category link.
 	 *
-	 * @param  string $link Unused, overridden by the function.
+	 * @param  string $link     Term link.
+	 * @param  object $term     Current Term Object.
+	 * @param  string $taxonomy Current Taxonomy.
 	 * @return string
 	 */
-	public function no_category_base( $link ) {
+	public function no_category_base( $link, $term, $taxonomy ) {
+		if ( 'category' !== $taxonomy ) {
+			return $link;
+		}
+
 		$category_base = get_option( 'category_base' );
 		if ( empty( $category_base ) ) {
-			$category_base = 'category';
+			global $wp_rewrite;
+			$category_base = trim( str_replace( '%category%', '', $wp_rewrite->get_category_permastruct() ), '/' );
 		}
 
 		// Remove initial slash, if there is one (we remove the trailing slash in the regex replacement and don't want to end up short a slash).
@@ -211,7 +220,7 @@ class Rewrite {
 	}
 
 	/**
-	 * Get categories after handling for WPML
+	 * Get categories with WPML compatibility.
 	 *
 	 * @return array
 	 */
@@ -231,7 +240,7 @@ class Rewrite {
 	}
 
 	/**
-	 * Get blog prefix
+	 * Get the blog prefix.
 	 *
 	 * @return string
 	 */

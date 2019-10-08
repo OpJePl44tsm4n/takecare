@@ -2,21 +2,21 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the public-specific stylesheet and JavaScript.
- *
  * @since      0.9.0
  * @package    RankMath
  * @subpackage RankMath\Frontend
  * @author     Rank Math <support@rankmath.com>
  */
 
-namespace RankMath;
+namespace RankMath\Frontend;
 
 use RankMath\Post;
+use RankMath\Helper;
+use RankMath\Paper\Paper;
 use RankMath\Traits\Hooker;
-use RankMath\OpenGraph\Facebook;
 use RankMath\OpenGraph\Twitter;
+use RankMath\OpenGraph\Facebook;
+use RankMath\Frontend\Shortcodes;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -48,11 +48,14 @@ class Frontend {
 		rank_math()->shortcodes = new Shortcodes;
 
 		if ( Helper::get_settings( 'general.breadcrumbs' ) ) {
-			rank_math()->breadcrumbs = new Breadcrumbs;
+			/**
+			 * If RM's breadcrumbs are enabled then we can remove the bbPress breadcrumbs.
+			 */
+			add_filter( 'bbp_get_breadcrumb', '__return_false' );
 		}
 
 		new Add_Attributes;
-		new Remove_Reply_To_Com;
+		new Comments;
 	}
 
 	/**
@@ -61,7 +64,7 @@ class Frontend {
 	private function hooks() {
 
 		$this->action( 'wp_enqueue_scripts', 'enqueue' );
-		$this->action( 'template_redirect', 'integrations' );
+		$this->action( 'wp', 'integrations' );
 		$this->filter( 'the_content_feed', 'embed_rssfooter' );
 		$this->filter( 'the_excerpt_rss', 'embed_rssfooter_excerpt' );
 
@@ -77,11 +80,6 @@ class Frontend {
 		if ( Helper::get_settings( 'titles.disable_author_archives' ) || Helper::get_settings( 'titles.disable_date_archives' ) ) {
 			$this->action( 'wp', 'archive_redirect' );
 		}
-
-		// Custom robots text.
-		if ( Helper::get_settings( 'general.robots_txt_content' ) ) {
-			$this->action( 'robots_txt', 'robots_txt', 10, 2 );
-		}
 	}
 
 	/**
@@ -93,8 +91,11 @@ class Frontend {
 			return;
 		}
 
+		Paper::get();
 		new Facebook;
 		new Twitter;
+
+		// Leave this for backwards compatibility as AMP plugin uses head function. We can remove this in the future update.
 		rank_math()->head = new Head;
 	}
 
@@ -102,12 +103,12 @@ class Frontend {
 	 * Enqueue Styles and Scripts required by plugin.
 	 */
 	public function enqueue() {
-		if ( ! is_user_logged_in() || ! Helper::has_cap( 'admin_bar' ) ) {
+		if ( ! is_admin_bar_showing() || ! Helper::has_cap( 'admin_bar' ) ) {
 			return;
 		}
 
 		wp_enqueue_style( 'rank-math', rank_math()->assets() . 'css/rank-math.css', null, rank_math()->version );
-		wp_enqueue_script( 'rank-math', rank_math()->assets() . 'js/rank-math.js', array( 'jquery' ), rank_math()->version, true );
+		wp_enqueue_script( 'rank-math', rank_math()->assets() . 'js/rank-math.js', [ 'jquery' ], rank_math()->version, true );
 
 		if ( is_singular() ) {
 			Helper::add_json( 'objectID', Post::get_simple_page_id() );
@@ -137,9 +138,10 @@ class Frontend {
 		/**
 		 * Redirect atachment to its parent post.
 		 *
-		 * @param string $redirect URL as calculated for redirection.
+		 * @param string  $redirect URL as calculated for redirection.
+		 * @param WP_Post $post     Current post instance.
 		 */
-		Helper::redirect( $this->do_filter( 'frontend/attachment/redirect_url', $redirect ), 301 );
+		Helper::redirect( $this->do_filter( 'frontend/attachment/redirect_url', $redirect, $post ), 301 );
 		exit;
 	}
 
@@ -159,24 +161,10 @@ class Frontend {
 	}
 
 	/**
-	 * Replace robots.txt content.
+	 * Adds the RSS header and footer messages to the RSS feed item content.
 	 *
-	 * @param  string $content Robots.txt file content.
-	 * @param  bool   $public  Whether the site is considered "public".
-	 * @return string New robots.txt content.
-	 */
-	public function robots_txt( $content, $public ) {
-		if ( is_admin() ) {
-			return $content;
-		}
-
-		return '0' == $public ? $content : Helper::get_settings( 'general.robots_txt_content' );
-	}
-
-	/**
-	 * Adds the RSS footer (or header) to the full RSS feed item.
+	 * @param string $content Feed item content.
 	 *
-	 * @param  string $content Feed item content.
 	 * @return string
 	 */
 	public function embed_rssfooter( $content ) {
@@ -184,9 +172,10 @@ class Frontend {
 	}
 
 	/**
-	 * Adds the RSS footer (or header) to the excerpt RSS feed item.
+	 * Adds the RSS header and footer messages to the RSS feed item excerpt.
 	 *
-	 * @param  string $content Feed item excerpt.
+	 * @param string $content Feed item excerpt.
+	 *
 	 * @return string
 	 */
 	public function embed_rssfooter_excerpt( $content ) {
@@ -194,10 +183,11 @@ class Frontend {
 	}
 
 	/**
-	 * Adds the RSS footer and/or header to an RSS feed item.
+	 * Inserts the RSS header and footer messages in the RSS feed item.
 	 *
-	 * @param  string $content Feed item content.
-	 * @param  string $context Feed item context, either 'excerpt' or 'full'.
+	 * @param string $content Feed item content.
+	 * @param string $context Feed item context, 'excerpt' or 'full'.
+	 *
 	 * @return string
 	 */
 	private function embed_rss( $content, $context = 'full' ) {
@@ -205,34 +195,27 @@ class Frontend {
 			return $content;
 		}
 
-		$before = $this->do_filter( 'frontend/rss/before_content', Helper::get_settings( 'general.rss_before_content' ) );
-		$after  = $this->do_filter( 'frontend/rss/after_content', Helper::get_settings( 'general.rss_after_content' ) );
+		$before = $this->get_rss_content( 'before' );
+		$after  = $this->get_rss_content( 'after' );
 
-		if ( '' !== $before ) {
-			$before = wpautop( $this->rss_replace_vars( $before ) );
+		if ( '' === $before && '' === $after ) {
+			return $content;
 		}
 
-		if ( '' !== $after ) {
-			$after = wpautop( $this->rss_replace_vars( $after ) );
+		if ( 'excerpt' === $context && '' !== trim( $content ) ) {
+			$content = wpautop( $content );
 		}
 
-		if ( '' !== $before || '' !== $after ) {
-			if ( 'excerpt' === $context && '' !== trim( $content ) ) {
-				$content = wpautop( $content );
-			}
-			$content = $before . $content . $after;
-		}
-
-		return $content;
+		return $before . $content . $after;
 	}
 
 	/**
-	 * Can add the RSS footer and/or header to an RSS feed item.
+	 * Check if we can add the RSS footer and/or header to the RSS feed item.
 	 *
 	 * @param string $content Feed item content.
 	 * @param string $context Feed item context, either 'excerpt' or 'full'.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function can_embed_footer( $content, $context ) {
 		/**
@@ -245,17 +228,26 @@ class Frontend {
 			return false;
 		}
 
-		if ( ! is_feed() ) {
-			return false;
-		}
-
-		return true;
+		return is_feed();
 	}
 
 	/**
-	 * Replaces the possible RSS variables with their actual values.
+	 * Get rss content for specified location.
 	 *
-	 * @param string $content The RSS content that should have the variables replaced.
+	 * @param string $which Location id.
+	 *
+	 * @return string
+	 */
+	private function get_rss_content( $which ) {
+		$content = $this->do_filter( 'frontend/rss/' . $which . '_content', Helper::get_settings( 'general.rss_' . $which . '_content' ) );
+
+		return '' !== $content ? wpautop( $this->rss_replace_vars( $content ) ) : $content;
+	}
+
+	/**
+	 * Replace variables with the actual values in RSS header and footer messages.
+	 *
+	 * @param string $content The RSS content.
 	 *
 	 * @return string
 	 */
@@ -263,7 +255,7 @@ class Frontend {
 		global $post;
 
 		/**
-		 * Allow the developer to determine whether or not to follow the links in the bits Rank Math adds to the RSS feed, defaults to true.
+		 * Add nofollow for the links in the RSS header and footer messages. Default: true.
 		 *
 		 * @param bool $unsigned Whether or not to follow the links in RSS feed, defaults to true.
 		 */
@@ -295,9 +287,10 @@ class Frontend {
 	/**
 	 * Reorder terms for a post to put primary category to the beginning.
 	 *
-	 * @param  array|WP_Error $terms    List of attached terms, or WP_Error on failure.
-	 * @param  int            $post_id  Post ID.
-	 * @param  string         $taxonomy Name of the taxonomy.
+	 * @param array|WP_Error $terms    List of attached terms, or WP_Error on failure.
+	 * @param int            $post_id  Post ID.
+	 * @param string         $taxonomy Name of the taxonomy.
+	 *
 	 * @return array
 	 */
 	public function reorder_the_terms( $terms, $post_id, $taxonomy ) {
@@ -313,18 +306,18 @@ class Frontend {
 		$post_id = empty( $post_id ) ? $GLOBALS['post']->ID : $post_id;
 
 		// Get Primary Term.
-		$primary = Helper::get_post_meta( "primary_{$taxonomy}", $post_id );
+		$primary = absint( Helper::get_post_meta( "primary_{$taxonomy}", $post_id ) );
 		if ( ! $primary ) {
 			return $terms;
 		}
 
 		if ( empty( $terms ) || is_wp_error( $terms ) ) {
-			return array( $primary );
+			return [ $primary ];
 		}
 
 		$primary_term = null;
 		foreach ( $terms as $index => $term ) {
-			if ( $primary == $term->term_id ) {
+			if ( $primary === $term->term_id ) {
 				$primary_term = $term;
 				unset( $terms[ $index ] );
 				array_unshift( $terms, $primary_term );

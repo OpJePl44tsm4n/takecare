@@ -1,6 +1,6 @@
 <?php
 /**
- * The Redirection module database operations
+ * The Redirection module database operations.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 class DB {
 
 	/**
-	 * Get query builder.
+	 * Get query builder object.
 	 *
 	 * @return Query_Builder
 	 */
@@ -31,7 +31,7 @@ class DB {
 	}
 
 	/**
-	 * Get counts of record group by active and inactive.
+	 * Get counts of records grouped by active and inactive.
 	 *
 	 * @return array
 	 */
@@ -81,7 +81,7 @@ class DB {
 			$table->orWhereLike( 'url_to', $args['search'] );
 		}
 
-		if ( ! empty( $args['orderby'] ) && in_array( $args['orderby'], [ 'id', 'url_to', 'header_code', 'hits', 'last_accessed' ] ) ) {
+		if ( ! empty( $args['orderby'] ) && in_array( $args['orderby'], [ 'id', 'url_to', 'header_code', 'hits', 'last_accessed' ], true ) ) {
 			$table->orderBy( $args['orderby'], $args['order'] );
 		}
 
@@ -92,9 +92,9 @@ class DB {
 	}
 
 	/**
-	 * Match redirections for uri
+	 * Match redirections for URI.
 	 *
-	 * @param string $uri Current uri to match.
+	 * @param string $uri Current URI to match.
 	 * @param bool   $all Get All.
 	 *
 	 * @return object
@@ -119,7 +119,7 @@ class DB {
 		// Generate words.
 		$words = self::remove_stopwords( $uri );
 
-		// Generate where cluase.
+		// Generate where clause.
 		$where  = [];
 		$source = maybe_serialize([
 			'pattern'    => $uri,
@@ -141,20 +141,18 @@ class DB {
 	}
 
 	/**
-	 * Compare given redirections
+	 * Compare given redirections.
 	 *
 	 * @param array  $redirections Array of redirection matched.
-	 * @param string $uri          Uri to comapre with.
+	 * @param string $uri          URI to compare with.
 	 *
 	 * @return array|bool
 	 */
 	private static function compare_redirections( $redirections, $uri ) {
 		foreach ( $redirections as $redirection ) {
 			$redirection['sources'] = maybe_unserialize( $redirection['sources'] );
-			foreach ( $redirection['sources'] as $source ) {
-				if ( Str::comparison( self::get_clean_pattern( $source['pattern'], $source['comparison'] ), $uri, $source['comparison'] ) ) {
-					return $redirection;
-				}
+			if ( ! empty( $redirection['sources'] ) && self::compare_sources( $redirection['sources'], $uri ) ) {
+				return $redirection;
 			}
 		}
 
@@ -162,7 +160,25 @@ class DB {
 	}
 
 	/**
-	 * Match redirections for source
+	 * Compare sources.
+	 *
+	 * @param array  $sources Array of sources.
+	 * @param string $uri     URI to compare with.
+	 *
+	 * @return bool
+	 */
+	private static function compare_sources( $sources, $uri ) {
+		foreach ( $sources as $source ) {
+			if ( Str::comparison( self::get_clean_pattern( $source['pattern'], $source['comparison'] ), $uri, $source['comparison'] ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Match redirections for a source.
 	 *
 	 * @param string $source Current source to match.
 	 *
@@ -197,9 +213,9 @@ class DB {
 	}
 
 	/**
-	 *  Get source by id.
+	 *  Get source by ID.
 	 *
-	 * @param int    $id     Id of the record to search for.
+	 * @param int    $id     ID of the record to search for.
 	 * @param string $status Status to filter with.
 	 *
 	 * @return bool|array
@@ -290,7 +306,7 @@ class DB {
 	}
 
 	/**
-	 * Add or Update record
+	 * Add or Update record.
 	 *
 	 * @param array $redirection Single redirection item.
 	 *
@@ -326,9 +342,9 @@ class DB {
 	}
 
 	/**
-	 * Delete multiple record.
+	 * Delete multiple records.
 	 *
-	 * @param array $ids           Array of ids to delete.
+	 * @param array $ids Array of ids to delete.
 	 *
 	 * @return int Number of records deleted.
 	 */
@@ -356,12 +372,12 @@ class DB {
 	}
 
 	/**
-	 * Cleans trashed redirects after 30 days.
+	 * Clean trashed redirects after 30 days.
 	 *
 	 * @return int Number of records deleted.
 	 */
 	public static function periodic_clean_trash() {
-		$ids = self::table()->select( 'id' )->where( 'status', 'trashed' )->where( 'updated', '<=', date( 'Y-m-d', strtotime( '30 days ago' ) ) )->get( ARRAY_A );
+		$ids = self::table()->select( 'id' )->where( 'status', 'trashed' )->where( 'updated', '<=', date_i18n( 'Y-m-d', strtotime( '30 days ago' ) ) )->get( ARRAY_A );
 		if ( empty( $ids ) ) {
 			return 0;
 		}
@@ -370,7 +386,7 @@ class DB {
 	}
 
 	/**
-	 * Deletes all trashed redirections and associated sources
+	 * Delete all trashed redirections and associated sources.
 	 *
 	 * @return int Number of records deleted.
 	 */
@@ -397,7 +413,6 @@ class DB {
 			$redirection_stop_words = explode( ',', esc_html__( "a,about,above,after,again,against,all,am,an,and,any,are,as,at,be,because,been,before,being,below,between,both,but,by,could,did,do,does,doing,down,during,each,few,for,from,further,had,has,have,having,he,he'd,he'll,he's,her,here,here's,hers,herself,him,himself,his,how,how's,i,i'd,i'll,i'm,i've,if,in,into,is,it,it's,its,itself,let's,me,more,most,my,myself,nor,of,on,once,only,or,other,ought,our,ours,ourselves,out,over,own,same,she,she'd,she'll,she's,should,so,some,such,than,that,that's,the,their,theirs,them,themselves,then,there,there's,these,they,they'd,they'll,they're,they've,this,those,through,to,too,under,until,up,very,was,we,we'd,we'll,we're,we've,were,what,what's,when,when's,where,where's,which,while,who,who's,whom,why,why's,with,would,you,you'd,you'll,you're,you've,your,yours,yourself,yourselves", 'rank-math' ) );
 		}
 
-		// Turn it to an array and strip stop words by comparing against an array of stopwords.
 		$words = str_replace( '/', '-', $uri );
 		$words = str_replace( '.', '-', $words );
 		$words = explode( '-', $words );

@@ -1,11 +1,11 @@
 === WordPress SEO Plugin - Rank Math ===
 Contributors: rankmath
 Plugin link: https://s.rankmath.com/homepage
-Tags: seo, sitemap, google search console, schema.org, redirection
-Tested up to: 5.1
-Requires at least: 4.6.0
+Tags: seo, sitemap, google search console, schema, redirection
+Tested up to: 5.2.3
+Requires at least: 4.7.0
 Requires PHP: 5.6
-Stable tag: 1.0.21
+Stable tag: 1.0.33
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -17,9 +17,9 @@ Rank Math is a revolutionary SEO plugin that combines the features of many SEO t
 ★★★★★<br>
 
 **SEO is the most consistent source of traffic for any website.** We created <a href="https://s.rankmath.com/seo" target="_blank">**Rank Math, a WordPress SEO plugin**</a>, to help every website owner get access to the SEO tools they need to improve their SEO and attract more traffic to their website.
-## <center><a href="https://s.rankmath.com/demo" target="_blank">Try The Demo</a></center> ##
+## <a href="https://s.rankmath.com/demo" target="_blank">Try The Demo</a> ##
 
-[youtube https://www.youtube.com/watch?v=hJXzs0hRmOI]
+[youtube https://www.youtube.com/watch?v=NgeaqIy2OB0]
 
 <a href="https://s.rankmath.com/suitefeatures" target="_blank">Features</a> | <a href="https://s.rankmath.com/whyseosuite" target="_blank">Why Choose Rank Math?</a> | <a href="https://s.rankmath.com/compare" target="_blank">Compare</a> | <a href="https://s.rankmath.com/screenshots" target="_blank">Screenshots</a> | <a href="https://s.rankmath.com/benefits" target="_blank">Benefits</a>
 
@@ -34,8 +34,8 @@ See the features which are exclusive to Rank Math SEO plugin and to understand w
 * **Setup Wizard (Easy to follow)**
 Rank Math practically configures itself. Rank Math features a step-by-step installation and configuration wizard that sets up SEO for WordPress perfectly.
 
-* **Google Schema Rich Snippets Integrated**
-Configuring Rich Snippets is now easy, thank to Rank Math. With support for 14 types of rich snippets, you'll be able to optimize your posts in just a few clicks.
+* **Google Schema Markup aka Rich Snippets Integrated**
+Configuring Google Schema Markup aka Rich Snippets is now easy, thanks to Rank Math. With support for 14 types of rich snippets, you’ll be able to optimize your posts in just a few clicks.
 
 * **Optimize Upto 5 Keywords**
 Unlike other plugins, Rank Math lets you optimize your posts for 5 focus keywords per post.
@@ -97,13 +97,15 @@ Even with significantly more features than other plugins, Rank Math still consis
 
 * **New SEO Analyzer** — Rank Math's built-in SEO analysis will give you SEO recommendations that you'd normally spend hundreds of dollars to get.
 
+* **Optimize 5 Keywords At Once** — You can optimize your post for up to 5 different keywords with Rank Math.
+
 * **1-Click Import From Yoast** — With a single click of your mouse, Rank Math can import all your settings from Yoast SEO to itself. The transfer is instant, and you don't lose any SERP rankings as a result.
 
 * **1-Click Import From AIO SEO** — Rank Math can also import all your settings from AIO SEO in a single click. The transfer is instant, and you don't lose any SERP rankings as a result.
 
-* **Optimize 5 Keywords At Once** — You can optimize your post for up to 5 different keywords with Rank Math.
-
 * **1-Click Import From All In One Schema Rich Snippets** — Rank Math can also import all of AIO's Rich Snippet settings in a few clicks, which help preserve your rich rankings when moving to Rank Math.
+
+* **1-Click Import From SEOPress SEO** — With a single click of your mouse, Rank Math can import all your settings from SEOPress & SEOPress Pro SEO plugin to itself. The transfer is instant, and you don't lose any SERP rankings as a result.
 
 * **Google Keyword Suggestion** — When deciding on focus keywords, Rank Math can help you discover more keywords by pulling in keyword suggestions from Google.
 
@@ -219,7 +221,6 @@ Coming Soon!
 	* **Google Site Verification**
 	* Pinterest Site Verification
 	* Norton Safe Web Site Verification
-* **Fix Google Crawl Errors**
 * Advanced **Redirection Manager**
 	* **Smart & Automatic Post Redirects**
 	* 301 Redirection Type
@@ -276,6 +277,8 @@ Coming Soon!
 <a href="https://s.rankmath.com/onewhitereview" target="_blank">Rank Math – The Best SEO Plugin Review</a>
 
 <a href="https://s.rankmath.com/santanureview" target="_blank">#1 SEO Plugin - Rank Math</a>
+
+<a href="https://s.rankmath.com/wmmrm" target="_blank">Detailed setup tutorial</a>
 
 
 ## CONNECT WITH THE TEAM AND SEO EXPERTS ##
@@ -368,7 +371,7 @@ Rank Math requires at least PHP 5.6, cURL lib, cron jobs, to be installed and en
 Yes, as the plugin is provided through WordPress.org, it is available on WordPress.com as well.
 
 = Which Schema type is best for coupon websites? =
-There's no real schema designed specifically for separate discount codes. We would suggest not to use any Schema for coupon codes because doing so might get your site penalized.
+There’s no real Schema Markup designed specifically for separate discount codes. We would suggest not to use any Schema Markup and choose ‘None’ option for coupon codes because not doing so might get your site penalized.
 
 = Why are my images not getting indexed? =
 It is completely normal for Google to not index your submitted images. Sometimes, not even a single submitted images is indexed by Google.
@@ -448,33 +451,24 @@ We look forward to helping you.
 
 == Changelog ==
 
-= 1.0.21 [Mar 19, 2019] =
-* Added Google Search Console Domain Properties support. It replaces sc-domain: with Domain Property: in the sites' dropdown, disables the Sitemaps feature in the GSC module for domain properties (as Google does not have an API for it yet), and adds a note to inform the user about the same
-* Added search form in the GSC dropdown
-* Added a filter to change the number of pasted URLs in the Redirections source (http://i.mythemeshop.com/f4sWd1)
-* Setup Wizard refactored for the speed and efficiency
-* Integrated 404 Monitor Plugin & Rank Math plugin tightly
-* Added missing text in the translation(.pot) file
-* Updated help text for the WooCommerce Tab in the plugin
-* Updated Focus Keyword input placeholder text to Rank Math
-* Fixed WooCommerce product Schema errors
-* Fixed text domain issue for WordPress.org translations
-* Fixed bbPress Sitemaps not working bug
-* Fixed `Sorry, you are not authorized to perform this action` for the multi-site websites
-* Fixed an issue with the redirections where the folder name was automatically added in the Destination URL when someone changed the permalinks
-* Fixed a fatal error occurring on eCommerce websites where WooCommerce was not installed
-* Fixed Robots.txt editor not picking up the values. It was checking the robots_txt option in the wrong section
-* Fixed a bug where the title for the links was getting automatically prefilled as the title for all the other links when edited
-* Fixed a compatibility issue with the AMP plugin
-* Fixed primary keyword detection in the SEO analysis tests. It works as it should have been.
-* Fixed an issue in the Sitemaps where private taxonomies were accessible through direct URLs
-* Fixed the OG/image filter. It works perfectly now
-* Fixed Video Snippet error caused by entering incorrect values
-* Fixed an error with WooCommerce's preview URLs where complete URLs were showing even after enabling the Strip Product Category option
-* Fixed small styling issues in the plugin so it looks better
-* Removed unneeded code
-* Improved backup 'Restore/delete' button style for the Russian language
-* Improved the speed and space usage by removing the custom image sizes code
-* Improved the overall code quality for the upcoming additions coming to the plugin
+= 1.0.33 [Sep 18, 2019] =
+* Added complete ACF support. Simply activate the ACF plugin, and Rank Math will detect the custom fields for Content Analysis. No more tinkering with code
+* Added status and Tools pages for better debugging
+* Added range value for the price field in Service Schema
+* Added some performance fixes to get the plugin ready for an upcoming major update
+* Improved the working of power words, sentiment words and the focus keywords
+* Improved module manager and optimized for speed
+* Changed the default priority to show description text before the excerpts in the Schema data
+* Updated WordPress Helper library to 1.0.8
+* Updated auto keyword suggestion API to the latest version from Google
+* Removed BreadcrumbList Schema from the frontpage to adhere with Google's guidelines
+* Fixed a few tests not running if secondary focus keyword is selected
+* Fixed an Open Graph error on single product pages of WooCommerce
+* Fixed few tests in the SEO Analyzer, so it does not fail on some installations
+* Fixed a warning when filtering the content for missing focus keyword in the title of the post
+* Fixed an issue where WooCommerce variables were not working in the previous version properly
+* Fixed a compatibility issue with the Ultra Seven Theme
+* Fixed the "WordPress Database Error Column 'term_id' in field list is ambiguous" error
+* Fixed an issue where `%currentmonth%` variable was not showing a translated month in the preview
 
-Full changelog can be found here - **[Rank Math SEO changelog](https://rankmath.com/changelog)**
+Full changelog can be found here - **[Rank Math SEO changelog](https://s.rankmath.com/changelog)**
