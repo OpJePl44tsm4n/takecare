@@ -11133,9 +11133,6 @@ article.page-content section.row-0 {
       top: 50%;
       position: absolute;
       mix-blend-mode: multiply; }
-      @media (max-width: 575.98px) {
-        article.page-content section.row-0 .thumb img {
-          display: none; } }
   article.page-content section.row-0 .container .row {
     padding: 1rem; }
     article.page-content section.row-0 .container .row .col-md-6.editor .vertical-align .content {

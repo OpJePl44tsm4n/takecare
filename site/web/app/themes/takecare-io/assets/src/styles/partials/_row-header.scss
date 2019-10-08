@@ -84,10 +84,6 @@ article.page-content {
 			    top: 50%;
 			    position: absolute;
 			    mix-blend-mode: multiply;
-
-			    @include media-breakpoint-down(xs) {
-			    	display: none;
-			    }
 			}
 		}
 
