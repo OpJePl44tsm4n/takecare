@@ -9990,6 +9990,14 @@ form.search-form {
       form.search-form input[type="submit"] {
         width: 98px; } }
 
+.grid-item.search_form {
+  text-align: center; }
+  .grid-item.search_form h2 {
+    padding-bottom: 1em; }
+  .grid-item.search_form form {
+    max-width: 650px;
+    margin: auto; }
+
 button, a {
   outline: 0; }
 

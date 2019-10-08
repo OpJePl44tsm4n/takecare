@@ -19,3 +19,17 @@ form.search-form
 		}
 	}
 }
+
+
+.grid-item.search_form {
+	text-align: center;
+
+	h2 {
+		padding-bottom: 1em;
+	}
+
+	form {
+		max-width: 650px;
+	    margin: auto;
+	}
+}
