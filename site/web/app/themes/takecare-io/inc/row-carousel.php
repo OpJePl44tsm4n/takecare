@@ -40,7 +40,7 @@
 							                </div>
 							                <div class="col-md-7 product-info">
 							                	<div class="content">
-							                		<h2><?php echo sprintf('%s %s', get_the_title(), __('biological olive oil',  TakeCareIo::THEME_SLUG)); ?></h2>
+							                		<h2><?php the_title(); ?></h2>
 							                		<div class="description">
 							                			<?php the_excerpt(); ?>
 							                		</div>

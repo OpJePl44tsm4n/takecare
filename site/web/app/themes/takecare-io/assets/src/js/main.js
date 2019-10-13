@@ -112,7 +112,7 @@ var Brandclick = {
         links = document.querySelectorAll('a[href^="#"]');
 
         for (i = 0; i<links.length; i++ ) {
-            if(links[i].getAttribute('href') === '#') {
+            if(links[i].getAttribute('href') === '#' || Brandclick.hasClass(links[i],'control-btn')) {
                 continue;
             }
             links[i].addEventListener("click", function(e){

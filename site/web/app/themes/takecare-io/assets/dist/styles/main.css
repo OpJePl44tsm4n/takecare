@@ -10023,6 +10023,25 @@ button, a {
     font-size: 1em; }
     .btn.btn-link:hover, .woocommerce a.btn-link.button:hover, .woocommerce button.btn-link.button:hover, .contact.track-phone button.btn-link:hover, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.btn-link.checkout-button.button:hover, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.btn-link.checkout-button.button:hover, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-link.submit:hover, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-link:hover {
       color: #000; }
+  .btn.play-btn, .woocommerce a.play-btn.button, .woocommerce button.play-btn.button, .contact.track-phone button.play-btn, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.play-btn.checkout-button.button, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.play-btn.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.play-btn.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.play-btn {
+    color: inherit !important;
+    padding-left: 1.5em;
+    position: relative;
+    outline: none;
+    width: auto !important; }
+    .btn.play-btn:before, .woocommerce a.play-btn.button:before, .woocommerce button.play-btn.button:before, .contact.track-phone button.play-btn:before, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.play-btn.checkout-button.button:before, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.play-btn.checkout-button.button:before, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.play-btn.submit:before, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.play-btn:before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+      content: '';
+      height: 0;
+      width: 0;
+      border-color: transparent transparent transparent #fff;
+      cursor: pointer;
+      border-style: solid;
+      border-width: .5em 0 .5em .8em; }
   .btn.btn-pill, .woocommerce a.btn-pill.button, .woocommerce button.btn-pill.button, .contact.track-phone button.btn-pill, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.btn-pill.checkout-button.button, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.btn-pill.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-pill.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-pill {
     padding: 4px 8px;
     margin: 4px;
@@ -10362,12 +10381,12 @@ ol:not(.flex-control-nav) {
   counter-reset: list-counter;
   list-style: none;
   padding-left: 0; }
-  ol:not(.flex-control-nav) li {
+  ol:not(.flex-control-nav) li:not(.slider-nav) {
     padding: .5em 0;
     padding-left: 3em;
     position: relative;
     min-height: 3em; }
-    ol:not(.flex-control-nav) li:before {
+    ol:not(.flex-control-nav) li:not(.slider-nav):before {
       content: counter(list-counter);
       counter-increment: list-counter;
       background: #dedede;
@@ -10417,22 +10436,28 @@ video {
 .video-inline {
   position: relative;
   overflow: hidden; }
+  .video-inline .video-wrapper .video-overlay {
+    display: none; }
   .video-inline .video-wrapper:not(.playing) img {
     width: 100%;
+    height: 100%;
     object-fit: cover; }
-  .video-inline .video-wrapper:not(.playing):after {
-    content: '\f144';
-    font-family: FontAwesome;
-    color: #fff;
+  .video-inline .video-wrapper:not(.playing) .video-overlay {
+    display: block;
     position: absolute;
-    font-size: 3em;
-    width: 50px;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    z-index: 12;
-    cursor: pointer; }
+    z-index: 15;
+    bottom: 20%;
+    left: 10%;
+    color: #fff; }
+    .video-inline .video-wrapper:not(.playing) .video-overlay h2 {
+      font-size: 3rem;
+      width: 600px;
+      max-width: 100%;
+      cursor: pointer; }
+      @media (max-width: 767.98px) {
+        .video-inline .video-wrapper:not(.playing) .video-overlay h2 {
+          font-size: 1.2rem;
+          width: 300px; } }
   .video-inline .video-wrapper:not(.playing):before {
     content: '';
     position: absolute;
@@ -10440,7 +10465,7 @@ video {
     top: 0;
     left: 0;
     bottom: 0px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.2);
     z-index: 11;
     cursor: pointer; }
 

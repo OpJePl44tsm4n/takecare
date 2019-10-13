@@ -1,54 +1,19 @@
-<?php get_header(); 
-
-    $logo_id = get_field('company_logo');
-    $logo = wp_get_attachment_image( $logo_id, 'thumb' );
-    $featured_id = get_field('featured_background_image');
-    $featured = wp_get_attachment_image( $featured_id, 'full' );
-    $website = get_field('website');
-    $address = get_field('adress');
-?>
+<?php get_header(); ?>
 
     <main id="content" role="main">
             
         <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); 
 
-            // Get all content 
-            $post_id = get_the_ID(); 
-            $post_meta = get_post_meta($post_id); 
-            
-            echo '<pre>';
-            echo 'business_type';   var_dump(get_post_meta($post_id,'business_type', true));
-            echo 'company_type';   var_dump(get_post_meta($post_id,'company_type', true));
-            echo 'team_size';   var_dump(get_post_meta($post_id,'team_size', true));
-            echo 'main_category';   var_dump(get_post_meta($post_id,'main_category', true));
-            echo 'tags';   var_dump(get_post_meta($post_id,'tags', true));
-            echo 'founder';   var_dump(get_post_meta($post_id,'founder', true));
-            echo 'founder_linkedin';   var_dump(get_post_meta($post_id,'founder_linkedin', true));
-            echo 'team_members';   var_dump(get_post_meta($post_id,'team_members', true));
-            echo 'founded';   var_dump(get_post_meta($post_id,'founded', true));
-
-            echo 'contact_mail';   var_dump(get_post_meta($post_id,'contact_mail', true));
-            echo 'contact_phone';   var_dump(get_post_meta($post_id,'contact_phone', true));
-            echo 'adress';   var_dump(get_post_meta($post_id,'adress', true));
-            echo 'funding_recipient';   var_dump(get_post_meta($post_id,'funding_recipient', true));
-            echo 'funding_investors';   var_dump(get_post_meta($post_id,'funding_investors', true));
-            echo 'funding_currency';   var_dump(get_post_meta($post_id,'funding_currency', true));
-            echo 'funding_raised';   var_dump(get_post_meta($post_id,'funding_raised', true));
-            echo 'funding_type';   var_dump(get_post_meta($post_id,'funding_type', true));
-            echo 'funding_date';   var_dump(get_post_meta($post_id,'funding_date', true));
-            echo 'funding_source';   var_dump(get_post_meta($post_id,'funding_source', true));
-            echo 'call_to_action';   var_dump(get_post_meta($post_id,'call_to_action', true));
-            echo 'location_type';   var_dump(get_post_meta($post_id,'location_type', true));
-            echo 'location';   var_dump(get_post_meta($post_id,'location', true));
-            echo 'youtube_videos';   var_dump(get_post_meta($post_id,'youtube_videos', true));
-            echo 'company_images';   var_dump(get_post_meta($post_id,'company_images', true));
-            echo 'articles';   var_dump(get_post_meta($post_id,'articles', true));
-            echo 'Instagram';   var_dump(get_post_meta($post_id,'instagram', true));
-            echo 'Linkedin';   var_dump(get_post_meta($post_id,'linkedin', true));
-            echo 'Twitter';   var_dump(get_post_meta($post_id,'twitter', true));
-            echo 'Facebook';   var_dump(get_post_meta($post_id,'facebook', true));
-            echo '</pre>';
-            ?>
+            $logo_id = get_field('company_logo');
+            $logo = wp_get_attachment_image( $logo_id, 'thumb' );
+            $featured_id = get_field('featured_background_image');
+            $featured = wp_get_attachment_image( $featured_id, 'full' );
+            $website = get_field('website');
+            $address = get_field('adress');
+            $instagram = get_field('instagram');
+            $linkedin = get_field('linkedin');
+            $twitter = get_field('twitter');
+            $facebook = get_field('facebook'); ?>
 
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> >
                 <section class="header container">
@@ -154,12 +119,68 @@
 
                 <?php if( have_rows('youtube_videos') ): ?>
                     <section class="row media-videos">
-                        <div class="container">
-                            <?php while ( have_rows('youtube_videos') ) : the_row(); 
-                                $video_url = get_sub_field('youtube_url');
-                                $image_id = get_sub_field('video_still');
-                                include(locate_template('inc/partials/video-inline.php'));  
-                            endwhile; ?>
+                        <div class="container-fluid">
+                            <?php
+                            $row_count = 0;
+                            $rows = get_field('youtube_videos');
+                            if (is_array($rows)) {
+                                $row_count = count($rows);
+                            }  
+
+                            if( $row_count > 1 ): 
+
+                                $carousel_slides = '';
+                                $carousel_indicators = '';
+                                $count = 0; 
+
+                                while ( have_rows('youtube_videos') ) : the_row(); 
+                                    $video_url = get_sub_field('youtube_url');
+                                    $image_id = get_sub_field('video_still') ?: $featured_id;
+                                    $video_description = get_sub_field('video_description');
+                                    $active = ($count === 0) ? 'active' : '';
+
+                                    ob_start(); 
+                                    include(locate_template('inc/partials/video-inline.php')); 
+                                    $video = ob_get_clean();
+
+                                    $carousel_slides .= sprintf('<div class="carousel-item %s">
+                                            %s
+                                        </div>',
+                                        $active,
+                                        $video
+                                    );
+
+                                    $carousel_indicators .= '<li class="slider-nav" data-target="#videoCarousel" data-slide-to="'. $count .'" class="'. $active .'">'. ($count + 1) .'</li>';
+                                    $count++;
+                                endwhile; ?>
+
+                                <div id="videoCarousel" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner"><?php echo  $carousel_slides; ?></div>
+
+                                    <a class="carousel-control-prev" href="#videoCarousel" role="button" data-slide="prev"></a>
+                                    <a class="carousel-control-next" href="#videoCarousel" role="button" data-slide="next"></a>
+
+                                    <div class="carousel-controls">
+                                        <a class="control-btn control-prev" href="#videoCarousel" role="button" data-slide="prev">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                        <ol class="carousel-indicators">
+                                            <?php echo $carousel_indicators; ?>
+                                        </ol>
+                                        <a class="control-btn control-next" href="#videoCarousel" role="button" data-slide="next">
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </div>  
+                            <?php else:
+                                while ( have_rows('youtube_videos') ) : the_row(); 
+                                    $video_url = get_sub_field('youtube_url');
+                                    $image_id = get_sub_field('video_still') ?: $featured_id; 
+                                    $video_description = get_sub_field('video_description');
+                                        
+                                    include(locate_template('inc/partials/video-inline.php'));  
+                                endwhile;
+                            endif; ?>
                         </div>
                     </section>
                 <?php endif; ?>
@@ -179,8 +200,8 @@
                                     $title = get_sub_field('title');
                                     $url = get_sub_field('url');
                                     $site_title = get_sub_field('site_title') ?: str_ireplace('www.', '', parse_url($url)['host']);
-                                    $featured_id = get_sub_field('featured_image');
-                                    $featured  = wp_get_attachment_image( $featured_id, 'medium' );
+                                    $img_id = get_sub_field('featured_image');
+                                    $featured  = wp_get_attachment_image( $img_id, 'medium' );
 
                                     if(!$url || !$title) {
                                         continue;

@@ -48,7 +48,7 @@ ol:not(.flex-control-nav) {
     list-style: none;
     padding-left: 0;
     
-    li {
+    li:not(.slider-nav) {
         padding: .5em 0;
 	    padding-left: 3em;
 	    position: relative;
