@@ -55,9 +55,7 @@
 
                     </div>  
                 </section>  
-                <?php 
-                    TakeCareIo::calculate_primary_color(wp_get_attachment_url( $featured_id  ));
-                ?>
+                
                 <section class="row">
                     <div class="container content-sm">
                         <?php the_content(); 

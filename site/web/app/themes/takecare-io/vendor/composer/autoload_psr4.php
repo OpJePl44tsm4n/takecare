@@ -7,5 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Greylabel\\' => array($baseDir . '/func'),
-    '' => array($vendorDir . '/league/color-extractor/src'),
 );

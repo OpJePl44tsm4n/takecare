@@ -8,9 +8,7 @@
             "email": "pim.plaatsman@gmail.com"
         }
     ],
-    "require": {
-        "league/color-extractor": "0.3.*"
-    },
+    "require": {},
     "autoload": {
         "psr-4": {
             "Greylabel\\": "func/"
