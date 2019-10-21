@@ -2,6 +2,9 @@
 
 $loader = require __DIR__ . '/vendor/autoload.php';
 use Greylabel\Greylabel;
+use League\ColorExtractor\Color;
+use League\ColorExtractor\ColorExtractor;
+use League\ColorExtractor\Palette;
 
 class TakeCareIo extends Greylabel {
 	const VERSION = 0.1;
@@ -142,6 +145,24 @@ class TakeCareIo extends Greylabel {
 
         return $grid_array;
     }
+
+
+    public static function calculate_primary_color( $img_url )
+    {   
+       
+        $palette = Palette::fromFilename( $img_url );
+        $topColor= $palette->getMostUsedColors(1);
+
+        // an extractor is built from a palette
+        $extractor = new ColorExtractor($palette);
+
+        // it defines an extract method which return the most “representative” colors
+        $colors = $extractor->extract(5);
+
+        var_dump($topColor , $colors ); 
+    }
+
+
 
 }
 

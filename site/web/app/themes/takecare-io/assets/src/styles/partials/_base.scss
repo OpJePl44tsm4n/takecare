@@ -12,8 +12,7 @@ body {
 	h1 {
 		font-size: 2rem;
 		line-height: 1.5em;
-		font-family: $primary-font-black;
-		text-transform: uppercase;
+		font-family: $primary-font;
 		color: #000;
 		
 		@include media-breakpoint-up(sm) {
@@ -51,6 +50,12 @@ body {
 
 	p {
 		line-height: 2rem;
+
+		&.description {
+			font-size: .9em;
+		    line-height: 1.6em;
+		    padding-top: 1em;
+		}
 	}
 
 	a {

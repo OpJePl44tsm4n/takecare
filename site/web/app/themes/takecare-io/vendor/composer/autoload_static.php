@@ -20,11 +20,16 @@ class ComposerStaticInit4528781b11e3d26b301b5f3409ac499c
         ),
     );
 
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/..' . '/league/color-extractor/src',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit4528781b11e3d26b301b5f3409ac499c::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit4528781b11e3d26b301b5f3409ac499c::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInit4528781b11e3d26b301b5f3409ac499c::$fallbackDirsPsr4;
 
         }, null, ClassLoader::class);
     }

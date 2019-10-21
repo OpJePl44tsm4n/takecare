@@ -118,10 +118,13 @@ var Brandclick = {
             links[i].addEventListener("click", function(e){
                 e.preventDefault(); 
                 link = this.getAttribute('href');
-                element = document.querySelectorAll(link)[0]; 
-                element.scrollIntoView({ 
-                behavior: 'smooth' 
-            });
+                
+                if (link!='#') { 
+                    element = document.querySelectorAll(link)[0]; 
+                    element.scrollIntoView({ 
+                        behavior: 'smooth' 
+                    });
+                }
           }); 
         } 
     }, 

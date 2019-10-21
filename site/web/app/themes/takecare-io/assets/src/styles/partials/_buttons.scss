@@ -10,7 +10,11 @@ button, a {
 	border-radius: 4px;
 	font-weight: 100;  
 	text-decoration: none; 
-	outline:0;
+
+	&:focus{
+        outline: none;
+        box-shadow: unset;
+    }
 
 	@include media-breakpoint-down(sm) {
 		width: 100%;
@@ -25,6 +29,25 @@ button, a {
 		
 		&:hover {
 			color: $primary-text-color;
+		}
+	}
+
+	&.btn-collapse {
+		font-family: $primary-font-bold;
+		padding: 1em 3em 1em 0;
+		position: relative;
+
+		&:after {
+			content: '-';
+			font-size: 1.8em;
+			position: absolute;
+			right: .5em;
+			top: 50%;
+			transform: translateY(-50%)
+		}
+
+		&.collapsed:after  {
+			content: '+';
 		}
 	}
 

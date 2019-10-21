@@ -9391,8 +9391,7 @@ body {
   body h1 {
     font-size: 2rem;
     line-height: 1.5em;
-    font-family: "Encode Sans Narrow Black", sans-serif;
-    text-transform: uppercase;
+    font-family: "Encode Sans Narrow", sans-serif;
     color: #000; }
     @media (min-width: 576px) {
       body h1 {
@@ -9414,6 +9413,10 @@ body {
     margin-bottom: 1.2rem; }
   body p {
     line-height: 2rem; }
+    body p.description {
+      font-size: .9em;
+      line-height: 1.6em;
+      padding-top: 1em; }
   body a {
     color: #000; }
   body a:hover {
@@ -10009,8 +10012,10 @@ button, a {
   padding: 5px 10px;
   border-radius: 4px;
   font-weight: 100;
-  text-decoration: none;
-  outline: 0; }
+  text-decoration: none; }
+  .btn:focus, .woocommerce a.button:focus, .woocommerce button.button:focus, .contact.track-phone button:focus, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.checkout-button.button:focus, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.checkout-button.button:focus, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.submit:focus, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button:focus {
+    outline: none;
+    box-shadow: unset; }
   @media (max-width: 767.98px) {
     .btn, .woocommerce a.button,
     .woocommerce button.button.single_add_to_cart_button, .woocommerce button.button, .contact.track-phone button, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.checkout-button.button, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button {
@@ -10023,6 +10028,20 @@ button, a {
     font-size: 1em; }
     .btn.btn-link:hover, .woocommerce a.btn-link.button:hover, .woocommerce button.btn-link.button:hover, .contact.track-phone button.btn-link:hover, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.btn-link.checkout-button.button:hover, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.btn-link.checkout-button.button:hover, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-link.submit:hover, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-link:hover {
       color: #000; }
+  .btn.btn-collapse, .woocommerce a.btn-collapse.button, .woocommerce button.btn-collapse.button, .contact.track-phone button.btn-collapse, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.btn-collapse.checkout-button.button, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.btn-collapse.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-collapse.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-collapse {
+    font-family: "Encode Sans Narrow SemiBold", sans-serif;
+    padding: 1em 3em 1em 0;
+    position: relative; }
+    .btn.btn-collapse:after, .woocommerce a.btn-collapse.button:after, .woocommerce button.btn-collapse.button:after, .contact.track-phone button.btn-collapse:after, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.btn-collapse.checkout-button.button:after, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.btn-collapse.checkout-button.button:after, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-collapse.submit:after, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-collapse:after {
+      content: '-';
+      font-size: 1.8em;
+      position: absolute;
+      right: .5em;
+      top: 50%;
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%); }
+    .btn.btn-collapse.collapsed:after, .woocommerce a.btn-collapse.collapsed.button:after, .woocommerce button.btn-collapse.collapsed.button:after, .contact.track-phone button.btn-collapse.collapsed:after, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.btn-collapse.collapsed.checkout-button.button:after, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.btn-collapse.collapsed.checkout-button.button:after, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-collapse.collapsed.submit:after, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-collapse.collapsed:after {
+      content: '+'; }
   .btn.play-btn, .woocommerce a.play-btn.button, .woocommerce button.play-btn.button, .contact.track-phone button.play-btn, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.play-btn.checkout-button.button, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.play-btn.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.play-btn.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.play-btn {
     color: inherit !important;
     padding-left: 1.5em;

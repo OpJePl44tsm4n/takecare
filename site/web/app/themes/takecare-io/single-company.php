@@ -17,9 +17,9 @@
 
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> >
                 <section class="header container">
-                    <div class="row">
+                    <div class="row swap-order">
 
-                        <div class="col-sm-4">
+                        <div class="grid-item col-sm-4">
                             <?php 
                                 echo $logo; 
                                 the_title( '<h1>', '</h1>' );
@@ -32,86 +32,98 @@
                                         $output .= '<a class="btn btn-pill" href="' . esc_url( get_category_link( $category->term_id ) ) . '" alt="' . esc_attr( sprintf( __( 'View all compannies in %s', TakeCareIo::THEME_SLUG ), $category->name ) ) . '">' . esc_html( $category->name ) . '</a>' . $separator;
                                     }
                                     echo trim( $output, $separator );
-                                } 
+                                } ?>
 
-                                the_excerpt();
-
-                                if( isset($address['address']) ){
-                                    echo $address['address'];
-                                }
-
-                                if( $website ) {
-                                    echo sprintf('<a class="btn btn-primary" href="%s">%s %s %s</a>', 
-                                        $website,
-                                        __( 'Go to the', TakeCareIo::THEME_SLUG ),
-                                        get_the_title(),
-                                        __( 'website', TakeCareIo::THEME_SLUG )
-                                    );
-                                }
-                            ?>
+                                <p class="description"><?php echo get_the_excerpt(); ?></p>
+                                
+                                <?php if( isset($address['address']) ){ ?>
+                                    <small>
+                                       <?php  $address = explode(',', $address['address']); 
+                                            foreach ($address as $key => $value) {
+                                                echo $value . '</br>';
+                                            }
+                                       ?>
+                                    </small>
+                                <?php } ?>
                         </div>
                     
-                        <div class="col-sm-8">
+                        <div class="grid-item col-sm-8">
                             <?php echo $featured; ?>
                         </div>
                     </div>  
                 </section>  
-
+                <?php 
+                    TakeCareIo::calculate_primary_color(wp_get_attachment_url( $featured_id, 'full' ));
+                ?>
                 <section class="row">
                     <div class="container content-sm">
-                        <?php the_content(); ?>
-                    </div>
+                        <?php the_content(); 
 
-                    <div id="term-list" class="container">
-                        <?php $terms = get_the_terms( $post->ID, 'certificate' );
+                            if( $website ) {
+                                echo sprintf('<a class="btn btn-primary" href="%s">%s %s %s</a>', 
+                                    $website,
+                                    __( 'Go to the', TakeCareIo::THEME_SLUG ),
+                                    get_the_title(),
+                                    __( 'website', TakeCareIo::THEME_SLUG )
+                                );
+                            }
+                        ?>
 
-                        if($terms) {   
-                            $terms_list = [];                   
-                            foreach ( $terms as $term ) {
-                                $parent = $term->parent;
+                        <div id="term-list">
+                            <?php $terms = get_the_terms( $post->ID, 'certificate' );
 
-                                if ($parent === 0) {
-                                    $parent_link_text = get_field('link_text', $term->taxonomy . '_' . $term->term_id);
-                                    $terms_list[$term->term_id]['link_text'] = $parent_link_text; 
-                                } else {
-                                    $linkUrl = get_field('link', $term->taxonomy . '_' . $term->term_id);
-                                    $icon_id = get_field('icon', $term->taxonomy . '_' . $term->term_id);
-                                    $icon  = wp_get_attachment_image( $icon_id, 'thumb' );
+                            if($terms) {   
+                                $terms_list = [];                   
+                                foreach ( $terms as $term ) {
+                                    $parent = $term->parent;
 
-                                    if($linkUrl) {
-                                        $terms_list[$parent]['certs'][$term->term_id]['cert_html'] = '<span class="certificate"><a target="_blank" href="'.$linkUrl.'">'. $icon .'</a></span>';
+                                    if ($parent === 0) {
+                                        $terms_list[$term->term_id]['color'] = get_field('category_color', $term->taxonomy . '_' . $term->term_id);
+                                        $parent_link_text = get_field('link_text', $term->taxonomy . '_' . $term->term_id);
+                                        $terms_list[$term->term_id]['link_text'] = $parent_link_text; 
                                     } else {
-                                        $terms_list[$parent]['certs'][$term->term_id]['cert_html'] = '<span class="certificate">'. $icon .'</span>';
+                                        $linkUrl = get_field('link', $term->taxonomy . '_' . $term->term_id);
+                                        $icon_id = get_field('icon', $term->taxonomy . '_' . $term->term_id);
+                                        $icon  = wp_get_attachment_image( $icon_id, 'thumb' );
+
+                                        if($linkUrl) {
+                                            $terms_list[$parent]['certs'][$term->term_id]['cert_html'] = '<span class="certificate"><a target="_blank" href="'.$linkUrl.'">'. $icon .'</a></span>';
+                                        } else {
+                                            $terms_list[$parent]['certs'][$term->term_id]['cert_html'] = '<span class="certificate">'. $icon .'</span>';
+                                        }
+                                        
                                     }
+                                } 
+                            }
+
+                            foreach ($terms_list as $term => $value) {
+                                if(isset($value['certs'])) {
+                                    $cert_count = count($value['certs']); ?>
                                     
-                                }
-                            } 
-                        }
+                                    <div class="term-collapse">
+                                        <button class="btn btn-collapse collapsed" 
+                                            style="color:<?php echo $value['color']; ?>;"
+                                            data-toggle="collapse" 
+                                            data-target="#term-<?php echo $term; ?>" 
+                                            aria-expanded="false" 
+                                            aria-controls="term-<?php echo $term; ?>"> <?php echo str_replace( '{count}', $cert_count, $value['link_text'] ); ?>
+                                        </button>
 
-
-                        foreach ($terms_list as $term => $value) {
-                            if(isset($value['certs'])) {
-                                $cert_count = count($value['certs']); ?>
-                                
-                                <div class="term-collapse">
-                                    <button class="btn collapsed" 
-                                        data-toggle="collapse" 
-                                        data-target="#term-<?php echo $term; ?>" 
-                                        aria-expanded="false" 
-                                        aria-controls="term-<?php echo $term; ?>"> <?php echo str_replace( '{count}', $cert_count, $value['link_text'] ); ?>
-                                    </button>
-
-                                    <div id="term-<?php echo $term; ?>" class="collapse" data-parent="#term-list">
-                                        <?php foreach ($value['certs'] as $term => $value) { 
-                                            echo $value['cert_html'];
-                                        } ?>
+                                        <div id="term-<?php echo $term; ?>" class="collapse" data-parent="#term-list">
+                                            <?php foreach ($value['certs'] as $term => $value) { 
+                                                echo $value['cert_html'];
+                                            } ?>
+                                        </div>
                                     </div>
-                                </div>
 
-                            <?php } 
-                        } ?>
-                          
+                                <?php } 
+                            } ?>
+                              
+                        </div>
+
                     </div>
+
+                    
                 </section>
 
 
