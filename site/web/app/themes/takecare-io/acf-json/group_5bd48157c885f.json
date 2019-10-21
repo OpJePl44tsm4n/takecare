@@ -304,8 +304,8 @@
         },
         {
             "key": "field_5c49cdef7071a",
-            "label": "Featured Background Image",
-            "name": "featured_background_image",
+            "label": "Main header image",
+            "name": "main_header_image",
             "type": "image",
             "instructions": "",
             "required": 0,
@@ -1213,5 +1213,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1570285032
+    "modified": 1571687935
 }

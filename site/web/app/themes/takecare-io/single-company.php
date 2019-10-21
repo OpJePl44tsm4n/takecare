@@ -6,7 +6,7 @@
 
             $logo_id = get_field('company_logo');
             $logo = wp_get_attachment_image( $logo_id, 'thumb' );
-            $featured_id = get_field('featured_background_image');
+            $featured_id = get_field('main_header_image');
             $featured = wp_get_attachment_image( $featured_id, 'full' );
             $website = get_field('website');
             $address = get_field('adress');
@@ -46,14 +46,17 @@
                                     </small>
                                 <?php } ?>
                         </div>
-                    
-                        <div class="grid-item col-sm-8">
-                            <?php echo $featured; ?>
-                        </div>
+                        
+                        <?php if($featured): ?>
+                            <div class="grid-item col-sm-8">
+                                <?php echo $featured; ?>
+                            </div>
+                        <?php endif; ?>
+
                     </div>  
                 </section>  
                 <?php 
-                    TakeCareIo::calculate_primary_color(wp_get_attachment_url( $featured_id, 'full' ));
+                    TakeCareIo::calculate_primary_color(wp_get_attachment_url( $featured_id  ));
                 ?>
                 <section class="row">
                     <div class="container content-sm">
