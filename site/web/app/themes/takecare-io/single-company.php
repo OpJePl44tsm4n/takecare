@@ -9,11 +9,7 @@
             $featured_id = get_field('main_header_image');
             $featured = wp_get_attachment_image( $featured_id, 'full' );
             $website = get_field('website');
-            $address = get_field('adress');
-            $instagram = get_field('instagram');
-            $linkedin = get_field('linkedin');
-            $twitter = get_field('twitter');
-            $facebook = get_field('facebook'); ?>
+            $address = get_field('adress'); ?>
 
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> >
                 <section class="header container">
@@ -44,7 +40,22 @@
                                             }
                                        ?>
                                     </small>
-                                <?php } ?>
+                                <?php } 
+
+                                    $socials = ['linkedin', 'twitter', 'facebook', 'instagram']; 
+                                    $list_items = '';
+
+                                    foreach ($socials as $social) {
+                                        if ($url = get_field( $social ) ) {  
+                                            $list_items .= '<li><a class="social-btn" href="'. $url .'"><i class="fa fa-' . $social . '"></i></a></li>'; 
+                                        }
+                                    }
+                                 
+                                    if ( $list_items ) {
+                                        echo '<ul class="socials">' . $list_items . '</ul>'; 
+                                    }
+
+                                ?>
                         </div>
                         
                         <?php if($featured): ?>

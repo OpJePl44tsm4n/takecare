@@ -8,17 +8,14 @@ ul.socials {
 	
 	a {
 		position: relative; 
-		border: 1px solid darken($tertiary-bg-color, 20%);
 		display: inline-block; 
 		height: 30px;
 		width: 30px;
 		border-radius: 50%; 
-		background: darken($tertiary-bg-color, 20%); 
-		color: $primary-color;
+		color:  darken($tertiary-bg-color, 20%);
 		padding: 5px; 
 
 		&:hover {
-			background: $primary-bg-color;	
 			color: $primary-color;
 		}
 
