@@ -9,7 +9,7 @@
             $featured_id = get_field('main_header_image');
             $featured = wp_get_attachment_image( $featured_id, 'full' );
             $website = get_field('website');
-            $address = get_field('adress'); ?>
+            $address_obj = get_field('adress'); ?>
 
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> >
                 <section class="header container">
@@ -32,9 +32,9 @@
 
                                 <p class="description"><?php echo get_the_excerpt(); ?></p>
                                 
-                                <?php if( isset($address['address']) ){ ?>
+                                <?php if( isset($address_obj['address']) ){ ?>
                                     <small>
-                                       <?php  $address = explode(',', $address['address']); 
+                                       <?php  $address = explode(',', $address_obj['address']); 
                                             foreach ($address as $key => $value) {
                                                 echo $value . '</br>';
                                             }
@@ -262,7 +262,7 @@
                     <div class="container-fluid">
       
                         <?php 
-                        $focus_point = $address;
+                        $focus_point = $address_obj;
                         $popup_content = sprintf("<h3>%s</h3>", get_the_title() );
                         $zoom_level = 10;
                                     
