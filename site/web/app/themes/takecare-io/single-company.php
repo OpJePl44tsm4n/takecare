@@ -229,7 +229,7 @@
                                     $img = wp_get_attachment_image( $image_id, 'full' );
                                     $class = 'col-md-6';
 
-                                    if($img_count % 4 == 0){
+                                    if($img_count % 3 == 0){
                                         $class = 'col-md-10';
                                     }
                                     
