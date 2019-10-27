@@ -72,7 +72,7 @@
                         <?php the_content(); 
 
                             if( $website ) {
-                                echo sprintf('<a class="btn btn-primary" href="%s">%s %s %s</a>', 
+                                echo sprintf('<a class="btn btn-primary" target="_blank" href="%s">%s %s %s</a>', 
                                     $website,
                                     __( 'Go to the', TakeCareIo::THEME_SLUG ),
                                     get_the_title(),
@@ -106,29 +106,30 @@
                                         
                                     }
                                 } 
-                            }
+                       
 
-                            foreach ($terms_list as $term => $value) {
-                                if(isset($value['certs'])) {
-                                    $cert_count = count($value['certs']); ?>
-                                    
-                                    <div class="term-collapse">
-                                        <button class="btn btn-collapse collapsed" 
-                                            style="color:<?php echo $value['color']; ?>;"
-                                            data-toggle="collapse" 
-                                            data-target="#term-<?php echo $term; ?>" 
-                                            aria-expanded="false" 
-                                            aria-controls="term-<?php echo $term; ?>"> <?php echo str_replace( '{count}', $cert_count, $value['link_text'] ); ?>
-                                        </button>
+                                foreach ($terms_list as $term => $value) {
+                                    if(isset($value['certs'])) {
+                                        $cert_count = count($value['certs']); ?>
+                                        
+                                        <div class="term-collapse">
+                                            <button class="btn btn-collapse collapsed" 
+                                                style="color:<?php echo $value['color']; ?>;"
+                                                data-toggle="collapse" 
+                                                data-target="#term-<?php echo $term; ?>" 
+                                                aria-expanded="false" 
+                                                aria-controls="term-<?php echo $term; ?>"> <?php echo str_replace( '{count}', $cert_count, $value['link_text'] ); ?>
+                                            </button>
 
-                                        <div id="term-<?php echo $term; ?>" class="collapse" data-parent="#term-list">
-                                            <?php foreach ($value['certs'] as $term => $value) { 
-                                                echo $value['cert_html'];
-                                            } ?>
+                                            <div id="term-<?php echo $term; ?>" class="collapse" data-parent="#term-list">
+                                                <?php foreach ($value['certs'] as $term => $value) { 
+                                                    echo $value['cert_html'];
+                                                } ?>
+                                            </div>
                                         </div>
-                                    </div>
+                                    <?php } 
+                                } 
 
-                                <?php } 
                             } ?>
                               
                         </div>
@@ -162,6 +163,10 @@
                                     $image_id = get_sub_field('video_still') ?: $featured_id;
                                     $video_description = get_sub_field('video_description');
                                     $active = ($count === 0) ? 'active' : '';
+
+                                    if(!$video_url) {
+                                        continue;
+                                    }
 
                                     ob_start(); 
                                     include(locate_template('inc/partials/video-inline.php')); 
@@ -202,9 +207,38 @@
                                     $image_id = get_sub_field('video_still') ?: $featured_id; 
                                     $video_description = get_sub_field('video_description');
                                         
+                                    if(!$video_url) {
+                                        continue;
+                                    }
+
                                     include(locate_template('inc/partials/video-inline.php'));  
                                 endwhile;
                             endif; ?>
+                        </div>
+                    </section>
+                <?php endif; ?>
+                
+                 <?php if( have_rows('company_images') ): ?>
+                    <section class="image-gallery">
+                        <div class="container">
+                            <div class="row">
+                            <?php 
+                                $img_count = 0; 
+                                while ( have_rows('company_images') ) : the_row(); 
+                                    $image_id = get_sub_field('image');
+                                    $img = wp_get_attachment_image( $image_id, 'full' );
+                                    $class = 'col-md-6';
+
+                                    if($img_count % 4 == 0){
+                                        $class = 'col-md-10';
+                                    }
+                                    
+                                    printf('<div class="%s img"><div class="thumb">%s</div></div>', $class, $img );
+
+                                    $img_count++;
+                                endwhile;
+                            ?>
+                            </div>
                         </div>
                     </section>
                 <?php endif; ?>

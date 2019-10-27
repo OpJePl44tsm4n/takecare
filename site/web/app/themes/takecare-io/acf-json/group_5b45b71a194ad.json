@@ -1030,25 +1030,6 @@
             "ui_off_text": ""
         },
         {
-            "key": "field_5bbdb8da58d75",
-            "label": "Jungle",
-            "name": "jungle",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "10",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 0,
-            "ui": 0,
-            "ui_on_text": "",
-            "ui_off_text": ""
-        },
-        {
             "key": "field_5b4c9cbda25e5",
             "label": "Background Color",
             "name": "background_color",
@@ -1063,17 +1044,15 @@
             },
             "choices": {
                 "primary-bg-color": "Primary <span style=\"background:#fff;height: 10px;padding: 0px;display: inline-block;width: 40px;border: 1px solid #dedede;\"><\/span>",
-                "secondary-bg-color": "Secondary <span style=\"background:#F9ED1A;height: 10px;padding: 0px;display: inline-block;width: 40px;border: 1px solid #dedede;\"><\/span>",
-                "tertiary-bg-color": "Tertiary <span style=\"background:#F1F0F1;height: 10px;padding: 0px;display: inline-block;width: 40px;border: 1px solid #dedede;\"><\/span>",
-                "quaternary-bg-color": "Black <span style=\"background: #000000; height: 10px; padding: 0px; display: inline-block; width: 40px; border: 1px solid #dedede;\">",
-                "quinary-bg-color": "Black\/Grey Gradient <span style=\"background: linear-gradient(90deg,#000 0,#313131 100%); height: 10px; padding: 0px; display: inline-block; width: 40px; border: 1px solid #dedede;\">"
+                "secondary-bg-color": "Secondary <span style=\"background:#0085A3;height: 10px;padding: 0px;display: inline-block;width: 40px;border: 1px solid #dedede;\"><\/span>",
+                "tertiary-bg-color": "Tertiary <span style=\"background:#E2F2F7;height: 10px;padding: 0px;display: inline-block;width: 40px;border: 1px solid #dedede;\"><\/span>"
             },
             "allow_null": 0,
             "other_choice": 0,
-            "save_other_choice": 0,
             "default_value": "",
             "layout": "vertical",
-            "return_format": "value"
+            "return_format": "value",
+            "save_other_choice": 0
         },
         {
             "key": "field_5bbde6b9c886f",
@@ -1155,5 +1134,5 @@
     "hide_on_screen": "",
     "active": 0,
     "description": "",
-    "modified": 1549453535
+    "modified": 1572184497
 }

@@ -24,12 +24,13 @@
 			<?php if ($row_title = get_sub_field('title') ): ?>
 				<header>
 					<div class="d-flex justify-content-start">
-						<div class="mr-auto"><h2><?php echo $row_title;?></h2></div>
-						<?php echo sprintf('<a href="%s">%s <i class="fa fa-angle-right"></i></a>',
+						<div class="mr-auto">
+							<h2><?php echo $row_title;?></h2>
+							<?php echo sprintf('<a href="%s">%s <i class="fa fa-angle-right"></i></a>',
 								get_post_type_archive_link( 'post' ), 
-								__('View all articles', TakeCareIo::THEME_SLUG )
-							);	
-						?>
+								__('View all items', TakeCareIo::THEME_SLUG )
+							); ?>
+						</div>
 					</div>
 				</header>
 			<?php endif; ?>

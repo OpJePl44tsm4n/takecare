@@ -8,6 +8,14 @@
     }
 }
 
+.mc-signup {
+    text-align: center;
+
+    h2 {
+        margin-bottom: 1.2em;
+    }
+}
+
 
 #mc_embed_signup form {
     padding: 0;
@@ -95,14 +103,6 @@
 
         #mce-responses {
             line-height: 1.5em;
-        }
-    }
-}
-
-body.home {
-    #mc_embed_signup form {
-        input {
-            padding: 9px 15px 8px; 
         }
     }
 }

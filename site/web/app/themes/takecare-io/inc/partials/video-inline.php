@@ -12,7 +12,7 @@ if ($video_id !== '') { ?>
 
 <div class="video-inline">
 	<div class="video-wrapper" data-player="player-<?php echo $image_id; ?>" data-video-id="<?php echo $video_id; ?>">
-		<?php echo wp_get_attachment_image( $image_id, 'large' ); ?>
+		<?php echo wp_get_attachment_image( $image_id, 'full' ); ?>
 
 		<?php if( isset($video_description) && $video_description ): ?>
             <div class="video-overlay">
