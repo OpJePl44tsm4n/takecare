@@ -34,17 +34,17 @@
 	
 		&.collapsing,
 		&.collapse.show {
-			background: $background-gradient-black;
+			background: $primary-bg-color;
 			z-index: 6;
 			padding: 0 0 25px;
 			overflow: scroll;
 			
 			.close-btn {
 				padding: 0.5rem 1rem;
-				background: $background-gradient-black;
+				background: $primary-bg-color;
 				
 				button {
-					color: $primary-bg-color;
+					color: $secondary-bg-color;
 					padding: 1rem;
 					margin-left: -4%!important;
 					margin-right: -0.5rem;
@@ -88,7 +88,7 @@
 						}
 
 						&.active {
-							color: lighten( $primary-text-color ,45%);
+							color: $secondary-bg-color;
 						}
 					}
 
@@ -167,7 +167,7 @@
 					}
 
 					&.active {
-						color: $primary-color;
+						color: $secondary-bg-color;
 					} 
 				}
 				
@@ -194,7 +194,7 @@
 			}
 
 			&.active a {
-				color: #fff;
+				color: $secondary-bg-color;
 				text-decoration: underline;
 			}
 
