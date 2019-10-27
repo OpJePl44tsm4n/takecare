@@ -9508,8 +9508,7 @@ div.aligncenter {
   margin: 5px 20px 20px 0; }
 
 article.page-content .content {
-  width: 100%;
-  text-align: left; }
+  width: 100%; }
 
 article.page-content .content-sm {
   max-width: 750px; }
@@ -9978,13 +9977,13 @@ form.search-form {
       form.search-form input[type="submit"] {
         width: 98px; } }
 
-.grid-item.search_form {
+.grid-item.search_form h2 {
+  padding-bottom: 1em;
   text-align: center; }
-  .grid-item.search_form h2 {
-    padding-bottom: 1em; }
-  .grid-item.search_form form {
-    max-width: 650px;
-    margin: auto; }
+
+.grid-item.search_form form {
+  max-width: 650px;
+  margin: auto; }
 
 button, a {
   outline: 0; }

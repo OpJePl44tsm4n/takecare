@@ -3,15 +3,9 @@ article.page-content {
 
 	.content {
 		width: 100%;
-		text-align: left;
 
 		.header_txt_gone {
 			@include media-breakpoint-down(xs) {
-			}
-		}
-
-		p {
-			&:last-child {
 			}
 		}
 	}
