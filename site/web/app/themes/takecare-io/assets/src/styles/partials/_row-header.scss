@@ -4,6 +4,16 @@ article.page-content {
 		padding: 1rem;
 		margin-bottom: 2rem;
 		font-family: $primary-font-light;
+		
+		&.img-bg {
+			.container {
+				z-index: 2;
+
+				h1, h2, p {
+					color: $primary-bg-color;
+				}
+			}
+		}
 
 		&.about {
 			.thumb {
@@ -84,6 +94,7 @@ article.page-content {
 			    top: 50%;
 			    position: absolute;
 			    mix-blend-mode: multiply;
+			    filter: brightness(70%);
 			}
 		}
 

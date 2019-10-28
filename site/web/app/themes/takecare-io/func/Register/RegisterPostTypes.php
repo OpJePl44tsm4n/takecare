@@ -4,6 +4,22 @@ use Greylabel\Greylabel;
 
 class RegisterPostTypes {
 
+
+    public function __construct()
+    { 
+        // Filters
+        add_filter('register_taxonomy_args',                 array( $this, 'filter__modify_category_args'), 99, 2  );
+    }
+
+
+    public function filter__modify_category_args( $args, $taxonomy )
+    {
+        if( ( 'category' === $taxonomy || 'tag' === $taxonomy ) && is_array( $args ) ) {
+            $args['rewrite']['with_front'] = false;
+        }
+        return $args;
+    }
+
     /**
     *   register new post types 
     */
@@ -94,7 +110,7 @@ class RegisterPostTypes {
             'company',
             array(
                 'label'                 => __( 'City', Greylabel::THEME_SLUG ),
-                'rewrite'               => array( 'slug' => 'city' ),
+                'rewrite'               => array( 'slug' => 'city', 'with_front' => false ),
                 'hierarchical'          => true,
                 'show_admin_column'     => true,
                 'public'                => true,
@@ -108,29 +124,17 @@ class RegisterPostTypes {
             'company',
             array(
                 'label'                 => __( 'Certificate', Greylabel::THEME_SLUG ),
-                'rewrite'               => array( 'slug' => 'certificate' ),
+                'rewrite'               => array( 'slug' => 'certificate', 'with_front' => false  ),
                 'hierarchical'          => true,
                 'show_admin_column'     => true,
                 'public'                => true,
                 'show_in_rest'          => false,
                 'has_archive'           => false,
+
             )
         );
 
-        register_taxonomy(
-            'style',
-            'company',
-            array(
-                'label'                 => __( 'Style', Greylabel::THEME_SLUG ),
-                'rewrite'               => array( 'slug' => 'style' ),
-                'hierarchical'          => true,
-                'show_admin_column'     => true,
-                'public'                => true,
-                'show_in_rest'          => false,
-                'has_archive'           => false,
-            )
-        );
-                 
+    
     } 
 
 }

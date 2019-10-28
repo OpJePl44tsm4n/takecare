@@ -1,42 +1,32 @@
 <?php get_header(); 
 $next_post = true; 
 $category = get_query_var( 'cat' );
-$taxonomy = get_query_var( 'taxonomy' ) ?: 'category';
-$featured_id = $category ? get_field('featured_image', $taxonomy . '_' . $category) : false;
-$featured = wp_get_attachment_image( $featured_id, 'full' );
+$taxonomy = get_query_var( 'taxonomy' );
 
-// if($taxonomy !== '') {
-//    $category = get_term_by('slug', get_query_var('term'), $taxonomy) ; 
-//    $category = $category ? $category->term_id : '';
-// }
+if($taxonomy !== '') {
+   $category = get_term_by('slug', get_query_var('term'), $taxonomy) ; 
+   $category = $category ? $category->term_id : '';
+}
 
 $offset = get_query_var('posts_per_page');
 ?>
 
     <main id="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
-
+        
         <?php if ( have_posts() ) : ?> 
-   
+            
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> itemscope itemtype="http://schema.org/Article">
                 
-                <section class="row row-0 <?php echo $featured ?  'img-bg' : '' ?>">
-                    
-                    <?php if( $featured ) { ?>
-                        <div class="thumb">
-                            <?php echo $featured; ?>
-                        </div>
-                    <?php } ?>
-
-                    <div class="container content-sm">
-                        <div class="m-auto"><h1><?php echo get_the_archive_title(); ?></h1></div>
-                        <?php echo get_the_archive_description(); ?> 
-                    </div>
-
-                </section>    
-       
-
                 <section class="row post-grid">
                     <div class="container">
+                        
+                        <?php if($description = get_the_archive_title()): ?>
+                            <header>
+                                <div class="d-flex justify-content-start">
+                                    <div class="mr-auto"><h1><?php echo $description; ?></h1></div>
+                                </div>  
+                            </header>
+                        <?php endif; ?>
 
                         <div class="row justify-content-md-center">
                             <?php while ( have_posts() ) : the_post();
