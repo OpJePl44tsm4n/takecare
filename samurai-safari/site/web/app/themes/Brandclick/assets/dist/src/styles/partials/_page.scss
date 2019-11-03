@@ -1,0 +1,303 @@
+.product-template-default{
+
+	.description-products{
+		margin-bottom:85px;
+	}
+
+	.cart{
+		float: right;
+	}
+
+	.title{
+		font-size:22px;
+	}
+	.ul1{
+		line-height:39px;
+		font-size:15px;
+	}
+}
+
+@media only screen and(max-width: 600px){
+	.product-template-default{
+		.quantity{
+			.qty{
+			visibility:hidden;
+		    }
+		}
+	}
+
+	article.page-content{
+
+		.content{
+			.carousel-heading{
+				font-size: 21px !important;
+				letter-spacing: 5px !important;
+			}
+		}
+
+		.contact-form{
+			display:grid;
+
+			.container{
+				.row{
+					.contact_form{
+						order:2;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+article.page-content {
+	
+	.content {
+		width: 100%;
+	}
+
+	.mailchimp-form{
+		.row{
+			text-align: center;
+		}
+	}
+	
+	.usp-blocks {
+	    img {
+	        height: 90px;
+	        width: auto;
+	    }
+	    
+	    h4 {
+	        height: 3em;
+	        padding: .5em 0;
+	    }
+	}
+
+	@include media-breakpoint-down(sm) {
+		.content p {
+			text-align: left;
+		}
+	}
+
+
+	> section.row {
+		padding: 2em 0;
+
+		&:first-child {
+			padding-top: 7em;
+		}
+
+		&:last-child {
+			padding-bottom: 4em;
+		}
+		
+		@include media-breakpoint-up(sm) {
+			padding: 2em 0 3em;
+		}
+	}
+
+	.contact-us{
+
+		.content{
+			margin: auto;
+		}
+	}
+
+	section.row {
+
+		header {
+			text-align: center;
+			margin: 0 auto;
+			padding-bottom: 1em;
+
+			p {
+				max-width: 500px;
+				margin: auto; 
+			}
+
+			a {
+				i {
+					padding-left: 6px;
+				}
+			}
+		}
+
+		&.content-block {
+			
+			p {
+				a:not(.btn) {
+					text-decoration: underline;	
+				}
+			}
+			
+			.editor,
+			.slider_reviews {
+				h2 {
+					font-size: 1.6rem;
+					line-height: 1.2em;
+					padding-bottom: 0.4em;
+					letter-spacing: .15em;
+					text-transform: uppercase;
+					
+					@include media-breakpoint-up(sm) {
+						font-size: 2.1rem;
+					}
+				}
+				
+			}
+
+			.single_image {
+				text-align: center;
+				
+				@include media-breakpoint-down(sm) {
+					padding-top: 2rem;
+				}
+			}
+
+
+
+			.editor {
+
+				h1, h2 {
+					letter-spacing: .3em;
+				} 		
+						
+				&.col-md-12 {
+					max-width: 800px;
+					margin: auto;
+				}
+
+				table {
+				    thead {
+				        background: $primary-color;
+				        color: $secondary-text-color;
+				        th {
+				            border: 1px solid $primary-color;
+				            padding: .4em
+				        }
+				    }
+				    
+				    tbody td {
+				        border: 1px solid lighten($primary-color, 50%); 
+				        padding: .4em
+				    }
+				}
+			}
+
+			@include media-breakpoint-down(sm) {
+				.faq_list + .faq_list {
+					margin: 2em 0 -2em;
+				}
+			}
+
+			.vertical-align {
+				display: flex;
+	    		align-items: center;
+			}
+		}
+
+		&.block-carousel h2 {
+			position: relative;
+			
+			&:after {
+				position: absolute; 
+				top: -3.5em;
+    			right: -3%;
+				content: '';
+				background-repeat: no-repeat;
+				background-position: bottom right, 44% 0%;
+				background-size: 100%, 35%;
+				width: 90px; 
+				height: 90px;
+
+				@include media-breakpoint-up(md) {
+					top: -5em;
+	    			right: -3%;
+	    			width: 160px; 
+					height: 160px;
+				}
+
+				@include media-breakpoint-up(lg) {
+					top: -5em;
+	    			right: -3%;
+	    			width: 200px; 
+					height: 200px;
+				}
+			}
+		}
+		&.product-grid {
+			@include media-breakpoint-up(xl) {
+				background-size: 9.5em;
+				background-repeat: no-repeat;
+				background-position: 1% 79%;
+			}			
+			header {
+				text-align: left;
+				letter-spacing: .3em;
+
+				.justify-content-start{
+					a{
+						visibility:hidden;
+					}
+				}
+
+				.woocommerce {
+					ul.products {
+						display: flex;
+						justify-content: space-evenly;
+					}
+				}
+			}
+		}
+		
+		@include media-breakpoint-up(md) {
+			&.about {
+				a.btn {
+			    	margin-bottom: 7em;
+			    }
+			}
+		}	
+		
+		@include media-breakpoint-up(sm) {
+			&.about {
+			    padding: 6em 0 0em;
+			    background-size: 25%;
+			}
+
+			&.contact { 
+				.editor {
+					padding-top: 2em;
+				}
+			}
+
+			&.video-header {
+				margin-bottom: 6em;
+
+				> .container {
+					margin-bottom: -8em;
+				}
+			}
+		}
+	}
+
+}
+
+.content_slider{
+	padding-bottom:8em;
+
+	.content{
+		header{
+			padding-bottom:3em !important;
+			padding-top:4em !important;
+		}
+	}
+}
+
+.desktop-video{
+	@include media-breakpoint-down(md){		
+
+		visibility:hidden;
+		width:0px;
+	}
+}

@@ -1,0 +1,11 @@
+# Application
+web/app/upgrade
+web/app/uploads/
+
+
+# Dotenv
+.env
+.env.*
+!.env.example
+
+google_config_key.json  

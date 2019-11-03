@@ -1,0 +1,128 @@
+
+footer#footer {
+	background: $primary-color;
+	padding: 40px 0; 
+	font-size: 0.8em;
+	line-height: 1.8em;
+	margin-top: 1em;
+	text-align: center;
+
+	@include media-breakpoint-down(sm) {
+		text-align: center;
+	}
+
+	.widget {
+		color: $primary-bg-color;
+		margin: auto;
+		padding: 1em 0;
+		
+		&:not(.widget_media_image) {
+			@extend .col-sm; 
+		}	
+
+		&.widget_media_image {
+			@extend .col-lg-4;
+			text-align: center; 
+
+			@include media-breakpoint-down(sm) {
+				order:2;
+			}
+		}
+		
+		&.widget_nav_menu {
+			@include media-breakpoint-down(sm) {
+				text-decoration: underline;
+				width: 50%;
+				text-align:center;
+				line-height:35px;
+				font-size:13px;
+			}
+		}
+
+		h2 {
+			color: $primary-bg-color;
+			font-size: 1rem;
+			text-align: left;
+		}
+
+		p {
+			display: inline-block;
+		}
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		text-align: left;
+		margin:auto;
+		white-space: nowrap;
+
+		@include media-breakpoint-down(sm){
+			width: 25%;
+		}
+	}
+
+	a {
+		color: $primary-bg-color;
+	}
+	
+	.mc-field-group {
+		position: relative;
+	    padding-top: .9em;
+	    input,
+	    button {
+	        padding: 5px 15px 9px; 
+	    }
+	    
+	    div.mce_inline_error {
+	        position: absolute;
+	        top: -10px;
+	        padding: 0;
+	        margin: 0; 
+	        background: none;
+	        color: red;    
+	    }     
+	}
+	
+	@media only screen and (max-width: 600px){
+		.widget_text{
+			display:grid;
+		}
+		.widget{
+			.textwidget{
+				display: contents;
+			}
+		}
+
+		ul.socials{
+			position:relative;
+			top:-12px;
+			order:-1;
+			width: 100%;
+			text-align: center; 
+			
+			li {
+				padding: 0 2em;	
+			
+				a{
+					color:#E44682 !important;
+					margin-bottom: 21px;
+
+					i{
+						font-size:40px;
+					}
+				}
+			}
+		}	
+
+	}
+
+	ul.socials{
+	 	a{
+	 		i{
+	 			font-size: 30px;
+	 		}
+	 	}
+	}
+	
+}

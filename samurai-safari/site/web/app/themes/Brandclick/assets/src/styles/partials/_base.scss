@@ -1,0 +1,188 @@
+
+body {
+
+	font-family: $primary-font-light;
+	font-size: $base-font-size;
+	font-smoothing: antialiased;
+	line-height: $base-line-height;
+	letter-spacing: $base-letter-spacing;	
+	
+	&.scroll-lock {
+		overflow: hidden;
+	}
+	
+	h1 {
+		font-size: 1.7rem;
+		line-height: 1.1em;
+		font-family: $primary-font-light;
+		color: $primary-color;
+		padding-bottom: 0.4em;
+
+		@include media-breakpoint-up(sm) {
+			font-size: 2.6rem;
+		}
+	}
+	
+	h2 {
+		font-size: 1.6rem;
+		font-family: $primary-font-light;
+	}
+
+	h4 {
+		font-family: $primary-font-bold;
+		font-size: 1.3rem;
+	}
+
+	p{
+		font-family:$primary-font-light;
+	}
+
+
+	a {
+		color: $primary-color;
+		text-decoration: none;
+	}
+
+	ul {
+		padding: 0px 1em;
+	}
+
+	img, 
+	input {
+		max-width: 100%;
+		height: auto;
+	}
+
+	iframe {
+  		max-width: 100% !important;
+  		width: 100%;
+  		height: 0;
+
+  		@include media-breakpoint-down(sm){
+  			height: stretch;
+  		}
+	}
+
+	b, strong {
+	  	font-family: $primary-font-bold;
+	}
+
+	.hidden {
+		display: none; 
+	}
+
+	.mobile-center {
+		@include media-breakpoint-down(sm) {
+			text-align: center;
+		}
+	}
+	
+	.secondary-bg-color {
+		background: $theme-grey; 
+		background: linear-gradient(to right, $theme-grey 0%, $theme-grey 24%, $secondary-text-color 65%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	}
+
+	.gradient-pink {
+		background: $theme-pink; 
+		background: linear-gradient(to right, $theme-pink 0%, $theme-pink 40%, $theme-peach 100%);
+	}
+	
+	.gradient-blue {
+		background: $theme-blue; 
+		background: linear-gradient(to right, $theme-blue 0%, $theme-blue 40%, $theme-purple 100%);
+	}
+
+	.gradient-blue-light {
+		background: $theme-blue-light; 
+		background: linear-gradient(to right, $theme-blue-light 0%, $theme-blue-light 40%, $theme-purple-light 100%);
+	} 
+
+	.gradient-green {
+		background: $theme-green; 
+		background: linear-gradient(to right, $theme-green 0%, $theme-green 40%, $theme-blue-grey 100%);
+	}
+
+	div.wpcf7 .ajax-loader { 
+		background: none;
+		font-family: 'FontAwesome';
+		position: relative;
+		&::before {
+			color: $primary-color;
+			content: '\f110';
+			position: absolute;
+			animation: rotate 2s infinite;
+			animation-timing-function: linear;
+		}
+	}
+
+	.brand-wrapper {
+		text-align: left;
+		display: inline-block;
+
+		@include media-breakpoint-down(md) {
+		    transform: scale(0.85);
+		    z-index: 22;
+		    margin-top: 0px;
+		}
+		.img-fluid{
+			margin:auto;
+			width:50%;
+
+			@include media-breakpoint-down(md){
+				float:left;
+				position:relative;
+				left:-32px;
+			}
+		}
+	}
+
+	.custom-card {
+		background: $primary-bg-color;
+		@include media-breakpoint-up(md) {
+			border: 1px solid rgba($primary-text-color, .125);
+			border-radius: .25rem;
+			padding: 1em 1.5em;
+		}
+	}	
+
+	.swap-order {
+		@include media-breakpoint-down(sm) {
+			.grid-item {
+				&:first-child {
+					order: 2;
+				}
+			}
+		}	
+	}
+
+	.mobile-center {
+		@include media-breakpoint-down(sm) {
+			text-align: center;
+		}
+	}
+	
+}
+
+
+
+/* =WordPress Core
+-------------------------------------------------------------- */
+.alignnone {
+    margin: 5px 0 20px 0;
+}
+
+.aligncenter,
+div.aligncenter {
+    display: block;
+    margin: 5px auto 5px auto;
+}
+
+.alignright {
+    float:right;
+    margin: 5px 0 20px 20px;
+}
+
+.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}

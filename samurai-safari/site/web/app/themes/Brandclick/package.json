@@ -1,0 +1,49 @@
+{
+  "name": "Whitelabel",
+  "version": "0.0.1",
+  "description": "Brandclick Whitelabel",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.opjeplaatsman.nl:Brandclick/Whitelabel.git"
+  },
+  "author": "Brandclick",
+  "license": "MIT",
+  "devDependencies": {
+    "accepts": "^1.3.7",
+    "bootstrap": "^4.3.1",
+    "browser-sync": "^2.26.7",
+    "browser-sync-ui": "^2.26.4",
+    "engine.io": "^3.3.2",
+    "font-awesome": "^4.7.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-cache": "^0.4.6",
+    "gulp-clean-css": "^3.10.0",
+    "gulp-cli": "^2.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-declare": "^0.3.0",
+    "gulp-handlebars": "^5.0.2",
+    "gulp-imagemin": "^6.1.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2",
+    "gulp-uncss": "^1.0.6",
+    "gulp-wrap": "^0.15.0",
+    "iconv-lite": "^0.5.0",
+    "irregular-plurals": "^3.1.0",
+    "is-valid-glob": "^1.0.0",
+    "negotiator": "^0.6.2",
+    "node-font-awesome": "*",
+    "node-sass": "^4.12.0",
+    "now-and-later": "^2.0.1",
+    "socket.io": "^2.2.0",
+    "undertaker": "^1.2.1"
+  },
+  "dependencies": {}
+}

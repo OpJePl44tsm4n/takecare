@@ -1,0 +1,173 @@
+header.site-header {
+	// height: 90px;
+	
+	.usp-header {
+		width: 100%;
+	    padding: .4em;
+	    font-size: .7rem;
+	    text-align: center;
+	    background: $primary-color;
+	    color: $secondary-text-color;
+	    span {
+	        padding: 0 15px;
+	        i {
+	            color: #6ac359;
+	            font-size:12px;
+	        }
+			
+			@include media-breakpoint-down(sm) {
+				width: 100%;
+			    display: block;
+			    padding: 0;
+			    letter-spacing: 0;
+
+	        	&:nth-child(3) {
+	        		display: none;
+	        	}
+	        }	
+	    }
+	}
+
+	#main-nav.navbar {
+		background: $primary-bg-color;
+    	border: none;
+    	padding: 0;
+    	margin-bottom: 0;
+		top: 0;
+    	transition: top 0.3s, background 0.5s;
+		
+		@include media-breakpoint-up(md) {
+			flex-flow: column;
+
+			&.transparant {
+				background: transparent;
+	    	}
+		}
+
+    	
+
+		.admin-bar & {
+			z-index: 999999;
+		}
+
+		&.scroll-down {
+			top: -101px;
+
+			@include media-breakpoint-up(md) {
+				top: -92px;
+			}	
+		}
+
+    	> .container {
+    		position: relative;
+    		padding: .8rem .8rem;
+    		max-width: 1130px;
+    	}
+	
+		.brand-wrapper {
+			
+			h1.brand-name {
+				display: none;
+			}
+		}
+
+		.menu-toggler {
+			color: $primary-text-color;
+			position: relative;
+			
+			@include media-breakpoint-down(md) {
+			    position: absolute;
+    			right: .9em;
+			}
+			
+			button.navbar-toggler {
+				border: none;
+				font-size: 1em;
+				padding: 0;
+				font-size: 1.3rem;
+				outline: none;
+
+				.navbar-toggler-icon {
+				  	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 0, 0, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+				  	width: 1.2em;
+				  	margin-top: 13px;
+				}
+			}
+		}
+
+		.wpml-ls.wpml-ls-legacy-list-horizontal {
+  			padding: .4em 1em;
+    		font-size: .8em;
+
+    		ul {
+    			li {
+    				a.wpml-ls-link {
+    		
+    					&:active {
+    						text-decoration: underline;
+    					}
+    				}
+    			}
+    		}
+		}
+
+		.lang-navigation {
+			
+			@include media-breakpoint-down(md){
+				position: absolute;
+			    bottom: 0;
+			    left: 50%;
+			    transform: translate(-50%, 100%);
+			}
+			
+		    .ajax-lang-redirect {
+		    	
+			    .popup {
+			        position: relative; 
+			        right: 0em;
+			        top: 1em;
+			        width: 320px;
+			        max-width: 100vw;
+			        font-size: .8rem;
+			        background: $theme-pink;
+			        color: #fff;
+			        padding: 1em;
+			        border-radius: 6px;
+			        box-shadow: 1px 1px 4px #979797;
+
+			        @include media-breakpoint-up(md){
+			        	top: 4.5em;
+			        	position: absolute; 
+			        }
+
+			        &:before {
+			            content: '';
+			            position: absolute;
+			            border-style: solid;
+			            border-width: 0 10px 10px;
+			            border-color: $theme-pink transparent;
+			            display: block;
+			            width: 0;
+			            z-index: 1;
+			            margin-left: -10px;
+			            top: -10px;
+			            left: 55%;
+			        }
+			        
+			        a {
+			            color: #fff; 
+			            text-decoration: underline;
+			        }
+			    }
+			}    
+		}
+		
+
+	}
+
+}
+
+.close-btn .d-flex {
+	height: 4rem;
+	background-color: #000;
+}

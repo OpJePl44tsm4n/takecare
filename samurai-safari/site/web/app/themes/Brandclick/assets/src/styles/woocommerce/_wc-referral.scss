@@ -1,0 +1,163 @@
+#referral-widget {
+    padding: 2em 0;
+    text-align: center;
+
+    #referral-progress-bar {
+    
+        .progress-widget {
+            width: 90%; 
+            margin: 2em auto;
+            max-width: 800px;
+            
+            .progress-labels {
+                height: 1.2rem;
+                position: relative;
+                font-size: .7rem;
+                
+                span{
+                    position: absolute;
+                    transform: translateX(-50%);
+                     
+                    &:nth-child(1) {
+                        left: 25%;
+                    }
+                     
+                    &:nth-child(2) {
+                        left: 50%;
+                    }
+                     
+                    &:nth-child(3) {
+                        left: 75%;
+                    }
+                     
+                    &:nth-child(4) {
+                        left: 100%;
+                    }
+                }
+            }
+            
+            .progress-bar {
+                height: .6rem;
+                position: relative;
+                background: rgb(215,215,215); 
+                border-radius: 2em;
+                
+                .progress-value {
+                    background: #066977;
+                    position: absolute;
+                    top:0;
+                    bottom: 0; 
+                    width: 20%; 
+                    border-radius: 2em;
+                    transition: width 2 ease; 
+                    
+                    .progress-value-label {
+                        position: absolute;
+                        right: 0;
+                        transform: translateX(50%);
+                        bottom: -3.2em;
+                        font-size: .8em;
+                        padding: 5px;
+                        
+                        
+                        &:before {
+                            position: absolute;
+                            left: 50%;
+                            top: -.5em;
+                            content: '';
+                            height: .8em;
+                            border-left: 1px solid; 
+                        }
+                    }
+                }
+            }
+        }
+    } 
+    
+    input {
+        font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+        width: calc(100% - 70px);
+        margin-right: -6px;
+        padding: 11px;
+        font-size: .8em;
+        max-width: 500px;
+    
+        &#referral-id {
+            width: 160px;
+            font-size: 1em;
+        }
+    }
+    
+    button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin-top: -1px;
+        min-width: 70px;
+        padding: 15px;
+        font-size: .75rem;
+    }
+
+    .referral-coupon {
+        padding: 1em 0;
+    }
+
+	.share-link {
+		padding: 1em 0;
+
+        .referral-count {
+            padding: 1em 0;
+        }
+
+        .social-share {
+            text-align: center;
+            padding-top: 1.5em;
+
+            ul {
+                padding-top: 1em;
+            }
+        }
+
+	}
+		
+	.sign-up {
+		padding: 1.5em 0;
+		text-align: center;
+	}
+}
+
+#referral-page {
+    .referred_users .referred_user {
+        padding: 1em;
+        margin-bottom: .5em;
+		background: rgba(206, 166, 43, 0.14);
+
+		.fa:before {
+			color: orange;
+		}
+
+        &.active {
+        	background: rgba(0,128,1,0.14);
+
+        	.fa:before {
+				color: green;
+			}
+        }
+        
+        .vertical-align {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            font-weight: 600;
+        }
+        
+        .date-added {
+            font-size: .7rem;
+        }
+    }
+}
+
+
+
+

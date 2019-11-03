@@ -1,0 +1,52 @@
+ul.socials {
+	float:left;
+
+	.fa-facebook{
+		color:black;
+		padding-top:7px;
+	}
+
+
+	padding: 0;
+	
+	li {
+		display: inline-block;
+		padding: 0 2px;
+	}
+	
+	a {
+		position: relative; 
+		display: inline-block; 
+		height: 30px;
+		width: 30px;
+		color: black;
+		padding: 5px; 
+		transition-duration: 0.25s;
+
+		&:hover{
+			color:#00BFFF;
+		}
+
+
+		i {
+			position: absolute; 
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%); 
+			font-size:20px;
+		}
+	}
+
+	#footer & { 
+		display: inline;
+
+		a {
+			transform: translateY(30%);
+    		font-size: 1rem;
+
+    		&:hover {
+				color: grey;
+			}
+		}
+	}
+}

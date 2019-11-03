@@ -1,0 +1,50 @@
+.comments-area {
+    padding-top: 15px; 
+
+    i.fa {
+        width: 0.8em;
+        &:before {  
+            font-size: .6em;
+            color: $primary-color;
+        }
+    }
+    
+    .commentlist {
+        margin:0;
+        padding:0;
+        list-style: none;
+
+        .comment {
+            padding-bottom: 0.8em;
+            p {
+                padding:0;
+                
+                &.h5 {
+                    margin: 0;
+                    font-size: 1em;
+                    font-family: $primary-font-black;
+                }
+            }
+        }
+    }
+
+    .comment-nav {
+        padding-bottom: 1.8em;
+        
+        .nav-links {
+            padding-bottom: 0.6em;
+            a {
+                font-size: 0.7em;
+                line-height: 1px;
+
+                i { 
+                    font-size: 2rem;
+                    line-height: 0.55em;
+                }
+            }
+        }
+        
+    } 
+
+}
+

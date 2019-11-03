@@ -1,0 +1,16 @@
+
+.page_header {
+
+	.single_image.col-md-12 {
+          margin: -2em 0;
+		  max-height: 440px;
+          overflow: hidden;
+          position: relative;
+		  padding: 0;
+
+		img {
+			width: 100%;
+		}
+	}
+	
+}
