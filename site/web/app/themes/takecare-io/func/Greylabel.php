@@ -7,7 +7,7 @@ use Greylabel\Settings\CleanUpWordPress;
 use Greylabel\Settings\RestApiSettings;
 use Greylabel\Admin\DebuggerSettings;
 use Greylabel\DataAPI\CreateStoreGeojson;
-use Greylabel\DataAPI\ProcessExternalXML;
+use Greylabel\DataAPI\ProcessExternalData;
 
 
 use Greylabel\Tracking\WcCreateProductObjects;
@@ -50,7 +50,7 @@ abstract class Greylabel {
         // $woocommerce_reset          = new WcReset();
         $create_store_geojson       = new CreateStoreGeojson();
         $wc_create_product_Objects  = new WcCreateProductObjects();
-        $process_external_xml       = new ProcessExternalXML();
+        $process_external_data      = new ProcessExternalData();
         
 
         /**

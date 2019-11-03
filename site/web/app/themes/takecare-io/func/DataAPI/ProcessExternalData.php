@@ -2,10 +2,10 @@
 namespace Greylabel\DataAPI;
 use Greylabel\Greylabel;
 
-class ProcessExternalXML {
+class ProcessExternalData {
 
 	public function __construct()
-  	{	
+    {   
         if( $kiyoh_url = get_option('kiyoh_url') ) {
             
             if ( ! wp_next_scheduled( 'process_external_xml' ) ) {
@@ -21,6 +21,42 @@ class ProcessExternalXML {
             }
         }
     }
+
+    
+
+    /**
+    *   return external xml object  
+    */
+    public function get__article_data_from_link( $url ) 
+    {
+	 	$content = file_get_contents( $url );
+        $doc = new DOMDocument();
+        @$doc->loadHTML($content);        // squelch HTML5 errors
+        $meta = $doc->getElementsByTagName('meta');
+        $tags= [];
+
+        foreach ($meta as $element) {
+            $property = '';
+            $content = '';
+            foreach ($element->attributes as $node) {
+
+                if($node->name == 'property' || $node->name == 'name') {
+                    $property = $node->value;
+                }
+
+                if($node->name == 'content') {
+                    $content = $node->value;
+                }
+
+                if($property && $content) {
+                    $tags[$property] = $content;
+                } 
+            }
+        }
+
+        return $tags ?: false; 
+    }   
+
 
     /**
     *   update transient and options
@@ -38,7 +74,7 @@ class ProcessExternalXML {
     */
     public function callback__get_external_xml_as_json( $url ) 
     {
-	 	$response   =   wp_remote_get($url);
+        $response   =   wp_remote_get($url);
         $body       =   wp_remote_retrieve_body($response);
         $xml_obj    =   simplexml_load_string($body);
         $json_obj   =   json_encode($xml_obj);
