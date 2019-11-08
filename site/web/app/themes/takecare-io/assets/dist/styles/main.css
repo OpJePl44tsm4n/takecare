@@ -10140,7 +10140,8 @@ img[data-toggle]:hover {
 
 span.certificate a {
   padding: .5em;
-  border: 1px solid grey;
+  border: 1px solid #3e9b92;
+  background: rgba(62, 155, 146, 0.13);
   display: inline-block;
   border-radius: 4px;
   max-width: 100px; }
