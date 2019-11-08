@@ -59,8 +59,10 @@
                         </div>
                         
                         <?php if($featured): ?>
-                            <div class="grid-item col-sm-8">
-                                <?php echo $featured; ?>
+                            <div class="grid-item col-sm-8 featured">
+                                <div class="thumb">
+                                    <?php echo $featured; ?>
+                                </div>
                             </div>
                         <?php endif; ?>
 
