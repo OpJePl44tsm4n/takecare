@@ -60,9 +60,7 @@
                         
                         <?php if($featured): ?>
                             <div class="grid-item col-md-8 featured">
-                                <div class="thumb">
-                                    <?php echo $featured; ?>
-                                </div>
+                                <?php echo $featured; ?>
                             </div>
                         <?php endif; ?>
 
