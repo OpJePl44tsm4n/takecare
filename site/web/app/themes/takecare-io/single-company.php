@@ -15,7 +15,7 @@
                 <section class="header container">
                     <div class="row swap-order">
 
-                        <div class="grid-item col-sm-4">
+                        <div class="grid-item col-md-4">
                             <?php 
                                 echo $logo; 
                                 the_title( '<h1>', '</h1>' );
@@ -59,7 +59,7 @@
                         </div>
                         
                         <?php if($featured): ?>
-                            <div class="grid-item col-sm-8 featured">
+                            <div class="grid-item col-md-8 featured">
                                 <div class="thumb">
                                     <?php echo $featured; ?>
                                 </div>
