@@ -158,7 +158,8 @@ article.page-content {
 
 				img, picture {
 					box-shadow: 7px 7px 23px -11px rgba($primary-text-color, .75);
-					max-width: 600px;
+					width: 600px;
+					max-width: 100%;
 					border-radius: 4px; 
 
 					@include media-breakpoint-up(md) {

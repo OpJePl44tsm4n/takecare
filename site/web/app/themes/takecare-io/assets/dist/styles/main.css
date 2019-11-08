@@ -9599,7 +9599,8 @@ article.page-content.company .header .grid-item.featured {
       padding: 3em; } }
   article.page-content.company .header .grid-item.featured img, article.page-content.company .header .grid-item.featured picture {
     box-shadow: 7px 7px 23px -11px rgba(0, 0, 0, 0.75);
-    max-width: 600px;
+    width: 600px;
+    max-width: 100%;
     border-radius: 4px; }
     @media (min-width: 768px) {
       article.page-content.company .header .grid-item.featured img, article.page-content.company .header .grid-item.featured picture {
