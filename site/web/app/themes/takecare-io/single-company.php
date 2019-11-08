@@ -118,7 +118,7 @@
                                                 data-toggle="collapse" 
                                                 data-target="#term-<?php echo $term; ?>" 
                                                 aria-expanded="false" 
-                                                aria-controls="term-<?php echo $term; ?>"> <?php echo str_replace( '{count}', $cert_count, $value['link_text'] ); ?>
+                                                aria-controls="term-<?php echo $term; ?>"><?php echo get_the_title(); ?> <?php echo str_replace( '{count}', $cert_count, $value['link_text'] ); ?>
                                             </button>
 
                                             <div id="term-<?php echo $term; ?>" class="collapse" data-parent="#term-list">
@@ -144,7 +144,7 @@
 
                 <?php if( have_rows('youtube_videos') ): ?>
                     <section class="row media-videos">
-                        <div class="container-fluid">
+                        
                             <?php
                             $row_count = 0;
                             $rows = get_field('youtube_videos');
@@ -152,68 +152,73 @@
                                 $row_count = count($rows);
                             }  
 
-                            if( $row_count > 1 ): 
+                            if( $row_count > 1 ): ?>
+                                <div class="container-fluid">
 
-                                $carousel_slides = '';
-                                $carousel_indicators = '';
-                                $count = 0; 
+                                    <?php 
+                                    $carousel_slides = '';
+                                    $carousel_indicators = '';
+                                    $count = 0; 
 
-                                while ( have_rows('youtube_videos') ) : the_row(); 
-                                    $video_url = get_sub_field('youtube_url');
-                                    $image_id = get_sub_field('video_still') ?: $featured_id;
-                                    $video_description = get_sub_field('video_description');
-                                    $active = ($count === 0) ? 'active' : '';
+                                    while ( have_rows('youtube_videos') ) : the_row(); 
+                                        $video_url = get_sub_field('youtube_url');
+                                        $image_id = get_sub_field('video_still') ?: $featured_id;
+                                        $video_description = get_sub_field('video_description');
+                                        $active = ($count === 0) ? 'active' : '';
 
-                                    if(!$video_url) {
-                                        continue;
-                                    }
+                                        if(!$video_url) {
+                                            continue;
+                                        }
 
-                                    ob_start(); 
-                                    include(locate_template('inc/partials/video-inline.php')); 
-                                    $video = ob_get_clean();
+                                        ob_start(); 
+                                        include(locate_template('inc/partials/video-inline.php')); 
+                                        $video = ob_get_clean();
 
-                                    $carousel_slides .= sprintf('<div class="carousel-item %s">
-                                            %s
-                                        </div>',
-                                        $active,
-                                        $video
-                                    );
+                                        $carousel_slides .= sprintf('<div class="carousel-item %s">
+                                                %s
+                                            </div>',
+                                            $active,
+                                            $video
+                                        );
 
-                                    $carousel_indicators .= '<li class="slider-nav" data-target="#videoCarousel" data-slide-to="'. $count .'" class="'. $active .'">'. ($count + 1) .'</li>';
-                                    $count++;
-                                endwhile; ?>
+                                        $carousel_indicators .= '<li class="slider-nav" data-target="#videoCarousel" data-slide-to="'. $count .'" class="'. $active .'">'. ($count + 1) .'</li>';
+                                        $count++;
+                                    endwhile; ?>
 
-                                <div id="videoCarousel" class="carousel slide" data-ride="carousel">
-                                    <div class="carousel-inner"><?php echo  $carousel_slides; ?></div>
+                                    <div id="videoCarousel" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner"><?php echo  $carousel_slides; ?></div>
 
-                                    <a class="carousel-control-prev" href="#videoCarousel" role="button" data-slide="prev"></a>
-                                    <a class="carousel-control-next" href="#videoCarousel" role="button" data-slide="next"></a>
+                                        <a class="carousel-control-prev" href="#videoCarousel" role="button" data-slide="prev"></a>
+                                        <a class="carousel-control-next" href="#videoCarousel" role="button" data-slide="next"></a>
 
-                                    <div class="carousel-controls">
-                                        <a class="control-btn control-prev" href="#videoCarousel" role="button" data-slide="prev">
-                                            <i class="fa fa-angle-left"></i>
-                                        </a>
-                                        <ol class="carousel-indicators">
-                                            <?php echo $carousel_indicators; ?>
-                                        </ol>
-                                        <a class="control-btn control-next" href="#videoCarousel" role="button" data-slide="next">
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
+                                        <div class="carousel-controls">
+                                            <a class="control-btn control-prev" href="#videoCarousel" role="button" data-slide="prev">
+                                                <i class="fa fa-angle-left"></i>
+                                            </a>
+                                            <ol class="carousel-indicators">
+                                                <?php echo $carousel_indicators; ?>
+                                            </ol>
+                                            <a class="control-btn control-next" href="#videoCarousel" role="button" data-slide="next">
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </div> 
                                 </div>  
-                            <?php else:
-                                while ( have_rows('youtube_videos') ) : the_row(); 
-                                    $video_url = get_sub_field('youtube_url');
-                                    $image_id = get_sub_field('video_still') ?: $featured_id; 
-                                    $video_description = get_sub_field('video_description');
-                                        
-                                    if(!$video_url) {
-                                        continue;
-                                    }
+                            <?php else: ?> 
+                                <div class="container">
+                                    <?php while ( have_rows('youtube_videos') ) : the_row(); 
+                                        $video_url = get_sub_field('youtube_url');
+                                        $image_id = get_sub_field('video_still') ?: $featured_id; 
+                                        $video_description = get_sub_field('video_description');
+                                            
+                                        if(!$video_url) {
+                                            continue;
+                                        }
 
-                                    include(locate_template('inc/partials/video-inline.php'));  
-                                endwhile;
-                            endif; ?>
+                                        include(locate_template('inc/partials/video-inline.php'));  
+                                    endwhile; ?>
+                                </div>    
+                            <?php endif; ?>
                         </div>
                     </section>
                 <?php endif; ?>
