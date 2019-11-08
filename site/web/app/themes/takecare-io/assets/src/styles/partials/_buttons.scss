@@ -223,6 +223,14 @@ img[data-toggle]:hover {
 	cursor: pointer;
 }
 
+span.certificate a{
+    padding: .5em; 
+    border: 1px solid grey; 
+    display: inline-block; 
+    border-radius: 4px; 
+    max-width: 100px; 
+}
+
 // #header_btn {
 // 	color: $primary-text-color;
 // 	background-color: $secondary-color;

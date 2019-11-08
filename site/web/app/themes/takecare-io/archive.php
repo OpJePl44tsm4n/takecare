@@ -20,18 +20,19 @@ $offset = get_query_var('posts_per_page');
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> itemscope itemtype="http://schema.org/Article">
                 
                 <section class="row row-0 <?php echo $featured ?  'img-bg' : '' ?>">
-                    
-                    <?php if( $featured ) { ?>
-                        <div class="thumb">
-                            <?php echo $featured; ?>
-                        </div>
-                    <?php } ?>
-
-                    <div class="container content-sm">
+                
+                    <div class="col-md-6">
                         <div class="m-auto"><h1><?php echo get_the_archive_title(); ?></h1></div>
                         <?php echo get_the_archive_description(); ?> 
                     </div>
-
+                    
+                     <div class="col-md-6">
+                        <?php if( $featured ) { ?>
+                            <div class="thumb">
+                                <?php echo $featured; ?>
+                            </div>
+                        <?php } ?>
+                    </div>
                 </section>    
        
 

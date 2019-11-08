@@ -36,10 +36,7 @@
     <!-- Header -->
     <header class="site-header">
         <nav id="main-nav" class="navbar navbar-expand-md navbar-light fixed-top">
-            <div class="usp-header">
-                <span><?php _e('Free delivery on orders worldwide!', WhiteLabelTheme::THEME_SLUG ); ?></span>
-               
-            </div>
+    
             <div class="container">
 
                 <div class="brand-wrapper">
