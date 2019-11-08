@@ -10138,6 +10138,13 @@ img[aria-expanded="true"] {
 img[data-toggle]:hover {
   cursor: pointer; }
 
+span.certificate a {
+  padding: .5em;
+  border: 1px solid grey;
+  display: inline-block;
+  border-radius: 4px;
+  max-width: 100px; }
+
 .contact.track-phone button {
   padding: 5px 12px 5px 20px; }
 
@@ -10992,6 +10999,11 @@ ul.socials {
   #productCarouselLarge .carousel-controls .carousel-indicators li.active {
     background: none;
     box-shadow: 0px 0px 21px -6px #0055b8; }
+
+#videoCarousel {
+  width: 100%;
+  margin: auto;
+  max-width: 1200px; }
 
 .map-wrap {
   position: relative; }
