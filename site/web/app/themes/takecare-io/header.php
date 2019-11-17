@@ -60,35 +60,43 @@
                     <h1 class="brand-name"><?php echo get_bloginfo( 'name' ); ?></h1>
                 </div>
                 
-                <div class="collapse navbar-collapse" id="navbarCollapse" data-parent="#main-nav">
-                    <div class="close-btn d-flex">
-                        <button class="navbar-toggler ml-auto close" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Close navigation"><span aria-hidden="true">&times;</span></button>
+                <?php 
+                $frontpage_id = get_option( 'page_on_front' );
+                $slug = get_post_field( 'post_name', $frontpage_id );
+                // only show the menu on home when slug is home 
+                if (!is_front_page() || (is_front_page() && $slug === 'home') ) : ?>
+
+                    <div class="collapse navbar-collapse" id="navbarCollapse" data-parent="#main-nav">
+                        <div class="close-btn d-flex">
+                            <button class="navbar-toggler ml-auto close" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Close navigation"><span aria-hidden="true">&times;</span></button>
+                        </div>
+
+                        <div class="nav-wrap">
+                            <?php wp_nav_menu( array( 
+                                'theme_location' => 'header-menu',
+                                'container' => false,
+                                'menu_class' => 'nav navbar-nav mr-auto', 
+                                'container_id'    => 'bs4navbar',
+                                'menu_id'         => false,
+                                'depth'           => 3,
+                                'fallback_cb'     => 'bs4navwalker::fallback',
+                                'walker' => new Greylabel\Vendor\bs4NavWalker()
+                            ) ); ?> 
+
+
+                            <?php echo do_action('wpml_add_language_selector'); ?>
+                           
+                        </div>
                     </div>
-
-                    <div class="nav-wrap">
-                        <?php wp_nav_menu( array( 
-                            'theme_location' => 'header-menu',
-                            'container' => false,
-                            'menu_class' => 'nav navbar-nav mr-auto', 
-                            'container_id'    => 'bs4navbar',
-                            'menu_id'         => false,
-                            'depth'           => 3,
-                            'fallback_cb'     => 'bs4navwalker::fallback',
-                            'walker' => new Greylabel\Vendor\bs4NavWalker()
-                        ) ); ?> 
-
-
-                        <?php echo do_action('wpml_add_language_selector'); ?>
-                       
+                    
+                    <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
+                        <button class="navbar-toggler" type="button">
+                            <?php /*<span><?php _e('Menu', TakeCareIo::THEME_SLUG ); ?></span>*/?>
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
                     </div>
-                </div>
-                
-                <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
-                    <button class="navbar-toggler" type="button">
-                        <?php /*<span><?php _e('Menu', TakeCareIo::THEME_SLUG ); ?></span>*/?>
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
+                    
+                <?php endif; ?>     
             </div>
                
         </nav> 
