@@ -2,10 +2,10 @@
 Contributors: rankmath
 Plugin link: https://s.rankmath.com/homepage
 Tags: seo, sitemap, google search console, schema, redirection
-Tested up to: 5.2.3
+Tested up to: 5.3
 Requires at least: 4.7.0
 Requires PHP: 5.6
-Stable tag: 1.0.34.1
+Stable tag: 1.0.35.2
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -450,38 +450,33 @@ We look forward to helping you.
 
 == Changelog ==
 
-= 1.0.34.1 [Oct 26, 2019] =
-* Added tooltip to the newly added robots meta options
-* Fixed errors appearing on BuddyPress user page
-* Fixed fatal errors appearing on some installations
-* Fixed JS error on some installations where stopwords option was enabled
+= 1.0.35.2 [Nov 14, 2019] =
+* Added a condition to prevent the ratings from showing on WooCommerce & Easy Digital Download pages
 
-= 1.0.34 [Oct 24, 2019] =
-* Added a new one-click converter tool to help fix the Review Schema related errors which were appearing in GSC for all the older articles. [Read here](https://rankmath.com/kb/how-to-fix-review-schema-errors/)
-* Added an option to add any Custom Field to page analysis. No more tinkering with code (Rank Math >> Titles & Meta >> Posts/Pages/Post Type)
-* Added options to set new Robots Meta tags: max-snippet, max-video-preview, max-image-preview (https://i.rankmath.com/8ItIa7)
-* Added `rel="ugc"` attribute to all the links present in the comments and author URLs
-* Added an option to set `rel="sponsored"` attribute (https://i.rankmath.com/YZpWmd)
-* Added dedicated Aggregate Rating options in Book, Course, Event, Product, Recipe and Software Schema types
-* Added an option to show Blog Page in Breadcrumbs when Static Page is selected
-* Removed stopwords from Focus Keyword when checking for the FK in URL test
-* Improved Event Schema to accept 0 as the price value
-* Improved secondary keyword tests performance
-* Improved/Optimized Variables functionality
-* Fixed the issue where some variables were not showing value in the Preview area
-* Fixed Breadcrumb Shortcode error when Breadcrumbs were disabled in the settings
-* Fixed WooCommerce Opengraph Error
-* Fixed undefined error when editing a post which doesn't has an editor
-* Fixed Redirection module not detecting when a term was deleted or changed
-* Fixed links autofill issue
-* Fixed a fatal error with the Role Manager module when all the options were unchecked
-* Fixed compatibility with Divi Premade layouts
-* Fixed a compatibility issue with Easy Digital Downloads showing the wrong title in the Preview
-* Fixed an Undefined property error on post type archive page
-* Fixed the working of a filter to remove tests from the content analysis
-* Fixed Optician Schema showing missing `priceRange`, image errors
-* Fixed missing fields in the Dry Cleaning business type
-* All pesky bugs have been exterminated. Continue as you were
-* Improved the code further for better performance as something huge is coming in one of the upcoming versions
+= 1.0.35.1 [Nov 14, 2019] =
+* Added an option to show Snippet reviews before and after the content on the frontend for the allowed types
+* Added default Advanced Robots to all the existing/older posts
+* Fixed a JS error when WooCommerce or iTheme Security plugins were active
+* Fixed CMB2 multiple dependencies Array not working since v1.0.35 version
+* Fixed an error in the MedicalClinic Schema related to non-existent of an image on a page
+* Fixed an issue with the Sitemap where it was incorrectly adding a trailing slash on some installations where the URL of the website was left blank in General settings
+* Fixed some PHP warnings
+* Fixed an issue with the fetching of data from Google Search Console on some installations
+* Fixed CSS issues related to WordPress 5.3
+
+= 1.0.35 [Nov 09, 2019] =
+* Improved the Setup Wizard to be more straightforward with lesser options
+* Improved Google Search Console module by adding oAuth 2.0, separate client and API wrappers, etc.
+* Improved the text present on the Tools page to help understand each option better
+* Improved the filter for deleting all the Rank Math related data, upon uninstallation, to work correctly with the multisite setup as well
+* Fixed Google Search Console Authentication Error
+* Fixed empty title issue happening on some installations with older PHP versions
+* Fixed the Global Index option for author archive not working
+* Fixed a problem with the importer where a false warning was getting generated when redirections were not detected
+* Fixed bulk redirections/404 monitor not working with the Persian language
+* Fixed a bug with the auto-post redirection option which was creating an infinite loop if someone deleted a post several times
+* Fixed an issue with the Remove Product base option, so it works as intended
+* Fixed a bug with WooCommerce's variables, showing incorrect title on the category pages
+* Fixed an issue with WooCommerce's shop page where %title%, %excerpt% were showing the data from the first product instead of the page's meta values
 
 Full changelog can be found here - **[Rank Math SEO changelog](https://s.rankmath.com/changelog)**

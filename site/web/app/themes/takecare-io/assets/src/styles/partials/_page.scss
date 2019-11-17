@@ -151,7 +151,8 @@ article.page-content {
 		.header {
 			.grid-item.featured {
 				background: rgba($primary-color, .1);
-
+				padding: 1em;
+				
 				@include media-breakpoint-up(md) {
 					padding: 3em;
 				}	

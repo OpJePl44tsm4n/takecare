@@ -9593,7 +9593,8 @@ article.page-content section.row.product-grid header {
       margin-bottom: -8em; } }
 
 article.page-content.company .header .grid-item.featured {
-  background: rgba(62, 155, 146, 0.1); }
+  background: rgba(62, 155, 146, 0.1);
+  padding: 1em; }
   @media (min-width: 768px) {
     article.page-content.company .header .grid-item.featured {
       padding: 3em; } }

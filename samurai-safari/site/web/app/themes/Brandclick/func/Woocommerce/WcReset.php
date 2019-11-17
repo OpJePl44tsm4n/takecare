@@ -15,6 +15,10 @@ class WcReset {
 
     public function __construct()
     {   
+    	if ( !function_exists( 'is_woocommerce' ) ) {
+    		return;
+    	}
+    	
         $WcEditLoop         	= new WcLoopActions();
         $WcSingleOrder      	= new WcSingleProduct();
         $WcCheckout      		= new WcCheckout();

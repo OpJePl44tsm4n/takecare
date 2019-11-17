@@ -51,24 +51,18 @@ class Manager extends Post_Variables {
 	public $remove_non_replaced = true;
 
 	/**
-	 * Default post data.
+	 * Is variable setup.
+	 *
+	 * @var bool
+	 */
+	private $is_setup = false;
+
+	/**
+	 * Hold arguments.
 	 *
 	 * @var array
 	 */
-	protected $defaults = array(
-		'ID'            => '',
-		'name'          => '',
-		'post_author'   => 'Author Name',
-		'post_content'  => 'Post content',
-		'post_date'     => '',
-		'post_excerpt'  => '',
-		'post_modified' => '',
-		'post_title'    => 'Post Title',
-		'taxonomy'      => '',
-		'term_id'       => '',
-		'term404'       => '',
-		'filename'      => '',
-	);
+	protected $args = [];
 
 	/**
 	 * Class constructor.
@@ -129,11 +123,12 @@ class Manager extends Post_Variables {
 	 */
 	public function setup() {
 		global $wp_customize;
-		if ( isset( $wp_customize ) ) {
+		if ( isset( $wp_customize ) || $this->is_setup ) {
 			return;
 		}
 
-		$this->remove_action( 'wp', 'setup', 25 );
+		// Variable setuped.
+		$this->is_setup = true;
 
 		// Internal variables.
 		if ( \function_exists( 'get_current_screen' ) ) {
@@ -187,6 +182,26 @@ class Manager extends Post_Variables {
 	 */
 	public function get_replacements() {
 		return $this->replacements;
+	}
+
+	/**
+	 * Set arguments.
+	 *
+	 * @param array $args The object some of the replacement values might come from,
+	 *                    could be a post, taxonomy or term.
+	 */
+	public function set_arguments( $args = [] ) {
+		if ( ! empty( $args ) ) {
+			$this->tmp_args = $this->args;
+			$this->args     = $args;
+		}
+	}
+
+	/**
+	 * Reset arguments.
+	 */
+	public function reset_arguments() {
+		$this->args = $this->tmp_args;
 	}
 
 	/**

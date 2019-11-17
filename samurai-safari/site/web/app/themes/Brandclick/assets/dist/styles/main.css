@@ -9370,7 +9370,7 @@ body {
     font-size: 1.7rem;
     line-height: 1.1em;
     font-family: "Muli Light", sans-serif;
-    color: #000;
+    color: #123928;
     padding-bottom: 0.4em; }
     @media (min-width: 576px) {
       body h1 {
@@ -9384,7 +9384,7 @@ body {
   body p {
     font-family: "Muli Light", sans-serif; }
   body a {
-    color: #000;
+    color: #123928;
     text-decoration: none; }
   body ul {
     padding: 0px 1em; }
@@ -9429,7 +9429,7 @@ body {
     font-family: 'FontAwesome';
     position: relative; }
     body div.wpcf7 .ajax-loader::before {
-      color: #000;
+      color: #123928;
       content: '\f110';
       position: absolute;
       animation: rotate 2s infinite;
@@ -9584,14 +9584,14 @@ article.page-content section.row.content-block .editor.col-md-12 {
   margin: auto; }
 
 article.page-content section.row.content-block .editor table thead {
-  background: #000;
+  background: #123928;
   color: #fff; }
   article.page-content section.row.content-block .editor table thead th {
-    border: 1px solid #000;
+    border: 1px solid #123928;
     padding: .4em; }
 
 article.page-content section.row.content-block .editor table tbody td {
-  border: 1px solid gray;
+  border: 1px solid #76d4ab;
   padding: .4em; }
 
 @media (max-width: 767.98px) {
@@ -9837,7 +9837,7 @@ header .navbar-collapse {
             header .navbar-collapse.collapsing ul.nav li.show, header .navbar-collapse.collapse.show ul.nav li.show {
               background: none; }
             header .navbar-collapse.collapsing ul.nav li a, header .navbar-collapse.collapse.show ul.nav li a {
-              color: #000;
+              color: #123928;
               display: inline-block;
               font-family: "Muli", sans-serif;
               font-size: 1.5em;
@@ -9874,13 +9874,13 @@ header .navbar-collapse {
         header .navbar-collapse .nav li a {
           font-family: "Muli", sans-serif;
           font-size: 1rem;
-          color: #1a1a1a; } }
+          color: #1e6043; } }
   @media (min-width: 768px) and (min-width: 992px) {
     header .navbar-collapse .nav li a {
       padding-left: .5rem; } }
       @media (min-width: 768px) {
           header .navbar-collapse .nav li a:hover {
-            color: #666666;
+            color: #4fc893;
             background: none;
             text-decoration: none; }
           header .navbar-collapse .nav li a:focus {
@@ -9897,7 +9897,7 @@ header .navbar-collapse {
           header .navbar-collapse .nav li .dropdown-menu .dropdown-item:hover > a, header .navbar-collapse .nav li .dropdown-menu .dropdown-toggle:hover > a {
             background: none; }
           header .navbar-collapse .nav li .dropdown-menu .dropdown-item.active, header .navbar-collapse .nav li .dropdown-menu .dropdown-toggle.active {
-            color: #000; }
+            color: #123928; }
         @media (min-width: 768px) {
           header .navbar-collapse .nav li .dropdown-menu .dropdown-toggle:hover + .dropdown-menu,
           header .navbar-collapse .nav li .dropdown-menu .dropdown-menu:hover {
@@ -9922,17 +9922,17 @@ header .navbar-collapse {
               transform: rotate(-180deg); } }
 
 .single-nav-links {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #123928;
   font-size: 0.8em;
   margin-bottom: 20px;
   padding-bottom: 5px; }
   .single-nav-links.bottom {
-    border-top: 1px solid #000;
+    border-top: 1px solid #123928;
     padding-top: 5px;
     margin-top: 40px;
     border-bottom: none; }
   .single-nav-links a {
-    color: #000; }
+    color: #123928; }
   .single-nav-links .post-links a + a {
     margin-left: 20px; }
 
@@ -9941,7 +9941,7 @@ header.site-header .usp-header {
   padding: .4em;
   font-size: .7rem;
   text-align: center;
-  background: #000;
+  background: #123928;
   color: #fff; }
   header.site-header .usp-header span {
     padding: 0 15px; }
@@ -10049,7 +10049,7 @@ header.site-header #main-nav.navbar {
   background-color: #000; }
 
 footer#footer {
-  background: #000;
+  background: #123928;
   padding: 40px 0;
   font-size: 0.8em;
   line-height: 1.8em;
@@ -10196,7 +10196,7 @@ footer#footer {
         width: 94%; } }
 
 .single-post main article.post-content h2, .single-post main article.post-content h3 {
-  color: #000; }
+  color: #123928; }
 
 .single-post main article.post-content .mailchimp_form {
   border-bottom: none; }
@@ -10226,7 +10226,7 @@ button, a {
       left: unset; } }
   .btn.btn-link, .woocommerce a.btn-link.button, .woocommerce button.btn-link.button, .contact.track-phone button.btn-link, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.btn-link.checkout-button.button, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.btn-link.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-link.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-link {
     padding: 0;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(18, 57, 40, 0.5);
     text-decoration: underline !important;
     vertical-align: unset;
     padding: 0;
@@ -10249,7 +10249,7 @@ button, a {
       font-size: 1.3em; }
   .btn.btn-primary, .woocommerce a.btn-primary.button, .woocommerce a.button.checkout-button,
   .woocommerce button.button.single_add_to_cart_button, .woocommerce button.button, .contact.track-phone button, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-primary.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button {
-    background: #000;
+    background: #123928;
     color: #fff;
     border: 1px solid rgba(0, 0, 0, 0);
     text-decoration: none; }
@@ -10257,10 +10257,10 @@ button, a {
       color: #fff; }
     .btn.btn-primary:hover, .woocommerce a.btn-primary.button:hover, .woocommerce a.button.checkout-button:hover, .woocommerce button.button:hover, .contact.track-phone button:hover, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button:hover, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button:hover, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-primary.submit:hover, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button:hover {
       background: #fff;
-      color: #000;
-      border: 1px solid #000; }
+      color: #123928;
+      border: 1px solid #123928; }
       .btn.btn-primary:hover i, .woocommerce a.btn-primary.button:hover i, .woocommerce a.button.checkout-button:hover i, .woocommerce button.button:hover i, .contact.track-phone button:hover i, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button:hover i, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button:hover i, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-primary.submit:hover i, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button:hover i {
-        color: #000; }
+        color: #123928; }
   .btn.btn-secondary, .woocommerce a.button,
   .woocommerce button.button.single_add_to_cart_button, .woocommerce button.btn-secondary.button, .contact.track-phone button.btn-secondary, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.btn-secondary.checkout-button.button, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout .woocommerce a.checkout-button.button, .woocommerce .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.btn-secondary.checkout-button.button, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout .woocommerce a.checkout-button.button, .woocommerce .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-secondary,
   .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order .woocommerce button.button.single_add_to_cart_button, .woocommerce .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.button.single_add_to_cart_button {
@@ -10270,13 +10270,13 @@ button, a {
     text-decoration: none;
     border: 1px solid #FA307F; }
     .btn.btn-secondary i, .woocommerce a.button i, .woocommerce button.button.single_add_to_cart_button i, .woocommerce button.btn-secondary.button i, .contact.track-phone button.btn-secondary i, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.btn-secondary.checkout-button.button i, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout .woocommerce a.checkout-button.button i, .woocommerce .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button i, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.btn-secondary.checkout-button.button i, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout .woocommerce a.checkout-button.button i, .woocommerce .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button i, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.submit i, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-secondary i, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order .woocommerce button.button.single_add_to_cart_button i, .woocommerce .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.button.single_add_to_cart_button i {
-      color: #000; }
+      color: #123928; }
     .btn.btn-secondary:hover, .woocommerce a.button:hover,
     .woocommerce button.button.single_add_to_cart_button:hover, .woocommerce button.btn-secondary.button:hover, .contact.track-phone button.btn-secondary:hover, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.btn-secondary.checkout-button.button:hover, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout .woocommerce a.checkout-button.button:hover, .woocommerce .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button:hover, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.btn-secondary.checkout-button.button:hover, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout .woocommerce a.checkout-button.button:hover, .woocommerce .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button:hover, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.submit:hover, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-secondary:hover,
     .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order .woocommerce button.button.single_add_to_cart_button:hover, .woocommerce .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.button.single_add_to_cart_button:hover {
       color: black;
       background: white;
-      border: 1px solid #000; }
+      border: 1px solid #123928; }
       .btn.btn-secondary:hover i, .woocommerce a.button:hover i, .woocommerce button.button.single_add_to_cart_button:hover i, .woocommerce button.btn-secondary.button:hover i, .contact.track-phone button.btn-secondary:hover i, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.btn-secondary.checkout-button.button:hover i, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout .woocommerce a.checkout-button.button:hover i, .woocommerce .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button:hover i, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.btn-secondary.checkout-button.button:hover i, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout .woocommerce a.checkout-button.button:hover i, .woocommerce .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.checkout-button.button:hover i, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.submit:hover i, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-secondary:hover i, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order .woocommerce button.button.single_add_to_cart_button:hover i, .woocommerce .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.button.single_add_to_cart_button:hover i {
         color: #fff; }
   .btn.btn-rounded, .woocommerce a.btn-rounded.button, .woocommerce button.btn-rounded.button, .contact.track-phone button.btn-rounded, .cart-collapse.collapsing .wrapper .cart_totals .wc-proceed-to-checkout a.btn-rounded.checkout-button.button, .cart-collapse.collapse.show .wrapper .cart_totals .wc-proceed-to-checkout a.btn-rounded.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-rounded.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-rounded {
@@ -10352,7 +10352,7 @@ button, a {
   color: white !important; }
 
 .contact form.wpcf7-form {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(18, 57, 40, 0.2);
   width: 100%; }
   .contact form.wpcf7-form h2 {
     padding-bottom: .6em; }
@@ -10403,13 +10403,13 @@ form textarea {
     color: grey; }
   form input:focus::-webkit-input-placeholder,
   form textarea:focus::-webkit-input-placeholder {
-    color: #000; }
+    color: #123928; }
   form input:focus:-ms-input-placeholder,
   form textarea:focus:-ms-input-placeholder {
-    color: #000; }
+    color: #123928; }
   form input:focus::placeholder,
   form textarea:focus::placeholder {
-    color: #000; }
+    color: #123928; }
   form input.wpcf7-submit,
   form textarea.wpcf7-submit {
     margin-top: 0.8em;
@@ -10450,7 +10450,7 @@ form input[type="date"] {
 
 form p {
   margin-bottom: 5px;
-  color: #000;
+  color: #123928;
   font-size: 0.8rem; }
 
 form span.wpcf7-list-item {
@@ -10484,7 +10484,7 @@ form div.wpcf7-response-output {
   padding: 4em 1em 2em; }
   .mailchimp_form h2 {
     font-size: 1.2em;
-    color: #000;
+    color: #123928;
     margin: auto; }
   .mailchimp_form #mc_embed_signup form {
     padding: 1.5em 0 0; }
@@ -10520,7 +10520,7 @@ ul.faq {
   list-style: none;
   padding-left: 0; }
   ul.faq li:not(:last-child) {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
+    border-bottom: 1px solid rgba(18, 57, 40, 0.2); }
   ul.faq li button.btn, ul.faq li .woocommerce button.button, .woocommerce ul.faq li button.button, ul.faq li .contact.track-phone button, .contact.track-phone ul.faq li button, ul.faq li .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order ul.faq li button {
     padding-left: 0;
     font-size: 1em;
@@ -10627,7 +10627,7 @@ video {
     width: 0.8em; }
     .comments-area i.fa:before {
       font-size: .6em;
-      color: #000; }
+      color: #123928; }
   .comments-area .commentlist {
     margin: 0;
     padding: 0;
@@ -11035,7 +11035,7 @@ ul.socials {
     -ms-flex-pack: center;
         justify-content: center; }
     .carousel .carousel-controls .control-btn {
-      border: 1px solid #000;
+      border: 1px solid #123928;
       width: 30px;
       height: 30px;
       border-radius: 10em;
@@ -11051,7 +11051,7 @@ ul.socials {
         -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
         line-height: 10px;
-        color: #000; }
+        color: #123928; }
 
 #productCarouselLarge .carousel-item {
   transition: transform .9ms ease, opacity 1s ease;
@@ -11229,7 +11229,7 @@ ul.socials {
     max-width: 200px; }
     .map-wrap .map-filter .filter-toggle {
       border: none;
-      color: #000;
+      color: #123928;
       height: 0;
       overflow: hidden;
       outline: 0; }
@@ -11249,7 +11249,7 @@ ul.socials {
       font-size: 0.8em; }
       .map-wrap .map-filter h2 .fa-map-marker {
         font-size: 1.4em;
-        color: #000; }
+        color: #123928; }
     .map-wrap .map-filter label {
       font-size: 0.6em;
       margin-bottom: 0; }
@@ -11261,24 +11261,24 @@ ul.socials {
       border-radius: 4px;
       font-size: 0.8rem; }
       .map-wrap .map-filter input::-webkit-input-placeholder {
-        color: rgba(0, 0, 0, 0.5); }
+        color: rgba(18, 57, 40, 0.5); }
       .map-wrap .map-filter input:-ms-input-placeholder {
-        color: rgba(0, 0, 0, 0.5); }
+        color: rgba(18, 57, 40, 0.5); }
       .map-wrap .map-filter input::placeholder {
-        color: rgba(0, 0, 0, 0.5); }
+        color: rgba(18, 57, 40, 0.5); }
       .map-wrap .map-filter input:focus::-webkit-input-placeholder {
-        color: #000; }
+        color: #123928; }
       .map-wrap .map-filter input:focus:-ms-input-placeholder {
-        color: #000; }
+        color: #123928; }
       .map-wrap .map-filter input:focus::placeholder {
-        color: #000; }
+        color: #123928; }
     .map-wrap .map-filter button#reset-map {
       padding: 5px 15px; }
   .map-wrap hr {
     margin-top: 0.7em; }
   .map-wrap #user-location {
     display: none;
-    color: #000;
+    color: #123928;
     background: none;
     border: none;
     font-size: 0.7em;
@@ -11324,7 +11324,7 @@ ul.socials {
 
 .leaflet-marker-pane .custom-marker-icon {
   background: #e44682;
-  border: 2px solid #000;
+  border: 2px solid #123928;
   border-radius: 100%;
   height: 20px;
   width: 20px; }
@@ -11460,11 +11460,11 @@ div#cookie-notice {
         right: .6rem;
         top: 6px;
         height: calc(100% - 12px);
-        color: #000;
+        color: #123928;
         padding: .59rem;
         margin-top: .5em; }
         .textwidget #mc_embed_signup form .mc-field-group button.btn:hover, .textwidget #mc_embed_signup form .mc-field-group .woocommerce button.button:hover, .woocommerce .textwidget #mc_embed_signup form .mc-field-group button.button:hover, .textwidget #mc_embed_signup form .mc-field-group .contact.track-phone button:hover, .contact.track-phone .textwidget #mc_embed_signup form .mc-field-group button:hover, .textwidget #mc_embed_signup form .mc-field-group .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button:hover, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order .textwidget #mc_embed_signup form .mc-field-group button:hover {
-          background: #000;
+          background: #123928;
           color: #e44682; }
     .textwidget #mc_embed_signup form #mce-responses {
       line-height: 1.5em; } }
@@ -11561,7 +11561,7 @@ body.woocommerce-cart #content form.woocommerce-cart-form h3 {
   font-size: 1em; }
 
 body.woocommerce-cart #content form.woocommerce-cart-form td.actions {
-  background: rgba(0, 0, 0, 0.2); }
+  background: rgba(18, 57, 40, 0.2); }
   body.woocommerce-cart #content form.woocommerce-cart-form td.actions input.input-text {
     width: 130px;
     padding: 10px 15px; }
@@ -11579,7 +11579,7 @@ body.woocommerce-cart #content .cart_totals p {
   line-height: 1.4rem; }
 
 body.woocommerce-cart #content .cart_totals table.shop_table {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(18, 57, 40, 0.2);
   border: none; }
 
 .woocommerce-notices-wrapper {
@@ -11721,7 +11721,7 @@ body.woocommerce-cart #content .cart_totals table.shop_table {
     padding: 0 0 25px;
     overflow: scroll;
     max-width: 100vw;
-    box-shadow: -12px 0px 22px -9px rgba(0, 0, 0, 0.75); }
+    box-shadow: -12px 0px 22px -9px rgba(18, 57, 40, 0.75); }
     .cart-collapse.collapsing .close-btn h2, .cart-collapse.collapse.show .close-btn h2 {
       padding: .93rem 1.5rem;
       font-family: "Muli", sans-serif;
@@ -11742,7 +11742,7 @@ body.woocommerce-cart #content .cart_totals table.shop_table {
       max-width: 100vw;
       position: relative; }
       .cart-collapse.collapsing .wrapper span.login, .cart-collapse.collapse.show .wrapper span.login {
-        color: #000;
+        color: #123928;
         cursor: pointer;
         text-decoration: underline; }
       .cart-collapse.collapsing .wrapper form#login p.status, .cart-collapse.collapse.show .wrapper form#login p.status {
@@ -11784,7 +11784,7 @@ body.woocommerce-cart #content .cart_totals table.shop_table {
               left: unset;
               top: 0;
               border-radius: 100%;
-              color: #000 !important;
+              color: #123928 !important;
               line-height: 24px;
               height: 1.5rem;
               width: 1.5rem;
@@ -11792,7 +11792,7 @@ body.woocommerce-cart #content .cart_totals table.shop_table {
               text-align: center;
               transition: background 1s ease; }
               .cart-collapse.collapsing .wrapper .product_list_widget li a.remove:hover, .cart-collapse.collapse.show .wrapper .product_list_widget li a.remove:hover {
-                background: #000;
+                background: #123928;
                 color: #fff !important; }
           .cart-collapse.collapsing .wrapper .product_list_widget li img, .cart-collapse.collapse.show .wrapper .product_list_widget li img {
             float: none;
@@ -12098,7 +12098,7 @@ body.woocommerce-cart #content .cart_totals table.shop_table {
     background: none; } }
 
 .woocommerce-checkout form input {
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(18, 57, 40, 0.5);
   border-radius: 4px; }
 
 .woocommerce-checkout form .form-row {
@@ -12180,7 +12180,7 @@ body.woocommerce-cart #content .cart_totals table.shop_table {
 
 .woocommerce-checkout #customer_details .select2-selection {
   height: auto;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(18, 57, 40, 0.5);
   font-size: 1rem;
   padding: 0;
   border-radius: 4px; }
@@ -12283,8 +12283,8 @@ body.woocommerce-cart #content .cart_totals table.shop_table {
   padding: 1em 0 0; }
   .woocommerce-checkout #payment.woocommerce-checkout-payment ul li {
     position: relative;
-    border: 1px solid #000;
-    color: #000;
+    border: 1px solid #123928;
+    color: #123928;
     border-radius: 4px;
     margin-bottom: 1em;
     padding: 3em 1.5em 0;
@@ -12303,7 +12303,7 @@ body.woocommerce-cart #content .cart_totals table.shop_table {
         .woocommerce-checkout #payment.woocommerce-checkout-payment ul li input:checked:before {
           content: '\f00c';
           font-family: 'FontAwesome';
-          color: #000;
+          color: #123928;
           background: #fff;
           top: -7px;
           left: -1px;
@@ -12320,10 +12320,10 @@ body.woocommerce-cart #content .cart_totals table.shop_table {
     .woocommerce-checkout #payment.woocommerce-checkout-payment ul li img {
       max-height: 1.5em; }
     .woocommerce-checkout #payment.woocommerce-checkout-payment ul li .payment_box {
-      background: #000;
+      background: #123928;
       display: none !important; }
       .woocommerce-checkout #payment.woocommerce-checkout-payment ul li .payment_box:before {
-        border-bottom-color: #000; }
+        border-bottom-color: #123928; }
       .woocommerce-checkout #payment.woocommerce-checkout-payment ul li .payment_box p {
         color: #fff; }
 
@@ -12676,7 +12676,7 @@ body.post-type-archive-product .woocommerce.products {
     .woocommerce-page .woocommerce-MyAccount-content address p.woocommerce-customer-details--phone {
       padding-top: 1em; }
     .woocommerce-page .woocommerce-MyAccount-content address p:before {
-      color: #000; }
+      color: #123928; }
   @media (min-width: 768px) {
     .woocommerce-page .woocommerce-MyAccount-content {
       border: 1px solid rgba(0, 0, 0, 0.125);
@@ -12691,7 +12691,7 @@ body.post-type-archive-product .woocommerce.products {
     margin: 1em auto;
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: .25rem;
-    background: #cccccc; }
+    background: #eaf9f2; }
   .woocommerce-page .woocommerce-MyAccount-content .woocommerce-Address {
     width: 100%;
     max-width: 100%;
@@ -12703,7 +12703,7 @@ body.post-type-archive-product .woocommerce.products {
     border-collapse: collapse;
     border: none; }
     .woocommerce-page .woocommerce-MyAccount-content .woocommerce-orders-table thead {
-      background: #000;
+      background: #123928;
       color: #fff;
       font-family: "Muli Bold", sans-serif; }
       .woocommerce-page .woocommerce-MyAccount-content .woocommerce-orders-table thead th {
@@ -12713,7 +12713,7 @@ body.post-type-archive-product .woocommerce.products {
         .woocommerce-page .woocommerce-MyAccount-content .woocommerce-orders-table thead th:last-child {
           border-top-right-radius: 6px; }
     .woocommerce-page .woocommerce-MyAccount-content .woocommerce-orders-table tbody tr:nth-child(odd) {
-      background: #cccccc; }
+      background: #eaf9f2; }
     .woocommerce-page .woocommerce-MyAccount-content .woocommerce-orders-table tbody tr:last-child td:last-child {
       border-bottom-right-radius: 6px; }
     .woocommerce-page .woocommerce-MyAccount-content .woocommerce-orders-table tbody tr:last-child td:first-child {
@@ -12735,7 +12735,7 @@ body.post-type-archive-product .woocommerce.products {
     .woocommerce-page .woocommerce-MyAccount-content form fieldset {
       padding: 1em;
       border-radius: .25rem;
-      background: #cccccc;
+      background: #eaf9f2;
       margin-bottom: 1.2em; }
       .woocommerce-page .woocommerce-MyAccount-content form fieldset legend {
         padding-top: 3em;

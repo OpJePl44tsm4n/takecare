@@ -85,7 +85,7 @@
                 </div>
 
                 <?php if(function_exists('is_cart') && !is_cart() && !is_checkout()):
-                    include(locate_template('func/Templates/CartTogleAjax.php'));
+                    // include(locate_template('func/Templates/CartTogleAjax.php'));
                 endif; ?>
 
             </div>
@@ -109,7 +109,7 @@
                 </div>
             <?php endif; ?> 
             
-                <?php if(is_product()){ ?>
+                <?php if(function_exists('is_cart') && is_product()){ ?>
                     <div class="mobile-header">
                         <div class="mobile-content col-8">
                             <?php $product = wc_get_product( get_the_ID());
