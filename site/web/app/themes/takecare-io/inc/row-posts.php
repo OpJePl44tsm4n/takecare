@@ -37,8 +37,12 @@
 				<div class="row justify-content-md-center">
 					<?php foreach ( $posts as $post ) : 
   						setup_postdata( $post );
-					
-						include(locate_template('inc/partials/grid-post.php'));
+						
+						if($type == 'company') {
+							include(locate_template('inc/partials/grid-company.php'));
+						} else {
+							include(locate_template('inc/partials/grid-post.php'));
+						}
 
 					endforeach; 
 					wp_reset_postdata(); ?>
