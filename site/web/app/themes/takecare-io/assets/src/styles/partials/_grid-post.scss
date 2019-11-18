@@ -6,7 +6,8 @@ section.post-grid {
         .card {
             box-shadow: 0 1px 4px 1px rgba(230, 230, 230, 0.28);
             margin-bottom: 20px;
-            animation: fadein 2s; 
+            animation: fadein 2s;
+            min-height: 320px; 
 
             .content{
                 padding: 10px 12px; 
@@ -36,6 +37,9 @@ section.post-grid {
 
                 .meta {
                     font-size: .8em;
+                    bottom: 0;
+                    position: absolute;
+                    width: calc(100% - 23px);
                     
                     @include media-breakpoint-down(xs) {
                         position: absolute;

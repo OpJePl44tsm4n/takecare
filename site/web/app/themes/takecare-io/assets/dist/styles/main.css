@@ -10662,7 +10662,8 @@ section.post-grid .post {
   section.post-grid .post .card {
     box-shadow: 0 1px 4px 1px rgba(230, 230, 230, 0.28);
     margin-bottom: 20px;
-    animation: fadein 2s; }
+    animation: fadein 2s;
+    min-height: 320px; }
     section.post-grid .post .card .content {
       padding: 10px 12px; }
       section.post-grid .post .card .content h1 {
@@ -10682,7 +10683,10 @@ section.post-grid .post {
         font-size: 0.8em;
         line-height: 1.6em; }
       section.post-grid .post .card .content .meta {
-        font-size: .8em; }
+        font-size: .8em;
+        bottom: 0;
+        position: absolute;
+        width: calc(100% - 23px); }
         @media (max-width: 575.98px) {
           section.post-grid .post .card .content .meta {
             position: absolute;
