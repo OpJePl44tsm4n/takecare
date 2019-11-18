@@ -10702,7 +10702,8 @@ section.post-grid .post {
             border-radius: 4px;
             font-size: .7rem;
             padding: 2px 4px 3px;
-            margin-right: .5em; }
+            margin: 0 .5em .5em 0;
+            display: inline-block; }
   section.post-grid .post .thumb {
     position: relative;
     height: 160px;
