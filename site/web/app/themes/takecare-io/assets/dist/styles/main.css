@@ -10714,6 +10714,19 @@ section.post-grid .post {
           transform: translateY(-50%);
       top: 50%;
       position: absolute; }
+    section.post-grid .post .thumb a.main-category {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.75);
+      padding: .1em .4em;
+      font-size: .6em; }
+    section.post-grid .post .thumb .logo {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 80px; }
   @media (max-width: 575.98px) {
     section.post-grid .post .card {
       height: 80px;
