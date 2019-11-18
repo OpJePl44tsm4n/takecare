@@ -9390,7 +9390,7 @@ body {
   overflow-x: hidden; }
   body h1 {
     font-size: 2rem;
-    line-height: 1.5em;
+    line-height: 1.2em;
     font-family: "Encode Sans Narrow", sans-serif;
     color: #000; }
     @media (min-width: 576px) {
@@ -9592,19 +9592,36 @@ article.page-content section.row.product-grid header {
     article.page-content section.row.video-header > .container {
       margin-bottom: -8em; } }
 
+article.page-content.company .header .info {
+  max-width: 250px; }
+  @media (min-width: 768px) {
+    article.page-content.company .header .info {
+      padding-top: 4em; } }
+  article.page-content.company .header .info .logo {
+    max-width: 96px; }
+
 article.page-content.company .header .grid-item.featured {
   background: rgba(62, 155, 146, 0.1);
   padding: 1em; }
   @media (min-width: 768px) {
     article.page-content.company .header .grid-item.featured {
-      padding: 3em; } }
-  article.page-content.company .header .grid-item.featured img, article.page-content.company .header .grid-item.featured picture {
+      padding: 3em;
+      vertical-align: middle;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+          align-items: center; } }
+  article.page-content.company .header .grid-item.featured .thumb {
     box-shadow: 7px 7px 23px -11px rgba(0, 0, 0, 0.75);
     width: 600px;
     max-width: 100%;
-    border-radius: 4px; }
+    border-radius: 4px;
+    height: 250px; }
+    @media (min-width: 576px) {
+      article.page-content.company .header .grid-item.featured .thumb {
+        height: 350px; } }
     @media (min-width: 768px) {
-      article.page-content.company .header .grid-item.featured img, article.page-content.company .header .grid-item.featured picture {
+      article.page-content.company .header .grid-item.featured .thumb {
         margin-left: -4.5em; } }
 
 .navbar-collapse {
@@ -10643,7 +10660,7 @@ article.page-content .post_list {
 section.post-grid .post {
   text-align: left; }
   section.post-grid .post .card {
-    box-shadow: 0 1px 4px 1px rgba(230, 230, 230, 0.38);
+    box-shadow: 0 1px 4px 1px rgba(230, 230, 230, 0.28);
     margin-bottom: 20px;
     animation: fadein 2s; }
     section.post-grid .post .card .content {
@@ -10654,31 +10671,38 @@ section.post-grid .post {
         padding-bottom: 0;
         font-family: "Encode Sans Narrow Medium", sans-serif;
         line-height: 1.5rem;
-        min-height: 3em;
         text-transform: unset; }
         @media (max-width: 575.98px) {
           section.post-grid .post .card .content h1 {
             line-height: 1rem; } }
-        @media (min-width: 768px) {
-          section.post-grid .post .card .content h1 {
-            min-height: 5em; } }
         section.post-grid .post .card .content h1 a {
           text-decoration: none;
           color: #000; }
       section.post-grid .post .card .content p {
-        font-size: 0.8em; }
+        font-size: 0.8em;
+        line-height: 1.6em; }
       section.post-grid .post .card .content .meta {
         font-size: .8em; }
         @media (max-width: 575.98px) {
           section.post-grid .post .card .content .meta {
             position: absolute;
             top: 80%; } }
+        section.post-grid .post .card .content .meta hr {
+          margin: .5em 0; }
         section.post-grid .post .card .content .meta span {
           color: #b3b3b3; }
         section.post-grid .post .card .content .meta a {
-          padding-left: 0.4em;
-          text-decoration: none;
-          font-family: "Encode Sans Narrow Medium", sans-serif; }
+          text-decoration: none; }
+          section.post-grid .post .card .content .meta a.site-link, section.post-grid .post .card .content .meta a.city {
+            margin-right: 1em;
+            font-family: "Encode Sans Narrow SemiBold", sans-serif; }
+          section.post-grid .post .card .content .meta a.tag {
+            font-style: italic;
+            background: #E2F2F7;
+            border-radius: 4px;
+            font-size: .7rem;
+            padding: 2px 4px 3px;
+            margin-right: .5em; }
   section.post-grid .post .thumb {
     position: relative;
     height: 160px;

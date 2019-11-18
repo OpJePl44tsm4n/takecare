@@ -15,9 +15,13 @@
                 <section class="header container">
                     <div class="row swap-order">
 
-                        <div class="grid-item col-md-4">
+                        <div class="grid-item col-md-5">
+                            <div class="info">
+                                <div class="logo">
+                                    <?php echo $logo; ?>
+                                </div>
+
                             <?php 
-                                echo $logo; 
                                 the_title( '<h1>', '</h1>' );
 
                                 $categories = get_the_category();
@@ -56,11 +60,14 @@
                                     }
 
                                 ?>
+                            </div>    
                         </div>
                         
                         <?php if($featured): ?>
-                            <div class="grid-item col-md-8 featured">
-                                <?php echo $featured; ?>
+                            <div class="grid-item col-md-7 featured">
+                                <div class="thumb">
+                                    <?php echo $featured; ?>
+                                </div>
                             </div>
                         <?php endif; ?>
 

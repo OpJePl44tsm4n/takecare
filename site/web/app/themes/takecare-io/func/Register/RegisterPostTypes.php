@@ -148,6 +148,8 @@ class RegisterPostTypes {
         if( $query->is_category() && $query->is_main_query() ){
             $query->set( 'post_type', array( 'post', 'company' ) );
         }
+
+        var_dump( $query ); 
     }
 
 }

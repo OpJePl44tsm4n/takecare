@@ -149,24 +149,47 @@ article.page-content {
 	&.company {
 
 		.header {
+			
+			.info {
+				max-width: 250px; 
+
+				@include media-breakpoint-up(md) {
+					padding-top: 4em;
+				}	
+
+
+				.logo {
+					max-width: 96px;
+				}
+			}
+
 			.grid-item.featured {
 				background: rgba($primary-color, .1);
 				padding: 1em;
 				
 				@include media-breakpoint-up(md) {
 					padding: 3em;
+					vertical-align: middle;
+				    display: flex;
+				    align-items: center;
 				}	
-
-				img, picture {
+				
+				.thumb {
 					box-shadow: 7px 7px 23px -11px rgba($primary-text-color, .75);
 					width: 600px;
 					max-width: 100%;
 					border-radius: 4px; 
+					height: 250px;
+
+					@include media-breakpoint-up(sm) {
+						height: 350px;
+					}
 
 					@include media-breakpoint-up(md) {
 						margin-left: -4.5em;
 					}
-				}
+					
+				}	
 			}
 		}
 	}

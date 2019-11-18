@@ -4,7 +4,7 @@ section.post-grid {
         text-align: left; 
 
         .card {
-            box-shadow: 0 1px 4px 1px rgba(230, 230, 230, 0.38);
+            box-shadow: 0 1px 4px 1px rgba(230, 230, 230, 0.28);
             margin-bottom: 20px;
             animation: fadein 2s; 
 
@@ -17,15 +17,10 @@ section.post-grid {
                     padding-bottom: 0;
                     font-family: $primary-font-medium;
                     line-height: 1.5rem;
-                    min-height: 3em;
                     text-transform: unset;
 
                     @include media-breakpoint-down(xs) {
                         line-height: 1rem;
-                    }
-
-                    @include media-breakpoint-up(md) {
-                        min-height: 5em;
                     }
 
                     a {
@@ -36,6 +31,7 @@ section.post-grid {
 
                 p {
                     font-size: 0.8em;
+                    line-height: 1.6em;
                 }
 
                 .meta {
@@ -45,15 +41,32 @@ section.post-grid {
                         position: absolute;
                         top: 80%;
                     }
+                    
+                    hr {
+                        margin: .5em 0;
+                    }
 
                     span {
                         color: lighten($primary-text-color, 70%);
                     }
-
+    
                     a {
-                        padding-left: 0.4em;
                         text-decoration: none; 
-                        font-family: $primary-font-medium;
+
+                        &.site-link,
+                        &.city {
+                            margin-right: 1em;
+                            font-family: $primary-font-bold;
+                        }
+
+                        &.tag {
+                            font-style: italic;
+                            background: $tertiary-bg-color;
+                            border-radius: 4px;
+                            font-size: .7rem;
+                            padding: 2px 4px 3px; 
+                            margin-right: .5em;
+                        }
                     }
                 }
             }    
