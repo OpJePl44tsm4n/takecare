@@ -11,6 +11,7 @@
             $website = get_field('website');
             $address_obj = get_field('adress'); ?>
 
+
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> >
                 <section class="header container">
                     <div class="row swap-order">
@@ -36,7 +37,17 @@
 
                                 <p class="description"><?php echo get_the_excerpt(); ?></p>
                                 
-                                <?php if( isset($address_obj['address']) ){ ?>
+                                <?php 
+                                if( isset($address_obj['city']) ){ 
+                                    $adress = isset($address_obj['city']) ? $address_obj['city'] . '</br>' : ''; 
+                                    $adress = isset($address_obj['state']) ? $adress . $address_obj['state'] . '</br>' : $adress;
+                                    $adress = isset($address_obj['country']) ? $adress . $address_obj['country'] . '</br>' : $adress;
+
+                                    if ( $adress ){
+                                        echo '<small>' . $adress . '</small>';
+                                    }
+                                }    
+                                elseif( isset($address_obj['address']) ){ ?>
                                     <small>
                                        <?php  $address = explode(',', $address_obj['address']); 
                                             foreach ($address as $key => $value) {
