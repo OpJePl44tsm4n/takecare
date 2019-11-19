@@ -9599,6 +9599,9 @@ article.page-content.company .header .info {
       padding-top: 4em; } }
   article.page-content.company .header .info .logo {
     max-width: 96px; }
+  article.page-content.company .header .info small.adress {
+    margin-bottom: 1em;
+    display: inline-block; }
 
 article.page-content.company .header .grid-item.featured {
   background: rgba(62, 155, 146, 0.1);
@@ -10693,8 +10696,8 @@ section.post-grid .post {
             top: 80%; } }
         section.post-grid .post .card .content .meta hr {
           margin: .5em 0; }
-        section.post-grid .post .card .content .meta span {
-          color: #b3b3b3; }
+        section.post-grid .post .card .content .meta .year-founded {
+          font-family: "Encode Sans Narrow SemiBold", sans-serif; }
         section.post-grid .post .card .content .meta a {
           text-decoration: none; }
           section.post-grid .post .card .content .meta a.site-link, section.post-grid .post .card .content .meta a.city {

@@ -39,16 +39,15 @@
                                 
                                 <?php 
                                 if( isset($address_obj['city']) ){ 
-                                    $adress = isset($address_obj['city']) ? $address_obj['city'] . '</br>' : ''; 
-                                    $adress = isset($address_obj['state']) ? $adress . $address_obj['state'] . '</br>' : $adress;
+                                    $adress = isset($address_obj['city']) ? $address_obj['city'] . ',</br>' : ''; 
                                     $adress = isset($address_obj['country']) ? $adress . $address_obj['country'] . '</br>' : $adress;
 
                                     if ( $adress ){
-                                        echo '<small>' . $adress . '</small>';
+                                        echo '<small class="adress">' . $adress . '</small>';
                                     }
                                 }    
                                 elseif( isset($address_obj['address']) ){ ?>
-                                    <small>
+                                    <small class="adress">
                                        <?php  $address = explode(',', $address_obj['address']); 
                                             foreach ($address as $key => $value) {
                                                 echo $value . '</br>';

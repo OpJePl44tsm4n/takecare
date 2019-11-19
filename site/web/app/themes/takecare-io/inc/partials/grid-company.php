@@ -29,7 +29,7 @@
             <p class="intro"><?php echo get_the_excerpt(); ?></p>
             <div class="meta">
                 <?php 
-                    $website = get_field('website');
+                    $founded = get_field('founded');
                     $cities = get_the_terms( get_the_id(), 'city' );
 
                     if($cities) {
@@ -42,11 +42,10 @@
                         }
                     }   
 
-                    if( $website ) {
-                        $site_title = str_ireplace('www.', '', parse_url($website)['host']);
-                        echo sprintf('<a class="site-link" target="_blank" href="%s"><i class="fa fa-link"></i> %s</a>', 
-                            $website,
-                            $site_title
+                    if( $founded ) {
+                        
+                        echo sprintf('<span class="year-founded"><i class="fa fa-calendar"></i> %s</span>', 
+                            $founded
                         );
                     } ?>
 

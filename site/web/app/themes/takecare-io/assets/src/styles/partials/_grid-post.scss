@@ -50,8 +50,8 @@ section.post-grid {
                         margin: .5em 0;
                     }
 
-                    span {
-                        color: lighten($primary-text-color, 70%);
+                    .year-founded {
+                        font-family: $primary-font-bold;
                     }
     
                     a {
