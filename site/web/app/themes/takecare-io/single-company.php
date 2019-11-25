@@ -288,7 +288,7 @@
                                         
 
                                     if( !$title || !$img_id ) {
-                                        var_dump($title,$img_id);
+                                        
                                         $content = file_get_contents( $url );
 
                                         $doc = new DOMDocument();
