@@ -11,7 +11,6 @@
             $website = get_field('website');
             $address_obj = get_field('adress'); ?>
 
-
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> >
                 <section class="header container">
                     <div class="row swap-order">
@@ -279,14 +278,119 @@
                                 <?php while ( have_rows('articles') ) : the_row(); 
                                     $title = get_sub_field('title');
                                     $url = get_sub_field('url');
-                                    $site_title = get_sub_field('site_title') ?: str_ireplace('www.', '', parse_url($url)['host']);
                                     $img_id = get_sub_field('featured_image');
-                                    $featured  = wp_get_attachment_image( $img_id, 'medium' );
+                                    $article_excerpt = get_sub_field('article_description');
+                                    
 
-                                    if(!$url || !$title) {
+                                    if( !$url ) {
                                         continue;
                                     }
-                                    ?>
+                                        
+
+                                    if( !$title || !$img_id ) {
+                                        var_dump($title,$img_id);
+                                        $content = file_get_contents( $url );
+
+                                        $doc = new DOMDocument();
+
+                                        // squelch HTML5 errors
+                                        @$doc->loadHTML($content);
+
+                                        $meta = $doc->getElementsByTagName('meta');
+                                        $tags= [];
+
+                                        foreach ($meta as $element) {
+                                            $property = '';
+                                            $content = '';
+                                            foreach ($element->attributes as $node) {
+
+                                                if($node->name == 'property' || $node->name == 'name') {
+                                                    $property = $node->value;
+                                                }
+
+                                                if($node->name == 'content') {
+                                                    $content = $node->value;
+                                                }
+
+                                                if($property && $content) {
+                                                    $tags[$property] = $content;
+                                                } 
+
+                                            }
+                                            
+                                        }    
+
+                                        $article_domain = $tags['og:site_name'];
+                                        $article_img = $tags['og:image'];
+                                        $article_title = $tags['og:title'];
+                                        $article_excerpt = $tags['og:description'];
+                                        
+            
+                                        if( $article_title ){
+                                            update_sub_field('title', $article_title);
+                                        }
+
+                                        if( $article_domain ){
+                                            update_sub_field('site_title', $article_domain);
+                                        }
+
+                                        if( $article_excerpt ) {
+                                            update_sub_field('article_description', $article_excerpt);
+                                        }
+
+                                        if( $article_img ){
+
+                                            // Add Featured Image to Post
+                                            $image_url        = $article_img;
+                                            $pathinfo         = pathinfo($image_url);
+                                            $image_name       = $pathinfo['filename'].'.'.$pathinfo['extension'];
+                                            $upload_dir       = wp_upload_dir(); // Set upload folder
+                                            $image_data       = file_get_contents($image_url); // Get image data
+                                            $unique_file_name = wp_unique_filename( $upload_dir['path'], $image_name ); // Generate unique name
+                                            $filename         = basename( $unique_file_name ); // Create image file name
+
+                                            // Check folder permission and define file location
+                                            if( wp_mkdir_p( $upload_dir['path'] ) ) {
+                                                $file = $upload_dir['path'] . '/' . $filename;
+                                            } else {
+                                                $file = $upload_dir['basedir'] . '/' . $filename;
+                                            }
+
+                                            // Create the image  file on the server
+                                            file_put_contents( $file, $image_data );
+
+                                            // Check image file type
+                                            $wp_filetype = wp_check_filetype( $filename, null );
+
+                                            // Set attachment data
+                                            $attachment = array(
+                                                'post_mime_type' => $wp_filetype['type'],
+                                                'post_title'     => sanitize_file_name( $filename ),
+                                                'post_content'   => '',
+                                                'post_status'    => 'inherit'
+                                            );
+
+                                            // Create the attachment
+                                            $attach_id = wp_insert_attachment( $attachment, $file, get_the_ID() );
+
+                                            // Include image.php
+                                            require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+                                            // Define attachment metadata
+                                            $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+
+                                            // Assign metadata to attachment
+                                            wp_update_attachment_metadata( $attach_id, $attach_data );
+
+                                            // Update featured image of current row
+                                            update_sub_field('featured_image', $attach_id);
+                                        }
+
+                                    }
+
+                                    $featured  = wp_get_attachment_image( $img_id, 'medium' );
+                                    $site_title = get_sub_field('site_title') ?: str_ireplace('www.', '', parse_url($url)['host']);
+                                     ?>
                                     
                                     <article class="grid-item post col-sm-6 col-lg-4">
                                         <div class="card">
@@ -299,6 +403,7 @@
                                             <div class="content">
                                                
                                                 <h1><?php echo $title; ?></h1>
+                                                <p><?php echo $article_excerpt; ?></p>
                                                 <button class="btn btn-link"><?php echo sprintf("%s %s", __( 'Read on', TakeCareIo::THEME_SLUG ), $site_title ); ?></button>
                                             </div>
                                         </div>
