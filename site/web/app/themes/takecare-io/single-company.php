@@ -346,7 +346,7 @@
                                         $article_domain = $tags['og:site_name'];
                                         $article_img = $tags['og:image'];
                                         $article_title = $tags['og:title'];
-                                        $article_excerpt = $tags['og:description'];
+                                        $article_excerpt = wp_trim_words($tags['og:description'], 40);
                                         
             
                                         if( $article_title ){
