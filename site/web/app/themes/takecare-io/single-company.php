@@ -286,15 +286,38 @@
                                         continue;
                                     }
                                         
+                                    function getSslPage($url) {
+                                        $ch = curl_init();
+                                        curl_setopt($ch, CURLOPT_URL, $url);
+                                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+                                        curl_setopt($ch, CURLOPT_POST, FALSE);
+                                        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0');
+                                        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+                                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+                                        curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+                                        
+                                        $result = curl_exec($ch);
+                                        $err     = curl_errno( $ch );
+                                        $errmsg  = curl_error( $ch );
+                                        $header  = curl_getinfo( $ch );
+                                        curl_close($ch);
+
+                                        $header['errno']   = $err;
+                                        $header['errmsg']  = $errmsg;
+                                        $header['content'] = $result;
+
+                                        return $header;
+                                    }
 
                                     if( !$title || !$img_id ) {
                                         
-                                        $content = file_get_contents( $url );
+                                        $content = getSslPage($url);
 
                                         $doc = new DOMDocument();
 
                                         // squelch HTML5 errors
-                                        @$doc->loadHTML($content);
+                                        @$doc->loadHTML($content['content']);
 
                                         $meta = $doc->getElementsByTagName('meta');
                                         $tags= [];
