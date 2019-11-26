@@ -310,7 +310,7 @@
                                         return $header;
                                     }
 
-                                    if( !$title || !$img_id ) {
+                                    if( !$title && !$img_id ) {
                                         
                                         $content = getSslPage($url);
 
@@ -366,7 +366,7 @@
                                             // Add Featured Image to Post
                                             $image_url        = $article_img;
                                             $pathinfo         = pathinfo($image_url);
-                                            $extension        = isset($pathinfo['extension']) ? $pathinfo['extension'] : 'jpeg'; 
+                                            $extension        = isset($pathinfo['extension']) ? ( strpos($pathinfo['extension'], "?") ? substr($pathinfo['extension'], 0, strpos($pathinfo['extension'], "?")) : $pathinfo['extension'] ) : 'jpeg'; 
                                             $image_name       = $pathinfo['filename'] .'.'. $extension ;
                                             $upload_dir       = wp_upload_dir(); // Set upload folder
                                             $image_data       = file_get_contents($image_url); // Get image data
