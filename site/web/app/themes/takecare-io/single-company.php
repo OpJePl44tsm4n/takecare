@@ -275,39 +275,39 @@
                             </header>
 
                             <div class="row justify-content-md-center">
-                                <?php while ( have_rows('articles') ) : the_row(); 
+                                <?php 
+                                function getSslPage($url) {
+                                    $ch = curl_init();
+                                    curl_setopt($ch, CURLOPT_URL, $url);
+                                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+                                    curl_setopt($ch, CURLOPT_POST, FALSE);
+                                    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0');
+                                    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+                                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+                                    curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+                                    
+                                    $result = curl_exec($ch);
+                                    $err     = curl_errno( $ch );
+                                    $errmsg  = curl_error( $ch );
+                                    $header  = curl_getinfo( $ch );
+                                    curl_close($ch);
+
+                                    $header['errno']   = $err;
+                                    $header['errmsg']  = $errmsg;
+                                    $header['content'] = $result;
+
+                                    return $header;
+                                }
+                                    
+                                while ( have_rows('articles') ) : the_row(); 
                                     $title = get_sub_field('title');
                                     $url = get_sub_field('url');
                                     $img_id = get_sub_field('featured_image');
                                     $article_excerpt = get_sub_field('article_description');
                                     
-
                                     if( !$url ) {
                                         continue;
-                                    }
-                                        
-                                    function getSslPage($url) {
-                                        $ch = curl_init();
-                                        curl_setopt($ch, CURLOPT_URL, $url);
-                                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-                                        curl_setopt($ch, CURLOPT_POST, FALSE);
-                                        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0');
-                                        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-                                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-                                        curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
-                                        
-                                        $result = curl_exec($ch);
-                                        $err     = curl_errno( $ch );
-                                        $errmsg  = curl_error( $ch );
-                                        $header  = curl_getinfo( $ch );
-                                        curl_close($ch);
-
-                                        $header['errno']   = $err;
-                                        $header['errmsg']  = $errmsg;
-                                        $header['content'] = $result;
-
-                                        return $header;
                                     }
 
                                     if( !$title && !$img_id ) {
