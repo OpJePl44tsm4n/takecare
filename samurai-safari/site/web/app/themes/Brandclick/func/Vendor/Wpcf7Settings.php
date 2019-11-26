@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\Vendor;
-use Brandclick\Brandclick;
+namespace Greylabel\Vendor;
+use Greylabel\Greylabel;
 
 class Wpcf7Settings {
 

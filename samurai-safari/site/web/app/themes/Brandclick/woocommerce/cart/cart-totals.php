@@ -19,9 +19,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-    global $woocommerce;
-    WC()->cart->calculate_totals();
-    WC()->cart->calculate_shipping();
 
 ?>
 <div class="cart_totals <?php echo ( WC()->customer->has_calculated_shipping() ) ? 'calculated_shipping' : ''; ?>">
@@ -33,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
 			<tr class="cart-discount coupon-<?php echo esc_attr( sanitize_title( $code ) ); ?>">
 				<th><?php wc_cart_totals_coupon_label( $coupon ); ?></th>
-				<td data-title="<?php echo esc_attr( wc_cart_totals_coupon_label( $coupon, false ) ); ?>"><div><?php wc_cart_totals_coupon_html( $coupon ); ?></div></td>
+				<td data-title="<?php echo esc_attr( wc_cart_totals_coupon_label( $coupon, false ) ); ?>"><?php wc_cart_totals_coupon_html( $coupon ); ?></td>
 			</tr>
 		<?php endforeach; ?>
 
@@ -93,34 +90,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	</table>
 
-	<?php if ( wc_coupons_enabled() ) { ?>
-
-		<div class="woocommerce-notices-wrapper">
-			<?php wc_print_notices(); ?>
-		</div>
-
-		<div class="ajax-coupon">
-
-			<button class="btn btn-link collapsed" 
-	            data-toggle="collapse" 
-	            data-target="#coupon-field" 
-	            aria-expanded="false" 
-	            aria-controls="coupon-field"><?php _e('Add coupon', WhiteLabelTheme::THEME_SLUG ); ?> <i class="fa fa-angle-down"></i></button>
-	            
-	        <div id="coupon-field" class="collapse">
-	            <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" /><button type="submit" class="btn btn-primary" name="apply_coupon" id="coupon-submit" data-for=".ajax-coupon #coupon_code" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_attr_e( 'Apply', WhiteLabelTheme::THEME_SLUG ); ?></button>
-				<?php do_action( 'woocommerce_cart_coupon' ); ?>
-	        </div>
-			
-		</div>
-	<?php } ?>
-	
-	<p><?php echo sprintf( '%s <a class="btn btn-link" href="%s">%s</a>', __('Found everything you need or do you want to', WhiteLabelTheme::THEME_SLUG ), get_permalink( wc_get_page_id( 'shop' )),__('continue shopping?', WhiteLabelTheme::THEME_SLUG )  ); ?></p>
-
 	<div class="wc-proceed-to-checkout">
-		<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="checkout-button button alt wc-forward">
-			<?php esc_html_e( 'Checkout', WhiteLabelTheme::THEME_SLUG ); ?>
-		</a>
+		<?php do_action( 'woocommerce_proceed_to_checkout' ); ?>
 	</div>
 
 	<?php do_action( 'woocommerce_after_cart_totals' ); ?>

@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\Admin;
-use Brandclick\Brandclick;
+namespace Greylabel\Admin;
+use Greylabel\Greylabel;
 
 class CleanUpUserProfiles {
 

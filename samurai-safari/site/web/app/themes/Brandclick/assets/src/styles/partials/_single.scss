@@ -1,23 +1,22 @@
-
 .single {
 	main {
-		padding: 3em 0 4em;
+		padding: 0 0 4em;
 
 		article.post-content {	
-			max-width: 700px;
-			width: 100%;
+			max-width: 900px;
 			padding-bottom: 3em;
 
 			header {
-				
+				// max-width: 800px;
+
 				.thumb {
 					max-height: 50vh;
 				    height: 0;
 				    padding-bottom: 52%;
-				    width: 100%;
 				    overflow: hidden;
 				    margin-bottom: 2em;
 				    position: relative;
+				    margin-top: 4em;
 
 				    img {
 				    	width: 100%;
@@ -30,7 +29,9 @@
 
 				h1 {
 					color: $primary-text-color;
-					font-family: $primary-font-medium;
+					font-family: $primary-font-bold;
+					line-height: 1.3em;
+					font-size: 2rem;
 				}
 
 				.sub {
@@ -41,20 +42,16 @@
 				a {
 					font-size: 0.8em;
 				}
-			}
+			}	
+
 
 			p {
 				margin: 2rem 0;
-				font-size: 1.2em;
-				line-height: 1.58;
-
-				img {
-					margin: 1em 0;
-				}
 			}
 
 			h2 {
-	
+				font-size: 1.2em;
+
 				+ p {
 					margin: 1em 0 2em;
 				}
@@ -67,28 +64,6 @@
 					}
 				}
 			}
-
-			.read-next-article{
-				hr{
-					margin-bottom:3rem;
-					margin-top: 3rem;
-				}
-
-				.thumb{
-					margin-bottom: 2em !important;
-					height: 250px;
-
-					img{
-						width: 100% !important;
-					}
-				}
-
-				.next-article-content{
-					-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
-					margin-top:1rem !important;
-				}
-			}
-
 		}
 
 		.related-posts { 
@@ -97,43 +72,4 @@
 			}
 		}
 	}
-
-
-}
-
-
-
-.single-post {
-	main {
-		.thumb {
-			display: flex;
-			justify-content: center;
-			margin-bottom: 3em;
-
-			img {
-				object-fit: cover;
-				height: auto; // 580px
-				width: 90%; // 1150px
-
-				@include media-breakpoint-down(sm) {
-					width: 94%;
-				}
-
-			}
-		}
-
-		article.post-content {
-			
-			h2, h3 {
-				color: $primary-color;
-			}
-
-			.mailchimp_form {
-				border-bottom: none;
-			}
-				
-		}
-
-	}
-
 }

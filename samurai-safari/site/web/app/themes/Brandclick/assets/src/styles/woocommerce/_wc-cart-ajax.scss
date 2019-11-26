@@ -1,5 +1,5 @@
 .cart-btn {
-	width: 75px; 
+	width: 70px; 
 	outline: none;
 	display: flex;
 
@@ -8,36 +8,41 @@
 		display: none; 
 	}
 
-	@include media-breakpoint-down(sm) {
+	@include media-breakpoint-down(xs) {
 		position: absolute;
-		right: 52px;
-    	top: 37.5%;
+		left: 75%;
+		top: 17.5%;
 		z-index: 6;
 	}
 
-	a.account-link {
-		padding: 0 10px;
-	    line-height: 1em;
-	    margin-right: 7px;
-	    text-decoration: none;
-	    
-	    i {
-	    	font-size: 1.6em;
-	    	position: relative;
-	    	display: inline;
-			-webkit-text-fill-color: rgba($primary-text-color, .0);
-		    -webkit-text-stroke-width: 1px;
-		    -webkit-text-stroke-color: rgba($primary-text-color, 0.57); 
-		} 
+	@include media-breakpoint-only(sm) {
+		position: absolute;
+		left: 94%;
+		top: 19%;
+	}
 
-		&:hover i {
-			-webkit-text-fill-color: rgba($primary-text-color, .1);
-		}
-    }
+ 	@include media-breakpoint-down(sm) {
+ 		/*display: none;
+
+ 		&:not(.empty) {
+ 			display: flex; 
+			position: fixed;
+		    bottom: 0;
+		    left: 0;
+		    background: #fff;
+		    width: 100vw;
+		    box-shadow: 0px 0px 10px -2px rgba($primary-text-color, .75);
+
+			.cart-totals { 
+				display: inline-block; 
+			}	
+		
+		}    */
+	}    
 
 	.cart-toggler {  
 	    position: relative; 
-	    padding: 0; 
+	    padding: 3px 2.3em 0 0; 
 	 	background: none;
 	    border: none;
 	    cursor: pointer;
@@ -45,25 +50,21 @@
 	    outline:0;
 
 	    @include media-breakpoint-down(sm) {
-	    	margin: 0rem 1rem;
+	    	margin: 0.8rem -1rem;
 		}
-
+	    
 	    i {
-	    	font-size: 1.4em;
+	    	font-size: 1.6em;
+	    	color: #fbee00;
 	    	position: relative;
-	    	display: inline;
-			-webkit-text-fill-color: rgba($primary-text-color, .0);
-		    -webkit-text-stroke-width: 1px;
-		    -webkit-text-stroke-color: rgba($primary-text-color, 0.57);
 
 	    	&:before {
-    			color: rgba($secondary-text-color, 0.57);
+	    		position: absolute; 
+	    		top: -1.2rem;
+    			left: -.7rem;
+    			color: #fff;
 	    	}
 	    }
-
-	    &:hover i {
-			-webkit-text-fill-color: rgba($primary-text-color, .1);
-		}
 
 	    .amount {
 	    	font-family: $primary-font-bold;
@@ -73,16 +74,16 @@
 	    .cart-item-count {
 	    	position: absolute; 
 	    	top: -6px;
-	    	right: -7px;
+	    	right: 15px;
 	    	display: inline-block;
 			font-size: 0.6rem;
 		    line-height: 0.5rem;
 		    width: 14px;
 		    height: 14px;
 		    padding: .15rem;
-			color: $secondary-text-color; 
+			color: #000; 
 			border-radius: 100%; 
-			background: $primary-color-dark;
+			background: #fbee00;
 		}
 	}
 }	
@@ -90,7 +91,7 @@
 // Main navigation 
 .cart-collapse {
 	border: none; 
-	transition: width 0.3s, height .001s;
+	transition: width 0.6s, height .001s;
 	padding-left: 4em;
 	top: 0px;
 	position: absolute;
@@ -112,18 +113,16 @@
 		max-width: 100vw;
 		box-shadow: -12px 0px 22px -9px rgba($primary-color ,0.75);
 
+    	.d-flex {
+    		background-color: #000;
+    		height: 4rem;
+	    }
+		
 		.close-btn {
-
-			h2 {
-				padding: .93rem 1.5rem;
-				font-family: $primary-font-medium;
-				color: $primary-color-dark
-			}
-
 			button {
-				color: $primary-text-color;
+				color: #fff;
 				padding: 0.93rem;
-				flex: 1;
+				width: 100%;
     			text-align: right;
 			    line-height: 0.7em;
 				font-size: 2em;
@@ -132,12 +131,11 @@
 			}
 		}
 
-		.wrapper {
-			padding: 0 1.5em 1.5em;
-			width: 400px;
+		.content {
+			padding: 1.5em;
+			width: 500px;
 			max-width: 100vw;
-			position: relative;
-
+			
 			span.login {
 				color: $primary-color;
 				cursor: pointer;
@@ -147,25 +145,24 @@
 			form#login p.status{
 			    display: none;
 			}
-			
-			p { text-align: center; }
+
 
 			.product_list_widget {
 				padding: 0; 
 				list-style: none;
 				overflow: hidden; 
-				border-bottom: 2px solid rgba($primary-text-color, 0.1);
+				background: rgba($primary-text-color, 0.05);
+				margin-bottom: 0; 
 				margin-top: 1em;
-			    padding-bottom: 1em;
-			    margin-bottom: 1em;
 
 				li {
+					border-bottom: 1px solid rgba($primary-text-color, .1);
+					bottom: 0 0 1em 0;
 					position: relative;
 					background: white; 
 					transition: margin-left 0.8s ease, max-height 0.4s ease 0.4s, padding 0.4s ease 0.4s;
 					max-height: 300px; 
-					padding-bottom: 0;
-					display: flex;
+					padding-bottom: .8em;
 
 					&[style="zoom: 1;"] {
 						margin-left: 100%;
@@ -183,21 +180,20 @@
 						text-decoration: none;
 						display: inline-block;
 						vertical-align: top;
-			
+
 						&.remove {
-							font-size: 1.4rem;
+							font-size: 1.5rem;
 						    position: absolute;
-						    right: 0;
+						    right: 0.3em;
 						    left: unset;
-						    top: 0;
+						    top: 0.3em;
 						    border-radius: 100%;
 						    color: $primary-color !important;
-						    line-height: 24px;
+						    line-height: 22px;
 						    height: 1.5rem;
     						width:  1.5rem;
 	 						padding-left: 1px;
 	 						text-align: center;
-	 						transition: background 1s ease;
 
 						   	&:hover {
 						   		background: $primary-color;
@@ -206,66 +202,112 @@
 						}
 					}
 					
-					img {
-						float: none;
-						width: 80px;
-    					padding: 10px;
-    					display: inline-block;
-					}
-
 					div.cart-item-data {
-						flex: 1;
-						padding: 1em 2em 1em 1em;
-
-						h3.product-title {
-							display: inline;
-							color: $primary-text-color;
-							font-size: .9em;
-							line-height: 1.6em;
-							max-width: 130px;
-							margin-top: .5em;
-							
-							@include media-breakpoint-up(sm) {
-								max-width: 200px;
-							}
-							
-						}
-						.amount {
-							float: right;
-							color: lighten($primary-text-color, 20%);
-							font-family: $primary-font-medium;
-						}
-
-						.quantity {
-
-							.input-text.qty {
-								width: 40px; 
-								border-radius: 4px;
-								padding-left: 5px;
-								border: 1px solid rgba($primary-text-color, .1);
-							}
-
-							span.amount {
-								font-family: $primary-font-bold;
-								font-size: 0.7em;
-							}
-						}
+						display: inline-block;
 
 						.variation {
 		 					padding-bottom: 0;
     					}
 					}
+
+					h3 {
+						color: $primary-text-color;
+						display: block;
+						font-size: 0.8em;
+						line-height: 1.6em;
+						max-width: 130px;
+						margin-top: .5em;
+						
+						@include media-breakpoint-up(sm) {
+							max-width: 200px;
+						}
+					}
+
+					img {
+						float: none;
+						width: 70px;
+    					padding: 10px 10px 0;
+    					display: inline-block;
+					}
+					
+					.quantity {
+						display: inline-block;
+						.input-text.qty {
+							width: 40px; 
+							border-radius: 4px;
+							padding-left: 5px;
+							border: 1px solid rgba($primary-text-color, .1);
+						}
+
+						span.amount {
+							font-family: $primary-font-bold;
+							font-size: 0.8em;
+						}
+					}
 				}
 			}
 
-			// .cart-subtotal {
-			// 	.woocommerce-Price-amount {
-			// 		display: inline-block;
-   //  				float: right;
-			// 	}
-			// }
+			.cart-subtotal {
+				.woocommerce-Price-amount {
+					display: inline-block;
+    				float: right;
+				}
+			}
 			
-		     
+			.ajax-coupon {
+				padding: 1em 0;
+				margin-top: 1em;
+				display: inline-flex;
+				justify-content: space-between;
+				height: 75px;
+				width: 100%;
+				border-radius: 4px 4px 0 0;
+				background: $tertiary-bg-color;
+				border-bottom: 1px solid rgba($primary-text-color, .1);
+
+				.btn-link {
+					padding: 0 1.1em;
+					width: auto;
+				}
+				
+				#coupon-field {
+					padding-right: 4rem;
+					display: flex;
+
+					@include media-breakpoint-down(xs) {
+						display: grid;
+					}
+				} 
+
+				#coupon_code {
+					font-size: 0.8em;
+					padding: 9px;
+				    border-radius: 4px 0 0 4px;
+				    border: 1px solid rgba($primary-text-color, .1);
+				    width: 10rem;
+				}
+				
+				#coupon-submit {
+					margin-top: -3px;
+					width: 8rem;
+					padding: 0;
+					height: 2.5rem;
+					margin-top: 1px;
+					border-radius: 0 4px 4px 0;
+				}
+
+			    @include media-breakpoint-down(xs) {
+			    	#coupon_code {
+				    	max-width: 100px;
+				    }
+				    
+				    #coupon-submit {
+						
+					}
+
+				}
+
+			}
 
 			.cart_totals {
 				
@@ -282,19 +324,12 @@
 					border: none;
 					border-radius: 0 0 4px 4px;
 					padding: 1em; 
-					background: $secondary-bg-color;
+					background: $tertiary-bg-color;
 					font-size: 0.9em;
-					margin: 0;
+					margin: 0 0 24px 0;
 
 					.shipping {
-						ul, label {
-							padding: 0;
-    						margin: 0;
-						}
-
-						th, td {
-							padding: 1em 1em 0;
-						}
+						border-bottom: 1px solid rgba($primary-text-color, .1);
 					}
 
 					th {
@@ -304,6 +339,7 @@
 					td {
 						padding: 1em;
 						text-align: right;
+						font-family: $primary-font-bold;
 						display: grid;
 					}
 
@@ -312,36 +348,17 @@
 					}
 					
 				}
-
-				.ajax-coupon {
-					padding-bottom: 1em;
-
-					.btn-link {
-						i:before {
-							left: 1px;
-    						top: .2em;
-    						font-size: 1em;
-    						}
-					}
-				}
 				
-				.wc-proceed-to-checkout {
-					
-					display: inline-block;
-    				float: right;
+				.wc-proceed-to-checkout a.checkout-button.button {
+			       	@extend .btn;
+			      	@extend .btn-primary;
+			       	width: 100%;
+			       	max-width: 100%; 
+			       	border-radius: 4px; 
+			       	font-size: 1em;
+			       	margin-top: 1em;
 
-					a.checkout-button.button {
-				       	@extend .btn;
-				      	@extend .btn-primary;
-				       	width: 100%;
-				       	max-width: 100%; 
-				       	border-radius: 4px; 
-				       	font-size: 1em;
-				       	margin-top: 1em;
-				       	background: var(--success);
-
-	    			}
-				}
+    			}
 			}
 			
 			.wcppec-checkout-buttons {
@@ -358,8 +375,8 @@
 	}
 
 	&.collapse.show {
-		width: 400px;
-		height: 100vh;
+		width: 500px;
+		height: 110vh;
 	}
 }
 
@@ -394,3 +411,7 @@
 	}
 }
 
+.zoid-outlet {
+	width: 100%!important;
+	height: 55px;
+}

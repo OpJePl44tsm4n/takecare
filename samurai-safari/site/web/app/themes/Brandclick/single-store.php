@@ -28,8 +28,8 @@
                 
                 <footer class="post-navigation" >
                     <hr>
-                    <?php previous_post_link( '%link', '<i class="fa fa-angle-left" aria-hidden="true"></i> ' . __("Previous store", WhiteLabelTheme::THEME_SLUG ) ); ?> 
-                    <?php next_post_link( '%link', __("Next store", WhiteLabelTheme::THEME_SLUG ) . ' <i class="fa fa-angle-right" aria-hidden="true"></i>' ); ?>
+                    <?php previous_post_link( '%link', '<i class="fa fa-angle-left" aria-hidden="true"></i> ' . __("Previous store", TakeCareIo::THEME_SLUG ) ); ?> 
+                    <?php next_post_link( '%link', __("Next store", TakeCareIo::THEME_SLUG ) . ' <i class="fa fa-angle-right" aria-hidden="true"></i>' ); ?>
                 </footer>
 
             </article>

@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\Woocommerce\Cart;
-use Brandclick\Brandclick;
+namespace Greylabel\Woocommerce\Cart;
+use Greylabel\Greylabel;
 
 class WcCart {
 
@@ -17,7 +17,6 @@ class WcCart {
         add_filter( 'woocommerce_cart_item_name',               array( $this, 'filter__update_cart_item_name'), 10, 3 ); 
         add_filter( 'woocommerce_widget_cart_item_quantity',    array( $this, 'filter__add_cart_item_quantity_input'), 10, 3 );
         add_filter( 'woocommerce_package_rates',                array( $this, 'filter__hide_shipping_when_free_is_available'), 10, 2 );
-    
     }    
 
     /**
@@ -70,12 +69,12 @@ class WcCart {
          // Fragments and mini cart are returned
         $data = array(
             'loggedin' => false,
-            'message' => __('Wrong username or password.', Brandclick::THEME_SLUG )
+            'message' => __('Wrong username or password.', Greylabel::THEME_SLUG )
         );
 
         if ( !is_wp_error($user_signon) ){
             $data['loggedin'] = true;
-            $data['message'] = __('Login successful, redirecting...', Brandclick::THEME_SLUG );
+            $data['message'] = __('Login successful, redirecting...', Greylabel::THEME_SLUG );
         }
 
         $this->callback__update_ajax_cart( $data );
@@ -162,7 +161,7 @@ class WcCart {
             'product_name' => $_product->get_name(),
         ), $_product, false );  
 
-        $quantity = sprintf( '%s  %s', $product_price, $product_quantity );
+        $quantity = sprintf( '%s  %s', $product_quantity, $product_price );
 
         return $quantity; 
     }
@@ -195,5 +194,6 @@ class WcCart {
 
         return $rates;
     }
+
 
 }

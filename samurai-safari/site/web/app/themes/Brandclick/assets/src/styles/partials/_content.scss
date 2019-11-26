@@ -1,15 +1,26 @@
 
 .page-content {
-	padding: 0 15px;
+	padding: 0;
 	min-height: 600px;
+	overflow: hidden;
 
 	.logo_grid {
 		text-align: center;
+		
+		@include media-breakpoint-down(sm) {
+			flex: 0 0 100%;
+   		 	max-width: 100%;
 
-		img {
-			padding: 1em;
-		}
+			.logo img {
+				width: 100px;
+		   		padding: 0 1em;
+		   	}	
+	   	}	
 	}
 }
 
-
+body.page-template-default {
+	article.page-content {
+		//overflow-x: unset;
+	}
+}

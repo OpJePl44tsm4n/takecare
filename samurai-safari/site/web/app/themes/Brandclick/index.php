@@ -16,8 +16,8 @@
             </section>
 
             <footer>
-                <?php previous_post_link( '%link', '<i class="fa fa-angle-left" aria-hidden="true"></i> ' . __("Previous", WhiteLabelTheme::THEME_SLUG ) ); ?> 
-                <?php next_post_link( '%link', __("Next", WhiteLabelTheme::THEME_SLUG ) . ' <i class="fa fa-angle-right" aria-hidden="true"></i>' ); ?>
+                <?php previous_post_link( '%link', '<i class="fa fa-angle-left" aria-hidden="true"></i> ' . __("Previous", TakeCareIo::THEME_SLUG ) ); ?> 
+                <?php next_post_link( '%link', __("Next", TakeCareIo::THEME_SLUG ) . ' <i class="fa fa-angle-right" aria-hidden="true"></i>' ); ?>
             </footer>
 
         </article>

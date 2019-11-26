@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\Settings;
-use Brandclick\Brandclick;
+namespace Greylabel\Settings;
+use Greylabel\Greylabel;
 
 class CleanUpWordPress {
 
@@ -14,21 +14,18 @@ class CleanUpWordPress {
         remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
         remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
         remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
-        remove_filter( 'widget_text_content', 'wpautop');
+        remove_filter('widget_text_content', 'wpautop');
 
 
         // Filters
         add_filter('the_generator',                 array( $this, 'filter__remove_wp_version') );
         add_filter('jpeg_quality',                  function($arg){return 100;});
         add_filter('upload_mimes',                    array( $this, 'filter__allow_mime_types') );
+        add_filter( 'get_the_archive_title',        array( $this, 'filter__simple_archive_title') );
 
         // Actions
         add_action('wp_dashboard_setup',    array( $this, 'action__remove_dashboard_widgets') );
         add_action('wp_enqueue_scripts',    array( $this, 'action__deregister_scripts') );
-        // add_action('template_redirect'      array( $this, 'action__redirect_author_page' ));
-
-         //set X-Frame-Options SAMEORIGIN to prefent clickjacking
-        add_action( 'send_headers', 'send_frame_options_header', 10, 0 );
     }    
 
 	/**
@@ -37,15 +34,6 @@ class CleanUpWordPress {
     public function filter__remove_wp_version()
     {
         return '';
-    }
-
-    /**
-    *   Remove wp heartbeat function from frontend
-    */
-    public function filter__allow_mime_types($mimes)
-    {
-        $mimes['svg'] = 'image/svg+xml';
-        return $mimes;
     }
 
     /**
@@ -69,24 +57,35 @@ class CleanUpWordPress {
     */
     public function action__deregister_scripts()
     {
-        wp_dequeue_style( 'wp-block-library' );
+        if( !is_admin() ){
+            wp_deregister_script('heartbeat');
+        }
     }
 
-    // /**
-    //  * [action__redirect_author_page description]
-    //  * @return [type] [description]
-    //  */
-    // public function action__redirect_author_page()
-    // {   
-    //     global $wp_query;
-        
-    //     // redirect the author page to the homepage
-    //     if ( is_author() ) {
-    //         wp_safe_redirect( get_home_url(), 301 );
-    //         exit;
-    //     }
-    // } 
-   
+    /**
+    *   Remove wp heartbeat function from frontend
+    */
+    public function filter__allow_mime_types($mimes)
+    {
+        $mimes['svg'] = 'image/svg+xml';
+        return $mimes;
+    }
 
+    public function filter__simple_archive_title( $title )
+    {
+        if ( is_category() ) {
+            $title = single_cat_title( '', false );
+        } elseif ( is_tag() ) {
+            $title = single_tag_title( '', false );
+        } elseif ( is_author() ) {
+            $title = '<span class="vcard">' . get_the_author() . '</span>';
+        } elseif ( is_post_type_archive() ) {
+            $title = post_type_archive_title( '', false );
+        } elseif ( is_tax() ) {
+            $title = single_term_title( '', false );
+        }
+      
+        return $title;
+    }
 }
 

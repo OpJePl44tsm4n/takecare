@@ -4,9 +4,9 @@
     $term = get_sub_field('taxonomy');
     $term = get_term( $term, $taxonomy );
     $term_featured = $term ? get_field('featured_image', $taxonomy . '_' . $term->term_id) : false;
-    $row_title = $term ? $term->name : __('Most recent articles', WhiteLabelTheme::THEME_SLUG );
+    $row_title = $term ? $term->name : __('Most recent articles', TakeCareIo::THEME_SLUG );
     $archive_link = get_post_type_archive_link( 'post' ); 
-    $archive_title = __('Most recent articles', WhiteLabelTheme::THEME_SLUG );
+    $archive_title = __('Most recent articles', TakeCareIo::THEME_SLUG );
 
     $args = [
         'post_type'     => 'post',
@@ -24,7 +24,7 @@
         ];    
 
         $archive_link = get_term_link($term, $taxonomy );
-        $archive_title = sprintf( __('Show more %s', WhiteLabelTheme::THEME_SLUG ), $term->name ) ;
+        $archive_title = sprintf( __('Show more %s', TakeCareIo::THEME_SLUG ), $term->name ) ;
     }
 
 
@@ -36,12 +36,16 @@
         <section>
           
             <header>
-                <h2><?php echo sprintf('<a href="%1s">%2s</a>',  $archive_link, $row_title ); ?></h2>
+                <a href="<?php echo $archive_link; ?>">
+                <h2><?php echo $row_title; ?></h2>
                 <?php 
-                    if($term_featured) {
-                        echo wp_get_attachment_image( $term_featured, 'large' );
-                    } 
+                    if($term_featured) { ?>
+                        <div class="thumb">
+                            <?php echo wp_get_attachment_image( $term_featured, 'large' ); ?>
+                        </div>
+                    <?php } 
                 ?>
+                </a>
             </header>
             
             <?php foreach ( $posts as $post ) : 

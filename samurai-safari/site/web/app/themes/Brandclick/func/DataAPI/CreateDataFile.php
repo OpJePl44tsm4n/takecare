@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\DataAPI;
-use Brandclick\Brandclick;
+namespace Greylabel\DataAPI;
+use Greylabel\Greylabel;
 
 class CreateDataFile {
 
@@ -9,7 +9,7 @@ class CreateDataFile {
     */
     public static function create_json_file($data, $file_name) 
     {
-        $uploads_dir = trailingslashit( wp_upload_dir()['basedir'] ) . trailingslashit(Brandclick::THEME_SLUG);
+        $uploads_dir = trailingslashit( wp_upload_dir()['basedir'] ) . trailingslashit(Greylabel::THEME_SLUG);
 		wp_mkdir_p( $uploads_dir );
 
 		$file_location = $uploads_dir . $file_name;

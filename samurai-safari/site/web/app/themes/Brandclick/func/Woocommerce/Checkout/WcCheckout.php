@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\Woocommerce\Checkout;
-use Brandclick\Brandclick;
+namespace Greylabel\Woocommerce\Checkout;
+use Greylabel\Greylabel;
 
 class WcCheckout {
 
@@ -9,14 +9,11 @@ class WcCheckout {
         // Add Filters
        	add_filter( 'woocommerce_default_address_fields',       array( $this, 'filter__wc_override_adress_fields'), 1 );
         add_filter( 'woocommerce_checkout_fields',              array( $this, 'filter__wc_override_checkout_fields') );
-        add_filter( 'woocommerce_order_button_text',            array( $this, 'filter__wc_override_checkout_button_text'), 11, 1 );
-
+            
         // Add actions
         add_action( 'woocommerce_checkout_order_review',        array( $this, 'action__wc_prepend_order_review'), 1 );
         add_action( 'woocommerce_checkout_order_review',        array( $this, 'action__wc_append_order_review'), 11 );
         add_action( 'woocommerce_checkout_update_order_meta',   array( $this, 'action__fix_billing_adress'), 10 ,2 );
-        add_action( 'woocommerce_before_checkout_form',         array( $this, 'action__wc_checkout_progress_bar'), 10 ,1 );
-        
     }    
 
     /**
@@ -25,14 +22,14 @@ class WcCheckout {
     public function filter__wc_override_adress_fields($fields) 
     {   
         // add placeholders to all fields
-        $fields['first_name']['placeholder'] = sprintf('%s*', __('First name', Brandclick::THEME_SLUG ));
-        $fields['last_name']['placeholder'] =  sprintf('%s*', __('Last name', Brandclick::THEME_SLUG ));
-        $fields['company']['placeholder'] =  __('Company name', Brandclick::THEME_SLUG );
-        $fields['address_1']['placeholder'] = sprintf('%s*', __('Street name', Brandclick::THEME_SLUG ));
-        $fields['address_2']['placeholder'] = sprintf('%s*', __('House number', Brandclick::THEME_SLUG ));
-        $fields['city']['placeholder'] = sprintf('%s*', __('City', Brandclick::THEME_SLUG ));
-        $fields['state']['placeholder'] =  sprintf('%s*', __('State', Brandclick::THEME_SLUG ));
-        $fields['postcode']['placeholder'] = sprintf('%s*', __('Postcode', Brandclick::THEME_SLUG ));
+        $fields['first_name']['placeholder'] = sprintf('%s*', __('First name', Greylabel::THEME_SLUG ));
+        $fields['last_name']['placeholder'] =  sprintf('%s*', __('Last name', Greylabel::THEME_SLUG ));
+        $fields['company']['placeholder'] =  __('Company name', Greylabel::THEME_SLUG );
+        $fields['address_1']['placeholder'] = sprintf('%s*', __('Street name', Greylabel::THEME_SLUG ));
+        $fields['address_2']['placeholder'] = sprintf('%s*', __('House number', Greylabel::THEME_SLUG ));
+        $fields['city']['placeholder'] = sprintf('%s*', __('City', Greylabel::THEME_SLUG ));
+        $fields['state']['placeholder'] =  sprintf('%s*', __('State', Greylabel::THEME_SLUG ));
+        $fields['postcode']['placeholder'] = sprintf('%s*', __('Postcode', Greylabel::THEME_SLUG ));
 
         // Set required fields 
         $fields['address_2']['required'] = true;
@@ -41,15 +38,13 @@ class WcCheckout {
         // unset($fields['last_name']['label']);
         
         // change the labels
-        $fields['address_1']['label'] = __('Street name', Brandclick::THEME_SLUG );
-        $fields['address_2']['label'] = __('House number', Brandclick::THEME_SLUG );
+        $fields['address_1']['label'] = __('Street name', Greylabel::THEME_SLUG );
+        $fields['address_2']['label'] = __('House number', Greylabel::THEME_SLUG );
 
         // swap the order of fields 
         $fields['company']['priority'] = 5;
-        $fields['state']['priority'] = 50;
-        $fields['postcode']['priority'] = 55;
-        $fields['address_2']['priority'] = 60; // house number
-        $fields['address_1']['priority'] = 65;
+        $fields['address_1']['priority'] = 75;
+        $fields['address_2']['priority'] = 70;
         
         /* normal Woocommerce order: 
             first_name  = 10
@@ -79,9 +74,9 @@ class WcCheckout {
     public function filter__wc_override_checkout_fields($fields) 
     {   
         // add placeholders to all fields
-        $fields['billing']['billing_phone']['placeholder'] =  sprintf('%s*', __('Phone', Brandclick::THEME_SLUG ));
-        $fields['billing']['billing_email']['placeholder'] =  sprintf('%s*', __('Email address', Brandclick::THEME_SLUG ));
-        $fields['order']['order_comments']['placeholder'] =  __('Notes about your order, e.g. special notes for delivery.', Brandclick::THEME_SLUG );
+        $fields['billing']['billing_phone']['placeholder'] =  __('Phone', Greylabel::THEME_SLUG );
+        $fields['billing']['billing_email']['placeholder'] =  __('Email address', Greylabel::THEME_SLUG );
+        $fields['order']['order_comments']['placeholder'] =  __('Notes about your order, e.g. special notes for delivery.', Greylabel::THEME_SLUG );
 
         // swap the order of fields 
         $fields['billing']['billing_email']['priority'] = 100;   
@@ -100,23 +95,16 @@ class WcCheckout {
         return $fields;
     } 
 
-    /**
-    *   Change the checkout button text
-    */
-    public function filter__wc_override_checkout_button_text($string) 
-    {   
-        return __('Pay order', Brandclick::THEME_SLUG ); 
-    }
-    
+
     /**
     *   prepend html to the order review table
     */
     public function action__wc_prepend_order_review() 
     {   
-	    echo sprintf('<div class="order-list"><h3>%1s</h3><a href="%2s">%3s</a>', 
-            __('Your Order', Brandclick::THEME_SLUG ),
+	    echo sprintf('<div class="card"><h3>%1s</h3><a href="%2s">%3s</a>', 
+            __('Shopping cart', Greylabel::THEME_SLUG ),
             wc_get_page_permalink( 'cart' ),
-            __('Adjust', Brandclick::THEME_SLUG ) 
+            __('Adjust', Greylabel::THEME_SLUG ) 
         );
     }
 
@@ -149,15 +137,5 @@ class WcCheckout {
         update_post_meta($order_id, '_shipping_address_2', '');
     }
 	
-    public function action__wc_checkout_progress_bar($checkout) 
-    {
-        ?>
-            <div class="steps-container">
-                <div class="step step-1 current"><?php _e('Details','brandclick'); ?></div>
-                <div class="step step-2"><?php _e('Payment','brandclick'); ?></div>
-                <div class="step step-3"><?php _e('Done!','brandclick'); ?></div>
-            </div>
-        <?php
-    }
 
 }

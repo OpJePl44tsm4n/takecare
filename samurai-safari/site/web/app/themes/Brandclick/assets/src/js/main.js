@@ -1,25 +1,4 @@
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
 
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-
-    return "";
-}
 
 var Brandclick = {
 
@@ -52,30 +31,9 @@ var Brandclick = {
         this.inpageLinks();
         this.menuScroll();
         this.autoplayVideos();
-        this.wcAccountMenuToggleMobile();
+        this.addAnimationClassInView( 'jungle_bg', 'jungle_move' );
 
         return; 
-    },
-
-    wcAccountMenuToggleMobile: function() {
-        menuToggle = document.querySelectorAll('nav.woocommerce-MyAccount-navigation ul:before');
-
-        if( menuToggle.length ){
-            menu = menuToggle.closest('ul');
-
-            menuToggle[0].addEventListener( 'click', function( event ) {  
-
-                if(Brandclick.hasClass(menu,'open') ) {
-                    Brandclick.removeClass(menu, 'open');
-                }   
-
-                if(!Brandclick.hasClass(menu,'open') ) {
-                    Brandclick.addClass(menu, 'open');
-                }
-
-            }, false);
-        }
-
     },
 
     autoplayVideos: function() {
@@ -92,22 +50,45 @@ var Brandclick = {
         });    
     },
 
+    addAnimationClassInView: function( viewElementClass, newClass ){
+
+        el = document.getElementsByClassName( viewElementClass );
+
+        if (el.length) {
+            Brandclick.addClass( el[0] , 'animation-init' );
+
+            window.onscroll = function() {
+                if( Brandclick.isInViewport(el[0]) ) {
+                    Brandclick.addClass( el[0], newClass );
+                }
+            }    
+        }     
+    },
+
+    isInViewport: function(elem) {
+        var bounding = elem.getBoundingClientRect();
+        return (
+            bounding.top >= 0 
+        );
+    },
+
+
     menuScroll: function() {
-        var prevScrollpos = window.pageYOffset;
-        var mainNav = document.getElementById("main-nav");
+        var prevScrollpos = window.pageYOffset,
+            mainNav = document.getElementById("main-nav");
 
         window.onscroll = function() {
             var currentScrollPos = window.pageYOffset;
 
-            // if (currentScrollPos > 300) {
-            //     if(Brandclick.hasClass(mainNav,'transparant') ) {
-            //         Brandclick.removeClass(mainNav, 'transparant');
-            //     }  
-            // } else {
-            //     if(!Brandclick.hasClass(mainNav,'transparant') ) {
-            //         Brandclick.addClass(mainNav, 'transparant');
-            //     }  
-            // }
+            if (currentScrollPos > 300) {
+                if(Brandclick.hasClass(mainNav,'transparant') ) {
+                    Brandclick.removeClass(mainNav, 'transparant');
+                }  
+            } else {
+                if(!Brandclick.hasClass(mainNav,'transparant') ) {
+                    Brandclick.addClass(mainNav, 'transparant');
+                }  
+            }
             
             if (currentScrollPos < 200) {
                 return;
@@ -420,62 +401,20 @@ jQuery(document).ready(function($){
     });
 
     // add 3 item carousel functionality
-    $('.carousel.multi-item-carousel:not(#TinyProductSlider) .carousel-item').each(function(){
+    $('.carousel.multi-item-carousel .carousel-item').each(function(){
         var next = $(this).next();
         if (!next.length) {
-            next = $(this).siblings(':first');
+        next = $(this).siblings(':first');
         }
         next.children(':first-child').clone().appendTo($(this));
         
         if (next.next().length>0) {
-            next.next().children(':first-child').clone().appendTo($(this));
+        next.next().children(':first-child').clone().appendTo($(this));
         }
         else {
-            $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
+          $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
         }
     });
-
-    $('#TinyProductSlider').each(function(){ 
-       
-        $(this).append('<div class="carousel-controls d-flex d-lg-none"><ol class="carousel-indicators"></ol></div>'); 
-        $(this).addClass('multi-item-carousel');
-        indicators = $('ol', this );
-        innerCarousel = $('ul', this);
-        carouselInnerHtml = ''; 
-        count = 0; 
-
-        $('li', this ).each(function(){
-            el = $(this);
-            var next = el.next();
-            var previous = el.prev();  
-            active = (count == 0) ? ' active' : '';
-            
-            if (!next.length) {
-                next = el.siblings(':first');
-            }
-            lastHtml = next.html();
-
-            if (!previous.length) {
-                firstHtml = el.siblings(':last').html();
-            }
-            else {
-                firstHtml = previous.html();
-            }
-
-            currentHtml = el.html();
-            carouselInnerHtml += '<li class="carousel-item'+ active +'"><div class="row"><div class="d-block product col-4">'+firstHtml+'</div><div class="d-block product col-4">'+currentHtml+'</div><div class="d-block product col-4">'+lastHtml+'</div></div></li>';
-
-            indicators.append('<li data-target="#TinyProductSlider" data-slide-to="'+ count +'" class="'+ active +'"></li>'); 
-            count++; 
-        });
-
-        $(this).prepend('<ul class="products carousel-inner d-block d-lg-none">' + carouselInnerHtml + '</ul>'); 
-        innerCarousel.addClass('d-none d-lg-flex');
-    });
-
-
-
-
 
     $(document).on('click', '.added_to_cart.wc-forward', function (e)
     {
@@ -486,12 +425,11 @@ jQuery(document).ready(function($){
 
 
     $( document.body ).on( 'added_to_cart', function(){
-       if(cartCollapse = $('#cartCollapse')) {
+        if(cartCollapse = $('#cartCollapse')) {
             cartCollapse.collapse("show");
-            mainNav = document.getElementById("main-nav");
-            Brandclick.removeClass(mainNav, 'scroll-down'); 
         }
-    });
+        
+     });
 
     // Ajax delete product in the cart
     $(document).on('click', 'a.remove', function (e)
@@ -576,40 +514,6 @@ jQuery(document).ready(function($){
         });
     }
 
-    function wp_ajax_lang_redirect_popup() {
-
-        $.ajax({
-            type: 'GET',
-            dataType : 'html',
-            data: {
-                action: 'lang_redirect_popup',
-                currentUrl: window.location.href
-            }, 
-            url: wc_add_to_cart_params.ajax_url,
-            success: function(response) {
-                if ( ! response || response.error )
-                    return false;
-
-                $('.ajax-lang-redirect')
-                    .toggleClass('loaded')
-                    .html(response)
-                    .delay(8000)
-                    .fadeOut(200);
-
-                setTimeout(function(){ 
-                    document.cookie = "bc_lang_ignore=true";   
-                }, 15000);
-            },
-            error: function() {
-                return false; 
-            }
-        });
-    }
-
-    if(!getCookie("bc_lang_ignore")) {
-        wp_ajax_lang_redirect_popup();
-    } 
-    
     function UpdateWcSnippets(response) {
 
         if (response) {
@@ -620,9 +524,9 @@ jQuery(document).ready(function($){
                 $.each( fragments, function( key, value ) {
                     $( key ).replaceWith( value );
                 });
-                
+
                 // trigger wc_fragments_refreshed to reload the paypall direct payment button refresh
-                // $( document.body ).trigger( 'wc_fragments_refreshed' );
+                $( document.body ).trigger( 'wc_fragments_refreshed' );
             }
 
             if( response.loggedin ){
@@ -631,8 +535,8 @@ jQuery(document).ready(function($){
         }    
     }
 
-        if ( $('.slider-reviews').length ) {
-        $('.slider-reviews').slick({
+    if ( $('.customer-logos').length ) {
+        $('.customer-logos').slick({
             slidesToShow: 6,
             slidesToScroll: 1,
             cssEase: 'ease',
@@ -669,14 +573,9 @@ jQuery(document).ready(function($){
                 }
             ]
         });
-    } 
-
-    
-    $('#cartCollapse, #navbarCollapse').on('shown.bs.collapse', function (e) {
-        $( document.body ).toggleClass('scroll-lock'); 
-    }).on('hidden.bs.collapse', function (e) {
-        $( document.body ).toggleClass('scroll-lock'); 
-    });  
+    }    
 
 } );
+
+
 

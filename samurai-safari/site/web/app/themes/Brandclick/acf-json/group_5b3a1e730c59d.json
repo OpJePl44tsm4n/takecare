@@ -54,22 +54,6 @@
                     "display": "block",
                     "sub_fields": [
                         {
-                            "key": "field_5bab9315937fd",
-                            "label": "Content",
-                            "name": "",
-                            "type": "tab",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "placement": "top",
-                            "endpoint": 0
-                        },
-                        {
                             "key": "field_5b50782131643",
                             "label": "Title",
                             "name": "title",
@@ -87,6 +71,61 @@
                             "prepend": "",
                             "append": "",
                             "maxlength": ""
+                        },
+                        {
+                            "key": "field_5b5079a031646",
+                            "label": "Type",
+                            "name": "type",
+                            "type": "radio",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "post": "Post grid",
+                                "page": "Page grid",
+                                "company": "Company grid"
+                            },
+                            "allow_null": 0,
+                            "other_choice": 0,
+                            "default_value": "posts",
+                            "layout": "vertical",
+                            "return_format": "value",
+                            "save_other_choice": 0
+                        },
+                        {
+                            "key": "field_5d964eaaba745",
+                            "label": "Companies",
+                            "name": "posts",
+                            "type": "post_object",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_5b5079a031646",
+                                        "operator": "==",
+                                        "value": "company"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "post_type": [
+                                "company"
+                            ],
+                            "taxonomy": "",
+                            "allow_null": 0,
+                            "multiple": 1,
+                            "return_format": "id",
+                            "ui": 1
                         },
                         {
                             "key": "field_5b507f49071e8",
@@ -108,31 +147,6 @@
                             "min": "",
                             "max": 12,
                             "step": ""
-                        },
-                        {
-                            "key": "field_5b5079a031646",
-                            "label": "Type",
-                            "name": "type",
-                            "type": "radio",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "choices": {
-                                "post": "Post grid",
-                                "top_posts": "Top post grid",
-                                "page": "Page grid"
-                            },
-                            "allow_null": 0,
-                            "other_choice": 0,
-                            "default_value": "posts",
-                            "layout": "vertical",
-                            "return_format": "value",
-                            "save_other_choice": 0
                         },
                         {
                             "key": "field_5b50783831644",
@@ -193,12 +207,22 @@
                             "multiple": 1,
                             "return_format": "id",
                             "ui": 1
-                        },
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "5bc74ab791399": {
+                    "key": "5bc74ab791399",
+                    "name": "vacancies",
+                    "label": "Vacancies",
+                    "display": "block",
+                    "sub_fields": [
                         {
-                            "key": "field_5bab92d3937fb",
-                            "label": "Row Settings",
-                            "name": "",
-                            "type": "tab",
+                            "key": "field_5bc74ab79139a",
+                            "label": "Title",
+                            "name": "title",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -207,14 +231,17 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "placement": "top",
-                            "endpoint": 0
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
                         },
                         {
-                            "key": "field_5bab92f0937fc",
-                            "label": "Settings",
-                            "name": "settings",
-                            "type": "clone",
+                            "key": "field_5bc74ab79139b",
+                            "label": "Max Posts",
+                            "name": "max_posts",
+                            "type": "number",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -223,13 +250,42 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "clone": [
-                                "group_5bab8fda70afa"
+                            "default_value": 3,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "min": "",
+                            "max": 12,
+                            "step": ""
+                        },
+                        {
+                            "key": "field_5bc74ab79139d",
+                            "label": "Vacancies",
+                            "name": "posts",
+                            "type": "post_object",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "",
+                                        "operator": "=="
+                                    }
+                                ]
                             ],
-                            "display": "seamless",
-                            "layout": "block",
-                            "prefix_label": 0,
-                            "prefix_name": 0
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "post_type": [
+                                "vacancy"
+                            ],
+                            "taxonomy": [],
+                            "allow_null": 0,
+                            "multiple": 1,
+                            "return_format": "id",
+                            "ui": 1
                         }
                     ],
                     "min": "",
@@ -241,25 +297,6 @@
                     "label": "Product slider",
                     "display": "block",
                     "sub_fields": [
-                        {
-                            "key": "field_5c7fc644783aa",
-                            "label": "Tiny products",
-                            "name": "tiny_products",
-                            "type": "true_false",
-                            "instructions": "basic version of the product grid, only shows tiny image, title, price and add to cart",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "message": "Use tiny product cards",
-                            "default_value": 0,
-                            "ui": 0,
-                            "ui_on_text": "",
-                            "ui_off_text": ""
-                        },
                         {
                             "key": "field_5b3a2a5139612",
                             "label": "Title",
@@ -477,6 +514,115 @@
                     ],
                     "min": "",
                     "max": ""
+                },
+                "5bc71db77ff89": {
+                    "key": "5bc71db77ff89",
+                    "name": "team_grid",
+                    "label": "Team grid",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_5bc71dd07ff8b",
+                            "label": "Team members",
+                            "name": "team_members",
+                            "type": "repeater",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "collapsed": "",
+                            "min": 0,
+                            "max": 0,
+                            "layout": "table",
+                            "button_label": "",
+                            "sub_fields": [
+                                {
+                                    "key": "field_5bc71dfe7ff8d",
+                                    "label": "Image",
+                                    "name": "image",
+                                    "type": "image",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "return_format": "id",
+                                    "preview_size": "thumbnail",
+                                    "library": "all",
+                                    "min_width": "",
+                                    "min_height": "",
+                                    "min_size": "",
+                                    "max_width": "",
+                                    "max_height": "",
+                                    "max_size": "",
+                                    "mime_types": ""
+                                },
+                                {
+                                    "key": "field_5bc71de37ff8c",
+                                    "label": "Name",
+                                    "name": "name",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "maxlength": ""
+                                },
+                                {
+                                    "key": "field_5bc71e157ff8e",
+                                    "label": "Job title",
+                                    "name": "job_title",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "maxlength": ""
+                                },
+                                {
+                                    "key": "field_5bc71e2e7ff8f",
+                                    "label": "Linkedin URL",
+                                    "name": "linkedin_url",
+                                    "type": "url",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
                 }
             },
             "button_label": "Add Row",
@@ -496,13 +642,6 @@
                 "operator": "!=",
                 "value": "posts_page"
             }
-        ],
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "product"
-            }
         ]
     ],
     "menu_order": 0,
@@ -513,5 +652,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1561989147
+    "modified": 1570132108
 }

@@ -16,7 +16,7 @@ $offset = get_query_var('posts_per_page');
 
                         <header>
                             <div class="d-flex justify-content-start">
-                                <div class="mr-auto"><h2><?php _e('Most recent articles', WhiteLabelTheme::THEME_SLUG ); ?></h2></div>
+                                <div class="mr-auto"><h2><?php _e('Most recent articles', TakeCareIo::THEME_SLUG ); ?></h2></div>
                             </div>  
                         </header>
 
@@ -40,10 +40,10 @@ $offset = get_query_var('posts_per_page');
 
                         <div class="load-more">
                             <div class="btn btn-secondary load-more__btn" data-offset="<?php echo $offset; ?>" data-s="" >
-                                <?php _e('Load more articles', WhiteLabelTheme::THEME_SLUG )  ?>
+                                <?php _e('Load more articles', TakeCareIo::THEME_SLUG )  ?>
                             </div>
                             <div class="load-more__no-more hidden">
-                                <?php echo  _e('No more articles', WhiteLabelTheme::THEME_SLUG ); ?>
+                                <?php echo  _e('No more articles', TakeCareIo::THEME_SLUG ); ?>
                             </div>
                         </div>
 

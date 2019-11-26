@@ -52,11 +52,6 @@ gulp.task('js', function (done) {
         .pipe(concat('wp-api.min.js'))
         .pipe(gulp.dest('assets/dist/js/'));
 
-    gulp.src('assets/src/js/audio-app.js')
-        .pipe(uglify())
-        .pipe(concat('audio.min.js'))
-        .pipe(gulp.dest('assets/dist/js/'));    
-
     console.log("Scripts cleaned and build");
     done();   
 });
@@ -97,8 +92,7 @@ gulp.task('make-bootstrap-js', function (done) {
 gulp.task('watch', function () {
     
     browserSync.init({
-        proxy: "https://knops.test",
-        https: true
+        proxy: "https://takecare.test"
     });
 
     gulp.watch('assets/src/styles/**/*.scss', {

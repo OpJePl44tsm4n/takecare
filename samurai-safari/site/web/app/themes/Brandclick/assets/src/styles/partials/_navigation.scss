@@ -1,6 +1,6 @@
 
 // Main navigation 
-header .navbar-collapse {
+.navbar-collapse {
 	border: none; 
 	transition: width 0.6s, height .001s;	
 	width: 100%;
@@ -34,39 +34,37 @@ header .navbar-collapse {
 	
 		&.collapsing,
 		&.collapse.show {
-			background: white;
+			background: $primary-bg-color;
 			z-index: 6;
 			padding: 0 0 25px;
 			overflow: scroll;
 			
 			.close-btn {
 				padding: 0.5rem 1rem;
-				background: white;
+				background: $primary-bg-color;
 				
 				button {
-					color: #656968;
+					color: $secondary-bg-color;
 					padding: 1rem;
+					margin-left: -4%!important;
 					margin-right: -0.5rem;
 				    line-height: 0.7em;
    					font-size: 2em;
 				    opacity: 1;
-				    font-weight: lighter;
-				    font-family: avenir-next;
 				}
 			}
 			
 			a{
-				color: $primary-bg-color;
+				color: $primary-text-color;
 			}	
 
 			hr {
-				border-color: $primary-bg-color;
+				border-color: $primary-text-color;
 			}
 			
 			ul.nav {
 				padding-top: 25px;
 				min-width: 300px;
-				text-align: center;
 
 				li {
 					padding: 1em 0;
@@ -76,12 +74,10 @@ header .navbar-collapse {
 					}
 
 					a {
-						color: 	$primary-color;
+						color: $primary-text-color;
 						display: inline-block;
 						font-family: $primary-font;
 						font-size: 1.5em;
-						text-decoration: none;
-						line-height: 27px;
 						
 						&:after {
 							transition: all 200ms;
@@ -92,7 +88,7 @@ header .navbar-collapse {
 						}
 
 						&.active {
-							color: darken( $primary-bg-color ,45%);
+							color: $secondary-bg-color;
 						}
 					}
 
@@ -139,17 +135,14 @@ header .navbar-collapse {
 
 				a {
 					font-family: $primary-font;
-					font-size: 1rem;
-					color: lighten($primary-color, 10%) ;
+					font-size: .9rem;
 
 					@include media-breakpoint-up(lg) {
-						padding-left: .5rem;
+						padding-left: 1.5rem;
 					}
 
 					&:hover {
-						color:lighten( $primary-color, 40%);
 						background: none; 
-						text-decoration: none;
 					}
 
 					&:focus {
@@ -174,7 +167,7 @@ header .navbar-collapse {
 					}
 
 					&.active {
-						color: $primary-color;
+						color: $secondary-bg-color;
 					} 
 				}
 				
@@ -201,6 +194,7 @@ header .navbar-collapse {
 			}
 
 			&.active a {
+				color: $secondary-bg-color;
 				text-decoration: underline;
 			}
 

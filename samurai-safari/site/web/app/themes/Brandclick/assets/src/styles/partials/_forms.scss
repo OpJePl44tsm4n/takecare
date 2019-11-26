@@ -1,45 +1,3 @@
-#footer{
-    form{
-        input,
-        textarea{
-            background-color:black !important;
-            border:1px solid white;
-            width: inherit !important;
-            right: unset !important;
-        }
-
-        input[type="email"] {
-            margin-right: 1em;
-        }
-
-        &::placeholder{
-            color: white !important;
-        }
-    }
-}
-
-// @media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 2/3){
-//     #footer{
-//         form{
-//             input,
-//             textarea{
-//                 width:50% !important;
-//             }
-//         }
-//     }
-// }
-
-// @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (device-aspect-ratio: 40/71){
-//     #footer{
-//         form{
-//             input,
-//             textarea{
-//                 width:50% !important;
-//             }
-//         }
-//     }
-// }
-
 
 form {
 
@@ -62,7 +20,7 @@ form {
     }
 
     .content & {
-        padding: 0 0 4em;
+        padding: 2em 0 4em;
     }
     
     &.inline-search, &.single-input {
@@ -72,33 +30,29 @@ form {
         
         input[type="submit"] {
             position: absolute;
-            top: 5px;
+            top: 6px;
             width: auto;
-            right: 5px;
+            right: 0;
             padding: 4px 25px;
+            margin: 0;
         }
-    }
-
-    .mc-field-group{
-        display:flex;
     }
 
     input, 
     textarea {
-        padding: 15px 15px;
+        margin: 6px 0;
+        padding: .9em 1.5em;
         border: 1px solid rgba(0,0,0,.1);
         width: 100%;
-        background-color: white;       
-        border-radius: 4px;
-        font-size: 1rem;
-        position:relative;
-
+        border-radius: 8px;
+        font-size: .9em;
+        
         &[type="checkbox"]{
             width: auto;
         }
 
         &::placeholder {
-            color: grey;
+            color: rgba($primary-color, 0.5);
         }
 
         &:focus::placeholder {
@@ -112,26 +66,9 @@ form {
         }
     }
 
-    select {
-        width: 49%;
-        border: 1px solid rgba(0,0,0,.1);
-        background-color: white;       
-        border-radius: 4px;
-        font-size: 1rem;
-        position:relative;
-        color: grey;
-        height: 3.5em;
-        margin-bottom: -4px;  
-
-        @include media-breakpoint-down(sm) {
-            width: 100%;
-        } 
-    }
-    
     .wpcf7-form-control-wrap {
         display: inline-block;
         width: 100%;
-        margin-top: .6rem;
         
         & + .wpcf7-form-control-wrap{
             margin-left: 2%;
@@ -140,11 +77,6 @@ form {
         &.user-name, 
         &.user-email{
             width: 49%;
-
-            @include media-breakpoint-down(sm) {
-                width: 100%;
-                margin-left: 0;
-            } 
         }
 
         &.acceptance-terms {
@@ -159,11 +91,12 @@ form {
     p {
         margin-bottom: 5px;
         color: $primary-color;
-        font-size: 0.8rem;
+        font-size: 1.0rem;
     }
 
     span.wpcf7-list-item {
         margin: 0;
+        padding: 0 1em 0 0;
     }
 
     span.wpcf7-not-valid-tip{
@@ -174,7 +107,7 @@ form {
         display: inline-block;
         position: absolute;
         left: 0;
-        top: -9px;
+        top: -3px;
     }
 
     div.wpcf7-response-output {
@@ -183,7 +116,7 @@ form {
         color: #000;
         background: rgba(255, 7, 7, 0.2);
         position: absolute;
-        top: 97.5%;
+        bottom: 10px;
         left: 6%;
         width: 85%;
 
@@ -195,60 +128,3 @@ form {
         }
     }
 }
-
-.mailchimp_form {
-    padding: 4em 1em 2em;
-
-    h2 {
-        font-size: 1.2em;
-        color: $primary-color;
-        margin:auto;
-    }
-
-    #mc_embed_signup form {
-        padding: 1.5em 0 0;
-
-        .mc-field-group {
-            width: 49%;
-            display: inline-block;
-            position: relative; 
-
-            @include media-breakpoint-up(sm) {
-                width: 30%;
-                padding-right: 0.8em;
-            }
-
-            input {
-                padding: 11px 15px 14px; 
-            }
-
-            div.mce_inline_error {
-                position: absolute;
-                font-size: 0.7em; 
-                background: none; 
-                color: red; 
-                top: -1.8em;
-                padding: 0; 
-                left: 0;
-            }
-        }
-
-        button {
-            display: inline-block; 
-
-            @include media-breakpoint-down(md){
-                margin-top: 1em;
-            }
-        }
-
-        #mce-responses {
-           font-size: 0.7em; 
-
-            .response {
-                height: 4em;
-            }
-        }
-
-    } 
-}
-

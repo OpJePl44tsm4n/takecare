@@ -1,8 +1,6 @@
 <?php 
-	
-	if ( $products ) { 
-		$class = $tiny_products ? 'grid-tiny carousel slide' : '';
-		?>
+
+	if ( $products ) { ?>
 		
 		<section class="row product-grid">
             <div class="container">
@@ -15,13 +13,13 @@
 						<?php 	
 							echo sprintf('<a href="%s">%s <i class="fa fa-angle-right"></i></a>',
 								wc_get_page_permalink( 'shop' ), 
-								__('Check out all products', WhiteLabelTheme::THEME_SLUG )
+								__('View all products', TakeCareIo::THEME_SLUG )
 							);	
 						?>
 					</div>	
 				</header>
 
-				<div <?php  echo $tiny_products ? 'id="TinyProductSlider"' : '';?> class="woocommerce <?php echo $class; ?>">
+				<div class="woocommerce">
 					<?php woocommerce_product_loop_start();
 						global $post; 
 						foreach ( $products as $post ) : 

@@ -1,39 +1,25 @@
 <?php 
-namespace Brandclick\Woocommerce;
-use Brandclick\Brandclick;
-use Brandclick\Woocommerce\Loop\WcLoopActions;
-use Brandclick\Woocommerce\Single\WcSingleProduct;
-use Brandclick\Woocommerce\Checkout\WcCheckout;
-use Brandclick\Woocommerce\Cart\WcCart;
-use Brandclick\Woocommerce\Email\wcEmailSettings;
-use Brandclick\Woocommerce\Account\wcAccount;
-use Brandclick\Woocommerce\Account\wcAccountReferral;
-use Brandclick\Woocommerce\Localisation\LocalisationSettings;
-use Brandclick\Woocommerce\Admin\OrderStatuses;
+namespace Greylabel\Woocommerce;
+// use Greylabel\Greylabel;
+// use Greylabel\Woocommerce\Loop\WcLoopActions;
+// use Greylabel\Woocommerce\Single\WcSingleProduct;
+// use Greylabel\Woocommerce\Checkout\WcCheckout;
+// use Greylabel\Woocommerce\Cart\WcCart;
 
 class WcReset {
 
     public function __construct()
     {   
-    	if ( !function_exists( 'is_woocommerce' ) ) {
-    		return;
-    	}
-    	
-        $WcEditLoop         	= new WcLoopActions();
-        $WcSingleOrder      	= new WcSingleProduct();
-        $WcCheckout      		= new WcCheckout();
-        $WcCart         		= new WcCart();
-        $wcAccount  			= new wcAccount();
-        // $wcAccountReferral  	= new wcAccountReferral();
-        $wcEmailSettings    	= new wcEmailSettings();
-        $LocalisationSettings   = new LocalisationSettings();
-        $OrderStatuses   		= new OrderStatuses();
+        // $WcEditLoop         = new WcLoopActions();
+        // $WcSingleOrder      = new WcSingleProduct();
+        // $WcCheckout      	= new WcCheckout();
+        // $WcCart         	= new WcCart();
 
-        // Remove Actions
-        remove_action( 'woocommerce_before_main_content',	'woocommerce_breadcrumb', 20, 0);
+        // // Remove Actions
+        // remove_action( 'woocommerce_before_main_content','woocommerce_breadcrumb', 20, 0);
 
-        // Add Actions
-        add_action( 'wp_enqueue_scripts', 					array( $this, 'action__dequeue_woocommerce_styles_scripts'), 99 );
+        // // Add Actions
+        // add_action( 'wp_enqueue_scripts', array( $this, 'action__dequeue_woocommerce_styles_scripts'), 99 );
     }    
 
     public function action__dequeue_woocommerce_styles_scripts()
@@ -70,7 +56,5 @@ class WcReset {
 			}
 		}
     }  
-
-   
 
 }

@@ -1,26 +1,23 @@
 <?php 
-namespace Brandclick\Admin;
-use Brandclick\Brandclick;
-
+namespace Greylabel\Admin;
+use Greylabel\Greylabel;
 
 class DebuggerSettings {
 
     public function __construct()
-    
-    {
-/** Fix ACC
+    {   
         if( get_option('site_redirection_toggle') || (defined('WP_ENV') && 'staging' === WP_ENV) ){
             $allowed_ips = get_option('site_redirect_allowed_ips');
             $allowed_ips_array = $allowed_ips ? explode(",",$allowed_ips) : []; 
             $redirect_url = get_option('site_redirect_url') ?: '';
 
             if ( !in_array($_SERVER['REMOTE_ADDR'], $allowed_ips_array) && '' !== $redirect_url ) {
-                header("Location: " . $redirect_url); 
+                header("Location: " . $redirect_url); /* Redirect browser */
                 exit();
             }
 
         } 
-**/
+
         add_action('phpmailer_init',    array( $this, 'action__set_mailtrap') );  
     }
 

@@ -1,24 +1,19 @@
 <?php 
-namespace Brandclick\Register;
-use Brandclick\Brandclick;
+namespace Greylabel\Register;
+use Greylabel\Greylabel;
 
 class RegisterShortcodes {
 
     public function __construct()
     {   
-        add_shortcode( 'CALLTRACKER',                                 array( $this, 'shortcode__register_calltracker') );
-        add_shortcode( 'MAILTRACKER',                                 array( $this, 'shortcode__register_mailtracker') );
-        add_shortcode( 'MAILHEADER',                                  array( $this, 'shortcode__register_mailheader') );
-        add_shortcode( 'MAILFOOTER',                                  array( $this, 'shortcode__register_mailfooter') );
-        add_shortcode( 'ORDER',                                       array( $this, 'shortcode__register_order') );
-        add_shortcode( 'LOGINFORM',                                   array( $this, 'shortcode__register_ajax_user_login_form') );  
-        add_shortcode( 'MAILCHIMP_SIGNUP',                            array( $this, 'shortcode__register_mailchimp_signup') );  
-        add_shortcode( 'SOCIAL_BUTTONS',                              array( $this, 'shortcode__register_social_buttons') );  
-        add_shortcode( 'AUDIO_WIDGET',                                array( $this, 'shortcode__register_audio_widget' ) );
-        add_shortcode( 'SOCIAL_PROOF',                                array( $this, 'shortcode__register_social_proof') );         
-        
-        // fallback
-        add_shortcode( 'vc_single_image',                               array( $this, 'shortcode__register_vc_single_image' ) );
+       add_shortcode( 'CALLTRACKER',                                 array( $this, 'shortcode__register_calltracker') );
+       add_shortcode( 'MAILTRACKER',                                 array( $this, 'shortcode__register_mailtracker') );
+       add_shortcode( 'MAILHEADER',                                  array( $this, 'shortcode__register_mailheader') );
+       add_shortcode( 'MAILFOOTER',                                  array( $this, 'shortcode__register_mailfooter') );
+       add_shortcode( 'ORDER',                                       array( $this, 'shortcode__register_order') );
+       add_shortcode( 'LOGINFORM',                                   array( $this, 'shortcode__register_ajax_user_login_form') );  
+       add_shortcode( 'MAILCHIMP_SIGNUP',                            array( $this, 'shortcode__register_mailchimp_signup') );  
+       add_shortcode( 'SOCIAL_BUTTONS',                              array( $this, 'shortcode__register_social_buttons') );  
 
     }
 
@@ -34,12 +29,12 @@ class RegisterShortcodes {
 
         if ( $atts['tel'] !== '' ): 
            
-            $tracker = '<div class="track-phone contact"><button type="button" data-tracking="data-layer" data-log-type="conversie" data-log-value="belContact"><i class="fa fa-mobile" aria-hidden="true"></i> '. __('Show phone number' , Brandclick::THEME_SLUG ) .'</button> <a class="call-link" href="tel:'. $atts['tel'] .'"> '. __('Call' , Brandclick::THEME_SLUG ) . ' ' . $atts['tel-formatted'] .'</a></div>';
+            $tracker = '<div class="track-phone contact"><button type="button" data-tracking="data-layer" data-log-type="conversie" data-log-value="belContact"><i class="fa fa-mobile" aria-hidden="true"></i> '. __('Show phone number' , Greylabel::THEME_SLUG ) .'</button> <a class="call-link" href="tel:'. $atts['tel'] .'"> '. __('Call' , Greylabel::THEME_SLUG ) . ' ' . $atts['tel-formatted'] .'</a></div>';
         
             return $tracker; 
         else: 
             if (current_user_can('activate_plugins')) {
-                return '<i style="color:red;">'. sprintf( __( 'Please make sure you have added the "tel" to the shortcode or added  "tracker tel" in the <a style="color:red;" href="%s">options page</a>', Brandclick::THEME_SLUG  ), admin_url('admin.php?page=brandclick_options') ) .'</i>';
+                return '<i style="color:red;">'. sprintf( __( 'Please make sure you have added the "tel" to the shortcode or added  "tracker tel" in the <a style="color:red;" href="%s">options page</a>', Greylabel::THEME_SLUG  ), admin_url('admin.php?page=Greylabel_options') ) .'</i>';
             } else {
                 return;
             }
@@ -62,7 +57,7 @@ class RegisterShortcodes {
             return $tracker; 
         else: 
             if (current_user_can('activate_plugins')) {
-                return '<i style="color:red;">'. sprintf( __( 'Please make sure you have added the "mail" attribute to the shortcode or added the "contact mail" in the <a style="color:red;" href="%s">options page</a>', Brandclick::THEME_SLUG ), admin_url('admin.php?page=brandclick_options') ) .'</i>';
+                return '<i style="color:red;">'. sprintf( __( 'Please make sure you have added the "mail" attribute to the shortcode or added the "contact mail" in the <a style="color:red;" href="%s">options page</a>', Greylabel::THEME_SLUG ), admin_url('admin.php?page=Greylabel_options') ) .'</i>';
             } else {
                 return;
             }
@@ -161,8 +156,7 @@ class RegisterShortcodes {
 
         foreach ($socials as $social) {
             if ($url = get_option( $social . '_url' ) ) {  
-                $social = ($social!="facebook")? $social: "facebook-square";
-                $list_items .= '<li><a target="blank" class="social-btn" href="'. $url .'"><i class="fa fa-' . $social . '"></i></a></li>'; 
+                $list_items .= '<li><a class="social-btn" href="'. $url .'"><i class="fa fa-' . $social . '"></i></a></li>'; 
             }
         }
      
@@ -172,47 +166,4 @@ class RegisterShortcodes {
 
         return;    
     }
-
-    /**
-    *   Audio Widget
-    */
-    public function shortcode__register_audio_widget() 
-    {   
-        ob_start();
-        get_template_part('func/Templates/AudioWidgetHtml');
-        $content = ob_get_clean();
-        return $content;
-    }
-
-
-    /**
-     * [shortcode__register_vc_single_image description]
-     * @param  [type] $atts [description]
-     * @return [type]       [description]
-     */
-    public function shortcode__register_vc_single_image($atts)
-    {
-        $atts = shortcode_atts( array(
-            'media' => ''
-        ), $atts, 'vc_single_image' ); 
-
-        if($atts['media']) {
-            return wp_get_attachment_image( $atts['media'], 'large' );
-        }
-
-        return;
-    }
-
-
-    /**
-    *   Ajax user login form
-    */
-    public function shortcode__register_social_proof() 
-    {   
-        ob_start();
-            get_template_part('inc/partials/social-proof');
-        $content = ob_get_clean();
-        return $content; 
-    }
-
 }

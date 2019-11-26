@@ -1,11 +1,11 @@
 <?php
 
 $loader = require __DIR__ . '/vendor/autoload.php';
-use Brandclick\Brandclick;
+use Greylabel\Greylabel;
 
-class WhiteLabelTheme extends Brandclick {
-	const VERSION = 0.21;
-    const THEME_SLUG = 'gkazas';
+class TakeCareIo extends Greylabel {
+	const VERSION = 0.1;
+    const THEME_SLUG = 'takecareio';
 
     protected static $instance = null;
 
@@ -23,10 +23,12 @@ class WhiteLabelTheme extends Brandclick {
     * @var array
     */
     protected $theme_support = [
-        ['post-thumbnails', ['post','page'] ],
+        ['post-thumbnails', ['post','page', 'company'] ],
         'html5',
         'custom-logo',
-        'woocommerce'
+        'woocommerce',
+        'wc-product-gallery-lightbox',
+        'wc-product-gallery-slider'
     ];
 
     /**
@@ -38,17 +40,16 @@ class WhiteLabelTheme extends Brandclick {
             [__CLASS__, 'enqueue_scripts'],
             [__CLASS__, 'enqueue_styles'],
         ],
-        'init' => [
-            ['\Brandclick\Register\RegisterPostTypes', 'action__register_post_types'],
-            ['\Brandclick\Register\RegisterPostTypes', 'action__register_taxonomies'],
-        ],
+        // 'init' => [
+        //     // ['\Greylabel\Register\RegisterPostTypes', 'action__register_post_types'],
+        //     // ['\Greylabel\Register\RegisterPostTypes', 'action__register_taxonomies'],
+        // ],
         'admin_menu' => [
-            ['\Brandclick\Register\RegisterOptionsPage', 'action__register_menu_page']
+            ['\Greylabel\Register\RegisterOptionsPage', 'action__register_menu_page']
         ],
         'admin_init' => [
-            ['\Brandclick\Register\RegisterOptionsPage', 'action__register_settings']
-        ],
-        'phpmailer_init' => ['\Brandclick\Admin\DebuggerSettings', 'action__set_mailtrap'],
+            ['\Greylabel\Register\RegisterOptionsPage', 'action__register_settings']
+        ]
     ];
 
     /**
@@ -56,7 +57,7 @@ class WhiteLabelTheme extends Brandclick {
     * @var array
     */
     protected $filters = [
-        'user_contactmethods' => ['\Brandclick\Admin\CleanUpUserProfiles', 'filter__unset_user_fields'],
+        'user_contactmethods' => ['\Greylabel\Admin\CleanUpUserProfiles', 'filter__unset_user_fields'],
         'option_show_avatars' => '__return_false',
     ];
 
@@ -76,14 +77,20 @@ class WhiteLabelTheme extends Brandclick {
             'dependencies' => [],
             'version' => self::VERSION,
             'external' => false,
-            'load_script' => ['is_archive', 'is_search', 'is_home'],
+            'load_script' => ['is_archive', 'is_search'],
             'localize' => [
                 'name' => 'wp_api_object',
                 'options' => [
                     'jsonURI' => 'wp-json/wp/v2/'
                 ]    
             ]
-        ]
+        ],
+        'slick' => [
+            'src' => 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js',
+            'dependencies' => ['jquery'],
+            'version' => self::VERSION,
+            'external' => true,
+        ],
     ];
 
     /**
@@ -138,4 +145,4 @@ class WhiteLabelTheme extends Brandclick {
 
 }
 
-$theme = WhiteLabelTheme::get_instance();
+$theme = TakeCareIo::get_instance();

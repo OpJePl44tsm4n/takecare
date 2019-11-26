@@ -1,79 +1,100 @@
 <?php 
+	$background = get_sub_field('background_color');
+	$bg_image = get_sub_field('background_image');
+	$bg_image = $bg_image ? wp_get_attachment_image_url( $bg_image , 'full' ) : false; 
+	$css_selector = get_sub_field('css_selector');
+	$row_id = get_sub_field('row_id');
+	$vertical_align = get_sub_field('vertical_align_content') ? 'vertical-align' : '';
+	$grid_columns = get_sub_field('grid_columns');
+	$grid_columns = TakeCareIo::calculate_grid_columns($grid_columns, 'md');
+	$fluid_container = get_sub_field('fluid_container');
+	$container = $fluid_container ?'container-fluid' : 'container';
 
-	if( have_rows('content_blocks') ): ?>
+	if( have_rows('content_blocks') ){ ?>
 
-	<section <?php if($row_id) echo 'id="'.$row_id.'"'; ?> class="row content-block <?php echo $background . ' ' . $css_selector; ?>">
+	<section <?php if($row_id) echo 'id="'.$row_id.'"'; ?> class="row row-<?php echo $row_count; ?> content-block <?php echo $background . ' ' . $css_selector; ?>">
+		
+		<?php 
+		if( $bg_image ) { ?>
+			<div class="thumb">
+				<img class="bg-image" src="<?php echo $bg_image; ?>" alt="background">
+			</div>
+		<?php } ?>
+
 		<div class="<?php echo $container; ?>">
 			<div class="row">
 
 				<?php 
 				$column_counter = 0;
-				while ( have_rows('content_blocks') ) : the_row(); ?>
+				while ( have_rows('content_blocks') ) : the_row(); 
+					$layout = get_row_layout(); ?>
 
-					<div class="grid-item <?php echo $grid_columns[$column_counter] . ' ' . get_row_layout() . ' ' . $vertical_align; ?>">
+					<div class="grid-item <?php echo $grid_columns[$column_counter] . ' ' . $layout . ' ' . $vertical_align; ?>">
 						<div class="content">
 						
 							<?php 
-							if( get_row_layout() == 'editor' ):
-								the_sub_field('content'); 
+							if( $layout == 'editor' ):
+								the_sub_field('content');
 
-							elseif( get_row_layout() == 'animation' ) :
+							elseif( $layout == 'animation' ) :
 								$video_id = get_sub_field('video');
 								$image_id = get_sub_field('image');
 								include(locate_template('inc/partials/video-animation.php')); 
 
-							elseif( get_row_layout() == 'faq_list' ) :
+							elseif( $layout == 'faq_list' ) :
 								$title = get_sub_field('title');
 								$questions = get_sub_field('questions');
 								include(locate_template('inc/partials/list-faq.php'));
 
-							elseif( get_row_layout() == 'post_list' ) :
-								include(locate_template('inc/partials/list-post.php')); 
+							elseif( $layout == 'post_list' ) :
+								include(locate_template('inc/partials/list-post.php')); 		
 
-							elseif( get_row_layout() == 'logo_grid' ) :
-								include(locate_template('inc/partials/grid-logos.php'));
+							elseif( $layout == 'logo_grid' ) :
+								include(locate_template('inc/partials/slider-logos.php'));	 	
 
-							elseif( get_row_layout() == 'single_image' ) :
+							elseif( $layout == 'single_image' ) :
 								$image_id = get_sub_field('image');
-								echo wp_get_attachment_image( $image_id, 'large' );
+								$link = get_sub_field('link');
+								if ($link) {
+									echo '<a href="'. $link .'">';
+									echo wp_get_attachment_image( $image_id, 'large' );
+									echo '</a>';
+								} else {
+									echo wp_get_attachment_image( $image_id, 'large' );
+								}
 
-							elseif( get_row_layout() == 'single_video' ) :
+							elseif( $layout == 'single_video' ) :
 								$video_url = get_sub_field('video');
-								$image_id = get_sub_field('image');
-								include(locate_template('inc/partials/video-inline.php'));
+				 				$image_id = get_sub_field('image');
+								include(locate_template('inc/partials/video-inline.php')); 		
 
-							elseif( get_row_layout() == 'mailchimp_form' ) :
-								include(locate_template('inc/partials/form-mailchimp.php'));
-
-							elseif( get_row_layout() == 'slider_reviews' ) :
-								include(locate_template('inc/partials/slider-reviews.php'));
-
-							elseif( get_row_layout() == 'content_slider' ) :
-								include(locate_template('inc/partials/slider-content-mobile.php'));
-
-							elseif( get_row_layout() == 'slider_media_reviews' ) :
-								include(locate_template('inc/partials/slider-media-reviews.php'));
+							elseif( $layout == 'mailchimp_form' ) :
+								include(locate_template('inc/partials/form-mailchimp.php')); 
 							
-							elseif( get_row_layout() == 'store_locator' ) :
-								include(locate_template('inc/partials/store-locator.php'));
+							elseif( $layout == 'store_locator' ) :
+        						include(locate_template('inc/partials/store-locator.php'));
 
-        					elseif( get_row_layout() == 'map_basic' || get_row_layout() == 'basic_map'  ) :
-        						include(locate_template('inc/partials/map-basic.php'));
+        					elseif( $layout == 'map_basic' ) :
+        						$focus_point = get_sub_field('focus_point');
+							    $popup_content = get_sub_field('popup_content');
+							    $zoom_level = get_sub_field('zoom_level') ?: 10;
+        						
+        						include(locate_template('inc/partials/map-basic.php'));       
 
-							elseif( get_row_layout() == 'kiyoh_reviews' ) :
-								include(locate_template('inc/partials/reviews.php'));
+        					elseif( $layout == 'kiyoh_reviews' ) :
+        						include(locate_template('inc/partials/reviews.php'));
 
-							elseif( get_row_layout() == 'search_form' ) :
+        					elseif( $layout == 'search_form' ) :
 								$title = get_sub_field('title');
 								$search_placeholder = get_sub_field('search_placeholder');
-								include(locate_template('inc/partials/search.php'));
+								include(locate_template('inc/partials/search.php'));	        
 
-							elseif( get_row_layout() == 'contact_form' ) :
+							elseif( $layout == 'contact_form' ) :
 								$form = get_sub_field('contact_form');
 								if ($form) {
 									echo do_shortcode( '[contact-form-7 id="'. $form->ID .'" title="'. $form->post_title .'"]' );
 								}
-							endif; ?>
+							endif; ?>   
 
 						</div>
 					</div> 
@@ -90,5 +111,4 @@
 			</div>	
 		</div>
 	</section>
-
-<?php endif; ?>
+<?php }

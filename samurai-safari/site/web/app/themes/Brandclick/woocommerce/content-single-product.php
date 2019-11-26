@@ -92,13 +92,22 @@ if ( post_password_required() ) {
 
     endif; 
 
-    // show the general product content
-    if( have_rows('product_content_page_rows', 'option') ):
-        while ( have_rows('product_content_page_rows', 'option') ) : the_row();
-            include(locate_template('inc/rows.php'));
-        endwhile;
-    endif; 
- ?>
+    // related products 
+    global $product;
+	$current_id = $product->get_id();
+    $row_title =  sprintf('<h2>%s</h2>',  __( 'Related products', TakeCareIo::THEME_SLUG  ));
+    $max_products = 4;   
+
+    $products_args = array(
+        'post_type'     => 'product',
+        'posts_per_page' => $max_products,
+        'post__in'		=> wc_get_related_products($current_id)    
+    );
+
+    $products = get_posts( $products_args );
+
+    include(locate_template('inc/row-products.php'));
+        ?>
 
 </div>
 

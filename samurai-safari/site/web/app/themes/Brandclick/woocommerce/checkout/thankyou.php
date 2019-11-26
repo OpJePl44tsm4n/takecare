@@ -21,12 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="steps-container done">
-	<div class="step step-1 current"><?php _e('Details','brandclick'); ?></div>
-	<div class="step step-2 current"><?php _e('Payment','brandclick'); ?></div>
-	<div class="step step-3 current"><?php _e('Done!','brandclick'); ?></div>
-</div>
-
 <?php if ( $order ) : ?>
 	
 	<?php if ( $order->has_status( 'failed' ) ) : ?>
@@ -45,8 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php else : ?>
 
 		<?php if ($thank_you = get_page_by_path( 'checkout/thank-you' )) :
-			$thank_you = apply_filters( 'wpml_object_id', $thank_you->ID, 'post' ); 
-			
+			$thank_you = $thank_you->ID; 
 			if( have_rows('page_rows', $thank_you) ):
 				$wc_order = $order;
 			    while ( have_rows('page_rows', $thank_you) ) :  the_row();

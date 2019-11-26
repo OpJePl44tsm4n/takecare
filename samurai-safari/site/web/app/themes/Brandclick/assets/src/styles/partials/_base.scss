@@ -1,46 +1,69 @@
 
+
 body {
 
 	font-family: $primary-font-light;
 	font-size: $base-font-size;
 	font-smoothing: antialiased;
 	line-height: $base-line-height;
-	letter-spacing: $base-letter-spacing;	
-	
-	&.scroll-lock {
-		overflow: hidden;
-	}
-	
-	h1 {
-		font-size: 1.7rem;
-		line-height: 1.1em;
-		font-family: $primary-font-light;
-		color: $primary-color;
-		padding-bottom: 0.4em;
+	letter-spacing: $base-letter-spacing;
+	overflow-x: hidden;
 
+	h1 {
+		font-size: 2rem;
+		line-height: 1.2em;
+		font-family: $primary-font;
+		color: #000;
+		
 		@include media-breakpoint-up(sm) {
-			font-size: 2.6rem;
+			font-size: 3rem;
+
+			&.large {
+				font-size: 3.6rem;
+			}	
 		}
+		
 	}
 	
 	h2 {
-		font-size: 1.6rem;
-		font-family: $primary-font-light;
+		font-size: 1.5rem;
+		font-family: $primary-font-bold;
+
+		@include media-breakpoint-up(xs) {
+			font-size: 1.5rem;
+		}
+
+		@include media-breakpoint-down(xs) {
+			font-size: 1.5rem;
+		}
+	}
+
+	h3 {
+		font-family: $primary-font-bold;
 	}
 
 	h4 {
-		font-family: $primary-font-bold;
-		font-size: 1.3rem;
+		font-size: 1.2rem;
+		font-family: $primary-font-light;
+		margin-bottom: 1.2rem;
 	}
 
-	p{
-		font-family:$primary-font-light;
-	}
+	p {
+		line-height: 2rem;
 
+		&.description {
+			font-size: .9em;
+		    line-height: 1.6em;
+		    padding-top: 1em;
+		}
+	}
 
 	a {
+		color: $primary-text-color;
+	}
+
+	a:hover {
 		color: $primary-color;
-		text-decoration: none;
 	}
 
 	ul {
@@ -56,17 +79,12 @@ body {
 	iframe {
   		max-width: 100% !important;
   		width: 100%;
-  		height: 0;
-
-  		@include media-breakpoint-down(sm){
-  			height: stretch;
-  		}
 	}
 
 	b, strong {
 	  	font-family: $primary-font-bold;
 	}
-
+	
 	.hidden {
 		display: none; 
 	}
@@ -76,30 +94,17 @@ body {
 			text-align: center;
 		}
 	}
-	
+
 	.secondary-bg-color {
-		background: $theme-grey; 
-		background: linear-gradient(to right, $theme-grey 0%, $theme-grey 24%, $secondary-text-color 65%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		background: $secondary-bg-color;
 	}
 
-	.gradient-pink {
-		background: $theme-pink; 
-		background: linear-gradient(to right, $theme-pink 0%, $theme-pink 40%, $theme-peach 100%);
-	}
-	
-	.gradient-blue {
-		background: $theme-blue; 
-		background: linear-gradient(to right, $theme-blue 0%, $theme-blue 40%, $theme-purple 100%);
+	.tertiary-bg-color {
+		background: $tertiary-bg-color;
 	}
 
-	.gradient-blue-light {
-		background: $theme-blue-light; 
-		background: linear-gradient(to right, $theme-blue-light 0%, $theme-blue-light 40%, $theme-purple-light 100%);
-	} 
-
-	.gradient-green {
-		background: $theme-green; 
-		background: linear-gradient(to right, $theme-green 0%, $theme-green 40%, $theme-blue-grey 100%);
+	.quaternary-bg-color {
+		background: black;
 	}
 
 	div.wpcf7 .ajax-loader { 
@@ -116,53 +121,52 @@ body {
 	}
 
 	.brand-wrapper {
-		text-align: left;
+		text-align: center;
 		display: inline-block;
+		width: 330px;
 
 		@include media-breakpoint-down(md) {
 		    transform: scale(0.85);
 		    z-index: 22;
-		    margin-top: 0px;
+		    margin-top: 0;
+		    margin-left: -1.25rem;
 		}
-		.img-fluid{
-			margin:auto;
-			width:50%;
 
-			@include media-breakpoint-down(md){
-				float:left;
-				position:relative;
-				left:-32px;
-			}
-		}
-	}
-
-	.custom-card {
-		background: $primary-bg-color;
-		@include media-breakpoint-up(md) {
-			border: 1px solid rgba($primary-text-color, .125);
-			border-radius: .25rem;
-			padding: 1em 1.5em;
-		}
-	}	
-
-	.swap-order {
 		@include media-breakpoint-down(sm) {
-			.grid-item {
-				&:first-child {
-					order: 2;
-				}
-			}
-		}	
-	}
-
-	.mobile-center {
-		@include media-breakpoint-down(sm) {
-			text-align: center;
+		    transform: scale(0.6);
+		    z-index: 22;
+		    margin-top: 0;
+		    margin-left: -4.3rem;
 		}
 	}
-	
+
+	.thumb {
+	    overflow: hidden;
+	    position: relative;
+
+		img {
+			width: 100%;
+			height: 100%;
+		    object-fit: cover;
+		    transform: translateY(-50%);
+		    top: 50%;
+		    left: 0;
+		    position: absolute;
+		}
+	}
+
+
 }
 
+.swap-order {
+	@include media-breakpoint-down(sm) {
+		.grid-item {
+			&:first-child {
+				order: 2;
+			}
+		}
+	}	
+}
 
 
 /* =WordPress Core
@@ -186,3 +190,4 @@ div.aligncenter {
     float: left;
     margin: 5px 20px 20px 0;
 }
+

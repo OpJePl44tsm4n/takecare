@@ -1,6 +1,6 @@
 <?php
-namespace Brandclick\Vendor;
-use Brandclick\Brandclick;
+namespace Greylabel\Vendor;
+use Greylabel\Greylabel;
 
 /**
  * Class Name: bs4Navwalker

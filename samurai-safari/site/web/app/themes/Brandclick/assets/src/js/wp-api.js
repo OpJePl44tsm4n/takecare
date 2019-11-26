@@ -89,14 +89,16 @@
             );
         };
 
-        window.addEventListener('scroll', function (event) {
-            if ( !loading  && isInViewport(loadMoreButton[0])) {
-                if (!loading) {
-                    getNewPost();   
+        if (loadMoreButton.length) {
+            window.addEventListener('scroll', function (event) {
+                if ( !loading  && isInViewport(loadMoreButton[0])) {
+                    if (!loading) {
+                        getNewPost();   
+                    }
                 }
-            }
-        }, false);
-
+            }, false);
+        }
+        
         function toggle_load_btns(){
             loadMoreButton.addClass('hidden');
             $('.load-more').addClass('hidden');

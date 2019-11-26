@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\Vendor;
-use Brandclick\Brandclick;
+namespace Greylabel\Vendor;
+use Greylabel\Greylabel;
 
 class AcfSettings {
 
@@ -16,7 +16,7 @@ class AcfSettings {
     */
     public function filter__add_acf_settings() 
     {   
-        $settings = Brandclick::$settings; 
+        $settings = Greylabel::$settings; 
         // var_dump($settings['google_api_key']);
         $google_api_key = isset($settings['google_api_key']) ? $settings['google_api_key'] : false;
         
@@ -50,16 +50,7 @@ class AcfSettings {
             'page_title'    => 'In article content',
             'menu_title'    => 'In Article Content',
             'menu_slug'     => 'in-article-content',
-            'parent_slug'   => 'brandclick_options',
-            'capability'    => 'edit_posts',
-            'redirect'      => false
-        ));
-
-        acf_add_options_page(array(
-            'page_title'    => 'Shop enhancements',
-            'menu_title'    => 'Shop enhancements',
-            'menu_slug'     => 'shop-enhancements',
-            'parent_slug'   => 'brandclick_options',
+            'parent_slug'   => 'edit.php',
             'capability'    => 'edit_posts',
             'redirect'      => false
         ));

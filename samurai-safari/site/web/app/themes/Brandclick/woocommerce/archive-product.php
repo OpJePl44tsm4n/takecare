@@ -19,33 +19,23 @@ defined( 'ABSPATH' ) || exit;
 
 get_header( 'shop' ); 
 
-$shop = get_option( 'woocommerce_shop_page_id' ); 
-
-$product_cats = get_terms( array( '' ) ); 
-?>
+$shop = get_option( 'woocommerce_shop_page_id' ); ?>
 
  <main id="content" role="main" >
     <article id="post-<?php $shop; ?>" <?php post_class('page-content', $shop); ?> >
+		
 		<?php 
-		if( have_rows('page_rows', $shop) ):
-           $count = 0;
-            while ( have_rows('page_rows', $shop) ) : the_row();
-            	if($count > 0) {
-            		break;
-            	}
+			if( have_rows('page_rows', $shop) ):
+                while ( have_rows('page_rows', $shop) ) : the_row();
+                    include(locate_template('inc/rows.php'));
+                endwhile;
+            endif; ?>
 
-                include(locate_template('inc/rows.php'));
-                $count++;
-            endwhile;
-            reset_rows();
-        endif; ?> 
-
-		<section class="row woocommerce products">
-            <div class="container content-block">
+		<section class="row">
+            <div class="container-fluid content-block">
 				<div class="row">
 					
 					<?php 
-						
 					/**
 					 * Hook: woocommerce_before_main_content.
 					 *
@@ -72,11 +62,11 @@ $product_cats = get_terms( array( '' ) );
 							while ( have_posts() ) {
 								the_post();
 
-								// *
-								//  * Hook: woocommerce_shop_loop.
-								//  *
-								//  * @hooked WC_Structured_Data::generate_product_data() - 10
-								 
+								/**
+								 * Hook: woocommerce_shop_loop.
+								 *
+								 * @hooked WC_Structured_Data::generate_product_data() - 10
+								 */
 								do_action( 'woocommerce_shop_loop' );
 
 								wc_get_template_part( 'content', 'product' );
@@ -91,13 +81,12 @@ $product_cats = get_terms( array( '' ) );
 						 * @hooked woocommerce_pagination - 10
 						 */
 						do_action( 'woocommerce_after_shop_loop' );
-					} 
-					else {
-						// *
-						//  * Hook: woocommerce_no_products_found.
-						//  *
-						//  * @hooked wc_no_products_found - 10
-						 
+					} else {
+						/**
+						 * Hook: woocommerce_no_products_found.
+						 *
+						 * @hooked wc_no_products_found - 10
+						 */
 						do_action( 'woocommerce_no_products_found' );
 					}
 
@@ -117,18 +106,7 @@ $product_cats = get_terms( array( '' ) );
 
 				</div>
 			</div>
-        </section> 
-
-        <?php 
-		if( have_rows('page_rows', $shop) ):
-			$count = 0;
-            while ( have_rows('page_rows', $shop) ) : the_row();
-            	if($count > 0) {
-            		include(locate_template('inc/rows.php'));
-            	}
-                $count++;
-            endwhile;
-        endif; ?>   
+        </section>    
 
     </article>
 </main><!-- #content -->

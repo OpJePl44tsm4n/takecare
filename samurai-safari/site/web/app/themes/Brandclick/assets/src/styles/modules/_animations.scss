@@ -31,3 +31,50 @@
     75% { transform:  rotate(-90deg); }
     100% { transform:  rotate(0deg); }
 }   
+
+
+/* jungle top */
+@keyframes jungle_movetop {
+    from    {top: 0%;}
+    to      {top: -3%;}
+}
+
+
+/* jungle right side */
+@keyframes jungle_moverightbg {
+    from    {right: 0%;}
+    to      {right: -4%;}
+}
+
+@keyframes jungle_moveright {
+    from    {
+        top: -15%;
+        right: -10%;
+        transform: rotate(-25deg);
+    }
+    to      {
+        top: 5%;
+        right: -25%;
+        transform: rotate(-35deg);
+    }
+}
+
+/* jungle left side */
+
+@keyframes jungle_moveleftbg {
+    from    {left: 0%;}
+    to      {left: -4%;}
+}
+
+@keyframes jungle_moveleft {
+    from    {
+        top: -10%;
+        left: -10%;
+        transform: rotate(25deg);
+    }
+    to      {
+        top: 0%;
+        left: -28%;
+        transform: rotate(40deg);
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 
-$row_title = get_sub_field('title');
+$row_title	= get_sub_field('title');
 $kiyoh_json = get_option( 'kiyoh_reviews_json' ); 
 $kiyoh_obj =  $kiyoh_json ? json_decode($kiyoh_json,  true) : []; 
 ?>
@@ -12,10 +12,10 @@ $kiyoh_obj =  $kiyoh_json ? json_decode($kiyoh_json,  true) : [];
 				<div class="mr-auto">
 					<?php echo $row_title; ?>
 				</div>
-			</div>
+			</div>	
 		</header>
 
-		<div class="review_container"> 
+		<div class="review_container">
 			<?php
 
 			if (isset($kiyoh_obj['review_list'])) { 
@@ -40,18 +40,14 @@ $kiyoh_obj =  $kiyoh_json ? json_decode($kiyoh_json,  true) : [];
 					$date = new Datetime($date);
 					$date = $date->format('d/m/Y');
 					$score = $value['total_score'];
-					$name = !empty($value['customer']['name']) ? $value['customer']['name'] : __('Customer', WhiteLabelTheme::THEME_SLUG );
-					$posrev = !empty($value['positive']) ? $value['positive'] : __('No comment.', WhiteLabelTheme::THEME_SLUG );
+					$name = !empty($value['customer']['name']) ? $value['customer']['name'] : __('Customer', TakeCareIo::THEME_SLUG );
+					$posrev = !empty($value['positive']) ? $value['positive'] : __('No comment.', TakeCareIo::THEME_SLUG );
 
 					// Rating system 1-10 to star rating system 1-5 stars
 					$calculated = $score / 2;  ?>
 
 					<div class="reviews" itemprop="review" itemscope="itemscope" itemtype="http://schema.org/Review">
-		
-						<p class="rev_date">
-							<meta itemprop="datePublished" content="<?php echo $date; ?>">
-							<?php echo $date; ?>
-						</p>
+						<span class="rev_name" itemprop="author"><?php echo $name; ?>:</span>
 						<div itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
 							<span itemprop="ratingValue">
 								<?php 
@@ -66,30 +62,33 @@ $kiyoh_obj =  $kiyoh_json ? json_decode($kiyoh_json,  true) : [];
 							</span>
 							<meta itemprop="bestRating" content="10">
 						</div>
-						<span class="rev_name" itemprop="author"><?php echo $name; ?>:</span>
+						<p class="rev_date">
+							<meta itemprop="datePublished" content="<?php echo $date; ?>">
+							<?php echo $date; ?>
+						</p>
 						<div itemprop="reviewBody">
 							"<?php echo $posrev; ?>"
 
 						</div>
-						<div itemprop="reviewScore">
+						<?php /*<div itemprop="reviewScore">
 							<?php echo number_format((float)$score, 1, '.', ''); ?>
-						</div>
+						</div> */ ?>
 					</div>
 
 				<?php }
 			} ?> 
 				
 		</div>
-		<?php if (isset($kiyoh_obj['company'])) {
+		<?php /* <?php if (isset($kiyoh_obj['company'])) {  
 			$company_info = $kiyoh_obj['company']; ?>
 
 			<div class="kiyoh_stamp">
 				<h2><?php echo number_format((float)$company_info['total_score'], 1, '.', ''); ?> / 10.0</h2>
-				<?php echo sprintf('<p><strong>%s</strong> %s</p>', '100%', __('recommends this company',  WhiteLabelTheme::THEME_SLUG)); ?>
-				<?php echo sprintf('<p class="p_grey">(%s %s)</p>', $company_info['total_reviews'], __('reviews',  WhiteLabelTheme::THEME_SLUG)); ?> 
-				<a class="btn btn-link" href="https://www.kiyoh.nl/gkazas/"><?php _e('Independent reviews from',  WhiteLabelTheme::THEME_SLUG); ?><img src="<?php echo trailingslashit(get_stylesheet_directory_uri()) . 'assets/dist/img/kiyoh_logo.png'; ?>" class="kiyoh_logo"></a>
+				<?php echo sprintf('<p><strong>%s</strong> %s</p>', '100%', __('recommends this company',  TakeCareIo::THEME_SLUG)); ?>
+				<?php echo sprintf('<p class="p_grey">(%s %s)</p>', $company_info['total_reviews'], __('reviews',  TakeCareIo::THEME_SLUG)); ?> 
+				<a class="btn btn-link" href="https://www.kiyoh.nl/gkazas/"><?php _e('Independent reviews from',  TakeCareIo::THEME_SLUG); ?><img src="<?php echo trailingslashit(get_stylesheet_directory_uri()) . 'assets/dist/img/kiyoh_logo.png'; ?>" class="kiyoh_logo"></a>
 				
 			</div>
-		<?php } ?>
+		<?php } ?> */?>
 	</div>
 </section>

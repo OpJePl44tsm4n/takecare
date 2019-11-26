@@ -71,22 +71,25 @@ do_action( 'woocommerce_before_mini_cart' ); ?>
 			do_action( 'woocommerce_mini_cart_contents' );
 		?>
 	</ul>
-	<?php 
-		$methods = WC()->shipping->get_shipping_methods();
-		$order_min_amount = 0;
-		foreach ($methods as $method) {
-			if(isset($method->id) && 'free_shipping' == $method->id) {
-				$order_min_amount = $method->min_amount;
-				break; 
-			}
-		}
-	?>
-	<p>
-		<?php if($order_min_amount){
-			$order_min_amount = wc_price($order_min_amount);
-			echo sprintf( __('Free shipping on orders above %s', WhiteLabelTheme::THEME_SLUG ), $order_min_amount );
-		}?>
-	</p>
+	
+	<p class="cart-subtotal"><?php echo sprintf(  __('Total products (%s)', TakeCareIo::THEME_SLUG ), WC()->cart->get_cart_contents_count()); ?><?php echo WC()->cart->get_cart_subtotal(); ?></p>
+
+	<?php if ( wc_coupons_enabled() ) { ?>
+		<div class="ajax-coupon">
+
+			<button class="btn btn-link collapsed" 
+                data-toggle="collapse" 
+                data-target="#coupon-field" 
+                aria-expanded="false" 
+                aria-controls="coupon-field"><?php _e('Add coupon', TakeCareIo::THEME_SLUG ); ?></button>
+                
+            <div id="coupon-field" class="collapse">
+                <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" /> <button type="submit" class="btn btn-primary" name="apply_coupon" id="coupon-submit" data-for=".ajax-coupon #coupon_code" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?></button>
+				<?php do_action( 'woocommerce_cart_coupon' ); ?>
+            </div>
+			
+		</div>
+	<?php } ?>
 
 	<?php woocommerce_cart_totals(); ?>
 
@@ -97,4 +100,3 @@ do_action( 'woocommerce_before_mini_cart' ); ?>
 <?php endif; ?>
 
 <?php do_action( 'woocommerce_after_mini_cart' ); ?>
-

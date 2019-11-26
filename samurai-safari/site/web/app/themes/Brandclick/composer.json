@@ -1,21 +1,17 @@
 {
-    "name": "brandclick/whitelabel",
-    "description": "brandclick whitelabel theme",
+    "name": "Greylabel",
+    "description": "Greylabel theme",
     "type": "project",
     "authors": [
         {
             "name": "Pim",
-            "email": "pim@brandclick.nl"
+            "email": "pim.plaatsman@gmail.com"
         }
     ],
-    "require": {
-        "facebook/graph-sdk": "^5.7",
-        "google/apiclient": "^2.0",
-        "facebook/php-ads-sdk": "2.8.*"
-    },
+    "require": {},
     "autoload": {
         "psr-4": {
-            "Brandclick\\": "func/"
+            "Greylabel\\": "func/"
         }
     }
 }

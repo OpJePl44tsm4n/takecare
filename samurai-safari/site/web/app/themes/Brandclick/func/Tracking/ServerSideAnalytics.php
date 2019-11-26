@@ -1,14 +1,14 @@
 <?php 
-namespace Brandclick\Tracking;
-use Brandclick\Brandclick;
+namespace Greylabel\Tracking;
+use Greylabel\Greylabel;
 
 class ServerSideAnalytics {
 
 	public static $ga_id;
 
 	public static function check_ua() {
-		if (self::$ga_id = get_option('google_analytics_id')) { 
-			error_log(self::$ga_id);
+		if (get_option('google_analytics_id')) { 
+			self::$ga_id = get_option("google_analytics_id") ?: false;
 			return self::$ga_id; 
 		} else {
 			return false; 
@@ -108,5 +108,4 @@ class ServerSideAnalytics {
 		);
 		self::gaSendData($data);
 	}
-
 }

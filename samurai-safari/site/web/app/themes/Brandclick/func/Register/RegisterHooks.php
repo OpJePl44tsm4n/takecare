@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\Register;
-use Brandclick\Brandclick;
+namespace Greylabel\Register;
+use Greylabel\Greylabel;
 
 class RegisterHooks {
 
@@ -9,7 +9,7 @@ class RegisterHooks {
     */
     public function wp_body() 
     {
-        do_action('brandclick_after_body_tag');
+        do_action('Greylabel_after_body_tag');
     }
 
 }

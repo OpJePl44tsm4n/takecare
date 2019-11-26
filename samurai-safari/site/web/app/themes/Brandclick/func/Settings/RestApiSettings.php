@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\Settings;
-use Brandclick\Brandclick;
+namespace Greylabel\Settings;
+use Greylabel\Greylabel;
 
 class RestApiSettings {
 

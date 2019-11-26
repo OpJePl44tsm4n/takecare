@@ -1,25 +1,14 @@
 <?php 
-namespace Brandclick\Tracking;
-use Brandclick\Brandclick;
+namespace Greylabel\Tracking;
+use Greylabel\Greylabel;
 
 class WcCreateProductObjects {
 
 
   	public function __construct()
   	{
-    	add_action("woocommerce_checkout_order_processed", 			array($this, "create_payment_completed_data_object"), 90, 1);
-    	
-    	if( get_option('mailtrap_toggle') || (defined('WP_ENV') && 'staging' === WP_ENV) ){
-            add_action( 'woocommerce_checkout_order_processed',     array( $this, 'send_payment_completed_data_object' ), 99, 1);
-        } else {
-            add_action( 'woocommerce_payment_complete',             array( $this, 'send_payment_completed_data_object' ), 99, 1);
-        }
-
-        // run this function directly if de option is not set 
-        if( isset($_GET['debug_ga_order']) ) { 
-            self::send_payment_completed_data_object($_GET['debug_ga_order']);  
-        } 
-        
+    	add_action("woocommerce_checkout_order_processed", array($this, "create_payment_completed_data_object"), 1, 1);
+    	add_action("woocommerce_order_status_completed", array($this, "send_payment_completed_data_object"), 10, 1);
   	}
 
   	/**
@@ -40,8 +29,9 @@ class WcCreateProductObjects {
 		$total_tax = number_format($order->get_total_tax(), 2, '.', '');
 		
 		$coupons = '';
-		if( $order_coupons = $order->get_used_coupons() ) {
-			
+		if( $order->get_used_coupons() ) {
+	        $order_coupons = $order->get_used_coupons();
+
 	        foreach( $order_coupons as $coupon) {
 	            $coupons .= $coupon->id . ', ';
 	        }
@@ -73,8 +63,6 @@ class WcCreateProductObjects {
 		$order_analytics_obj = ServerSideAnalytics::gaPrepareTransaction( $order_obj ); 
 		if($order_analytics_obj){
 		    $order->update_meta_data( 'order_analytics_obj', $order_analytics_obj );
-		    $note = __("GA: order object created");
-			$order->add_order_note( $note );
 		    $order->save();
 		}
 
@@ -88,24 +76,13 @@ class WcCreateProductObjects {
 	public function send_payment_completed_data_object( $order_id )
 	{ 	
 		$order_obj = get_post_meta( $order_id,'order_analytics_obj' ); 
-		$sendData = 'not send';
-		$order = wc_get_order(  $order_id );
+		$sendData = 'false';
 
 		if($order_obj && isset($order_obj[0])){
-			$response = ServerSideAnalytics::gaSendData($order_obj[0]);
-			if ( isset( $response['response'] ) ) {
-				$sendData = $response['response'];
-				$note = sprintf(__("GA: response status: %s, Message: %s"), $sendData['code'], $sendData['message']);
-			} else {
-				$note = __("GA: no response");
-			}
-			
-		} else {
-			$note = __("GA: no data to send");
-		}
-
-		$order->add_order_note( $note );
-		$order->save();
+			$sendData = ServerSideAnalytics::gaSendData($order_obj[0]);
+		} 
+		
+		update_post_meta( $order_id,'order_analytics_send', $sendData );
 
 		return; 	
 	}

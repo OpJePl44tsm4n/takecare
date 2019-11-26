@@ -2,8 +2,8 @@
 /* Template Name: 404 */ 
 get_header(); 
     
-   $page404 = get_page_by_title( __("404 Page", WhiteLabelTheme::THEME_SLUG ) ); 
-   $title = $page404 ? get_the_title( $page404 ) : __("OOPS! Wrong URL", WhiteLabelTheme::THEME_SLUG ) ;
+   $page404 = get_page_by_title( __("404 Page", TakeCareIo::THEME_SLUG ) ); 
+   $title = $page404 ? get_the_title( $page404 ) : __("OOPS! Wrong URL", TakeCareIo::THEME_SLUG ) ;
 ?>
 
     <main id="content" class="highlighted" role="main">
@@ -26,11 +26,11 @@ get_header();
 
                     <footer>
                         <a href="<?php echo esc_url(home_url()); ?>" class="btn btn-primary">
-                            <?php _e("Back to Home", WhiteLabelTheme::THEME_SLUG ) ?>  
+                            <?php _e("Back to Home", TakeCareIo::THEME_SLUG ) ?>  
                         </a>
 
-                        <a href="<?php echo get_permalink( get_page_by_title( __("contact", WhiteLabelTheme::THEME_SLUG ) ) ); ?>" class="btn btn-secondary">
-                            <?php _e("Contact us", WhiteLabelTheme::THEME_SLUG ) ?>
+                        <a href="<?php echo get_permalink( get_page_by_title( __("contact", TakeCareIo::THEME_SLUG ) ) ); ?>" class="btn btn-secondary">
+                            <?php _e("Contact us", TakeCareIo::THEME_SLUG ) ?>
                         </a>
                     </footer>
                    

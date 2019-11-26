@@ -1,6 +1,6 @@
 <?php 
-namespace Brandclick\DataAPI;
-use Brandclick\Brandclick;
+namespace Greylabel\DataAPI;
+use Greylabel\Greylabel;
 
 class CreateStoreGeojson {
 
@@ -39,7 +39,7 @@ class CreateStoreGeojson {
     private function prepare_store_data() 
     {
     	$args = array(
-            'post_type'     => 'store',
+            'post_type'     => 'company',
             'posts_per_page' => -1
         ); 
 

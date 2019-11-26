@@ -1,25 +1,11 @@
 /* Defining the color palet */
 
+$primary-color: #3e9b92;
+$primary-color-light: lighten($primary-color, 30%);
+$secondary-color: #dedede;
 
-$theme-grey: #e3e3e3;
-$theme-pink: #FA307F;
-$theme-peach: #f74e56;
-$theme-blue: #1000ae;
-$theme-blue-light: #02eed6;
-$theme-blue-grey: #66a2af;
-$theme-purple: #902eac;
-$theme-purple-light: #8893cf;
-$theme-green: #03f173;
+$primary-text-color: #000;
 
-$primary-color: #000; 
-$primary-color-light: lighten($primary-color, 20%);
-$primary-color-dark: darken($primary-color, 20%);
-$secondary-color: #e44682;
-
-$secondary-btn-color: $theme-pink;
-
-$primary-text-color: #000; 
-$secondary-text-color: #fff;
-
-$primary-bg-color: $secondary-text-color;
-$secondary-bg-color: #e0e0e0;
+$primary-bg-color: #fff;
+$secondary-bg-color: #00542d;
+$tertiary-bg-color: #E2F2F7;

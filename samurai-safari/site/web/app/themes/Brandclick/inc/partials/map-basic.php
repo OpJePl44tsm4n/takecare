@@ -1,10 +1,4 @@
 
-<?php 
-    $focus_point = get_sub_field('focus_point');
-    $popup_content = get_sub_field('popup_content');
-    $zoom_level = get_sub_field('zoom_level') ?: 10;
-?>
-
 <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
 <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
 
