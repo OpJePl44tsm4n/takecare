@@ -366,7 +366,8 @@
                                             // Add Featured Image to Post
                                             $image_url        = $article_img;
                                             $pathinfo         = pathinfo($image_url);
-                                            $image_name       = $pathinfo['filename'].'.'.$pathinfo['extension'];
+                                            $extension        = isset($pathinfo['extension']) ? $pathinfo['extension'] : 'jpeg'; 
+                                            $image_name       = $pathinfo['filename'] .'.'. $extension ;
                                             $upload_dir       = wp_upload_dir(); // Set upload folder
                                             $image_data       = file_get_contents($image_url); // Get image data
                                             $unique_file_name = wp_unique_filename( $upload_dir['path'], $image_name ); // Generate unique name
