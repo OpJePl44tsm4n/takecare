@@ -351,6 +351,7 @@
             
                                         if( $article_title ){
                                             update_sub_field('title', $article_title);
+                                            $title = $article_title;
                                         }
 
                                         if( $article_domain ){
@@ -408,6 +409,7 @@
 
                                             // Update featured image of current row
                                             update_sub_field('featured_image', $attach_id);
+                                            $img_id = $attach_id;
                                         }
 
                                     }
