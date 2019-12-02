@@ -310,7 +310,7 @@
                                         continue;
                                     }
 
-                                    if( !$title && !$img_id ) {
+                                    if( $title !== '' && $img_id !== '' ) {
                                         
                                         $content = getSslPage($url);
 

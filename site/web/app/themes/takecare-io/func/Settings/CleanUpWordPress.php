@@ -14,13 +14,13 @@ class CleanUpWordPress {
         remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
         remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
         remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
-        remove_filter('widget_text_content', 'wpautop');
+        remove_filter( 'widget_text_content', 'wpautop');
 
 
         // Filters
-        add_filter('the_generator',                 array( $this, 'filter__remove_wp_version') );
-        add_filter('jpeg_quality',                  function($arg){return 100;});
-        add_filter('upload_mimes',                    array( $this, 'filter__allow_mime_types') );
+        add_filter( 'the_generator',                 array( $this, 'filter__remove_wp_version') );
+        add_filter( 'jpeg_quality',                  function($arg){return 100;});
+        add_filter( 'upload_mimes',                    array( $this, 'filter__allow_mime_types') );
         add_filter( 'get_the_archive_title',        array( $this, 'filter__simple_archive_title') );
 
         // Actions
