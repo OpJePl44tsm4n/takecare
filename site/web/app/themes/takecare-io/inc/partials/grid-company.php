@@ -39,7 +39,7 @@
                     
                     if($types) {
                         foreach ( $types as $term ) {
-                            echo '<a class="main-category" href="'.get_term_link($term->term_id).'">'. $term->name .'</a></br>';
+                            echo '<a class="main-category" href="'.get_term_link($term->term_id).'">'. $term->name .'</a>';
                             break;
                         }
                     } 
