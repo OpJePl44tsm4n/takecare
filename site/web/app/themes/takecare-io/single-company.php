@@ -309,9 +309,10 @@
                                     if( !$url ) {
                                         continue;
                                     }
-
-                                    if( $title !== '' && $img_id !== '' ) {
-                                        
+                                
+                                    if( $title == '' && $img_id == '' ) {
+                                   
+                                        var_dump($title, $img_id);
                                         $content = getSslPage($url);
 
                                         $doc = new DOMDocument();
@@ -348,7 +349,6 @@
                                         $article_title = $tags['og:title'];
                                         $article_excerpt = wp_trim_words($tags['og:description'], 40);
                                         
-            
                                         if( $article_title ){
                                             update_sub_field('title', $article_title);
                                             $title = $article_title;
@@ -413,7 +413,7 @@
                                         }
 
                                     }
-
+                            
                                     $featured  = wp_get_attachment_image( $img_id, 'medium' );
                                     $site_title = get_sub_field('site_title') ?: str_ireplace('www.', '', parse_url($url)['host']);
                                      ?>
