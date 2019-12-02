@@ -32,14 +32,14 @@
                         );
                     } ?>
 
-                        
-                 <?php 
-
+                 
+                <div class="tags">   
+                    <?php 
                     $types = get_the_terms( get_the_id(), 'category' );
                     
                     if($types) {
                         foreach ( $types as $term ) {
-                            echo '<a class="main-category" href="'.get_term_link($term->term_id).'">'. $term->name .'</a>';
+                            echo '<a class="main-category" href="'.get_term_link($term->term_id).'">'. $term->name .'</a></br>';
                             break;
                         }
                     } 
@@ -55,8 +55,9 @@
                             echo '<a class="tag" href="'.get_term_link($tag->term_id).'">'. $tag->name .'</a>';
                             $i++;
                         }
-                    }    
-                ?>
+                    } ?>
+                </div>    
+
             </div>  
         </div>
     </div>
