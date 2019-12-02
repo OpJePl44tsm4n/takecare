@@ -10663,7 +10663,8 @@ article.page-content .post_list {
 section.post-grid .post {
   text-align: left; }
   section.post-grid .post .card {
-    box-shadow: 0 1px 4px 1px rgba(230, 230, 230, 0.28);
+    box-shadow: 0px 2px 4px 1px rgba(230, 230, 230, 0.48);
+    border: unset;
     margin-bottom: 20px;
     animation: fadein 2s;
     min-height: 365px; }
@@ -10704,8 +10705,7 @@ section.post-grid .post {
             margin-right: 1em;
             font-family: "Encode Sans Narrow SemiBold", sans-serif; }
           section.post-grid .post .card .content .meta a.tag {
-            font-style: italic;
-            background: #E2F2F7;
+            background: rgba(226, 242, 247, 0.3);
             border-radius: 4px;
             font-size: .7rem;
             padding: 2px 4px 3px;

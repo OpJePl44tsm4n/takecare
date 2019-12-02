@@ -4,23 +4,6 @@
 	    <a href="<?php the_permalink(); ?>">
 	        <div class="thumb">  
                 <?php echo get_the_post_thumbnail($post->ID, 'medium'); ?>
-                <?php 
-                    $logo_id = get_field('company_logo');
-                    $logo = wp_get_attachment_image( $logo_id, 'thumb' );
-                    $types = get_the_terms( get_the_id(), 'category' );
-                    
-                    if($types) {
-                        foreach ( $types as $term ) {
-                            echo '<a class="main-category" href="'.get_term_link($term->term_id).'">'. $term->name .'</a>';
-                            break;
-                        }
-                    } 
-
-                    if($logo) {
-                        echo '<div class="logo">'. $logo .'</div>';
-                    }    
-                ?>
-                
             </div> 
 		</a>
 
@@ -50,8 +33,17 @@
                     } ?>
 
                         
-                <hr>
                  <?php 
+
+                    $types = get_the_terms( get_the_id(), 'category' );
+                    
+                    if($types) {
+                        foreach ( $types as $term ) {
+                            echo '<a class="main-category" href="'.get_term_link($term->term_id).'">'. $term->name .'</a>';
+                            break;
+                        }
+                    } 
+
                     $tags = get_the_tags();
                     if($tags) {
                         $i = 0;
@@ -60,7 +52,7 @@
                                 break;
                             }
 
-                            echo '<a class="tag" href="'.get_term_link($tag->term_id).'">#'. $tag->name .'</a>';
+                            echo '<a class="tag" href="'.get_term_link($tag->term_id).'">'. $tag->name .'</a>';
                             $i++;
                         }
                     }    
