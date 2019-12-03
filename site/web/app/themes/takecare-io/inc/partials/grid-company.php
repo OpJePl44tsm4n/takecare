@@ -47,14 +47,44 @@
                     $tags = get_the_tags();
                     if($tags) {
                         $i = 0;
-                        foreach ( $tags as $tag ) {
-                            if($i == 3) {
-                                break;
-                            }
+                        $count = count($tags) - 1;
+                        $tag_list = ''; 
 
-                            echo '<a class="tag" href="'.get_term_link($tag->term_id).'">'. $tag->name .'</a>';
+                        foreach ( $tags as $tag ) {
+                
+                            if($i == 0) {
+                                echo '<a class="tag" href="'.get_term_link($tag->term_id).'">'. $tag->name .'</a>';
+                            }
+                            
+                            $tag_list .= '<a class="tag" href="'.get_term_link($tag->term_id).'">'. $tag->name .'</a>';
+                            
+
                             $i++;
                         }
+
+                        if($tag_list !== ''){ ?>
+                            
+                            <button class="tag collapsed" 
+                                data-toggle="collapse" 
+                                data-target="#post-<?php echo $post->ID; ?>-tags" 
+                                aria-expanded="false" 
+                                aria-controls="post-<?php echo $post->ID; ?>-tags">
+                                +<?php echo $count; ?>
+                            </button>
+
+                            <div id="post-<?php echo $post->ID; ?>-tags" class="collapse">
+                                <button class="close collapsed" 
+                                    data-toggle="collapse" 
+                                    data-target="#post-<?php echo $post->ID; ?>-tags" 
+                                    aria-expanded="false" 
+                                    aria-controls="post-<?php echo $post->ID; ?>-tags">
+                                    X
+                                </button>
+
+                                <?php echo $tag_list; ?>
+                            </div>
+                            
+                        <?php }
                     } ?>
                 </div>    
 

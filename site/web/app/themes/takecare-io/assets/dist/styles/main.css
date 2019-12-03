@@ -10667,15 +10667,15 @@ section.post-grid .post {
     border: unset;
     margin-bottom: 20px;
     animation: fadein 2s;
-    min-height: 365px; }
+    min-height: 340px; }
     section.post-grid .post .card .content {
       padding: 10px 12px; }
       section.post-grid .post .card .content h1 {
-        margin: 0;
-        font-size: 1em;
+        margin: 0 0 .5em 0;
+        font-size: 1.2em;
         padding-bottom: 0;
         font-family: "Encode Sans Narrow Medium", sans-serif;
-        line-height: 1.5rem;
+        line-height: 2rem;
         text-transform: unset; }
         @media (max-width: 575.98px) {
           section.post-grid .post .card .content h1 {
@@ -10687,10 +10687,7 @@ section.post-grid .post {
         font-size: 0.8em;
         line-height: 1.6em; }
       section.post-grid .post .card .content .meta {
-        font-size: .8em;
-        bottom: 0;
-        position: absolute;
-        width: calc(100% - 23px); }
+        font-size: .8em; }
         @media (max-width: 575.98px) {
           section.post-grid .post .card .content .meta {
             position: absolute;
@@ -10699,18 +10696,39 @@ section.post-grid .post {
           margin: .5em 0; }
         section.post-grid .post .card .content .meta .year-founded {
           font-family: "Encode Sans Narrow SemiBold", sans-serif; }
+        section.post-grid .post .card .content .meta .tags {
+          padding-top: .5em; }
+          section.post-grid .post .card .content .meta .tags .tag {
+            background: #f6fbfd;
+            border-radius: 4px;
+            border: none;
+            font-size: .7rem;
+            padding: 2px 4px 3px;
+            margin: 0 .5em .5em 0;
+            display: inline-block; }
+          section.post-grid .post .card .content .meta .tags .collapse, section.post-grid .post .card .content .meta .tags .collapsing {
+            position: absolute;
+            top: 160px;
+            -ms-transform: translatey(-100%);
+                transform: translatey(-100%);
+            left: 0;
+            width: 100%;
+            padding: .5em .5em 0em;
+            background: rgba(226, 242, 247, 0.2); }
+            section.post-grid .post .card .content .meta .tags .collapse .close, section.post-grid .post .card .content .meta .tags .collapsing .close {
+              position: absolute;
+              top: -1rem;
+              right: .5rem;
+              color: #fff;
+              font-size: .8rem; }
         section.post-grid .post .card .content .meta a {
           text-decoration: none; }
           section.post-grid .post .card .content .meta a.site-link, section.post-grid .post .card .content .meta a.city {
             margin-right: 1em;
             font-family: "Encode Sans Narrow SemiBold", sans-serif; }
-          section.post-grid .post .card .content .meta a.tag {
-            background: rgba(226, 242, 247, 0.3);
-            border-radius: 4px;
-            font-size: .7rem;
-            padding: 2px 4px 3px;
-            margin: 0 .5em .5em 0;
-            display: inline-block; }
+          section.post-grid .post .card .content .meta a.main-category {
+            font-family: "Encode Sans Narrow Medium", sans-serif;
+            padding-right: 1em; }
   section.post-grid .post .thumb {
     position: relative;
     height: 160px;
