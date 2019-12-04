@@ -5,21 +5,6 @@ use Greylabel\Greylabel;
 class RegisterPostTypes {
 
 
-    public function __construct()
-    { 
-        // Filters
-        add_filter('register_taxonomy_args',                 array( $this, 'filter__modify_category_args'), 99, 2  );
-        add_action('pre_get_posts',                          array( $this, 'action__add_post_types_to_archive') );
-    }
-
-
-    public function filter__modify_category_args( $args, $taxonomy )
-    {
-        if( ( 'category' === $taxonomy || 'tag' === $taxonomy ) && is_array( $args ) ) {
-            $args['rewrite']['with_front'] = false;
-        }
-        return $args;
-    }
 
     /**
     *   register new post types 
@@ -59,7 +44,7 @@ class RegisterPostTypes {
             // Set other options for Custom Post Type
             $args = array(
                 'label'               => __( $post_type['plural'], Greylabel::THEME_SLUG ),
-                'description'         => __( $post_type['plural'] . " news and reviews", Greylabel::THEME_SLUG ),
+                // 'description'         => __( $post_type['plural'] . " news and reviews", Greylabel::THEME_SLUG ),
                 'labels'              => $labels,
                 // Features this CPT supports in Post Editor
                 'supports'            => $post_type['supports'],
@@ -143,13 +128,12 @@ class RegisterPostTypes {
      * @param  [type] $query [description]
      * @return [type]        [description]
      */
-    public function action__add_post_types_to_archive( $query )
+    public static function action__add_post_types_to_archive( $query )
     {
-        if( $query->is_category() && $query->is_main_query() ){
-            $query->set( 'post_type', array( 'post', 'company' ) );
+        if( ($query->is_category() || $query->is_tag()) && $query->is_main_query()  ){
+            $query->set( 'post_type', array( 'company' ) );
         }
 
-        var_dump( $query ); 
     }
 
 }

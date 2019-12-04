@@ -1,11 +1,17 @@
 <?php get_header(); 
 $next_post = true; 
-$category = get_query_var( 'cat' );
-$taxonomy = get_query_var( 'taxonomy' );
+$taxonomy = '';
+$featured = false;
 
-if($taxonomy !== '') {
-   $category = get_term_by('slug', get_query_var('term'), $taxonomy) ; 
-   $category = $category ? $category->term_id : '';
+if( is_tag() ) {
+    $taxonomy = 'tag';
+    $term = get_query_var( 'tag' );
+} elseif ( is_category() ) {
+    $taxonomy = 'category';
+    $term = get_query_var( 'category_name' );
+    $category = get_term_by('slug', $term, $taxonomy) ; 
+    $featured_id = $term ? get_field('featured_image', $taxonomy . '_' . $category->term_id) : false;
+    $featured = wp_get_attachment_image( $featured_id, 'full' );
 }
 
 $offset = get_query_var('posts_per_page');
@@ -17,23 +23,37 @@ $offset = get_query_var('posts_per_page');
             
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> itemscope itemtype="http://schema.org/Article">
                 
+                <section class="row row-0 <?php echo $featured ?  'img-bg' : '' ?>">
+                
+                    <div class="col-md-6">
+                        <?php if($title = get_the_archive_title()): ?>
+                                <h1><?php echo $title; ?></h1>
+                        <?php endif; 
+                        
+                        if($description = get_the_archive_description()): 
+                            echo $description;  
+                         endif; ?>
+                        
+                    </div>
+                    
+                     <div class="col-md-6">
+                        <?php if( $featured ) { ?>
+                            
+                                <?php echo $featured; ?>
+                           
+                        <?php } ?>
+                    </div>
+                </section> 
+
                 <section class="row post-grid">
                     <div class="container">
-                        
-                        <?php if($description = get_the_archive_title()): ?>
-                            <header>
-                                <div class="d-flex justify-content-start">
-                                    <div class="mr-auto"><h1><?php echo $description; ?></h1></div>
-                                </div>  
-                            </header>
-                        <?php endif; ?>
 
                         <div class="row justify-content-md-center">
                             <?php while ( have_posts() ) : the_post();
 
                                 include(locate_template('inc/partials/grid-company.php')); 
 
-                                if ( get_adjacent_post('true') == '') {
+                                if ( get_adjacent_post() == '') {
                                     $next_post = false;
                                 }
                                 wp_reset_postdata();
@@ -44,7 +64,9 @@ $offset = get_query_var('posts_per_page');
                 </section>    
 
                 <footer>
-                    <?php if ($next_post) : ?>
+
+                    <?php
+                    if ($next_post) : ?>
 
                         <div class="load-more">
                             <div class="btn btn-secondary load-more__btn" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $category; ?>">

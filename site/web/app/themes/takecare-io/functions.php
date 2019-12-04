@@ -44,6 +44,9 @@ class TakeCareIo extends Greylabel {
             ['\Greylabel\Register\RegisterPostTypes', 'action__register_post_types'],
             ['\Greylabel\Register\RegisterPostTypes', 'action__register_taxonomies'],
         ],
+        'pre_get_posts' => [
+            ['\Greylabel\Register\RegisterPostTypes', 'action__add_post_types_to_archive']
+        ],
         'admin_menu' => [
             ['\Greylabel\Register\RegisterOptionsPage', 'action__register_menu_page']
         ],

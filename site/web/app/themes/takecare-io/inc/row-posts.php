@@ -27,7 +27,7 @@
 						<div class="mr-auto">
 							<h2><?php echo $row_title;?></h2>
 							<?php echo sprintf('<a href="%s">%s <i class="fa fa-angle-right"></i></a>',
-								get_post_type_archive_link( 'post' ), 
+								get_post_type_archive_link( $type ), 
 								__('View all items', TakeCareIo::THEME_SLUG )
 							); ?>
 						</div>

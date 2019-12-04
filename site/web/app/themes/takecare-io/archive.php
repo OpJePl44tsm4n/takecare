@@ -2,13 +2,14 @@
 $next_post = true; 
 $category = get_query_var( 'cat' );
 $taxonomy = get_query_var( 'taxonomy' ) ?: 'category';
+
+if($taxonomy !== '') {
+   $category = get_term_by('slug', get_query_var('term'), $taxonomy) ; 
+   $category = $category ? $category->term_id : '';
+}
+
 $featured_id = $category ? get_field('featured_image', $taxonomy . '_' . $category) : false;
 $featured = wp_get_attachment_image( $featured_id, 'full' );
-
-// if($taxonomy !== '') {
-//    $category = get_term_by('slug', get_query_var('term'), $taxonomy) ; 
-//    $category = $category ? $category->term_id : '';
-// }
 
 $offset = get_query_var('posts_per_page');
 ?>
@@ -22,8 +23,14 @@ $offset = get_query_var('posts_per_page');
                 <section class="row row-0 <?php echo $featured ?  'img-bg' : '' ?>">
                 
                     <div class="col-md-6">
-                        <div class="m-auto"><h1><?php echo get_the_archive_title(); ?></h1></div>
-                        <?php echo get_the_archive_description(); ?> 
+                        <?php if($title = get_the_archive_title()): ?>
+                                <h1><?php echo $title; ?></h1>
+                        <?php endif; 
+                        
+                        if($description = get_the_archive_description()): 
+                            echo $description;  
+                         endif; ?>
+                        
                     </div>
                     
                      <div class="col-md-6">
@@ -34,7 +41,6 @@ $offset = get_query_var('posts_per_page');
                         <?php } ?>
                     </div>
                 </section>    
-       
 
                 <section class="row post-grid">
                     <div class="container">
