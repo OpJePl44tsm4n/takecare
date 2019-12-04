@@ -312,7 +312,6 @@
                                 
                                     if( $title == '' && $img_id == '' ) {
                                    
-                                        var_dump($title, $img_id);
                                         $content = getSslPage($url);
 
                                         $doc = new DOMDocument();

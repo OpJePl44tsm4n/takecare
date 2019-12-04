@@ -14,20 +14,34 @@
                 <?php 
                     $founded = get_field('founded');
                     $cities = get_the_terms( get_the_id(), 'city' );
+                    $city = isset($cities[0]) ? $cities[0] : false;
 
-                    if($cities) {
-                        foreach ( $cities as $city ) {
-                            echo sprintf('<a class="city" target="_blank" href="%s"><i class="fa fa-map-marker"></i> %s</a>', 
-                                get_term_link($city->term_id),
-                                $city->name
-                            );
-                            break;
+                    if( !$city ){
+                        $address_obj = get_field('adress');
+                        
+                        if(isset($address_obj['city'])){
+                           $new_term = wp_insert_term($address_obj['city'], 'city');
+
+                           if(is_wp_error($new_term)){
+                                wp_set_post_terms($post->ID, $new_term->error_data['term_exists'], 'city'); 
+                           } else {
+                                wp_set_post_terms($post->ID, $new_term['term_id'], 'city'); 
+                           }
+                           
                         }
+                    }
+
+                    if($city) {
+                        echo sprintf('<a class="city" target="_blank" href="%s"><i class="fa fa-map-marker"></i> %s</a>', 
+                            get_term_link($city->term_id),
+                            $city->name
+                        );
                     }   
 
                     if( $founded ) {
                         
-                        echo sprintf('<span class="year-founded"><i class="fa fa-calendar"></i> %s</span>', 
+                        echo sprintf('<span class="year-founded"><i class="fa fa-calendar"></i>%s %s</span>', 
+                            __('Founded in', TakeCareIo::THEME_SLUG ),
                             $founded
                         );
                     } ?>
@@ -45,21 +59,17 @@
                     } 
 
                     $tags = get_the_tags();
+
+                    if($main_tag = get_field('main_tag')){
+                        echo '<a class="tag" href="'.get_term_link($main_tag->term_id).'">'. $main_tag->name .'</a>';
+                    }
+
                     if($tags) {
-                        $i = 0;
                         $count = count($tags) - 1;
                         $tag_list = ''; 
 
                         foreach ( $tags as $tag ) {
-                
-                            if($i == 0) {
-                                echo '<a class="tag" href="'.get_term_link($tag->term_id).'">'. $tag->name .'</a>';
-                            }
-                            
                             $tag_list .= '<a class="tag" href="'.get_term_link($tag->term_id).'">'. $tag->name .'</a>';
-                            
-
-                            $i++;
                         }
 
                         if($tag_list !== ''){ ?>
@@ -69,7 +79,7 @@
                                 data-target="#post-<?php echo $post->ID; ?>-tags" 
                                 aria-expanded="false" 
                                 aria-controls="post-<?php echo $post->ID; ?>-tags">
-                                +<?php echo $count; ?>
+                                + <?php echo $count; ?>
                             </button>
 
                             <div id="post-<?php echo $post->ID; ?>-tags" class="collapse">

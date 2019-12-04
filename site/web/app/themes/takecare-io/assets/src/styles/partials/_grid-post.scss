@@ -34,6 +34,7 @@ section.post-grid {
                 p {
                     font-size: 0.8em;
                     line-height: 1.6em;
+                    min-height: 40px;
                 }
 
                 .meta {
@@ -59,7 +60,8 @@ section.post-grid {
                         padding-top: .5em;
 
                         .tag {
-                            background: lighten($tertiary-bg-color, 5%);
+                            background: $primary-color;
+                            color: $primary-bg-color;
                             border-radius: 4px;
                             border: none;
                             font-size: .7rem;
@@ -139,45 +141,45 @@ section.post-grid {
             
         }
 
-        @include media-breakpoint-down(xs) {
-            .card {
-                height: 80px;
-                display: block;
-                border: none; 
+        // @include media-breakpoint-down(xs) {
+        //     .card {
+        //         height: 80px;
+        //         display: block;
+        //         border: none; 
                 
-                > a {
-                    width: 80px;
-                    float: left; 
+        //         > a {
+        //             width: 80px;
+        //             float: left; 
 
-                    .thumb {
-                        height: 78px;
-                        border-radius: 6px;
+        //             .thumb {
+        //                 height: 78px;
+        //                 border-radius: 6px;
                         
-                        img {
-                            width: 100%; 
-                            height: 100%;
-                            object-fit: cover;
-                        }
-                    }
-                }
+        //                 img {
+        //                     width: 100%; 
+        //                     height: 100%;
+        //                     object-fit: cover;
+        //                 }
+        //             }
+        //         }
 
-                .content {
-                    float: left;
-                    height: 100%;
-                    width: calc(100% - 80px);
-                    padding: 2px 12px; 
+        //         .content {
+        //             float: left;
+        //             height: 100%;
+        //             width: calc(100% - 80px);
+        //             padding: 2px 12px; 
 
                     
-                    h1 {
-                        font-size: .85em;
-                    }
+        //             h1 {
+        //                 font-size: .85em;
+        //             }
 
-                    .meta {
-                        font-size: .7em;
-                    }
-                }
-            }
-        }
+        //             .meta {
+        //                 font-size: .7em;
+        //             }
+        //         }
+        //     }
+        // }
 
     }
 }

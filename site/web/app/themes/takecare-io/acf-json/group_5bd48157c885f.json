@@ -58,12 +58,12 @@
                 "id": ""
             },
             "choices": {
-                "Public company": "Public company",
+                "Public Company": "Public Company",
                 "Self-employed": "Self-employed",
-                "Goverment agengy": "Goverment agengy",
+                "Goverment Agengy": "Goverment Agengy",
                 "Non-profit": "Non-profit",
-                "Sole proprietorship": "Sole proprietorship",
-                "Privately held": "Privately held",
+                "Sole Proprietorship": "Sole Proprietorship",
+                "Privately Held": "Privately Held",
                 "Partnership": "Partnership"
             },
             "default_value": [],
@@ -287,7 +287,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
@@ -311,7 +311,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
@@ -335,7 +335,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "33",
                 "class": "",
                 "id": ""
             },
@@ -351,7 +351,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "33",
                 "class": "",
                 "id": ""
             },
@@ -369,7 +369,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "33",
                 "class": "",
                 "id": ""
             },
@@ -796,7 +796,7 @@
                     "name": "opening_days",
                     "type": "checkbox",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -1213,5 +1213,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1571687935
+    "modified": 1575451643
 }

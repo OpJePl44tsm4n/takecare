@@ -10685,7 +10685,8 @@ section.post-grid .post {
           color: #000; }
       section.post-grid .post .card .content p {
         font-size: 0.8em;
-        line-height: 1.6em; }
+        line-height: 1.6em;
+        min-height: 40px; }
       section.post-grid .post .card .content .meta {
         font-size: .8em; }
         @media (max-width: 575.98px) {
@@ -10699,7 +10700,8 @@ section.post-grid .post {
         section.post-grid .post .card .content .meta .tags {
           padding-top: .5em; }
           section.post-grid .post .card .content .meta .tags .tag {
-            background: #f6fbfd;
+            background: #3e9b92;
+            color: #fff;
             border-radius: 4px;
             border: none;
             font-size: .7rem;
@@ -10753,30 +10755,6 @@ section.post-grid .post {
       left: 0;
       width: 80px;
       height: 80px; }
-  @media (max-width: 575.98px) {
-    section.post-grid .post .card {
-      height: 80px;
-      display: block;
-      border: none; }
-      section.post-grid .post .card > a {
-        width: 80px;
-        float: left; }
-        section.post-grid .post .card > a .thumb {
-          height: 78px;
-          border-radius: 6px; }
-          section.post-grid .post .card > a .thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; }
-      section.post-grid .post .card .content {
-        float: left;
-        height: 100%;
-        width: calc(100% - 80px);
-        padding: 2px 12px; }
-        section.post-grid .post .card .content h1 {
-          font-size: .85em; }
-        section.post-grid .post .card .content .meta {
-          font-size: .7em; } }
 
 .load-more {
   text-align: center; }
