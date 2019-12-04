@@ -40,7 +40,7 @@
 
                     if( $founded ) {
                         
-                        echo sprintf('<span class="year-founded"><i class="fa fa-calendar"></i>%s %s</span>', 
+                        echo sprintf('<span class="year-founded"><i class="fa fa-calendar"></i> %s %s</span>', 
                             __('Founded in', TakeCareIo::THEME_SLUG ),
                             $founded
                         );
