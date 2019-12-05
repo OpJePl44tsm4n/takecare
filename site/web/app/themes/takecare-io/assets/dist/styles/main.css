@@ -9417,8 +9417,10 @@ body {
       font-size: .9em;
       line-height: 1.6em;
       padding-top: 1em; }
+    body p a {
+      color: #3e9b92; }
   body a {
-    color: #3e9b92; }
+    color: #000; }
     body a:hover {
       color: #2f7770; }
   body ul {
@@ -10662,7 +10664,7 @@ article.page-content .post_list {
 section.post-grid .post {
   text-align: left; }
   section.post-grid .post .card {
-    box-shadow: 0px 2px 4px 1px rgba(230, 230, 230, 0.48);
+    box-shadow: 0px 2px 4px 1px rgba(230, 230, 230, 0.75);
     border: unset;
     margin-bottom: 20px;
     animation: fadein 2s;
@@ -12414,8 +12416,7 @@ body.archive li.product h3 {
       .woocommerce-checkout #payment.woocommerce-checkout-payment ul li img {
         max-height: 1.5em; }
       .woocommerce-checkout #payment.woocommerce-checkout-payment ul li .payment_box {
-        background: #3e9b92;
-        display: none !important; }
+        background: #3e9b92; }
         .woocommerce-checkout #payment.woocommerce-checkout-payment ul li .payment_box:before {
           border-bottom-color: #3e9b92; }
         .woocommerce-checkout #payment.woocommerce-checkout-payment ul li .payment_box p {

@@ -56,10 +56,14 @@ body {
 		    line-height: 1.6em;
 		    padding-top: 1em;
 		}
+
+		a {
+			color: $primary-color;
+		}
 	}
 
 	a {
-		color: $primary-color;
+		color: $primary-text-color;
 
 		&:hover {
 			color: darken($primary-color, 10%);
