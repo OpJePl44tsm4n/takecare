@@ -64,7 +64,7 @@
                         echo '<a class="tag" href="'.get_term_link($main_tag->term_id).'">'. $main_tag->name .'</a>';
 
                         if(!has_tag($main_tag)){
-                            wp_set_post_tags( $post->ID, $main_tag, true );
+                           wp_set_post_terms( $post->ID, $main_tag->name, 'tag', true );
                         }
                     }
 
