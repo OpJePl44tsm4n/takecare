@@ -93,15 +93,14 @@ button, a {
 	}
 
 	i {
-		font-size: 1.5em;
-		line-height: .8;
-		padding-left: 8px;
+		line-height: 1.2;
+    	padding-left: 15px;
 		position: relative;
 		display: inline;
 
 		&:before {
 			position: absolute;
-			left: -8px;
+			left: 8px;
 			font-size: 1.3em;
 		}
 	}
