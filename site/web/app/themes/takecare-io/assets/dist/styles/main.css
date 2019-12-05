@@ -10700,7 +10700,7 @@ section.post-grid .post {
         section.post-grid .post .card .content .meta .tags {
           padding-top: .5em; }
           section.post-grid .post .card .content .meta .tags .tag {
-            background: rgba(226, 242, 247, 0.3);
+            background: rgba(226, 242, 247, 0.6);
             border-radius: 4px;
             border: none;
             font-size: .7rem;
