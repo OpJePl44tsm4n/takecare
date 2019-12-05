@@ -98,7 +98,7 @@
                         ?>
 
                         <div id="term-list">
-                            <?php $terms = get_the_terms( $post->ID, 'certificate' );
+                            <?php $terms = wp_get_post_terms( $post->ID, 'certificate', array( 'orderby' => 'term_order') );
 
                             if($terms) {   
                                 $terms_list = [];                   
