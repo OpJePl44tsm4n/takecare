@@ -9418,9 +9418,9 @@ body {
       line-height: 1.6em;
       padding-top: 1em; }
   body a {
-    color: #000; }
-  body a:hover {
     color: #3e9b92; }
+    body a:hover {
+      color: #2f7770; }
   body ul {
     padding: 0px 1em; }
   body img,

@@ -88,7 +88,7 @@
                         <?php the_content(); 
 
                             if( $website ) {
-                                echo sprintf('<a class="btn btn-primary" target="_blank" href="%s">%s %s %s</a>', 
+                                echo sprintf('<a class="btn btn-primary" target="_blank" href="%s">%s %s %s <i class="fa fa-external-link"></i></a>', 
                                     $website,
                                     __( 'Go to the', TakeCareIo::THEME_SLUG ),
                                     get_the_title(),

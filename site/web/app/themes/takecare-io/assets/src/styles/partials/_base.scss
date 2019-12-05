@@ -59,11 +59,11 @@ body {
 	}
 
 	a {
-		color: $primary-text-color;
-	}
-
-	a:hover {
 		color: $primary-color;
+
+		&:hover {
+			color: darken($primary-color, 10%);
+		}
 	}
 
 	ul {
