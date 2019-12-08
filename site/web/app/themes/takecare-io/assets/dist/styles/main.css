@@ -9549,9 +9549,9 @@ article.page-content section.row header {
 article.page-content section.row.content-block p a:not(.btn) {
   text-decoration: underline; }
 
-article.page-content section.row.content-block .card {
+article.page-content section.row.content-block > .card {
   padding: 2em 1em; }
-  article.page-content section.row.content-block .card.secondary-bg-color * {
+  article.page-content section.row.content-block > .card.secondary-bg-color * {
     color: #fff; }
 
 article.page-content section.row.content-block .editor.col-md-12 {
@@ -11198,6 +11198,24 @@ article.page-content section.row-0 .single_image {
     padding: 0; }
     article.page-content section.row-0 .single_image.col-md-12 img {
       width: 100%; }
+
+article.page-content section.row-0 .thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  overflow: hidden; }
+  article.page-content section.row-0 .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    top: 50%;
+    position: absolute;
+    mix-blend-mode: multiply;
+    filter: brightness(70%); }
 
 article.page-content section.row-0 .container .row {
   padding: 1rem; }
