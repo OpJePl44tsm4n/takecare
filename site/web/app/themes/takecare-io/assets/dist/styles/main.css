@@ -10700,10 +10700,6 @@ section.post-grid .post {
         min-height: 40px; }
       section.post-grid .post .card .content .meta {
         font-size: .8em; }
-        @media (max-width: 575.98px) {
-          section.post-grid .post .card .content .meta {
-            position: absolute;
-            top: 80%; } }
         section.post-grid .post .card .content .meta hr {
           margin: .5em 0; }
         section.post-grid .post .card .content .meta .year-founded {

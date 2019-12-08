@@ -43,10 +43,10 @@ section.post-grid {
                     // position: absolute;
                     // width: calc(100% - 23px);
                     
-                    @include media-breakpoint-down(xs) {
-                        position: absolute;
-                        top: 80%;
-                    }
+                    // @include media-breakpoint-down(xs) {
+                    //     position: absolute;
+                    //     top: 80%;
+                    // }
                     
                     hr {
                         margin: .5em 0;
