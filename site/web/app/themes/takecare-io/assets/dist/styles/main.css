@@ -9418,7 +9418,8 @@ body {
       line-height: 1.6em;
       padding-top: 1em; }
     body p a {
-      color: #3e9b92; }
+      color: #3e9b92;
+      font-family: "Encode Sans Narrow SemiBold", sans-serif; }
   body a {
     color: #000; }
     body a:hover {
@@ -9547,6 +9548,15 @@ article.page-content section.row header {
 
 article.page-content section.row.content-block p a:not(.btn) {
   text-decoration: underline; }
+
+article.page-content section.row.content-block .card {
+  padding: 2em 1em; }
+  article.page-content section.row.content-block .card.secondary-bg-color * {
+    color: #fff; }
+
+article.page-content section.row.content-block .editor.col-md-12 {
+  max-width: 900px;
+  margin: auto; }
 
 article.page-content section.row.content-block .editor h2 {
   font-size: 2rem;
@@ -11168,81 +11178,31 @@ ul.socials {
       animation: locate 5s infinite;
       animation-timing-function: linear; }
 
-article.page-content section.row-0 {
-  padding: 1rem;
-  margin-bottom: 2rem;
-  font-family: "Encode Sans Narrow Light", sans-serif; }
-  article.page-content section.row-0.img-bg .container {
-    z-index: 2; }
-    article.page-content section.row-0.img-bg .container h1, article.page-content section.row-0.img-bg .container h2, article.page-content section.row-0.img-bg .container p {
-      color: #fff; }
-  article.page-content section.row-0.about .thumb {
-    width: 50%;
-    right: 0;
-    left: unset;
-    text-align: right;
-    -ms-transform: translate(5%, 0%);
-        transform: translate(5%, 0%); }
-    article.page-content section.row-0.about .thumb img {
-      width: auto;
-      height: 140%;
-      right: 0;
-      left: unset;
-      object-fit: unset;
-      mix-blend-mode: unset;
-      opacity: 1;
-      top: 0;
-      -ms-transform: rotate(23deg);
-          transform: rotate(23deg);
-      -ms-transform-origin: center;
-          transform-origin: center; }
-  article.page-content section.row-0 .single_image {
-    text-align: center;
-    display: inline;
-    max-height: 455px; }
-    @media (max-width: 575.98px) {
-      article.page-content section.row-0 .single_image {
-        margin: 0 0 1rem 2rem; } }
-    article.page-content section.row-0 .single_image.col-md-12 {
-      margin: -2em 0;
-      max-height: 440px;
-      overflow: hidden;
-      position: relative;
-      padding: 0; }
-      article.page-content section.row-0 .single_image.col-md-12 img {
-        width: 100%; }
-  article.page-content section.row-0 .editor p {
-    font-size: 1rem;
-    text-align: center;
-    margin: auto;
-    margin-top: 2rem; }
-  article.page-content section.row-0 .editor .hdr_btm_text {
-    font-size: 2rem;
-    color: #000;
-    font-family: "Encode Sans Narrow SemiBold", sans-serif;
-    margin-top: 0;
-    text-align: center; }
-  article.page-content section.row-0 .thumb {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    bottom: 0;
-    overflow: hidden; }
-    article.page-content section.row-0 .thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      -ms-transform: translateY(-50%);
-          transform: translateY(-50%);
-      top: 50%;
-      position: absolute;
-      mix-blend-mode: multiply;
-      filter: brightness(70%); }
-  article.page-content section.row-0 .container .row {
-    padding: 1rem; }
-    article.page-content section.row-0 .container .row .col-md-6.editor .vertical-align .content {
-      text-align: left; }
+article.page-content section.row-0.img-bg .container {
+  z-index: 2; }
+  article.page-content section.row-0.img-bg .container h1, article.page-content section.row-0.img-bg .container h2, article.page-content section.row-0.img-bg .container p {
+    color: #fff; }
+
+article.page-content section.row-0 .single_image {
+  text-align: center;
+  display: inline;
+  max-height: 455px; }
+  @media (max-width: 575.98px) {
+    article.page-content section.row-0 .single_image {
+      margin: 0 0 1rem 2rem; } }
+  article.page-content section.row-0 .single_image.col-md-12 {
+    margin: -2em 0;
+    max-height: 440px;
+    overflow: hidden;
+    position: relative;
+    padding: 0; }
+    article.page-content section.row-0 .single_image.col-md-12 img {
+      width: 100%; }
+
+article.page-content section.row-0 .container .row {
+  padding: 1rem; }
+  article.page-content section.row-0 .container .row .col-md-6.editor .vertical-align .content {
+    text-align: left; }
 
 section.team-members .team-member {
   padding: 1em 0;

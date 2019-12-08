@@ -1,9 +1,9 @@
 article.page-content {
 
 	section.row-0 {
-		padding: 1rem;
-		margin-bottom: 2rem;
-		font-family: $primary-font-light;
+		// padding: 1rem;
+		// margin-bottom: 2rem;
+		// font-family: $primary-font-light;
 		
 		&.img-bg {
 			.container {
@@ -15,28 +15,28 @@ article.page-content {
 			}
 		}
 
-		&.about {
-			.thumb {
-		        width: 50%; 
-		        right: 0;
-		        left: unset; 
-		        text-align: right;
-		        transform: translate(5%, 0%);
+		// &.about {
+		// 	.thumb {
+		//         width: 50%; 
+		//         right: 0;
+		//         left: unset; 
+		//         text-align: right;
+		//         transform: translate(5%, 0%);
 		        
-		        img {
-		            width: auto;
-		            height: 140%;
-		            right: 0;
-		            left: unset;
-		            object-fit: unset;
-		            mix-blend-mode: unset;
-		            opacity: 1;
-		            top: 0;
-		            transform: rotate(23deg); 
-		            transform-origin: center;
-		        }
-		    }
-		}
+		//         img {
+		//             width: auto;
+		//             height: 140%;
+		//             right: 0;
+		//             left: unset;
+		//             object-fit: unset;
+		//             mix-blend-mode: unset;
+		//             opacity: 1;
+		//             top: 0;
+		//             transform: rotate(23deg); 
+		//             transform-origin: center;
+		//         }
+		//     }
+		// }
 
 		.single_image {
 			text-align: center;
@@ -60,43 +60,43 @@ article.page-content {
 			}
 		}	
 
-		.editor {
-			p {
-				font-size: 1rem;
-				text-align: center;
-				margin: auto;
-				margin-top: 2rem;
+		// .editor {
+		// 	p {
+		// 		font-size: 1rem;
+		// 		text-align: center;
+		// 		margin: auto;
+		// 		margin-top: 2rem;
 
-			}
+		// 	}
 
-			.hdr_btm_text {
-				font-size: 2rem;
-				color: #000;
-				font-family: $primary-font-bold;
-				margin-top: 0;
-				text-align: center;
-			}
-		}
+		// 	.hdr_btm_text {
+		// 		font-size: 2rem;
+		// 		color: #000;
+		// 		font-family: $primary-font-bold;
+		// 		margin-top: 0;
+		// 		text-align: center;
+		// 	}
+		// }
 
-		.thumb {
-			position: absolute;
-		    top: 0;
-		    left: 0;
-		    width: 100%;
-		    bottom: 0;
-		    overflow: hidden;
+		// .thumb {
+		// 	position: absolute;
+		//     top: 0;
+		//     left: 0;
+		//     width: 100%;
+		//     bottom: 0;
+		//     overflow: hidden;
 
-			img {
-				width: 100%;
-				height: 100%;
-			    object-fit: cover;
-			    transform: translateY(-50%);
-			    top: 50%;
-			    position: absolute;
-			    mix-blend-mode: multiply;
-			    filter: brightness(70%);
-			}
-		}
+		// 	img {
+		// 		width: 100%;
+		// 		height: 100%;
+		// 	    object-fit: cover;
+		// 	    transform: translateY(-50%);
+		// 	    top: 50%;
+		// 	    position: absolute;
+		// 	    mix-blend-mode: multiply;
+		// 	    filter: brightness(70%);
+		// 	}
+		// }
 
 		.container {
 			.row {

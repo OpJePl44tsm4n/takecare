@@ -71,8 +71,22 @@ article.page-content {
 					text-decoration: underline;	
 				}
 			}
-			
+
+			.card { 
+				padding: 2em 1em;
+
+				&.secondary-bg-color * {
+					color: $primary-bg-color;
+				}
+			}
+
 			.editor {
+
+				&.col-md-12 {
+					max-width: 900px;
+					margin: auto;
+				} 
+
 				h2 {
 					font-size: 2rem;
 					line-height: 1.2em;

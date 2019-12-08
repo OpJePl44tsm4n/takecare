@@ -3,12 +3,18 @@
 	$bg_image = get_sub_field('background_image');
 	$bg_image = $bg_image ? wp_get_attachment_image_url( $bg_image , 'full' ) : false; 
 	$css_selector = get_sub_field('css_selector');
+	$show_as_card = get_sub_field('show_as_card');
 	$row_id = get_sub_field('row_id');
 	$vertical_align = get_sub_field('vertical_align_content') ? 'vertical-align' : '';
 	$grid_columns = get_sub_field('grid_columns');
 	$grid_columns = TakeCareIo::calculate_grid_columns($grid_columns, 'md');
 	$fluid_container = get_sub_field('fluid_container');
 	$container = $fluid_container ?'container-fluid' : 'container';
+
+	if ($show_as_card) {
+		$container .= ' card ' . $background;
+		$background = ''; 
+	}
 
 	if( have_rows('content_blocks') ){ ?>
 
