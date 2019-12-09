@@ -17,32 +17,40 @@ if( is_tag() ) {
 $offset = get_query_var('posts_per_page');
 ?>
 
-    <main id="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <main id="content" class="<?php echo $taxonomy; ?>" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
         
         <?php if ( have_posts() ) : ?> 
             
-            <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> itemscope itemtype="http://schema.org/Article">
+            <article id="post-<?php the_ID(); ?>" itemscope itemtype="http://schema.org/Article">
                 
-                <section class="row row-0 <?php echo $featured ?  'img-bg' : '' ?>">
-                
-                    <div class="col-md-6">
-                        <?php if($title = get_the_archive_title()): ?>
-                                <h1><?php echo $title; ?></h1>
-                        <?php endif; 
-                        
-                        if($description = get_the_archive_description()): 
-                            echo $description;  
-                         endif; ?>
-                        
-                    </div>
+                <section class="row header <?php echo $featured ?  'img-bg' : '' ?>">
                     
-                     <div class="col-md-6">
-                        <?php if( $featured ) { ?>
+                    <?php if( $featured ) { ?>
+                        <div class="col-md-6">
+                            <?php if($title = get_the_archive_title()): ?>
+                                    <h1><?php echo $title; ?></h1>
+                            <?php endif; 
                             
-                                <?php echo $featured; ?>
-                           
-                        <?php } ?>
-                    </div>
+                            if($description = get_the_archive_description()): 
+                                echo $description;  
+                             endif; ?>
+                            
+                        </div>
+                        
+                         <div class="col-md-6">
+                            <?php echo $featured; ?>
+                        </div>
+                    <?php } else { ?>
+                        <div class="col-md-12">
+                            <?php if($title = get_the_archive_title()): ?>
+                                    <h1><?php echo $title; ?></h1>
+                            <?php endif; 
+                            
+                            if($description = get_the_archive_description()): 
+                                echo $description;  
+                             endif; ?>
+                        </div>
+                    <?php } ?>
                 </section> 
 
                 <section class="row post-grid">
@@ -69,7 +77,7 @@ $offset = get_query_var('posts_per_page');
                     if ($next_post) : ?>
 
                         <div class="load-more">
-                            <div class="btn btn-secondary load-more__btn" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $category; ?>">
+                            <div class="btn btn-secondary load-more__btn" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $category->name; ?>">
                                 <?php _e('Load more', TakeCareIo::THEME_SLUG )  ?>
                             </div>
                             <div class="load-more__no-more hidden">

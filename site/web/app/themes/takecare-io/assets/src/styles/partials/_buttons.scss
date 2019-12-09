@@ -77,8 +77,8 @@ button, a {
 	&.btn-pill {
 		padding: 2px 3px;
 		text-transform: uppercase; 
-		background: $secondary-color;
-		color: $primary-text-color;
+		background: $primary-color;
+		color: $primary-bg-color;
 		font-size: .6rem;
 
 		&:hover {

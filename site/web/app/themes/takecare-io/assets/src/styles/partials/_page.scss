@@ -173,7 +173,8 @@ article.page-content {
 
 
 				.logo {
-					max-width: 96px;
+					// max-width: 96px;
+					padding-bottom: 1em;
 				}
 
 				small.adress {
@@ -183,8 +184,18 @@ article.page-content {
 			}
 
 			.grid-item.featured {
-				background: rgba($primary-color, .1);
 				padding: 1em;
+				
+				&:after {
+				    content: '';
+				    position: absolute;
+				    top: 0;
+				    bottom: 0;
+				    width: 150%; 
+				    left:0;
+				    background: rgba($primary-color, .15);
+				}
+
 				
 				@include media-breakpoint-up(md) {
 					padding: 3em;
@@ -210,6 +221,20 @@ article.page-content {
 					
 				}	
 			}
+		}
+
+		.site-link {
+			margin: 1.5em 0 1.5em; 
+		}
+
+		#term-list {
+			margin-top: 1em; 
+
+			.certificate { 
+				display: inline-block;
+				margin-right: .8em;
+			}
+
 		}
 	}
 

@@ -9610,14 +9610,21 @@ article.page-content.company .header .info {
     article.page-content.company .header .info {
       padding-top: 4em; } }
   article.page-content.company .header .info .logo {
-    max-width: 96px; }
+    padding-bottom: 1em; }
   article.page-content.company .header .info small.adress {
     margin-bottom: 1em;
     display: inline-block; }
 
 article.page-content.company .header .grid-item.featured {
-  background: rgba(62, 155, 146, 0.1);
   padding: 1em; }
+  article.page-content.company .header .grid-item.featured:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 150%;
+    left: 0;
+    background: rgba(62, 155, 146, 0.15); }
   @media (min-width: 768px) {
     article.page-content.company .header .grid-item.featured {
       padding: 3em;
@@ -9638,6 +9645,15 @@ article.page-content.company .header .grid-item.featured {
     @media (min-width: 768px) {
       article.page-content.company .header .grid-item.featured .thumb {
         margin-left: -4.5em; } }
+
+article.page-content.company .site-link {
+  margin: 1.5em 0 1.5em; }
+
+article.page-content.company #term-list {
+  margin-top: 1em; }
+  article.page-content.company #term-list .certificate {
+    display: inline-block;
+    margin-right: .8em; }
 
 .navbar-collapse {
   border: none;
@@ -10092,8 +10108,8 @@ button, a {
   .btn.btn-pill, .woocommerce a.btn-pill.button, .woocommerce button.btn-pill.button, .contact.track-phone button.btn-pill, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.btn-pill.checkout-button.button, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.btn-pill.checkout-button.button, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-pill.submit, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-pill {
     padding: 2px 3px;
     text-transform: uppercase;
-    background: #dedede;
-    color: #000;
+    background: #3e9b92;
+    color: #fff;
     font-size: .6rem; }
     .btn.btn-pill:hover, .woocommerce a.btn-pill.button:hover, .woocommerce button.btn-pill.button:hover, .contact.track-phone button.btn-pill:hover, .cart-collapse.collapsing .content .cart_totals .wc-proceed-to-checkout a.btn-pill.checkout-button.button:hover, .cart-collapse.collapse.show .content .cart_totals .wc-proceed-to-checkout a.btn-pill.checkout-button.button:hover, .woocommerce-page.single-product #content .page-content .wc-tabs-wrapper #review_form form input.btn-pill.submit:hover, .woocommerce-checkout #payment.woocommerce-checkout-payment .place-order button.btn-pill:hover {
       background: #9bd7d1; }

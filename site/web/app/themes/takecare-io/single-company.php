@@ -88,7 +88,7 @@
                         <?php the_content(); 
 
                             if( $website ) {
-                                echo sprintf('<a class="btn btn-primary" target="_blank" href="%s">%s %s %s <i class="fa fa-external-link"></i></a>', 
+                                echo sprintf('<a class="site-link btn btn-primary" target="_blank" href="%s">%s %s %s <i class="fa fa-external-link"></i></a>', 
                                     $website,
                                     __( 'Go to the', TakeCareIo::THEME_SLUG ),
                                     get_the_title(),
@@ -240,7 +240,7 @@
                 <?php endif; ?>
                 
                  <?php if( have_rows('company_images') ): ?>
-                    <section class="image-gallery">
+                    <section class="row image-gallery">
                         <div class="container">
                             <div class="row">
                             <?php 
@@ -265,12 +265,12 @@
                 <?php endif; ?>
 
                 <?php if( have_rows('articles') ): ?>
-                    <section class="row media-articles post-grid">
+                    <section class="row media-articles post-grid tertiary-bg-color">
                         <div class="container">
                        
                             <header>
                                 <div class="d-flex justify-content-start">
-                                    <div class="mr-auto"><h2><?php __( 'Read more about Zipline', TakeCareIo::THEME_SLUG );?></h2></div>
+                                    <div class="mr-auto"><h2><?php sprintf( __( 'Read more about %s', TakeCareIo::THEME_SLUG ), get_the_title() );?></h2></div>
                                 </div>
                             </header>
 
