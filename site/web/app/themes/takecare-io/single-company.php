@@ -270,7 +270,7 @@
                        
                             <header>
                                 <div class="d-flex justify-content-start">
-                                    <div class="mr-auto"><h2><?php sprintf( __( 'Read more about %s', TakeCareIo::THEME_SLUG ), get_the_title() );?></h2></div>
+                                    <div class="mr-auto"><h2><?php echo sprintf( __( 'Read more about %s', TakeCareIo::THEME_SLUG ), get_the_title() );?></h2></div>
                                 </div>
                             </header>
 
