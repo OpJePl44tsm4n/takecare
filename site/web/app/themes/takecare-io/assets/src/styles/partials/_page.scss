@@ -47,6 +47,27 @@ article.page-content {
 	}
 
 	section.row {
+		
+		&.header {
+			@include media-breakpoint-up(md) {
+				padding: 0;
+			}
+			
+			&.tertiary-bg-color:after {
+				content: '';
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				opacity: .4;
+				width: 100%;
+				z-index: 1;
+				mix-blend-mode: overlay;
+				background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="seedling" class="svg-inline--fa fa-seedling fa-w-16" role="img" viewBox="0 0 512 512"><path fill="currentColor" d="M64 96H0c0 123.7 100.3 224 224 224v144c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V320C288 196.3 187.7 96 64 96zm384-64c-84.2 0-157.4 46.5-195.7 115.2 27.7 30.2 48.2 66.9 59 107.6C424 243.1 512 147.9 512 32h-64z"/></svg>');
+				background-position: 126px 118px;
+    			background-size: 56px 45px;
+			}
+		}
+		
 
 		header {
 			margin: 0 auto;
@@ -62,6 +83,66 @@ article.page-content {
 					padding-left: 6px;
 				}
 			}
+			
+			.content {
+				padding: 1em 0;
+			}
+
+			.heading {
+				min-height: 250px;
+				text-align: center;
+				vertical-align: middle;
+			    display: flex;
+			    align-items: center;
+
+				@include media-breakpoint-up(md) {
+					padding: 3em;
+				}	
+			}
+
+			.grid-item.featured {
+				padding: 1em;
+
+				@include media-breakpoint-up(md) {
+					padding: 3em;
+					vertical-align: middle;
+				    display: flex;
+				    align-items: center;
+				}	
+				
+				&:after {
+				    content: '';
+				    position: absolute;
+				    top: 0;
+				    bottom: 0;
+				    width: 150%; 
+				    left:0;
+				    background: rgba($primary-color, .15);
+				    z-index: -1;
+				}
+
+				.thumb {
+					box-shadow: 7px 7px 23px -11px rgba($primary-text-color, .75);
+					width: 600px;
+					max-width: 100%;
+					border-radius: 4px; 
+					height: 250px;
+
+					@include media-breakpoint-up(sm) {
+						height: 350px;
+					}
+
+					@include media-breakpoint-up(md) {
+						margin-left: -4.5em;
+					}
+				}
+			}
+		}
+
+		.vertical-align {
+			display: flex;
+    		align-items: center;
+    		// padding: 0;
 		}
 
 		&.content-block {
@@ -111,12 +192,6 @@ article.page-content {
 				.faq_list + .faq_list {
 					margin: 2em 0 -2em;
 				}
-			}
-
-			.vertical-align {
-				display: flex;
-	    		align-items: center;
-	    		// padding: 0;
 			}
 
 			.single_image {
@@ -194,6 +269,7 @@ article.page-content {
 				    width: 150%; 
 				    left:0;
 				    background: rgba($primary-color, .15);
+				    z-index: -1;
 				}
 
 				

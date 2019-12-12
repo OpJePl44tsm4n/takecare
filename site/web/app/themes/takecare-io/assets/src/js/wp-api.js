@@ -8,6 +8,7 @@
         var loading = false; 
         var postOffset = loadMoreButton.data('offset') ? loadMoreButton.data('offset') : 0;
         var nextPosts = postOffset; 
+        var postType = loadMoreButton.data('postType');
         var cat = loadMoreButton.data('cat');
         var tax = loadMoreButton.data('tax');
 
@@ -29,7 +30,7 @@
             }
 
             $.ajax( {
-                url: wp_api_object.baseUrl + wp_api_object.jsonURI + 'posts',
+                url: wp_api_object.baseUrl + wp_api_object.jsonURI + postType,
                 method: 'GET',
                 data: data
             } ).done( function( data, textStatus, jqXHR ) {
@@ -37,7 +38,7 @@
                 if ( Object.keys( jqXHR.responseJSON ).length === 0 && JSON.stringify( jqXHR.responseJSON ) === JSON.stringify([]) ) {
                     toggle_load_btns();
                 } else {
-
+                    console.log(jqXHR.responseJSON);
                     $.each( jqXHR.responseJSON, function( index, post ) {
                         html = '<article class="grid-item post col-sm-6 col-lg-4">' +
                                     '<div class="card">' +

@@ -9395,7 +9395,7 @@ body {
     color: #000; }
     @media (min-width: 576px) {
       body h1 {
-        font-size: 3rem; }
+        font-size: 2.7rem; }
         body h1.large {
           font-size: 3.6rem; } }
   body h2 {
@@ -9537,6 +9537,23 @@ article.page-content section.image-gallery .thumb {
   border-radius: 4px;
   margin: 1em auto; }
 
+@media (min-width: 768px) {
+  article.page-content section.row.header {
+    padding: 0; } }
+
+article.page-content section.row.header.tertiary-bg-color:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  opacity: .4;
+  width: 100%;
+  z-index: 1;
+  mix-blend-mode: overlay;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="seedling" class="svg-inline--fa fa-seedling fa-w-16" role="img" viewBox="0 0 512 512"><path fill="currentColor" d="M64 96H0c0 123.7 100.3 224 224 224v144c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V320C288 196.3 187.7 96 64 96zm384-64c-84.2 0-157.4 46.5-195.7 115.2 27.7 30.2 48.2 66.9 59 107.6C424 243.1 512 147.9 512 32h-64z"/></svg>');
+  background-position: 126px 118px;
+  background-size: 56px 45px; }
+
 article.page-content section.row header {
   margin: 0 auto;
   padding-bottom: 1em; }
@@ -9545,6 +9562,56 @@ article.page-content section.row header {
     margin: auto; }
   article.page-content section.row header a i {
     padding-left: 6px; }
+  article.page-content section.row header .content {
+    padding: 1em 0; }
+  article.page-content section.row header .heading {
+    min-height: 250px;
+    text-align: center;
+    vertical-align: middle;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center; }
+    @media (min-width: 768px) {
+      article.page-content section.row header .heading {
+        padding: 3em; } }
+  article.page-content section.row header .grid-item.featured {
+    padding: 1em; }
+    @media (min-width: 768px) {
+      article.page-content section.row header .grid-item.featured {
+        padding: 3em;
+        vertical-align: middle;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+            align-items: center; } }
+    article.page-content section.row header .grid-item.featured:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 150%;
+      left: 0;
+      background: rgba(62, 155, 146, 0.15);
+      z-index: -1; }
+    article.page-content section.row header .grid-item.featured .thumb {
+      box-shadow: 7px 7px 23px -11px rgba(0, 0, 0, 0.75);
+      width: 600px;
+      max-width: 100%;
+      border-radius: 4px;
+      height: 250px; }
+      @media (min-width: 576px) {
+        article.page-content section.row header .grid-item.featured .thumb {
+          height: 350px; } }
+      @media (min-width: 768px) {
+        article.page-content section.row header .grid-item.featured .thumb {
+          margin-left: -4.5em; } }
+
+article.page-content section.row .vertical-align {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center; }
 
 article.page-content section.row.content-block p a:not(.btn) {
   text-decoration: underline; }
@@ -9575,12 +9642,6 @@ article.page-content section.row.content-block .editor h3 {
 @media (max-width: 767.98px) {
   article.page-content section.row.content-block .faq_list + .faq_list {
     margin: 2em 0 -2em; } }
-
-article.page-content section.row.content-block .vertical-align {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-      align-items: center; }
 
 article.page-content section.row.content-block .single_image .content {
   text-align: center; }
@@ -9624,7 +9685,8 @@ article.page-content.company .header .grid-item.featured {
     bottom: 0;
     width: 150%;
     left: 0;
-    background: rgba(62, 155, 146, 0.15); }
+    background: rgba(62, 155, 146, 0.15);
+    z-index: -1; }
   @media (min-width: 768px) {
     article.page-content.company .header .grid-item.featured {
       padding: 3em;

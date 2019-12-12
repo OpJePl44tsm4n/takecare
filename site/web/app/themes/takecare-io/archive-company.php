@@ -2,6 +2,7 @@
 $next_post = true; 
 $taxonomy = '';
 $featured = false;
+$cat_name = '';
 
 if( is_tag() ) {
     $taxonomy = 'tag';
@@ -11,6 +12,7 @@ if( is_tag() ) {
     $term = get_query_var( 'category_name' );
     $category = get_term_by('slug', $term, $taxonomy) ; 
     $featured_id = $term ? get_field('featured_image', $taxonomy . '_' . $category->term_id) : false;
+    $cat_name = $category->name;
     $featured = wp_get_attachment_image( $featured_id, 'full' );
 }
 
@@ -21,39 +23,47 @@ $offset = get_query_var('posts_per_page');
         
         <?php if ( have_posts() ) : ?> 
             
-            <article id="post-<?php the_ID(); ?>" itemscope itemtype="http://schema.org/Article">
+            <article id="post-<?php the_ID(); ?>" class="page-content" itemscope itemtype="http://schema.org/Article">
                 
-                <section class="row header <?php echo $featured ?  'img-bg' : '' ?>">
-                    
-                    <?php if( $featured ) { ?>
-                        <div class="col-md-6">
-                            <?php if($title = get_the_archive_title()): ?>
-                                    <h1><?php echo $title; ?></h1>
-                            <?php endif; 
-                            
-                            if($description = get_the_archive_description()): 
-                                echo $description;  
-                             endif; ?>
-                            
+                <section class="row header <?php echo $featured ?  'img-bg' : 'tertiary-bg-color' ?>">
+                    <header class="container">
+                        <div class="row swap-order">
+                            <?php if( $featured ) { ?>
+                                <div class="grid-item col-md-5 vertical-align">
+                                    <div class="content">
+                                        <?php if($title = get_the_archive_title()): ?>
+                                                <h1><?php echo $title; ?></h1>
+                                        <?php endif; 
+                                        
+                                        if($description = get_the_archive_description()): 
+                                            echo $description;  
+                                         endif; ?>
+                                    </div>
+                                </div>
+                                
+                                 <div class="grid-item col-md-7 featured vertical-align">
+                                    <div class="thumb">
+                                        <?php echo $featured; ?> 
+                                    </div>
+                                </div>
+                            <?php } else { ?>
+                                <div class="col-md-12 heading">
+                                    <div class="content">
+                                        <?php if($title = get_the_archive_title()): ?>
+                                                <h1><?php echo $title; ?></h1>
+                                        <?php endif; 
+                                        
+                                        if($description = get_the_archive_description()): 
+                                            echo $description;  
+                                         endif; ?>
+                                    </div>
+                                </div>
+                            <?php } ?>
                         </div>
-                        
-                         <div class="col-md-6">
-                            <?php echo $featured; ?>
-                        </div>
-                    <?php } else { ?>
-                        <div class="col-md-12">
-                            <?php if($title = get_the_archive_title()): ?>
-                                    <h1><?php echo $title; ?></h1>
-                            <?php endif; 
-                            
-                            if($description = get_the_archive_description()): 
-                                echo $description;  
-                             endif; ?>
-                        </div>
-                    <?php } ?>
+                    </header>
                 </section> 
 
-                <section class="row post-grid">
+                <section class="row post-grid pt-4">
                     <div class="container">
 
                         <div class="row justify-content-md-center">
@@ -77,7 +87,7 @@ $offset = get_query_var('posts_per_page');
                     if ($next_post) : ?>
 
                         <div class="load-more">
-                            <div class="btn btn-secondary load-more__btn" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $category->name; ?>">
+                            <div class="btn btn-secondary load-more__btn" data-post-type="company" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $cat_name; ?>">
                                 <?php _e('Load more', TakeCareIo::THEME_SLUG )  ?>
                             </div>
                             <div class="load-more__no-more hidden">

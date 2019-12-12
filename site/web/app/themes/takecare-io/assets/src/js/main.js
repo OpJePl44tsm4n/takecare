@@ -31,7 +31,6 @@ var Brandclick = {
         this.inpageLinks();
         this.menuScroll();
         this.autoplayVideos();
-        this.addAnimationClassInView( 'jungle_bg', 'jungle_move' );
 
         return; 
     },
