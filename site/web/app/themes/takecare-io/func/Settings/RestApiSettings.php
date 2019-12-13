@@ -121,7 +121,7 @@ class RestApiSettings {
         $types = get_the_terms( $post_id, 'category' );
         if($types) {
             foreach ( $types as $term ) {
-                $post_grid_data['category_rendered'] = '<a href="'.get_term_link($term->term_id).'">'. $term->name .'</a>';
+                $post_grid_data['category_rendered'] = '<a class="main-category" href="'.get_term_link($term->term_id).'">'. $term->name .'</a>';
                 break;
             }
         }  

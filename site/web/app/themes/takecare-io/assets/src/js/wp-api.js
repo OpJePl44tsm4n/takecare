@@ -40,22 +40,49 @@
                 } else {
                     console.log(jqXHR.responseJSON);
                     $.each( jqXHR.responseJSON, function( index, post ) {
-                        html = '<article class="grid-item post col-sm-6 col-lg-4">' +
-                                    '<div class="card">' +
-                                        '<a href="' + post.link + '">' +
-                                            '<div class="thumb">' +  
-                                               post.post_grid_data.thumbnail_rendered +  
+
+                        if(postType == 'company'){
+                            html = '<article class="grid-item post col-sm-6 col-lg-4">' +
+                                        '<div class="card">' +
+                                            '<div class="category">' +
+                                                post.post_grid_data.category_rendered +
                                             '</div>' +
-                                        '</a>' +
-                                        '<div class="content">' +
-                                            '<h1><a href="' + post.link + '">' + post.title.rendered + '</a></h1>' +
-                                            '<div class="meta">' +
-                                                '<span>' + post.post_grid_data.date_rendered + '</span>' +
-                                                    post.post_grid_data.category_rendered + 
+                                            '<a href="' + post.link + '">' +
+                                                '<div class="thumb">' +  
+                                                   post.post_grid_data.thumbnail_rendered +  
+                                                '</div>' +
+                                            '</a>' +
+                                            '<div class="content">' +
+                                                '<h1><a href="' + post.link + '">' + post.title.rendered + '</a></h1>' +
+                                                post.post_grid_data.exerpt_rendered + 
+                                                '<div class="meta">' +
+                                                    post.post_grid_data.city_rendered +
+                                                    post.post_grid_data.year_rendered +
+                                                    '<div class="tags">' +
+                                                    post.post_grid_data.main_tag_rendered +   
+                                                    post.post_grid_data.tag_toggle_rendered + '</div>' +
+                                                '</div>' +
                                             '</div>' +
                                         '</div>' +
-                                    '</div>' +
-                                '</article>';
+                                    '</article>';
+                        } else {
+                            html = '<article class="grid-item post col-sm-6 col-lg-4">' +
+                                        '<div class="card">' +
+                                            '<a href="' + post.link + '">' +
+                                                '<div class="thumb">' +  
+                                                   post.post_grid_data.thumbnail_rendered +  
+                                                '</div>' +
+                                            '</a>' +
+                                            '<div class="content">' +
+                                                '<h1><a href="' + post.link + '">' + post.title.rendered + '</a></h1>' +
+                                                '<div class="meta">' +
+                                                    '<span>' + post.post_grid_data.date_rendered + '</span>' +
+                                                        post.post_grid_data.category_rendered + 
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</article>';
+                        }
 
                         $('.post-grid .row').append(html);
                         nextPosts++;

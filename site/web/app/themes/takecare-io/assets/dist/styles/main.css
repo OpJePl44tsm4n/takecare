@@ -10752,11 +10752,17 @@ article.page-content .post_list {
 section.post-grid .post {
   text-align: left; }
   section.post-grid .post .card {
-    box-shadow: 0px 2px 4px 1px rgba(230, 230, 230, 0.75);
+    box-shadow: 0 1px 7px 3px rgba(230, 230, 230, 0.55);
     border: unset;
     margin-bottom: 20px;
     animation: fadein 2s;
     min-height: 340px; }
+    section.post-grid .post .card .category {
+      padding: .9rem 1rem; }
+      section.post-grid .post .card .category a.main-category {
+        font-family: "Encode Sans Narrow Medium", sans-serif;
+        color: #3e9b92;
+        font-size: .8em; }
     section.post-grid .post .card .content {
       padding: 10px 12px; }
       section.post-grid .post .card .content h1 {
@@ -10812,10 +10818,6 @@ section.post-grid .post {
           section.post-grid .post .card .content .meta a.site-link, section.post-grid .post .card .content .meta a.city {
             margin-right: 1em;
             font-family: "Encode Sans Narrow SemiBold", sans-serif; }
-          section.post-grid .post .card .content .meta a.main-category {
-            font-family: "Encode Sans Narrow Medium", sans-serif;
-            color: #3e9b92;
-            padding-right: 1em; }
   section.post-grid .post .thumb {
     position: relative;
     height: 160px;

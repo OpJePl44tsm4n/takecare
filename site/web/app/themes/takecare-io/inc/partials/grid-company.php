@@ -1,6 +1,17 @@
 
 <article class="grid-item post col-sm-6 col-lg-4">
     <div class="card">
+
+        <div class="category">
+            <?php $types = get_the_terms( get_the_id(), 'category' );
+                    
+                if($types) {
+                    foreach ( $types as $term ) {
+                        echo '<a class="main-category" href="'.get_term_link($term->term_id).'">'. $term->name .'</a>';
+                        break;
+                    }
+                } ?>
+        </div>
 	    <a href="<?php the_permalink(); ?>">
 	        <div class="thumb">  
                 <?php echo get_the_post_thumbnail($post->ID, 'medium'); ?>
@@ -49,15 +60,6 @@
                  
                 <div class="tags">   
                     <?php 
-                    $types = get_the_terms( get_the_id(), 'category' );
-                    
-                    if($types) {
-                        foreach ( $types as $term ) {
-                            echo '<a class="main-category" href="'.get_term_link($term->term_id).'">'. $term->name .'</a>';
-                            break;
-                        }
-                    } 
-
                     $tags = get_the_tags();
 
                     if($main_tag = get_field('main_tag')){
