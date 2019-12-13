@@ -10758,7 +10758,7 @@ section.post-grid .post {
     animation: fadein 2s;
     min-height: 340px; }
     section.post-grid .post .card .category {
-      padding: .9rem 1rem; }
+      padding: .5rem 1rem; }
       section.post-grid .post .card .category a.main-category {
         font-family: "Encode Sans Narrow Medium", sans-serif;
         color: #3e9b92;
