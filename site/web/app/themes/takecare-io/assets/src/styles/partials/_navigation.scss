@@ -3,33 +3,26 @@
 .navbar-collapse {
 	border: none; 
 	transition: width 0.6s, height .001s;	
-	width: 100%;
-
-	@include media-breakpoint-up(lg) {
-		margin-left: 40px;
-	}
-
 
 	.nav-wrap {
 		display: flex;
 	    flex-grow: 1;
 	}    
 
-	@include media-breakpoint-down(sm) {
+	// @include media-breakpoint-down(sm) {
 		top: 0px;
 		position: absolute;
 		right: 0;
 		width: 0;
+		transform: translateX(-50%);
+    	left: 50%;
 		height: 100vh;
 		z-index: 4;
 		overflow: hidden;
 		padding: 0;
 
 		.nav-wrap {
-			padding: 0 3.2rem; 
-			min-width: 300px; 
 			max-width: 100%; 
-			display: block;
 		}
 	
 		&.collapsing,
@@ -46,8 +39,6 @@
 				button {
 					color: $secondary-bg-color;
 					padding: 1rem;
-					margin-left: -4%!important;
-					margin-right: -0.5rem;
 				    line-height: 0.7em;
    					font-size: 2em;
 				    opacity: 1;
@@ -111,7 +102,7 @@
 			width: 100vw;
 			height: 120vh;
 		}
-	}	
+	// }	
 
 	.nav {
 		padding: 0;

@@ -2,10 +2,11 @@
 Contributors: matt, johnjamesjacoby, jmdodd, netweb, sergeybiryukov
 Tags: forum, forums, discussion, support
 Requires at least: 4.7
-Tested up to: 5.3
-Stable tag: 2.6.1
+Tested up to: 5.4
+Stable tag: 2.6.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Requires PHP: 5.6.20
 
 bbPress is forum software for WordPress.
 
@@ -54,4 +55,4 @@ bbPress is intentionally simple yet infinitely powerful forum software, built by
 
 == Changelog ==
 
-Check out the [releases page](https://codex.bbpress.org/releases/)!
+Check out the [releases page](https://codex.bbpress.org/releases/)

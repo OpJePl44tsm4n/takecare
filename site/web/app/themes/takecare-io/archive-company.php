@@ -29,7 +29,7 @@ $offset = get_query_var('posts_per_page');
                     <header class="container">
                         <div class="row swap-order">
                             <?php if( $featured ) { ?>
-                                <div class="grid-item col-md-5 vertical-align">
+                                <div class="grid-item col-md-6 vertical-align">
                                     <div class="content">
                                         <?php if($title = get_the_archive_title()): ?>
                                                 <h1><?php echo $title; ?></h1>
@@ -41,7 +41,7 @@ $offset = get_query_var('posts_per_page');
                                     </div>
                                 </div>
                                 
-                                 <div class="grid-item col-md-7 featured vertical-align">
+                                 <div class="grid-item col-md-6 featured vertical-align">
                                     <div class="thumb">
                                         <?php echo $featured; ?> 
                                     </div>

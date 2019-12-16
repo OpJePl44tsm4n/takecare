@@ -13,13 +13,13 @@
                     <div class="container">
 
                         <nav class="single-nav-links">
-                            <?php _e("Zoekresultaten voor: ", TakeCareIo::THEME_SLUG ) ?> <b><?php echo get_search_query(); ?></b>
+                            <?php _e("Results for", TakeCareIo::THEME_SLUG ) ?>: <b><?php echo get_search_query(); ?></b>
                         </nav>
 
                         <div class="row justify-content-md-center">
                             <?php while ( have_posts() ) : the_post();
 
-                                include(locate_template('inc/partials/grid-post.php')); 
+                                include(locate_template('inc/partials/grid-company.php')); 
 
                                 wp_reset_postdata();
 
@@ -29,7 +29,7 @@
                         <nav class="single-nav-links bottom d-flex">
 
                             <div class="mr-auto">
-                                <?php previous_posts_link( '<i class="fa fa-angle-left" aria-hidden="true"></i> ' . __("Vorige", TakeCareIo::THEME_SLUG ) ); ?>
+                                <?php previous_posts_link( '<i class="fa fa-angle-left" aria-hidden="true"></i> ' . __("Previous", TakeCareIo::THEME_SLUG ) ); ?>
                             </div>
                             <div>
                                 <?php
@@ -46,7 +46,7 @@
                                 ?>
                             </div>
                             <div class="ml-auto">
-                                <?php next_posts_link( __("Volgende", TakeCareIo::THEME_SLUG ) . ' <i class="fa fa-angle-right" aria-hidden="true"></i>' ); ?> 
+                                <?php next_posts_link( __("Next", TakeCareIo::THEME_SLUG ) . ' <i class="fa fa-angle-right" aria-hidden="true"></i>' ); ?> 
                             </div>
                         </nav>
 

@@ -40,21 +40,9 @@
 
     <!-- Header -->
     <header class="site-header">
-        <nav id="main-nav" class="navbar navbar-expand-md navbar-dark fixed-top transparant">
+        <nav id="main-nav" class="navbar navbar-dark fixed-top transparant">
             <div class="container">
 
-                <div class="brand-wrapper">
-                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="home">
-                        <?php 
-                            $custom_logo_id = get_theme_mod( 'custom_logo' );
-                            $image = isset($custom_logo_id) ? wp_get_attachment_image_url( $custom_logo_id , 'full' ) : false;
-                            $image = $image ? $image : trailingslashit(get_stylesheet_directory_uri()) . 'assets/dist/img/logo.svg';
-                        ?>
-                        <img class="img-fluid brand-logo" src="<?php echo $image ?>" alt="<?php echo get_bloginfo( 'name' ); ?> Logo">
-                    </a>
-                    <h1 class="brand-name"><?php echo get_bloginfo( 'name' ); ?></h1>
-                </div>
-                
                 <?php 
                 $frontpage_id = get_option( 'page_on_front' );
                 $slug = get_post_field( 'post_name', $frontpage_id );
@@ -62,11 +50,8 @@
                 if (!is_front_page() || (is_front_page() && $slug === 'home') ) : ?>
 
                     <div class="collapse navbar-collapse" id="navbarCollapse" data-parent="#main-nav">
-                        <div class="close-btn d-flex">
-                            <button class="navbar-toggler ml-auto close" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Close navigation"><span aria-hidden="true">&times;</span></button>
-                        </div>
-
-                        <div class="nav-wrap">
+                        
+                        <div class="nav-wrap container">
                             <?php wp_nav_menu( array( 
                                 'theme_location' => 'header-menu',
                                 'container' => false,
@@ -91,7 +76,20 @@
                         </button>
                     </div>
                     
-                <?php endif; ?>     
+                <?php endif; ?>
+
+                <div class="brand-wrapper">
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="home">
+                        <?php 
+                            $custom_logo_id = get_theme_mod( 'custom_logo' );
+                            $image = isset($custom_logo_id) ? wp_get_attachment_image_url( $custom_logo_id , 'full' ) : false;
+                            $image = $image ? $image : trailingslashit(get_stylesheet_directory_uri()) . 'assets/dist/img/logo.svg';
+                        ?>
+                        <img class="img-fluid brand-logo" src="<?php echo $image ?>" alt="<?php echo get_bloginfo( 'name' ); ?> Logo">
+                    </a>
+                    <h1 class="brand-name"><?php echo get_bloginfo( 'name' ); ?></h1>
+                </div>
+     
             </div>
                
         </nav> 

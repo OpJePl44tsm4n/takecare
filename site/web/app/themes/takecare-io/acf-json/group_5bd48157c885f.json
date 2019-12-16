@@ -120,13 +120,13 @@
                 "id": ""
             },
             "taxonomy": "category",
-            "field_type": "checkbox",
+            "field_type": "select",
+            "allow_null": 0,
             "add_term": 1,
             "save_terms": 1,
             "load_terms": 1,
             "return_format": "id",
-            "multiple": 0,
-            "allow_null": 0
+            "multiple": 0
         },
         {
             "key": "field_5de7872e2f032",
@@ -1213,5 +1213,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1575463831
+    "modified": 1576342766
 }
