@@ -7,7 +7,10 @@ class RestApiSettings {
 	public function __construct()
   	{	
         // Actions
-        add_action('rest_api_init',    array( $this, 'action__add_rest_fields') );
+        add_action('rest_api_init',                                     array( $this, 'action__add_rest_fields') );
+
+        // Filters 
+        add_filter( 'rest_company_collection_params',                   array( $this, 'filter__set_rest_order_to_menu_order'), 10, 1 );
     }    
 
     /**
@@ -127,6 +130,14 @@ class RestApiSettings {
         }  
 
         return $post_grid_data;
+    }
+
+
+    public function filter__set_rest_order_to_menu_order( $params )
+    {
+        $params['orderby']['enum'][] = 'menu_order';
+
+        return $params;
     }
 
 }

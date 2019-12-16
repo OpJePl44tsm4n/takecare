@@ -18,14 +18,14 @@ class CleanUpWordPress {
 
 
         // Filters
-        add_filter( 'the_generator',                 array( $this, 'filter__remove_wp_version') );
-        add_filter( 'jpeg_quality',                  function($arg){return 100;});
-        add_filter( 'upload_mimes',                    array( $this, 'filter__allow_mime_types') );
-        add_filter( 'get_the_archive_title',        array( $this, 'filter__simple_archive_title') );
+        add_filter( 'the_generator',                            array( $this, 'filter__remove_wp_version') );
+        add_filter( 'jpeg_quality',                             function($arg){return 100;});
+        add_filter( 'upload_mimes',                             array( $this, 'filter__allow_mime_types') );
+        add_filter( 'get_the_archive_title',                    array( $this, 'filter__simple_archive_title') );
 
         // Actions
-        add_action('wp_dashboard_setup',    array( $this, 'action__remove_dashboard_widgets') );
-        add_action('wp_enqueue_scripts',    array( $this, 'action__deregister_scripts') );
+        add_action('wp_dashboard_setup',                        array( $this, 'action__remove_dashboard_widgets') );
+        add_action('wp_enqueue_scripts',                        array( $this, 'action__deregister_scripts') );
     }    
 
 	/**
