@@ -3,12 +3,15 @@ $next_post = true;
 $taxonomy = '';
 $featured = false;
 $term_id = '';
+$tax_name = '';
 
 if( is_tag() ) {
     $taxonomy = 'tag';
-    $term_id = get_query_var( 'tag_ID' );
+    $term_id = get_query_var( 'tag_id' );
+    $tax_name = 'tags';
 } elseif ( is_category() ) {
     $taxonomy = 'category';
+    $tax_name = 'categories';
     $term = get_query_var( 'category_name' );
     $category = get_term_by('slug', $term, $taxonomy) ; 
     $term_id = $category->term_id;
@@ -82,13 +85,11 @@ $offset = get_query_var('posts_per_page');
                     </div>
                 </section>    
 
-                <footer>
-
-                    <?php
-                    if ($next_post) : ?>
+                <?php if ($next_post) : ?>
+                    <footer>
 
                         <div class="load-more">
-                            <div class="btn btn-secondary load-more__btn" data-post-type="company" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $term_id; ?>">
+                            <div class="btn btn-secondary load-more__btn" data-post-type="company" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $tax_name; ?>" data-cat="<?php echo $term_id; ?>">
                                 <?php _e('Load more', TakeCareIo::THEME_SLUG )  ?>
                             </div>
                             <div class="load-more__no-more hidden">
@@ -96,8 +97,9 @@ $offset = get_query_var('posts_per_page');
                             </div>
                         </div>
 
-                    <?php endif; ?>                 
-                </footer>
+                    </footer>
+                <?php endif; ?>                 
+                
 
                 <section class="row tertiary-bg-color">
                     <div class="container">
