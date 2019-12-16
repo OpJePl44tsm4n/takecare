@@ -2,15 +2,16 @@
 $next_post = true; 
 $taxonomy = '';
 $featured = false;
-$cat_name = '';
+$term_id = '';
 
 if( is_tag() ) {
     $taxonomy = 'tag';
-    $term = get_query_var( 'tag' );
+    $term_id = get_query_var( 'tag_ID' );
 } elseif ( is_category() ) {
     $taxonomy = 'category';
     $term = get_query_var( 'category_name' );
     $category = get_term_by('slug', $term, $taxonomy) ; 
+    $term_id = $category->term_id;
     $featured_id = $term ? get_field('featured_image', $taxonomy . '_' . $category->term_id) : false;
     $cat_name = $category->name;
     $featured = wp_get_attachment_image( $featured_id, 'full' );
@@ -87,7 +88,7 @@ $offset = get_query_var('posts_per_page');
                     if ($next_post) : ?>
 
                         <div class="load-more">
-                            <div class="btn btn-secondary load-more__btn" data-post-type="company" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $cat_name; ?>">
+                            <div class="btn btn-secondary load-more__btn" data-post-type="company" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $term_id; ?>">
                                 <?php _e('Load more', TakeCareIo::THEME_SLUG )  ?>
                             </div>
                             <div class="load-more__no-more hidden">
