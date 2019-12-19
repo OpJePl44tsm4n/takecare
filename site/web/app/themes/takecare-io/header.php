@@ -21,8 +21,7 @@
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer', '<?php echo $GTM; ?>' );</script>
-
+        })(window,document,'script','dataLayer','<?php echo $GTM; ?>');</script>
     <?php endif; ?>    
     <!-- End Google Tag Manager -->
 </head>
@@ -41,17 +40,26 @@
     <!-- Header -->
     <header class="site-header">
         <nav id="main-nav" class="navbar navbar-dark fixed-top transparant">
-            <div class="container">
-
+            <div class="container">    
                 <?php 
                 $frontpage_id = get_option( 'page_on_front' );
                 $slug = get_post_field( 'post_name', $frontpage_id );
                 // only show the menu on home when slug is home 
                 if (!is_front_page() || (is_front_page() && $slug === 'home') ) : ?>
+                    
+                    <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
+                        <button class="navbar-toggler" type="button">
+                            <?php /*<span><?php _e('Menu', WhiteLabelTheme::THEME_SLUG ); ?></span>*/?>
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
 
                     <div class="collapse navbar-collapse" id="navbarCollapse" data-parent="#main-nav">
-                        
-                        <div class="nav-wrap container">
+                        <div class="close-btn d-flex">
+                            <button class="navbar-toggler mr-auto close" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Close navigation"><span aria-hidden="true">&times;</span></button>
+                        </div>
+
+                        <div class="nav-wrap">
                             <?php wp_nav_menu( array( 
                                 'theme_location' => 'header-menu',
                                 'container' => false,
@@ -62,19 +70,9 @@
                                 'fallback_cb'     => 'bs4navwalker::fallback',
                                 'walker' => new Greylabel\Vendor\bs4NavWalker()
                             ) ); ?> 
-
-
-                            <?php echo do_action('wpml_add_language_selector'); ?>
-                           
                         </div>
                     </div>
-                    
-                    <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
-                        <button class="navbar-toggler" type="button">
-                            <?php /*<span><?php _e('Menu', TakeCareIo::THEME_SLUG ); ?></span>*/?>
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                    </div>
+                        
                     
                 <?php endif; ?>
 
@@ -87,10 +85,13 @@
                         ?>
                         <img class="img-fluid brand-logo" src="<?php echo $image ?>" alt="<?php echo get_bloginfo( 'name' ); ?> Logo">
                     </a>
-                    <h1 class="brand-name"><?php echo get_bloginfo( 'name' ); ?></h1>
                 </div>
-     
-            </div>
-               
+
+                <form role="search" method="get" action="<?php echo home_url(); ?>?s=">
+                    <input type="text" value="<?php echo get_search_query(); ?>" name="s" id="s" placeholder="<?php echo _e("Find products, services or categories in your area", TakeCareIo::THEME_SLUG ); ?>" /><button type="submit" id="searchsubmit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    <input type="hidden" class="field" name="post_type" id="post_type" value="company">
+                    
+                </form>
+            </div>    
         </nav> 
     </header>    
