@@ -49,6 +49,11 @@ header.site-header {
 		    z-index: 22;
 		    -ms-transform: scale(.85);
 		    transform: scale(.85);
+			
+			@include media-breakpoint-down(md) {
+		        margin: auto;
+		    }
+
 		}
 
 		> .container {

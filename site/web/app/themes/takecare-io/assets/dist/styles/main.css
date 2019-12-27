@@ -9850,6 +9850,9 @@ header.site-header #main-nav.navbar {
     z-index: 22;
     -ms-transform: scale(0.85);
     transform: scale(0.85); }
+    @media (max-width: 991.98px) {
+      header.site-header #main-nav.navbar .brand-wrapper {
+        margin: auto; } }
   header.site-header #main-nav.navbar > .container {
     max-width: 100%;
     -ms-flex-pack: left;
