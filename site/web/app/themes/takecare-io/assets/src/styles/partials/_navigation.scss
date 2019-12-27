@@ -32,16 +32,15 @@
 		z-index: 6;
 		padding: 0 0 25px;
 		overflow: scroll;
-		
+	
 		.close-btn {
 			padding: 1rem;
-			background: $primary-bg-color;
 
 			button {
 				color: $primary-text-color;
 				padding: .2em 1rem;
 			    line-height: 0.7em;
-					font-size: 2em;
+				font-size: 2em;
 			    opacity: 1;
 			    outline:none; 
 			}

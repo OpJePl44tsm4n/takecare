@@ -9539,9 +9539,13 @@ article.page-content section.row.header.tertiary-bg-color:after {
 article.page-content section.row header {
   margin: 0 auto;
   padding-bottom: 1em; }
-  article.page-content section.row header p {
+  article.page-content section.row header .col-md-12 p {
     max-width: 500px;
     margin: auto; }
+  article.page-content section.row header h1 {
+    padding-bottom: .3em; }
+  article.page-content section.row header p {
+    max-width: 425px; }
   article.page-content section.row header a i {
     padding-left: 6px; }
   article.page-content section.row header .content {
@@ -9600,12 +9604,13 @@ article.page-content section.row.content-block p a:not(.btn) {
   text-decoration: underline; }
 
 article.page-content section.row.content-block > .card {
-  padding: 2em 1em; }
+  padding: 2em 1em;
+  max-width: 750px; }
   article.page-content section.row.content-block > .card.secondary-bg-color * {
     color: #fff; }
 
 article.page-content section.row.content-block .editor.col-md-12 {
-  max-width: 900px;
+  max-width: 750px;
   margin: auto; }
 
 article.page-content section.row.content-block .editor h2 {
@@ -9722,8 +9727,7 @@ article.page-content.company #term-list {
     padding: 0 0 25px;
     overflow: scroll; }
     .navbar-collapse.collapsing .close-btn, .navbar-collapse.collapse.show .close-btn {
-      padding: 1rem;
-      background: #fff; }
+      padding: 1rem; }
       .navbar-collapse.collapsing .close-btn button, .navbar-collapse.collapse.show .close-btn button {
         color: #000;
         padding: .2em 1rem;
@@ -9820,8 +9824,6 @@ header.site-header #main-nav.navbar {
   top: 0;
   transition: top 0.3s, background 0.5s;
   padding: .5rem 0; }
-  header.site-header #main-nav.navbar.transparant {
-    background: none; }
   .admin-bar header.site-header #main-nav.navbar {
     top: 32px; }
   header.site-header #main-nav.navbar.scroll-down {
@@ -9848,16 +9850,6 @@ header.site-header #main-nav.navbar {
     z-index: 22;
     -ms-transform: scale(0.85);
     transform: scale(0.85); }
-    @media (max-width: 767.98px) {
-      header.site-header #main-nav.navbar .brand-wrapper {
-        -ms-transform: scale(0.85) translateX(-20%);
-            transform: scale(0.85) translateX(-20%);
-        width: 50px;
-        overflow: hidden; }
-        header.site-header #main-nav.navbar .brand-wrapper img {
-          width: 180px;
-          max-width: 180px;
-          margin-left: -137px; } }
   header.site-header #main-nav.navbar > .container {
     max-width: 100%;
     -ms-flex-pack: left;
@@ -9865,10 +9857,12 @@ header.site-header #main-nav.navbar {
   header.site-header #main-nav.navbar form {
     -ms-flex: 1 0 auto;
         flex: 1 0 auto;
-    max-width: 450px; }
+    max-width: 1180px;
+    width: 100%; }
     @media (min-width: 768px) {
       header.site-header #main-nav.navbar form {
-        margin-left: 3em; } }
+        margin-left: 3em;
+        width: auto; } }
     header.site-header #main-nav.navbar form input {
       padding: 0 1em;
       height: 40px;

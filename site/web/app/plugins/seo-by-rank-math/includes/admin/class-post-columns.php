@@ -163,7 +163,7 @@ class Post_Columns implements Runner {
 
 		$allowed_post_types   = Helper::get_allowed_post_types();
 		$allowed_post_types[] = 'attachment';
-		if ( ( 'edit' !== $screen->base && 'upload' !== $screen->base ) || ! in_array( $screen->post_type, $allowed_post_types, true ) ) {
+		if ( ! in_array( $screen->post_type, $allowed_post_types, true ) ) {
 			return;
 		}
 
@@ -186,7 +186,8 @@ class Post_Columns implements Runner {
 	/**
 	 * Add new columns for SEO title, description and focus keywords.
 	 *
-	 * @param  array $columns Array of column names.
+	 * @param array $columns Array of column names.
+	 *
 	 * @return array
 	 */
 	public function add_columns( $columns ) {
@@ -205,7 +206,8 @@ class Post_Columns implements Runner {
 	/**
 	 * Make the SEO Score column sortable.
 	 *
-	 * @param  array $columns Array of column names.
+	 * @param array $columns Array of column names.
+	 *
 	 * @return array
 	 */
 	public function sortable_columns( $columns ) {
@@ -217,7 +219,8 @@ class Post_Columns implements Runner {
 	/**
 	 * Add new columns for Media Alt & Title.
 	 *
-	 * @param  array $columns An array of column names.
+	 * @param array $columns Array of column names.
+	 *
 	 * @return array
 	 */
 	public function add_media_columns( $columns ) {
@@ -292,7 +295,6 @@ class Post_Columns implements Runner {
 		$keyword   = get_post_meta( $post_id, 'rank_math_focus_keyword', true );
 		$keyword   = explode( ',', $keyword )[0];
 		$is_pillar = get_post_meta( $post_id, 'rank_math_pillar_content', true );
-		$schema    = get_post_meta( $post_id, 'rank_math_rich_snippet', true );
 		$score     = $score ? $score : 0;
 		$class     = $this->get_seo_score_class( $score );
 
@@ -304,7 +306,7 @@ class Post_Columns implements Runner {
 		?>
 		<span class="rank-math-column-display seo-score <?php echo $class; ?> <?php echo ! $score ? 'disabled' : ''; ?>">
 			<strong><?php echo $score; ?></strong>
-			<?php if ( $is_pillar ) : ?>
+			<?php if ( 'on' === $is_pillar ) : ?>
 				<img class="is-pillar" src="<?php echo esc_url( rank_math()->plugin_url() . 'assets/admin/img/pillar.svg' ); ?>" alt="<?php _e( 'Is Pillar', 'rank-math' ); ?>" title="<?php _e( 'Is Pillar', 'rank-math' ); ?>" width="25" />
 			<?php endif; ?>
 		</span>
@@ -319,12 +321,7 @@ class Post_Columns implements Runner {
 			<span><?php echo $keyword; ?></span>
 		</span>
 
-		<?php if ( $schema ) : ?>
-			<span class="rank-math-column-display schema-type">
-				<strong><?php _e( 'Schema', 'rank-math' ); ?>:</strong>
-				<?php echo ucfirst( $schema ); ?>
-			</span>
-		<?php endif; ?>
+		<?php $this->do_action( 'post/column/seo_details', $post_id ); ?>
 
 		<div class="rank-math-column-edit">
 			<a href="#" class="rank-math-column-save"><?php esc_html_e( 'Save', 'rank-math' ); ?></a>

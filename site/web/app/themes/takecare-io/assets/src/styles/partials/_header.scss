@@ -7,9 +7,9 @@ header.site-header {
     	transition: top 0.3s, background 0.5s;
 		padding: .5rem 0;
 
-		&.transparant {
-			background: none;
-    	}
+		// &.transparant {
+		// 	background: none;
+  //   	}
 
 		.admin-bar & {
 			top: 32px;
@@ -49,18 +49,6 @@ header.site-header {
 		    z-index: 22;
 		    -ms-transform: scale(.85);
 		    transform: scale(.85);
-
-			@include media-breakpoint-down(sm) {
-			    transform: scale(0.85) translateX(-20%);
-			    width: 50px;
-	            overflow: hidden;
-
-	            img {
-	                width: 180px;
-	                max-width: 180px;
-	                margin-left: -137px;
-	            }
-			}
 		}
 
 		> .container {
@@ -70,10 +58,12 @@ header.site-header {
 
 		form {
 	        flex: 1 0 auto;
-	        max-width: 450px;
+	        max-width: 1180px;
+	        width: 100%;
 			
 			@include media-breakpoint-up(md) {
 	            margin-left: 3em;
+	            width: auto;
 			}
 
 	        input {

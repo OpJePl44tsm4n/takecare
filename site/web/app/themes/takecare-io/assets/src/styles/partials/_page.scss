@@ -73,9 +73,19 @@ article.page-content {
 			margin: 0 auto;
 			padding-bottom: 1em;
 
+			.col-md-12 {
+				p {
+					max-width: 500px;
+					margin: auto; 
+				}
+			}
+
+			h1 {
+				padding-bottom: .3em;
+			}
+
 			p {
-				max-width: 500px;
-				margin: auto; 
+				max-width: 425px;
 			}
 
 			a {
@@ -156,6 +166,7 @@ article.page-content {
 
 			> .card { 
 				padding: 2em 1em;
+				max-width: 750px;
 
 				&.secondary-bg-color * {
 					color: $primary-bg-color;
@@ -165,7 +176,7 @@ article.page-content {
 			.editor {
 
 				&.col-md-12 {
-					max-width: 900px;
+					max-width: 750px;
 					margin: auto;
 				} 
 
