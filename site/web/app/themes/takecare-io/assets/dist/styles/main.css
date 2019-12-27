@@ -10368,6 +10368,27 @@ form div.wpcf7-response-output {
   form div.wpcf7-response-output.wpcf7-mail-sent-ok {
     background: rgba(7, 255, 7, 0.2); }
 
+.ui-autocomplete {
+  display: block !important;
+  z-index: 1100;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: -1px; }
+  .ui-autocomplete li.ui-menu-item {
+    padding: .5em .5em;
+    font-size: .8rem;
+    border: unset;
+    cursor: pointer; }
+    .ui-autocomplete li.ui-menu-item:hover {
+      color: #3e9b92;
+      background: #E2F2F7; }
+    .ui-autocomplete li.ui-menu-item .logo {
+      height: 40px;
+      width: 60px;
+      display: inline-block; }
+      .ui-autocomplete li.ui-menu-item .logo img {
+        height: 40px;
+        width: auto; }
+
 .mailchimp_form {
   padding-top: 2em; }
   .mailchimp_form h2 {

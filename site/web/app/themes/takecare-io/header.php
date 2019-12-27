@@ -88,9 +88,8 @@
                 </div>
 
                 <form role="search" method="get" action="<?php echo home_url(); ?>?s=">
-                    <input type="text" value="<?php echo get_search_query(); ?>" name="s" id="s" placeholder="<?php echo _e("Find products, services or categories in your area", TakeCareIo::THEME_SLUG ); ?>" /><button type="submit" id="searchsubmit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    <input type="text" value="<?php echo get_search_query(); ?>" name="s" id="s" data-type="company" placeholder="<?php echo _e("Find products, services or categories in your area", TakeCareIo::THEME_SLUG ); ?>" /><button type="submit" id="searchsubmit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                     <input type="hidden" class="field" name="post_type" id="post_type" value="company">
-                    
                 </form>
             </div>    
         </nav> 

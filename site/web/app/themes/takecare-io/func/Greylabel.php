@@ -120,6 +120,7 @@ abstract class Greylabel {
                 
                 if (isset($script['localize'])) {
                     $script['localize']['options']['baseUrl'] = trailingslashit( get_bloginfo( 'url' ) ); 
+                    $script['localize']['options']['ajaxUrl'] = admin_url( 'admin-ajax.php' );
 
                     // add variables to the object that's used in the js file
                     wp_localize_script( $handle, $script['localize']['name'], $script['localize']['options'] );

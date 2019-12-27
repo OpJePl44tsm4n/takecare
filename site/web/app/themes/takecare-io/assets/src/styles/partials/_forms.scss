@@ -128,3 +128,34 @@ form {
         }
     }
 }
+
+
+.ui-autocomplete {
+    display: block !important;
+    z-index: 1100;
+    border: 1px solid rgba($primary-text-color,.1);
+    margin-top: -1px;
+    
+    li.ui-menu-item {
+        padding: .5em .5em;
+        font-size: .8rem;
+        border: unset;
+        cursor: pointer;
+        
+        &:hover {
+            color: $primary-color;
+            background: $tertiary-bg-color;
+        }
+        
+        .logo {
+            height: 40px;
+            width: 60px;
+            display: inline-block; 
+
+            img {
+                height: 40px;
+                width: auto;
+            }
+        }
+    }
+}

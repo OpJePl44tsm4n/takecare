@@ -381,6 +381,21 @@ function onYouTubeIframeAPIReady() {
 
 
 jQuery(document).ready(function($){
+
+    var url = wp_api_object.ajaxUrl + "?action=search_autocomplete&post_type=company";
+    $( "#s" ).autocomplete({
+        source: url,
+        delay: 500,
+        minLength: 3,
+        select: function( event, ui ) { 
+            window.location.href = ui.item.link;
+        }
+    }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<div><div class=\"logo\">" + item.logo + "</div>" + item.label + "</div>" )
+        .appendTo( ul );
+    };; 
+        
     
     // add swipe functionality to bootstrap carousel
     $(".carousel").on("touchstart", function(event){
