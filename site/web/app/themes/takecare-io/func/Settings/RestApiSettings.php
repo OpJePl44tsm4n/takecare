@@ -34,7 +34,8 @@ class RestApiSettings {
         
         $args = [
             's' => $term,
-            'post_type' => $post_type
+            'post_type' => $post_type,
+            'post_status' => array('publish')
         ];
         $loop = new \WP_Query($args);
         
