@@ -108,6 +108,14 @@ body {
 			text-align: center;
 		}
 	}
+	
+	.collapse.collapse-sm-only {
+		@include media-breakpoint-up(md) {
+			display: block;
+		    height: auto !important;
+		    visibility: visible;
+		}
+	}
 
 	.secondary-bg-color {
 		background: $secondary-bg-color;

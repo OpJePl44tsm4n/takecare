@@ -68,11 +68,11 @@ article.page-content {
 			}
 		}
 		
-
+		
 		header {
 			margin: 0 auto;
 			padding-bottom: 1em;
-
+			
 			.col-md-12 {
 				p {
 					max-width: 500px;
@@ -250,6 +250,9 @@ article.page-content {
 	&.company {
 
 		.header {
+			@include media-breakpoint-down(md) {
+				padding-top: 3.5rem;
+			}
 			
 			.info {
 				max-width: 250px; 

@@ -9204,6 +9204,11 @@ body {
   @media (max-width: 767.98px) {
     body .mobile-center {
       text-align: center; } }
+  @media (min-width: 768px) {
+    body .collapse.collapse-sm-only {
+      display: block;
+      height: auto !important;
+      visibility: visible; } }
   body .secondary-bg-color {
     background: #0085A3; }
   body .tertiary-bg-color {
@@ -9417,6 +9422,10 @@ article.page-content section.row.product-grid header {
     article.page-content section.row.video-header > .container {
       margin-bottom: -8em; } }
 
+@media (max-width: 991.98px) {
+  article.page-content.company .header {
+    padding-top: 3.5rem; } }
+
 article.page-content.company .header .info {
   max-width: 250px; }
   @media (min-width: 768px) {
@@ -9621,6 +9630,21 @@ header.site-header #main-nav.navbar {
     max-width: 100%;
     -ms-flex-pack: left;
         justify-content: left; }
+  header.site-header #main-nav.navbar button#search-collapse {
+    width: auto;
+    transition: background 300ms ease;
+    font-size: .8rem;
+    padding: .5em 1em .5em 0; }
+    header.site-header #main-nav.navbar button#search-collapse i:before {
+      left: 7px;
+      font-size: 1.2em; }
+    header.site-header #main-nav.navbar button#search-collapse[aria-expanded="true"] {
+      background: #9bd7d1; }
+      header.site-header #main-nav.navbar button#search-collapse[aria-expanded="true"] i:before {
+        content: 'X';
+        font-family: 'sans-serif';
+        left: 8px;
+        font-size: 1.3em; }
   header.site-header #main-nav.navbar form {
     -ms-flex: 1 0 auto;
         flex: 1 0 auto;

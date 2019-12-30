@@ -60,6 +60,29 @@ header.site-header {
 			max-width: 100%;
 			justify-content: left;
 		}
+		
+		button#search-collapse {
+			width: auto;
+			transition: background 300ms ease;
+			font-size: .8rem;
+    		padding: .5em 1em .5em 0;
+			
+			i:before {
+				left: 7px;
+    			font-size: 1.2em;
+			}
+
+			&[aria-expanded="true"] {
+				background: lighten( $primary-color, 30% );
+
+				i:before {
+					content: 'X';
+					font-family: 'sans-serif';
+					left: 8px;
+					font-size: 1.3em;
+				}
+			}
+		}
 
 		form {
 	        flex: 1 0 auto;
