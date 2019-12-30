@@ -80,6 +80,7 @@ button, a {
 		background: $primary-color;
 		color: $primary-bg-color;
 		font-size: .6rem;
+		width: auto;
 
 		&:hover {
 			background: $primary-color-light; 

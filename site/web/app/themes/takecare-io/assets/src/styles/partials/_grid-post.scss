@@ -33,7 +33,7 @@ section.post-grid {
                     text-transform: unset;
 
                     @include media-breakpoint-down(xs) {
-                        line-height: 1rem;
+                        line-height: 1.3em;
                     }
 
                     a {

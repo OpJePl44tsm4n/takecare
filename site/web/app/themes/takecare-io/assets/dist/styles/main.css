@@ -9273,7 +9273,7 @@ article.page-content > section.row {
   position: relative; }
   @media (max-width: 575.98px) {
     article.page-content > section.row {
-      padding: 3rem 1rem; } }
+      padding: 2rem 1rem; } }
   @media (min-width: 576px) {
     article.page-content > section.row {
       padding: 2em 0 3em; } }
@@ -9432,7 +9432,7 @@ article.page-content.company .header .info {
     article.page-content.company .header .info {
       padding-top: 4em; } }
   article.page-content.company .header .info .logo {
-    padding-bottom: 1em; }
+    padding: 1em 0; }
   article.page-content.company .header .info small.adress {
     margin-bottom: 1em;
     display: inline-block; }
@@ -9928,7 +9928,8 @@ button, a {
     text-transform: uppercase;
     background: #3e9b92;
     color: #fff;
-    font-size: .6rem; }
+    font-size: .6rem;
+    width: auto; }
     .btn.btn-pill:hover, .woocommerce a.btn-pill.button:hover, .woocommerce button.btn-pill.button:hover, .contact.track-phone button.btn-pill:hover {
       background: #9bd7d1; }
   @media (min-width: 768px) {
@@ -10523,7 +10524,7 @@ section.post-grid .post {
         text-transform: unset; }
         @media (max-width: 575.98px) {
           section.post-grid .post .card .content h1 {
-            line-height: 1rem; } }
+            line-height: 1.3em; } }
         section.post-grid .post .card .content h1 a {
           text-decoration: none;
           color: #000; }

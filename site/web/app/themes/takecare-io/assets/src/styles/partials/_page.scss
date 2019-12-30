@@ -20,7 +20,7 @@ article.page-content {
     	position: relative;
 
 		@include media-breakpoint-down(xs) {
-			padding: 3rem 1rem;
+			padding: 2rem 1rem;
 		}
 		
 		@include media-breakpoint-up(sm) {
@@ -264,7 +264,7 @@ article.page-content {
 
 				.logo {
 					// max-width: 96px;
-					padding-bottom: 1em;
+					padding: 1em 0;
 				}
 
 				small.adress {
