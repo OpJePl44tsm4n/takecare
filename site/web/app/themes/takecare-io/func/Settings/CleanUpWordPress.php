@@ -59,6 +59,7 @@ class CleanUpWordPress {
     {
         if( !is_admin() ){
             wp_deregister_script('heartbeat');
+            wp_dequeue_style( 'wp-block-library' );
         }
     }
 

@@ -131,7 +131,6 @@ form {
 
 
 .ui-autocomplete {
-    display: block !important;
     z-index: 1100;
     border: 1px solid rgba($primary-text-color,.1);
     margin-top: -1px;
@@ -141,7 +140,12 @@ form {
         font-size: .8rem;
         border: unset;
         cursor: pointer;
-        
+            
+        .ui-menu-item-wrapper {
+            border: unset;
+            background: unset;
+        }
+
         &:hover {
             color: $primary-color;
             background: $tertiary-bg-color;

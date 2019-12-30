@@ -9,7 +9,8 @@
             $featured_id = get_field('main_header_image');
             $featured = wp_get_attachment_image( $featured_id, 'full' );
             $website = get_field('website');
-            $address_obj = get_field('adress'); ?>
+            $address_obj = get_field('adress'); 
+            $credits = sprintf('<span class="credits">%s: %s</span>', __('Source', TakeCareIo::THEME_SLUG ), get_the_title() ); ?>
 
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> >
                 <section class="header container">
@@ -75,7 +76,8 @@
                         <?php if($featured): ?>
                             <div class="grid-item col-md-7 featured">
                                 <div class="thumb">
-                                    <?php echo $featured; ?>
+                                    <?php echo $featured; 
+                                          echo $credits; ?>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -254,7 +256,7 @@
                                         $class = 'col-md-10';
                                     }
                                     
-                                    printf('<div class="%s img"><div class="thumb">%s</div></div>', $class, $img );
+                                    printf('<div class="%s img"><div class="thumb">%s %s</div></div>', $class, $img, $credits);
 
                                     $img_count++;
                                 endwhile;

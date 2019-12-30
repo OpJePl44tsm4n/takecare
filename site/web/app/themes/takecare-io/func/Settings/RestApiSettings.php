@@ -8,7 +8,7 @@ class RestApiSettings {
   	{	
         // Actions
         add_action( 'rest_api_init',                                            array( $this, 'action__add_rest_fields') );
-        add_action( 'init',                                                     array( $this, 'action__add_scripts') );
+        add_action( 'wp_enqueue_scripts',                                       array( $this, 'action__add_scripts') );
         add_action( 'wp_ajax_search_autocomplete',                              array( $this, 'action__get_search_autocomplete') );
         add_action( 'wp_ajax_nopriv_search_autocomplete',                       array( $this, 'action__get_search_autocomplete') );
 
@@ -16,7 +16,8 @@ class RestApiSettings {
         add_filter( 'rest_company_collection_params',                           array( $this, 'filter__set_rest_order_to_menu_order'), 10, 1 );
     }    
 
-    public function action__add_scripts() {
+    public function action__add_scripts() 
+    {
         wp_enqueue_script( 'jquery-ui-autocomplete' );
         wp_register_style( 'jquery-ui-styles','https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui-styles' );
