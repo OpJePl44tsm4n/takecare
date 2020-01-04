@@ -10507,12 +10507,6 @@ section.post-grid .post {
     margin-bottom: 20px;
     animation: fadein 2s;
     min-height: 340px; }
-    section.post-grid .post .card .category {
-      padding: .5rem 1rem; }
-      section.post-grid .post .card .category a.main-category {
-        font-family: "Encode Sans Narrow Medium", sans-serif;
-        color: #3e9b92;
-        font-size: .8em; }
     section.post-grid .post .card .content {
       padding: 10px 12px; }
       section.post-grid .post .card .content h1 {
@@ -10528,6 +10522,13 @@ section.post-grid .post {
         section.post-grid .post .card .content h1 a {
           text-decoration: none;
           color: #000; }
+      section.post-grid .post .card .content .category {
+        padding: 0 0 .5rem;
+        margin-top: -.5em; }
+        section.post-grid .post .card .content .category a.main-category {
+          font-family: "Encode Sans Narrow Medium", sans-serif;
+          color: #3e9b92;
+          font-size: .8em; }
       section.post-grid .post .card .content p {
         font-size: 0.8em;
         line-height: 1.6em;

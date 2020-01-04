@@ -10,16 +10,6 @@ section.post-grid {
             animation: fadein 2s;
             min-height: 340px; 
             
-            .category {
-                padding: .5rem 1rem;
-
-                a.main-category {
-                    font-family: $primary-font-medium;
-                    color: $primary-color;
-                    font-size: .8em;
-                    
-                }
-            }
 
             .content{
                 padding: 10px 12px; 
@@ -39,6 +29,18 @@ section.post-grid {
                     a {
                         text-decoration: none;
                         color: $primary-text-color;
+                    }
+                }
+
+                .category {
+                    padding: 0 0 .5rem;
+                    margin-top: -.5em;
+                    
+                    a.main-category {
+                        font-family: $primary-font-medium;
+                        color: $primary-color;
+                        font-size: .8em;
+                        
                     }
                 }
 
