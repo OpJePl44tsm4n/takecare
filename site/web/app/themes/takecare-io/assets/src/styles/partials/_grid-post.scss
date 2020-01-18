@@ -2,14 +2,27 @@ section.post-grid {
 
     .post {
         text-align: left; 
-
+       
         .card {
             box-shadow: 0 1px 7px 3px rgba(230,230,230,.55);
             border: unset;
             margin-bottom: 20px;
             animation: fadein 2s;
             min-height: 340px; 
+            transition: all 1s ease;
+
+            > a {
+                text-decoration: none;
+            }
             
+            &:hover {
+                box-shadow: 0 1px 2px 3px rgba(60,60,60,0.25);
+
+
+                img {
+                    transform: translateY(-50%) scale(1.03);
+                }
+            }
 
             .content{
                 padding: 10px 12px; 
@@ -19,7 +32,7 @@ section.post-grid {
                     font-size: 1.2em;
                     padding-bottom: 0;
                     font-family: $primary-font-medium;
-                    line-height: 2rem;
+                    line-height: 1.5rem;
                     text-transform: unset;
 
                     @include media-breakpoint-down(xs) {
@@ -84,7 +97,7 @@ section.post-grid {
 
                         .collapse, .collapsing {
                             position: absolute;
-                            top: 199px;
+                            top: 160px;
                             transform: translatey(-100%);
                             left: 0;
                             width: 100%;
@@ -127,6 +140,7 @@ section.post-grid {
                 transform: translateY(-50%);
                 top: 50%;
                 position: absolute;
+                transition: all 1s ease;
             }
 
             a.main-category {

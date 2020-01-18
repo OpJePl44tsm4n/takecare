@@ -8,6 +8,9 @@ use Greylabel\Settings\RestApiSettings;
 use Greylabel\Admin\DebuggerSettings;
 use Greylabel\DataAPI\CreateStoreGeojson;
 use Greylabel\DataAPI\ProcessExternalData;
+use Greylabel\DataAPI\UpdateExternalData;
+use Greylabel\Account\AccountLogin;
+
 
 
 use Greylabel\Tracking\WcCreateProductObjects;
@@ -51,6 +54,8 @@ abstract class Greylabel {
         $create_store_geojson       = new CreateStoreGeojson();
         $wc_create_product_Objects  = new WcCreateProductObjects();
         $process_external_data      = new ProcessExternalData();
+        $rocess_external_data       = new UpdateExternalData();
+        $account_login              = new AccountLogin();
         
 
         /**
@@ -121,6 +126,7 @@ abstract class Greylabel {
                 if (isset($script['localize'])) {
                     $script['localize']['options']['baseUrl'] = trailingslashit( get_bloginfo( 'url' ) ); 
                     $script['localize']['options']['ajaxUrl'] = admin_url( 'admin-ajax.php' );
+                    $script['localize']['options']['loadAccountMessage'] = __('Checking account, please wait...', Greylabel::THEME_SLUG );
 
                     // add variables to the object that's used in the js file
                     wp_localize_script( $handle, $script['localize']['name'], $script['localize']['options'] );

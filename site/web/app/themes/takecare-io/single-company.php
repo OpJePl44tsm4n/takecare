@@ -30,7 +30,7 @@
                                 $output = '';
                                 if ( ! empty( $categories ) ) {
                                     foreach( $categories as $category ) {
-                                        $output .= '<a class="btn btn-pill" href="' . esc_url( get_category_link( $category->term_id ) ) . '" alt="' . esc_attr( sprintf( __( 'View all compannies in %s', TakeCareIo::THEME_SLUG ), $category->name ) ) . '">' . esc_html( $category->name ) . '</a>' . $separator;
+                                        $output .= '<a class="main-category" href="' . esc_url( get_category_link( $category->term_id ) ) . '" alt="' . esc_attr( sprintf( __( 'View all compannies in %s', TakeCareIo::THEME_SLUG ), $category->name ) ) . '">' . esc_html( $category->name ) . '</a>' . $separator;
                                     }
                                     echo trim( $output, $separator );
                                 } ?>
@@ -278,29 +278,7 @@
 
                             <div class="row justify-content-md-center">
                                 <?php 
-                                function getSslPage($url) {
-                                    $ch = curl_init();
-                                    curl_setopt($ch, CURLOPT_URL, $url);
-                                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-                                    curl_setopt($ch, CURLOPT_POST, FALSE);
-                                    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0');
-                                    curl_setopt($ch, CURLOPT_HEADER, FALSE);
-                                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-                                    curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
-                                    
-                                    $result = curl_exec($ch);
-                                    $err     = curl_errno( $ch );
-                                    $errmsg  = curl_error( $ch );
-                                    $header  = curl_getinfo( $ch );
-                                    curl_close($ch);
-
-                                    $header['errno']   = $err;
-                                    $header['errmsg']  = $errmsg;
-                                    $header['content'] = $result;
-
-                                    return $header;
-                                }
+                               
                                     
                                 while ( have_rows('articles') ) : the_row(); 
                                     $title = get_sub_field('title');
@@ -311,128 +289,25 @@
                                     if( !$url ) {
                                         continue;
                                     }
-                                
-                                    if( $title == '' && $img_id == '' ) {
-                                   
-                                        $content = getSslPage($url);
-
-                                        $doc = new DOMDocument();
-
-                                        // squelch HTML5 errors
-                                        @$doc->loadHTML($content['content']);
-
-                                        $meta = $doc->getElementsByTagName('meta');
-                                        $tags= [];
-
-                                        foreach ($meta as $element) {
-                                            $property = '';
-                                            $content = '';
-                                            foreach ($element->attributes as $node) {
-
-                                                if($node->name == 'property' || $node->name == 'name') {
-                                                    $property = $node->value;
-                                                }
-
-                                                if($node->name == 'content') {
-                                                    $content = $node->value;
-                                                }
-
-                                                if($property && $content) {
-                                                    $tags[$property] = $content;
-                                                } 
-
-                                            }
-                                            
-                                        }    
-
-                                        $article_domain = $tags['og:site_name'];
-                                        $article_img = $tags['og:image'];
-                                        $article_title = $tags['og:title'];
-                                        $article_excerpt = wp_trim_words($tags['og:description'], 40);
-                                        
-                                        if( $article_title ){
-                                            update_sub_field('title', $article_title);
-                                            $title = $article_title;
-                                        }
-
-                                        if( $article_domain ){
-                                            update_sub_field('site_title', $article_domain);
-                                        }
-
-                                        if( $article_excerpt ) {
-                                            update_sub_field('article_description', $article_excerpt);
-                                        }
-
-                                        if( $article_img ){
-
-                                            // Add Featured Image to Post
-                                            $image_url        = $article_img;
-                                            $pathinfo         = pathinfo($image_url);
-                                            $extension        = isset($pathinfo['extension']) ? ( strpos($pathinfo['extension'], "?") ? substr($pathinfo['extension'], 0, strpos($pathinfo['extension'], "?")) : $pathinfo['extension'] ) : 'jpeg'; 
-                                            $image_name       = $pathinfo['filename'] .'.'. $extension ;
-                                            $upload_dir       = wp_upload_dir(); // Set upload folder
-                                            $image_data       = file_get_contents($image_url); // Get image data
-                                            $unique_file_name = wp_unique_filename( $upload_dir['path'], $image_name ); // Generate unique name
-                                            $filename         = basename( $unique_file_name ); // Create image file name
-
-                                            // Check folder permission and define file location
-                                            if( wp_mkdir_p( $upload_dir['path'] ) ) {
-                                                $file = $upload_dir['path'] . '/' . $filename;
-                                            } else {
-                                                $file = $upload_dir['basedir'] . '/' . $filename;
-                                            }
-
-                                            // Create the image  file on the server
-                                            file_put_contents( $file, $image_data );
-
-                                            // Check image file type
-                                            $wp_filetype = wp_check_filetype( $filename, null );
-
-                                            // Set attachment data
-                                            $attachment = array(
-                                                'post_mime_type' => $wp_filetype['type'],
-                                                'post_title'     => sanitize_file_name( $filename ),
-                                                'post_content'   => '',
-                                                'post_status'    => 'inherit'
-                                            );
-
-                                            // Create the attachment
-                                            $attach_id = wp_insert_attachment( $attachment, $file, get_the_ID() );
-
-                                            // Include image.php
-                                            require_once(ABSPATH . 'wp-admin/includes/image.php');
-
-                                            // Define attachment metadata
-                                            $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
-
-                                            // Assign metadata to attachment
-                                            wp_update_attachment_metadata( $attach_id, $attach_data );
-
-                                            // Update featured image of current row
-                                            update_sub_field('featured_image', $attach_id);
-                                            $img_id = $attach_id;
-                                        }
-
-                                    }
+                            
                             
                                     $featured  = wp_get_attachment_image( $img_id, 'medium' );
-                                    $site_title = get_sub_field('site_title') ?: str_ireplace('www.', '', parse_url($url)['host']);
-                                     ?>
+                                    $site_title = get_sub_field('site_title') ?: str_ireplace('www.', '', parse_url($url)['host']); ?>
                                     
                                     <article class="grid-item post col-sm-6 col-lg-4">
                                         <div class="card">
                                             <a target="_blank" href="<?php echo $url; ?>">
                                                 <div class="thumb">  
                                                     <?php echo $featured; ?>
-                                                </div> 
+                                                </div>
+                                    
+                                                <div class="content">
+                                                   
+                                                    <h1><?php echo $title; ?></h1>
+                                                    <p><?php echo $article_excerpt; ?></p>
+                                                    <button class="btn btn-link"><?php echo sprintf("%s %s", __( 'Read on', TakeCareIo::THEME_SLUG ), $site_title ); ?></button>
+                                                </div>
                                             </a>
-
-                                            <div class="content">
-                                               
-                                                <h1><?php echo $title; ?></h1>
-                                                <p><?php echo $article_excerpt; ?></p>
-                                                <button class="btn btn-link"><?php echo sprintf("%s %s", __( 'Read on', TakeCareIo::THEME_SLUG ), $site_title ); ?></button>
-                                            </div>
                                         </div>
                                     </article> 
 
@@ -450,8 +325,17 @@
                     <div class="container-fluid">
       
                         <?php 
-                        $focus_point = $address_obj;
-                        $popup_content = sprintf("<h3>%s</h3>", get_the_title() );
+                        $address = ''; 
+
+                        if ( isset($address_obj['address']) ){ 
+                            foreach (explode(',', $address_obj['address']) as $key => $value) {
+                                $address .=  $value . '</br>';
+                            }
+                        }
+
+                        $address = $address ? sprintf('<p class="adress">%s</p>', $address) : '';
+                        $focus_point = $address_obj;   
+                        $popup_content = sprintf('<div class="img-container">%s</div><div class="content"><h3>%s</h3>%s</div>', $logo, get_the_title(), $address );
                         $zoom_level = 10;
                                     
                         include(locate_template('inc/partials/map-basic.php')); ?>

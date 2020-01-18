@@ -22,16 +22,20 @@ class ProcessExternalData {
         }
     }
 
-    
 
     /**
-    *   return external xml object  
-    */
-    public function get__article_data_from_link( $url ) 
+     * [get__url_page_meta_tags description]
+     * @param  [type] $url [description]
+     * @return [array]      [all meta tags]
+     */
+    public function get__url_page_meta_tags( $url ) 
     {
-	 	$content = file_get_contents( $url );
-        $doc = new DOMDocument();
-        @$doc->loadHTML($content);        // squelch HTML5 errors
+        $content = self::get__contents_curl($url);
+        $doc = new \DOMDocument();
+
+        // squelch HTML5 errors
+        @$doc->loadHTML($content['content']);
+
         $meta = $doc->getElementsByTagName('meta');
         $tags= [];
 
@@ -52,11 +56,41 @@ class ProcessExternalData {
                     $tags[$property] = $content;
                 } 
             }
-        }
+        }  
 
-        return $tags ?: false; 
-    }   
+        return $tags;
+    }
 
+
+    /**
+     * [get__contents_curl description]
+     * @param  [type] $url [get page content from url]
+     * @return [type]      [description]
+     */
+    public function get__contents_curl( $url ) 
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_POST, FALSE);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0');
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+        
+        $result = curl_exec($ch);
+        $err     = curl_errno( $ch );
+        $errmsg  = curl_error( $ch );
+        $header  = curl_getinfo( $ch );
+        curl_close($ch);
+
+        $header['errno']   = $err;
+        $header['errmsg']  = $errmsg;
+        $header['content'] = $result;
+
+        return $header;
+    }
 
     /**
     *   update transient and options

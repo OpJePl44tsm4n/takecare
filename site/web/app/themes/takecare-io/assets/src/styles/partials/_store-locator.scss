@@ -20,7 +20,26 @@
 	        .leaflet-popup-content {
 	            width: 300px!important;
     			max-width: 95vw;
-	            background: $secondary-color;
+	            background: $primary-bg-color;
+    			display: flex;
+    			align-items: center;
+				
+				div {
+					display: inline-block;
+    				width: auto;
+					
+					&.content {
+						padding-left: 1em;
+					}
+
+		            img { 
+						max-width: 90px; 
+		            }
+
+		            .adress { 
+						padding: 0; 
+		            }
+		        }    
 
 	            a {
 	            	color: $primary-color;
@@ -39,7 +58,7 @@
 
 
 	.leaflet-marker-pane .custom-marker-icon {
-	    background: $secondary-color;
+	    background: $primary-color-light;
 	    border: 2px solid $primary-color;
 	    border-radius: 100%;
 	    height: 20px;
@@ -150,4 +169,3 @@
 		}
 	}
 }
-

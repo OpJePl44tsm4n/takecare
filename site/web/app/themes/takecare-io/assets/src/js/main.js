@@ -430,164 +430,51 @@ jQuery(document).ready(function($){
         }
     });
 
-    $(document).on('click', '.added_to_cart.wc-forward', function (e)
-    {
-        e.preventDefault();
-
-        $('#cartCollapse').collapse();
-    });
-
-
-    $( document.body ).on( 'added_to_cart', function(){
-        if(cartCollapse = $('#cartCollapse')) {
-            cartCollapse.collapse("show");
-        }
-        
-     });
-
-    // Ajax delete product in the cart
-    $(document).on('click', 'a.remove', function (e)
-    {
-        e.preventDefault();
-
-        var product_id = $(this).attr("data-product_id"),
-            cart_item_key = $(this).attr("data-cart_item_key"),
-            data = {
-                action: "cart_update",
-                update_type: "product_remove",
-                product_id: product_id,
-                cart_item_key: cart_item_key
-            };
-
-        WpAjaxCall(data);  
-       
-    });
-
-    $(document).on('change', '.quantity input.qty', function () {
-
-        var product_id = $(this).attr("id"),
-            cart_item_key = $(this).attr("name"),
-            product_count = $(this).attr("value"),
-            data = {
-                action: "cart_update",
-                update_type: "product_quantity",
-                product_id: product_id,
-                cart_item_key: cart_item_key,
-                product_count: product_count
-            };
-
-        WpAjaxCall(data);         
-    });
-
-    $(document).on('click', '.ajax-coupon #coupon-submit', function () {
-        
-        var coupon_element = $(this).attr("data-for"),
-            coupon = $(coupon_element).attr("value"),
-
-            data = {
-                action: "cart_update",
-                update_type: "add_coupon",
-                coupon: coupon
-            };
-
-        
-        WpAjaxCall(data);
-    });
 
     // Perform AJAX login on form submit
     $('body').on('submit', 'form#login', function(e) {
         e.preventDefault();
+        form_data = $( this ).serialize();
+        id =  'form#login';
 
-        data = { 
-            action: 'ajaxlogin', //calls wp_ajax_nopriv_ajaxlogin
-            username: $('form#login #username').val(), 
-            password: $('form#login #password').val(), 
-            security: $('form#login #security').val() 
-        };
+        $('form#login p.status').show().text(wp_api_object.loadAccountMessage);
 
-        WpAjaxCall(data);
-        
+        response = ajax_account_request( form_data, id );
     });
 
-    function WpAjaxCall( data ) {
+    $('body').on('submit','form#logout', function(e) {
+        e.preventDefault();
 
+        form_data = $( this ).serialize();
+        id =  'form#logout';
+
+        response = ajax_account_request( form_data, id );
+    });
+
+    function ajax_account_request(data, form_id)
+    {
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: wc_add_to_cart_params.ajax_url,
+            url: wp_api_object.ajaxUrl,
             data: data,
             success: function(response) {
                 if ( ! response || response.error )
                     return false;
-
-                UpdateWcSnippets(response);
+                
+                $( form_id + ' p.status').text(response.message);
+                // if (response.loggedin == true){
+                //     // document.location.href = wp_api_object.baseUrl;
+                // }
             },
-            error: function() {
+            error: function(response) {
+
+                $( data.id + ' p.status').text(response.message);
                 return false; 
             }
         });
     }
 
-    function UpdateWcSnippets(response) {
-
-        if (response) {
-            var fragments = response.fragments;
-
-            // Replace fragments
-            if ( fragments ) {
-                $.each( fragments, function( key, value ) {
-                    $( key ).replaceWith( value );
-                });
-
-                // trigger wc_fragments_refreshed to reload the paypall direct payment button refresh
-                $( document.body ).trigger( 'wc_fragments_refreshed' );
-            }
-
-            if( response.loggedin ){
-                $('.login-ajax').toggle();
-            }
-        }    
-    }
-
-    if ( $('.customer-logos').length ) {
-        $('.customer-logos').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
-            cssEase: 'ease',
-            autoplay: true,
-            swipeToSlide: true,
-            autoplaySpeed: 3000,
-            arrows: false,
-            dots: false,
-            pauseOnHover: false,
-            responsive: [ 
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 5
-                    }
-                },
-                {
-                    breakpoint: 900,
-                    settings: {
-                        slidesToShow: 4
-                    }
-                },
-                 {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 3
-                    }
-                },  
-                {
-                    breakpoint: 520,
-                    settings: {
-                        slidesToShow: 2
-                    }
-                }
-            ]
-        });
-    }    
 
 } );
 

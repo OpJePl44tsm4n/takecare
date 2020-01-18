@@ -9014,28 +9014,23 @@ a.text-dark:hover, a.text-dark:focus {
 /* Defining the color palet */
 /* Setting Fonts */
 @font-face {
-  font-family: "Encode Sans Narrow";
-  src: url("../fonts/EncodeSansNarrow-400-Regular.ttf") format("truetype");
+  font-family: "MavenPro Regular";
+  src: url("../fonts/MavenPro-Regular.ttf") format("truetype");
   direction: ltr; }
 
 @font-face {
-  font-family: "Encode Sans Narrow Light";
-  src: url("../fonts/EncodeSansNarrow-300-Light.ttf") format("truetype");
+  font-family: "MavenPro Medium";
+  src: url("../fonts/MavenPro-Medium.ttf") format("truetype");
   direction: ltr; }
 
 @font-face {
-  font-family: "Encode Sans Narrow Medium";
-  src: url("../fonts/EncodeSansNarrow-500-Medium.ttf") format("truetype");
+  font-family: "MavenPro Bold";
+  src: url("../fonts/MavenPro-Bold.ttf") format("truetype");
   direction: ltr; }
 
 @font-face {
-  font-family: "Encode Sans Narrow SemiBold";
-  src: url("../fonts/EncodeSansNarrow-600-SemiBold.ttf") format("truetype");
-  direction: ltr; }
-
-@font-face {
-  font-family: "Encode Sans Narrow Black";
-  src: url("../fonts/EncodeSansNarrow-700-Bold.ttf") format("truetype");
+  font-family: "MavenPro Black";
+  src: url("../fonts/MavenPro-Black.ttf") format("truetype");
   direction: ltr; }
 
 @font-face {
@@ -9141,16 +9136,16 @@ a.text-dark:hover, a.text-dark:focus {
 
 /* Partials */
 body {
-  font-family: "Encode Sans Narrow Light", sans-serif;
+  font-family: "MavenPro Regular", sans-serif;
   font-size: 16px;
   font-smoothing: antialiased;
   line-height: 1.4em;
   letter-spacing: 1px;
   overflow-x: hidden; }
   body h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     line-height: 1.2em;
-    font-family: "Encode Sans Narrow", sans-serif;
+    font-family: "MavenPro Regular", sans-serif;
     color: #000; }
     @media (min-width: 576px) {
       body h1 {
@@ -9159,16 +9154,16 @@ body {
           font-size: 3.6rem; } }
   body h2 {
     font-size: 1.5rem;
-    font-family: "Encode Sans Narrow SemiBold", sans-serif;
+    font-family: "MavenPro Bold", sans-serif;
     font-size: 1.5rem; }
     @media (max-width: 575.98px) {
       body h2 {
         font-size: 1.5rem; } }
   body h3 {
-    font-family: "Encode Sans Narrow SemiBold", sans-serif; }
+    font-family: "MavenPro Bold", sans-serif; }
   body h4 {
     font-size: 1.2rem;
-    font-family: "Encode Sans Narrow Light", sans-serif;
+    font-family: "MavenPro Regular", sans-serif;
     margin-bottom: 1.2rem; }
   body p {
     line-height: 2rem; }
@@ -9178,7 +9173,7 @@ body {
       padding-top: 1em; }
     body p a {
       color: #3e9b92;
-      font-family: "Encode Sans Narrow SemiBold", sans-serif; }
+      font-family: "MavenPro Bold", sans-serif; }
   body a {
     color: #000; }
     body a:hover {
@@ -9198,7 +9193,7 @@ body {
     max-width: 100% !important;
     width: 100%; }
   body b, body strong {
-    font-family: "Encode Sans Narrow SemiBold", sans-serif; }
+    font-family: "MavenPro Bold", sans-serif; }
   body .hidden {
     display: none; }
   @media (max-width: 767.98px) {
@@ -9374,25 +9369,25 @@ article.page-content section.row.content-block p a:not(.btn) {
 
 article.page-content section.row.content-block > .card {
   padding: 2em 1em;
-  max-width: 750px; }
+  max-width: 810px; }
   article.page-content section.row.content-block > .card.secondary-bg-color * {
     color: #fff; }
 
 article.page-content section.row.content-block .editor.col-md-12 {
-  max-width: 750px;
+  max-width: 810px;
   margin: auto; }
 
 article.page-content section.row.content-block .editor h2 {
   font-size: 2rem;
   line-height: 1.2em;
-  font-family: "Encode Sans Narrow SemiBold", sans-serif;
+  font-family: "MavenPro Bold", sans-serif;
   color: #3e9b92; }
   @media (min-width: 576px) {
     article.page-content section.row.content-block .editor h2 {
       font-size: 1.5rem; } }
 
 article.page-content section.row.content-block .editor h3 {
-  font-family: "Encode Sans Narrow Black", sans-serif;
+  font-family: "MavenPro Black", sans-serif;
   font-size: 1.25rem;
   margin-bottom: 1.5rem; }
 
@@ -9431,6 +9426,9 @@ article.page-content.company .header .info {
   @media (min-width: 768px) {
     article.page-content.company .header .info {
       padding-top: 4em; } }
+  article.page-content.company .header .info a {
+    color: #3e9b92;
+    font-family: "MavenPro Bold",sans-serif; }
   article.page-content.company .header .info .logo {
     padding: 1em 0; }
   article.page-content.company .header .info small.adress {
@@ -9522,7 +9520,7 @@ article.page-content.company #term-list {
         .navbar-collapse.collapsing ul.nav li a, .navbar-collapse.collapse.show ul.nav li a {
           color: #000;
           display: inline-block;
-          font-family: "Encode Sans Narrow", sans-serif;
+          font-family: "MavenPro Regular", sans-serif;
           font-size: 1.2em; }
           .navbar-collapse.collapsing ul.nav li a:after, .navbar-collapse.collapse.show ul.nav li a:after {
             transition: all 200ms; }
@@ -9556,7 +9554,7 @@ article.page-content.company #term-list {
         border-radius: 0;
         border: none;
         background: #fff;
-        font-family: "Encode Sans Narrow", sans-serif; }
+        font-family: "MavenPro Regular", sans-serif; }
         .navbar-collapse .nav li .dropdown-menu .dropdown-item, .navbar-collapse .nav li .dropdown-menu .dropdown-toggle {
           background: none; }
           .navbar-collapse .nav li .dropdown-menu .dropdown-item:hover > a, .navbar-collapse .nav li .dropdown-menu .dropdown-toggle:hover > a {
@@ -9821,7 +9819,7 @@ span.arrow-right {
         position: absolute; }
     .single main article.post-content header h1 {
       color: #000;
-      font-family: "Encode Sans Narrow SemiBold", sans-serif;
+      font-family: "MavenPro Bold", sans-serif;
       line-height: 1.3em;
       font-size: 2rem; }
     .single main article.post-content header .sub {
@@ -9868,7 +9866,7 @@ button, a {
 
 .btn, .woocommerce a.button,
 .woocommerce button.button.single_add_to_cart_button, .woocommerce button.button, .contact.track-phone button {
-  font-family: "Encode Sans Narrow Light", sans-serif;
+  font-family: "MavenPro Regular", sans-serif;
   letter-spacing: 1px;
   font-size: 0.9rem;
   padding: .9em 1.5em;
@@ -9884,14 +9882,14 @@ button, a {
       width: 100%; } }
   .btn.btn-link, .woocommerce a.btn-link.button, .woocommerce button.btn-link.button, .contact.track-phone button.btn-link {
     color: #3e9b92;
-    font-family: "Encode Sans Narrow SemiBold", sans-serif;
+    font-family: "MavenPro Bold", sans-serif;
     text-decoration: underline !important;
     padding: 0;
     font-size: 1em; }
     .btn.btn-link:hover, .woocommerce a.btn-link.button:hover, .woocommerce button.btn-link.button:hover, .contact.track-phone button.btn-link:hover {
       color: #000; }
   .btn.btn-collapse, .woocommerce a.btn-collapse.button, .woocommerce button.btn-collapse.button, .contact.track-phone button.btn-collapse {
-    font-family: "Encode Sans Narrow SemiBold", sans-serif;
+    font-family: "MavenPro Bold", sans-serif;
     padding: 1em 3em 1em 0;
     position: relative; }
     .btn.btn-collapse:after, .woocommerce a.btn-collapse.button:after, .woocommerce button.btn-collapse.button:after, .contact.track-phone button.btn-collapse:after {
@@ -10186,7 +10184,7 @@ form div.wpcf7-response-output {
 .mailchimp_form {
   padding-top: 2em; }
   .mailchimp_form h2 {
-    font-family: "Encode Sans Narrow SemiBold", sans-serif;
+    font-family: "MavenPro Bold", sans-serif;
     text-transform: unset; }
 
 .mc-signup {
@@ -10247,7 +10245,7 @@ form div.wpcf7-response-output {
         top: 6px;
         height: calc(100% - 12px);
         color: #dedede;
-        font-family: "Encode Sans Narrow SemiBold", sans-serif;
+        font-family: "MavenPro Bold", sans-serif;
         border: 2px solid #42aacb;
         padding: .59rem;
         border-radius: 0 .5rem .5rem 0; }
@@ -10271,7 +10269,7 @@ ul.faq {
   ul.faq li button.btn, ul.faq li .woocommerce button.button, .woocommerce ul.faq li button.button, ul.faq li .contact.track-phone button, .contact.track-phone ul.faq li button {
     padding-left: 0;
     font-size: 1em;
-    font-family: "Encode Sans Narrow SemiBold", sans-serif;
+    font-family: "MavenPro Bold", sans-serif;
     background: none;
     white-space: initial;
     text-align: left; }
@@ -10303,7 +10301,7 @@ ol:not(.flex-control-nav) {
       content: counter(list-counter);
       counter-increment: list-counter;
       background: #dedede;
-      font-family: "Encode Sans Narrow SemiBold", sans-serif;
+      font-family: "MavenPro Bold", sans-serif;
       width: 2em;
       height: 2em;
       border-radius: 50%;
@@ -10383,7 +10381,7 @@ video {
     cursor: pointer; }
 
 .page-content {
-  padding: 0;
+  padding: 60px 0 0;
   min-height: 600px;
   overflow: hidden; }
   .page-content .logo_grid {
@@ -10476,7 +10474,7 @@ article.page-content .post_list {
             min-height: 3em;
             text-transform: unset;
             line-height: 1.3em;
-            font-family: "Encode Sans Narrow", sans-serif;
+            font-family: "MavenPro Regular", sans-serif;
             margin-bottom: 0; }
           article.page-content .post_list > .content .post .card .content .meta {
             font-size: .8em; }
@@ -10485,14 +10483,14 @@ article.page-content .post_list {
             article.page-content .post_list > .content .post .card .content .meta a {
               padding-left: 0.4em;
               text-decoration: none;
-              font-family: "Encode Sans Narrow Medium", sans-serif; }
+              font-family: "MavenPro Medium", sans-serif; }
           @media (max-width: 575.98px) {
             article.page-content .post_list > .content .post .card .content {
               width: calc(100% - 70px); }
               article.page-content .post_list > .content .post .card .content h1 {
                 font-size: .85em;
                 line-height: 1.3em;
-                font-family: "Encode Sans Narrow", sans-serif; }
+                font-family: "MavenPro Regular", sans-serif; }
               article.page-content .post_list > .content .post .card .content .meta {
                 font-size: .7em; } }
     article.page-content .post_list > .content a.btn, article.page-content .post_list > .content .woocommerce a.button, .woocommerce article.page-content .post_list > .content a.button {
@@ -10506,15 +10504,23 @@ section.post-grid .post {
     border: unset;
     margin-bottom: 20px;
     animation: fadein 2s;
-    min-height: 340px; }
+    min-height: 340px;
+    transition: all 1s ease; }
+    section.post-grid .post .card > a {
+      text-decoration: none; }
+    section.post-grid .post .card:hover {
+      box-shadow: 0 1px 2px 3px rgba(60, 60, 60, 0.25); }
+      section.post-grid .post .card:hover img {
+        -ms-transform: translateY(-50%) scale(1.03);
+            transform: translateY(-50%) scale(1.03); }
     section.post-grid .post .card .content {
       padding: 10px 12px; }
       section.post-grid .post .card .content h1 {
         margin: 0 0 .5em 0;
         font-size: 1.2em;
         padding-bottom: 0;
-        font-family: "Encode Sans Narrow Medium", sans-serif;
-        line-height: 2rem;
+        font-family: "MavenPro Medium", sans-serif;
+        line-height: 1.5rem;
         text-transform: unset; }
         @media (max-width: 575.98px) {
           section.post-grid .post .card .content h1 {
@@ -10526,7 +10532,7 @@ section.post-grid .post {
         padding: 0 0 .5rem;
         margin-top: -.5em; }
         section.post-grid .post .card .content .category a.main-category {
-          font-family: "Encode Sans Narrow Medium", sans-serif;
+          font-family: "MavenPro Medium", sans-serif;
           color: #3e9b92;
           font-size: .8em; }
       section.post-grid .post .card .content p {
@@ -10538,7 +10544,7 @@ section.post-grid .post {
         section.post-grid .post .card .content .meta hr {
           margin: .5em 0; }
         section.post-grid .post .card .content .meta .year-founded {
-          font-family: "Encode Sans Narrow SemiBold", sans-serif; }
+          font-family: "MavenPro Bold", sans-serif; }
         section.post-grid .post .card .content .meta .tags {
           padding-top: .5em; }
           section.post-grid .post .card .content .meta .tags .tag {
@@ -10551,7 +10557,7 @@ section.post-grid .post {
             display: inline-block; }
           section.post-grid .post .card .content .meta .tags .collapse, section.post-grid .post .card .content .meta .tags .collapsing {
             position: absolute;
-            top: 199px;
+            top: 160px;
             -ms-transform: translatey(-100%);
                 transform: translatey(-100%);
             left: 0;
@@ -10569,7 +10575,7 @@ section.post-grid .post {
           text-decoration: none; }
           section.post-grid .post .card .content .meta a.site-link, section.post-grid .post .card .content .meta a.city {
             margin-right: 1em;
-            font-family: "Encode Sans Narrow SemiBold", sans-serif; }
+            font-family: "MavenPro Bold", sans-serif; }
   section.post-grid .post .thumb {
     position: relative;
     height: 160px;
@@ -10580,7 +10586,8 @@ section.post-grid .post {
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
       top: 50%;
-      position: absolute; }
+      position: absolute;
+      transition: all 1s ease; }
     section.post-grid .post .thumb a.main-category {
       position: absolute;
       bottom: 0;
@@ -10777,7 +10784,7 @@ ul.socials {
         #productCarouselLarge .carousel-item .product-info .description {
           display: inline-block; } }
     #productCarouselLarge .carousel-item .product-info .price {
-      font-family: "Encode Sans Narrow SemiBold", sans-serif;
+      font-family: "MavenPro Bold", sans-serif;
       font-size: 1.1em;
       display: inline-block;
       width: 100%; }
@@ -10824,6 +10831,124 @@ ul.socials {
   width: 100%;
   margin: auto;
   max-width: 1200px; }
+
+.map-wrap {
+  position: relative; }
+  .map-wrap .leaflet-left {
+    left: initial;
+    right: 10px; }
+  .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-close-button:hover {
+    background-color: inherit; }
+  .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-content-wrapper {
+    padding: 0; }
+    .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content {
+      width: 300px !important;
+      max-width: 95vw;
+      background: #fff;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+          align-items: center; }
+      .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content div {
+        display: inline-block;
+        width: auto; }
+        .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content div.content {
+          padding-left: 1em; }
+        .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content div img {
+          max-width: 90px; }
+        .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content div .adress {
+          padding: 0; }
+      .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content a {
+        color: #3e9b92; }
+        .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content a span {
+          text-decoration: underline; }
+  .map-wrap .leaflet-popup-pane .leaflet-popup .leaflet-popup-tip-container .leaflet-popup-tip {
+    display: none; }
+  .map-wrap .leaflet-marker-pane .custom-marker-icon {
+    background: #9bd7d1;
+    border: 2px solid #3e9b92;
+    border-radius: 100%;
+    height: 20px;
+    width: 20px; }
+  .map-wrap .map-filter {
+    position: absolute;
+    z-index: 1;
+    left: 12px;
+    top: 10px;
+    min-height: 26px;
+    max-width: 200px;
+    background: #dedede; }
+    .map-wrap .map-filter .filter-toggle {
+      border: none;
+      color: #3e9b92;
+      height: 0;
+      overflow: hidden;
+      outline: 0;
+      padding: 0; }
+      .map-wrap .map-filter .filter-toggle.collapsed {
+        height: 24px;
+        display: inline-block;
+        transition: height 10ms ease;
+        padding: 2px 7px 2px 8px;
+        background: none; }
+    .map-wrap .map-filter #filterCollapse {
+      padding: 0em;
+      max-height: 0;
+      transition: max-height 100ms linear;
+      overflow: hidden; }
+      .map-wrap .map-filter #filterCollapse.show {
+        padding: 1em;
+        max-height: 300px; }
+    .map-wrap .map-filter h2 {
+      font-size: 0.8em; }
+      .map-wrap .map-filter h2 .fa-map-marker {
+        font-size: 1.4em;
+        color: #3e9b92; }
+    .map-wrap .map-filter label {
+      font-size: 0.6em;
+      margin-bottom: 0; }
+    .map-wrap .map-filter input {
+      margin: 0 0 6px 0;
+      padding: 5px 15px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      width: 100%;
+      border-radius: 4px;
+      font-size: 0.8rem; }
+      .map-wrap .map-filter input::-webkit-input-placeholder {
+        color: rgba(62, 155, 146, 0.5); }
+      .map-wrap .map-filter input:-ms-input-placeholder {
+        color: rgba(62, 155, 146, 0.5); }
+      .map-wrap .map-filter input::placeholder {
+        color: rgba(62, 155, 146, 0.5); }
+      .map-wrap .map-filter input:focus::-webkit-input-placeholder {
+        color: #3e9b92; }
+      .map-wrap .map-filter input:focus:-ms-input-placeholder {
+        color: #3e9b92; }
+      .map-wrap .map-filter input:focus::placeholder {
+        color: #3e9b92; }
+    .map-wrap .map-filter button#reset-map {
+      padding: 5px 15px; }
+  .map-wrap hr {
+    margin-top: 0.7em; }
+  .map-wrap #user-location {
+    display: none;
+    color: #3e9b92;
+    background: none;
+    border: none;
+    font-size: 0.7em;
+    text-align: left;
+    padding: 0 0 0 1.8em;
+    position: relative;
+    outline: none;
+    cursor: pointer; }
+    .map-wrap #user-location i {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      font-size: 1.75em; }
+    .map-wrap #user-location.loading-location i {
+      animation: locate 5s infinite;
+      animation-timing-function: linear; }
 
 article.page-content section.row-0.img-bg .container {
   z-index: 2; }
@@ -10876,8 +11001,51 @@ section.team-members .team-member {
     height: 150px; }
   section.team-members .team-member h4 {
     margin: .5em 0 0;
-    font-family: "Encode Sans Narrow Medium", sans-serif; }
+    font-family: "MavenPro Medium", sans-serif; }
   section.team-members .team-member p {
     margin-bottom: 0; }
+
+div#cookie-notice.cookie-notice-visible {
+  background-color: rgba(62, 155, 146, 0.8) !important;
+  height: 100vh; }
+  div#cookie-notice.cookie-notice-visible .cookie-notice-container {
+    padding: 1.5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    background: #fff;
+    color: black;
+    border-radius: 1rem; }
+    @media (max-width: 575.98px) {
+      div#cookie-notice.cookie-notice-visible .cookie-notice-container {
+        max-width: 90%; } }
+    div#cookie-notice.cookie-notice-visible .cookie-notice-container #cn-notice-text, div#cookie-notice.cookie-notice-visible .cookie-notice-container .cookie_btm_txt {
+      color: #9bd7d1;
+      font-size: .8rem;
+      line-height: 1.3rem;
+      padding-top: 1em; }
+    div#cookie-notice.cookie-notice-visible .cookie-notice-container #cn-accept-cookie {
+      background: #3e9b92;
+      color: #dedede;
+      margin: -.2rem 0 0;
+      width: 95%;
+      padding: .8rem;
+      border-radius: .5rem;
+      font-size: 1rem;
+      border: none;
+      transition: 0.3s; }
+      div#cookie-notice.cookie-notice-visible .cookie-notice-container #cn-accept-cookie:hover {
+        background: #3e9b92;
+        color: #dedede; }
+      @media (max-width: 575.98px) {
+        div#cookie-notice.cookie-notice-visible .cookie-notice-container #cn-accept-cookie {
+          margin: -.2rem 0 4rem; } }
+    div#cookie-notice.cookie-notice-visible .cookie-notice-container span {
+      display: block;
+      padding-bottom: 1em;
+      letter-spacing: 0; }
 
 /* Woocommerce */

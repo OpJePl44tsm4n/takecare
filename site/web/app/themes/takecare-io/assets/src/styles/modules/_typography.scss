@@ -1,33 +1,26 @@
 /* Setting Fonts */
 
 @font-face {
-	font-family: "Encode Sans Narrow";
-	src: url('../fonts/EncodeSansNarrow-400-Regular.ttf') format('truetype');
+	font-family: "MavenPro Regular";
+	src: url('../fonts/MavenPro-Regular.ttf') format('truetype');
 	direction: ltr;
 }
 
 @font-face {
-	font-family: "Encode Sans Narrow Light";
-	src: url('../fonts/EncodeSansNarrow-300-Light.ttf') format('truetype');
+	font-family: "MavenPro Medium";
+	src: url('../fonts/MavenPro-Medium.ttf') format('truetype');
 	direction: ltr;
 }
 
 @font-face {
-	font-family: "Encode Sans Narrow Medium";
-	src: url('../fonts/EncodeSansNarrow-500-Medium.ttf') format('truetype');
-	direction: ltr;
-}
-
-
-@font-face {
-	font-family: "Encode Sans Narrow SemiBold";
-	src: url('../fonts/EncodeSansNarrow-600-SemiBold.ttf') format('truetype');
+	font-family: "MavenPro Bold";
+	src: url('../fonts/MavenPro-Bold.ttf') format('truetype');
 	direction: ltr;
 }
 
 @font-face {
-	font-family: "Encode Sans Narrow Black";
-	src: url('../fonts/EncodeSansNarrow-700-Bold.ttf') format('truetype');
+	font-family: "MavenPro Black";
+	src: url('../fonts/MavenPro-Black.ttf') format('truetype');
 	direction: ltr;
 }
 
@@ -50,11 +43,11 @@
   direction: ltr;
 }
 
-$primary-font: "Encode Sans Narrow", sans-serif;
-$primary-font-light: "Encode Sans Narrow Light", sans-serif;
-$primary-font-medium: "Encode Sans Narrow Medium", sans-serif;
-$primary-font-bold: "Encode Sans Narrow SemiBold", sans-serif;
-$primary-font-black: "Encode Sans Narrow Black", sans-serif;
+$primary-font: "MavenPro Regular", sans-serif;
+$primary-font-light: $primary-font;
+$primary-font-medium: "MavenPro Medium", sans-serif;
+$primary-font-bold: "MavenPro Bold", sans-serif;
+$primary-font-black: "MavenPro Black", sans-serif;
 
 $secondary-font: "Bebas Neue Regular", sans-serif;
 $secondary-font-light: "Bebas Neue Light", sans-serif;

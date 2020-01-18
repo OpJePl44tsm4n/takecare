@@ -4,11 +4,9 @@
             <div class="container">
                 <div class="row justify-content-around">
                     <?php 
-                        if (!is_front_page() || (is_front_page() && $slug === 'home') ) : 
-                            if ( is_active_sidebar( 'footer-widget' ) ) {
-                                dynamic_sidebar( 'footer-widget' ); 
-                            }
-                        endif; 
+                        if ( is_active_sidebar( 'footer-widget' ) ) {
+                            dynamic_sidebar( 'footer-widget' ); 
+                        }
                     ?> 
                 </div>
             </div>

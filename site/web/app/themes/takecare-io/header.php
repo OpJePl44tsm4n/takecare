@@ -41,40 +41,32 @@
     <header class="site-header">
         <nav id="main-nav" class="navbar navbar-dark fixed-top transparant">
             <div class="container">    
-                <?php 
-                $frontpage_id = get_option( 'page_on_front' );
-                $slug = get_post_field( 'post_name', $frontpage_id );
-                // only show the menu on home when slug is home 
-                if (!is_front_page() || (is_front_page() && $slug === 'home') ) : ?>
                     
-                    <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
-                        <button class="navbar-toggler" type="button">
-                            <?php /*<span><?php _e('Menu', WhiteLabelTheme::THEME_SLUG ); ?></span>*/?>
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
+                <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
+                    <button class="navbar-toggler" type="button">
+                        <?php /*<span><?php _e('Menu', WhiteLabelTheme::THEME_SLUG ); ?></span>*/?>
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarCollapse" data-parent="#main-nav">
+                    <div class="close-btn d-flex">
+                        <button class="navbar-toggler mr-auto close" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Close navigation"><span aria-hidden="true">&times;</span></button>
                     </div>
 
-                    <div class="collapse navbar-collapse" id="navbarCollapse" data-parent="#main-nav">
-                        <div class="close-btn d-flex">
-                            <button class="navbar-toggler mr-auto close" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Close navigation"><span aria-hidden="true">&times;</span></button>
-                        </div>
-
-                        <div class="nav-wrap">
-                            <?php wp_nav_menu( array( 
-                                'theme_location' => 'header-menu',
-                                'container' => false,
-                                'menu_class' => 'nav navbar-nav mr-auto', 
-                                'container_id'    => 'bs4navbar',
-                                'menu_id'         => false,
-                                'depth'           => 3,
-                                'fallback_cb'     => 'bs4navwalker::fallback',
-                                'walker' => new Greylabel\Vendor\bs4NavWalker()
-                            ) ); ?> 
-                        </div>
+                    <div class="nav-wrap">
+                        <?php wp_nav_menu( array( 
+                            'theme_location' => 'header-menu',
+                            'container' => false,
+                            'menu_class' => 'nav navbar-nav mr-auto', 
+                            'container_id'    => 'bs4navbar',
+                            'menu_id'         => false,
+                            'depth'           => 3,
+                            'fallback_cb'     => 'bs4navwalker::fallback',
+                            'walker' => new Greylabel\Vendor\bs4NavWalker()
+                        ) ); ?> 
                     </div>
-                        
-                    
-                <?php endif; ?>
+                </div>
 
                 <div class="brand-wrapper">
                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="home">

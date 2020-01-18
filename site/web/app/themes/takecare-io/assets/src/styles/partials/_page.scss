@@ -166,7 +166,7 @@ article.page-content {
 
 			> .card { 
 				padding: 2em 1em;
-				max-width: 750px;
+				max-width: 810px;
 
 				&.secondary-bg-color * {
 					color: $primary-bg-color;
@@ -176,7 +176,7 @@ article.page-content {
 			.editor {
 
 				&.col-md-12 {
-					max-width: 750px;
+					max-width: 810px;
 					margin: auto;
 				} 
 
@@ -261,7 +261,11 @@ article.page-content {
 					padding-top: 4em;
 				}	
 
-
+                a {
+                    color: #3e9b92;
+                    font-family: "MavenPro Bold",sans-serif;
+                }
+                
 				.logo {
 					// max-width: 96px;
 					padding: 1em 0;
