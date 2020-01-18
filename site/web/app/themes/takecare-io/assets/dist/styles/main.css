@@ -9370,7 +9370,9 @@ article.page-content section.row.content-block p a:not(.btn) {
 article.page-content section.row.content-block > .card {
   padding: 2em 1em;
   max-width: 810px; }
-  article.page-content section.row.content-block > .card.secondary-bg-color * {
+  article.page-content section.row.content-block > .card.secondary-bg-color p,
+  article.page-content section.row.content-block > .card.secondary-bg-color h2,
+  article.page-content section.row.content-block > .card.secondary-bg-color h3 {
     color: #fff; }
 
 article.page-content section.row.content-block .editor.col-md-12 {

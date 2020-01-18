@@ -168,7 +168,9 @@ article.page-content {
 				padding: 2em 1em;
 				max-width: 810px;
 
-				&.secondary-bg-color * {
+				&.secondary-bg-color p, 
+				&.secondary-bg-color h2,
+				&.secondary-bg-color h3 {
 					color: $primary-bg-color;
 				}
 			}
