@@ -120,13 +120,13 @@
                 "id": ""
             },
             "taxonomy": "category",
-            "field_type": "select",
-            "allow_null": 0,
+            "field_type": "checkbox",
             "add_term": 1,
             "save_terms": 1,
             "load_terms": 1,
             "return_format": "id",
-            "multiple": 0
+            "multiple": 0,
+            "allow_null": 0
         },
         {
             "key": "field_5de7872e2f032",
@@ -149,6 +149,79 @@
             "load_terms": 0,
             "return_format": "object",
             "multiple": 0
+        },
+        {
+            "key": "field_5e25f6a16ad48",
+            "label": "Mission",
+            "name": "mission",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "🚀",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5e25f6c16ad49",
+            "label": "Vision",
+            "name": "vision",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "💭",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5e25f6d76ad4a",
+            "label": "Impact",
+            "name": "impact",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "✨",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5e25f75dacb97",
+            "label": "Team",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
         },
         {
             "key": "field_5bd4862544bbb",
@@ -1213,5 +1286,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1576342766
+    "modified": 1579546493
 }

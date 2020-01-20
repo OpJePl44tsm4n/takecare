@@ -9732,6 +9732,9 @@ footer#footer {
   footer#footer ul {
     list-style: none;
     padding: 0; }
+    footer#footer ul li a {
+      padding: .2em .5em;
+      display: inline-block; }
   footer#footer a {
     color: #fff; }
 
