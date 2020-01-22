@@ -9372,9 +9372,13 @@ article.page-content section.row.content-block p a:not(.btn) {
 article.page-content section.row.content-block > .card {
   padding: 2em 1em;
   max-width: 810px; }
+  article.page-content section.row.content-block > .card.p-0 {
+    padding-top: 0;
+    padding-bottom: 0; }
   article.page-content section.row.content-block > .card.secondary-bg-color p,
   article.page-content section.row.content-block > .card.secondary-bg-color h2,
-  article.page-content section.row.content-block > .card.secondary-bg-color h3 {
+  article.page-content section.row.content-block > .card.secondary-bg-color h3,
+  article.page-content section.row.content-block > .card.secondary-bg-color div {
     color: #fff; }
   @media (max-width: 991.98px) {
     article.page-content section.row.content-block > .card {
@@ -10198,11 +10202,9 @@ form div.wpcf7-response-output {
         height: 40px;
         width: auto; }
 
-.mailchimp_form {
-  padding-top: 2em; }
-  .mailchimp_form h2 {
-    font-family: "MavenPro Bold", sans-serif;
-    text-transform: unset; }
+.mailchimp_form h2 {
+  font-family: "MavenPro Bold", sans-serif;
+  text-transform: unset; }
 
 .mc-signup {
   text-align: center; }
@@ -11012,16 +11014,19 @@ article.page-content section.row-0 .container .row {
   article.page-content section.row-0 .container .row .col-md-6.editor .vertical-align .content {
     text-align: left; }
 
-section.team-members .team-member {
-  padding: 1em 0;
-  text-align: center; }
-  section.team-members .team-member img {
-    height: 150px; }
-  section.team-members .team-member h4 {
-    margin: .5em 0 0;
-    font-family: "MavenPro Medium", sans-serif; }
-  section.team-members .team-member p {
-    margin-bottom: 0; }
+section.team-members .container > .row {
+  -ms-flex-pack: center;
+      justify-content: center; }
+  section.team-members .container > .row .team-member {
+    padding: 1em 0;
+    text-align: center; }
+    section.team-members .container > .row .team-member img {
+      height: 150px; }
+    section.team-members .container > .row .team-member h4 {
+      margin: .5em 0 0;
+      font-family: "MavenPro Medium", sans-serif; }
+    section.team-members .container > .row .team-member p {
+      margin-bottom: 0; }
 
 div#cookie-notice.cookie-notice-visible {
   background-color: rgba(62, 155, 146, 0.8) !important;

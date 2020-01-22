@@ -1,22 +1,25 @@
 section.team-members {
 	
-	.team-member {
-		padding: 1em 0;
-		text-align: center; 
+	.container > .row {
+		justify-content: center;
 
-		img {
-			height: 150px;
-		}
+		.team-member {
+			padding: 1em 0;
+			text-align: center; 
 
-		h4 {
-			margin: .5em 0 0;
-			font-family: $primary-font-medium;
-		}
+			img {
+				height: 150px;
+			}
 
-		p {
-			margin-bottom: 0;
+			h4 {
+				margin: .5em 0 0;
+				font-family: $primary-font-medium;
+			}
+
+			p {
+				margin-bottom: 0;
+			}
 		}
 	}
-	
 }
 
