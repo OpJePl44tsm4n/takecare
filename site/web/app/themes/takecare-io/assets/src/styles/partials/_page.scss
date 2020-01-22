@@ -168,7 +168,7 @@ article.page-content {
 				padding: 2em 1em;
 				max-width: 810px;
 				
-				&.p-0 {
+				.p-0 & {
 					padding-top: 0;
 					padding-bottom: 0;
 				}

@@ -38,7 +38,7 @@
                 if ( Object.keys( jqXHR.responseJSON ).length === 0 && JSON.stringify( jqXHR.responseJSON ) === JSON.stringify([]) ) {
                     toggle_load_btns();
                 } else {
-                    console.log(jqXHR.responseJSON);
+    
                     $.each( jqXHR.responseJSON, function( index, post ) {
 
                         if(postType == 'company'){

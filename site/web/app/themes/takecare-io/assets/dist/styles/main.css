@@ -9372,7 +9372,7 @@ article.page-content section.row.content-block p a:not(.btn) {
 article.page-content section.row.content-block > .card {
   padding: 2em 1em;
   max-width: 810px; }
-  article.page-content section.row.content-block > .card.p-0 {
+  .p-0 article.page-content section.row.content-block > .card {
     padding-top: 0;
     padding-bottom: 0; }
   article.page-content section.row.content-block > .card.secondary-bg-color p,
