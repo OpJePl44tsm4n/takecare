@@ -9401,9 +9401,11 @@ article.page-content section.row.content-block .editor h3 {
   article.page-content section.row.content-block .faq_list + .faq_list {
     margin: 2em 0 -2em; } }
 
-@media (min-width: 768px) {
-  article.page-content section.row.content-block .single_image:not(.col-md-12) {
-    padding: 1em; } }
+article.page-content section.row.content-block .single_image:not(.col-md-12) {
+  padding: 1em 0; }
+  @media (min-width: 768px) {
+    article.page-content section.row.content-block .single_image:not(.col-md-12) {
+      padding: 1em; } }
 
 article.page-content section.row.content-block .single_image .content {
   text-align: center; }
