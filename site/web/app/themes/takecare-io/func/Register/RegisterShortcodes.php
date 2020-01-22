@@ -144,7 +144,7 @@ class RegisterShortcodes {
             'name'           => false,
             'form_url' => '',
             'signup_type' => 'website',
-            'btn_text'  =>  __('Subscribe' , Brandclick::THEME_SLUG )
+            'btn_text'  =>  __('Subscribe' , Greylabel::THEME_SLUG )
         ),
         $atts,
         'MAILCHIMP_SIGNUP' );

@@ -11,7 +11,7 @@
                 <div class="newsletter" id="mc_embed_signup_scroll">
                     <div class="mc-field-group">
                         <?php if ($atts['name'] != false) { ?>     
-                        <input type="text" value="" placeholder="<?php _e( 'Name', WhiteLabelTheme::THEME_SLUG ); ?>" name="FNAME" class="required" id="mce-FNAME"><?php } ?><input type="email" value="" placeholder="<?php _e( 'Email Address', WhiteLabelTheme::THEME_SLUG ); ?>" name="EMAIL" class="required email" id="mce-EMAIL">
+                        <input type="text" value="" placeholder="<?php _e( 'Name', TakeCareIo::THEME_SLUG ); ?>" name="FNAME" class="required" id="mce-FNAME"><?php } ?><input type="email" value="" placeholder="<?php _e( 'Email Address', TakeCareIo::THEME_SLUG ); ?>" name="EMAIL" class="required email" id="mce-EMAIL">
                     </div>
                     <button type="submit" name="subscribe" id="mc-embedded-subscribe" class="btn btn-secondary"><?php _e( 'Subscribe', TakeCareIo::THEME_SLUG ); ?></button>
                     <div id="mce-responses" class="clear">

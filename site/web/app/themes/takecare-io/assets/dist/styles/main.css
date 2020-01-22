@@ -10642,7 +10642,7 @@ ul.socials {
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    color: #92cee1;
+    color: #0085A3;
     padding: 5px; }
     ul.socials a:hover {
       color: #3e9b92; }
@@ -10655,14 +10655,14 @@ ul.socials {
   #footer ul.socials {
     display: inline; }
     #footer ul.socials a {
-      border: 1px #92cee1;
+      border: 1px #00323d;
       -ms-transform: translateY(30%);
           transform: translateY(30%);
       font-size: 1rem;
-      color: #3e9b92; }
+      color: #fff; }
       #footer ul.socials a:hover {
-        background: #dedede;
-        color: #3e9b92; }
+        background: #fff;
+        color: #0085A3; }
 
 .carousel {
   width: 100%;

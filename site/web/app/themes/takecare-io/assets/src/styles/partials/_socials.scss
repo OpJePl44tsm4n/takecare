@@ -12,7 +12,7 @@ ul.socials {
 		height: 30px;
 		width: 30px;
 		border-radius: 50%; 
-		color:  darken($tertiary-bg-color, 20%);
+		color:  $secondary-bg-color;
 		padding: 5px; 
 
 		&:hover {
@@ -31,14 +31,14 @@ ul.socials {
 		display: inline;
 
 		a {
-			border: 1px darken($tertiary-bg-color, 20%);
+			border: 1px darken($secondary-bg-color, 20%);
 			transform: translateY(30%);
     		font-size: 1rem;
-			color: $primary-color;
+			color: $primary-bg-color;
 
     		&:hover {
-    			background: $secondary-color;
-				color: $primary-color;
+    			background: $primary-bg-color;
+				color: $secondary-bg-color;
 			}
 		}
 	}
