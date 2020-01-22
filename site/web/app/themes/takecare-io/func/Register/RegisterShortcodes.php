@@ -138,10 +138,28 @@ class RegisterShortcodes {
     /**
     *   Mailchimp 
     */
-    public function shortcode__register_mailchimp_signup() 
+    public function shortcode__register_mailchimp_signup( $atts ) 
     {   
+        $atts = shortcode_atts( array(
+            'name'           => false,
+            'form_url' => '',
+            'signup_type' => 'website',
+            'btn_text'  =>  __('Subscribe' , Brandclick::THEME_SLUG )
+        ),
+        $atts,
+        'MAILCHIMP_SIGNUP' );
+
+
+        if ($atts['form_url'] != '' ) {
+            $form_url = $atts['form_url'];
+        }
+
+        else{
+            $form_url = get_option( 'mailchimp_url' );
+        }
+
         ob_start();
-            get_template_part('inc/partials/form-mailchimp-sm');
+            include(locate_template('inc/partials/form-mailchimp-sm.php', false, false));
         $content = ob_get_clean();
         return $content; 
     }

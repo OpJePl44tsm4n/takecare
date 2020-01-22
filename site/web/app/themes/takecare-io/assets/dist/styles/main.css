@@ -9374,6 +9374,10 @@ article.page-content section.row.content-block > .card {
   article.page-content section.row.content-block > .card.secondary-bg-color h2,
   article.page-content section.row.content-block > .card.secondary-bg-color h3 {
     color: #fff; }
+  @media (max-width: 991.98px) {
+    article.page-content section.row.content-block > .card {
+      border: unset;
+      border-radius: unset; } }
 
 article.page-content section.row.content-block .editor.col-md-12 {
   max-width: 810px;
@@ -9396,6 +9400,10 @@ article.page-content section.row.content-block .editor h3 {
 @media (max-width: 767.98px) {
   article.page-content section.row.content-block .faq_list + .faq_list {
     margin: 2em 0 -2em; } }
+
+@media (min-width: 768px) {
+  article.page-content section.row.content-block .single_image:not(.col-md-12) {
+    padding: 1em; } }
 
 article.page-content section.row.content-block .single_image .content {
   text-align: center; }
@@ -10218,7 +10226,8 @@ form div.wpcf7-response-output {
       padding: 0;
       left: 0; }
   #mc_embed_signup form button {
-    display: inline-block; }
+    display: inline-block;
+    margin: 6px 0; }
   #mc_embed_signup form #mce-responses {
     font-size: 0.7em;
     height: 3em; }

@@ -173,6 +173,11 @@ article.page-content {
 				&.secondary-bg-color h3 {
 					color: $primary-bg-color;
 				}
+
+				@include media-breakpoint-down(md) {
+					border: unset;
+					border-radius: unset;
+				}
 			}
 
 			.editor {
@@ -209,6 +214,12 @@ article.page-content {
 			}
 
 			.single_image {
+				
+				@include media-breakpoint-up(md) {
+					&:not(.col-md-12){
+						padding: 1em;
+					}
+				}
 				
 				.content {
 					text-align: center;
