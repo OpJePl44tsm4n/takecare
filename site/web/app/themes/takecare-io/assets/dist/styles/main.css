@@ -10340,7 +10340,14 @@ video {
   position: relative;
   padding-bottom: 56.25%;
   /* 16:9 */
-  height: 0; }
+  height: 0;
+  transition: padding 500ms ease; }
+  .video-wrapper:not(.playing) {
+    height: 400px;
+    padding: 0; }
+  .video-wrapper .btn.play-btn, .video-wrapper .woocommerce a.play-btn.button, .woocommerce .video-wrapper a.play-btn.button, .video-wrapper .woocommerce button.play-btn.button, .woocommerce .video-wrapper button.play-btn.button, .video-wrapper .contact.track-phone button.play-btn, .contact.track-phone .video-wrapper button.play-btn {
+    font-size: 1rem;
+    text-shadow: 1px 1px #000; }
   .video-wrapper iframe {
     display: none; }
   .video-wrapper img {
