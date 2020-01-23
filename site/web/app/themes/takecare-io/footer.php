@@ -13,7 +13,7 @@
         </footer>
 
         <?php
-            include(locate_template('inc/popup.php'));
+            // include(locate_template('inc/popup.php'));
             wp_footer(); 
         ?>
 
