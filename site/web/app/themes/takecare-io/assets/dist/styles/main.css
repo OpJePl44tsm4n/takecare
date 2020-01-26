@@ -10565,7 +10565,8 @@ section.post-grid .post {
       section.post-grid .post .card .content p {
         font-size: 0.8em;
         line-height: 1.6em;
-        min-height: 40px; }
+        min-height: 40px;
+        text-align: left; }
       section.post-grid .post .card .content .meta {
         font-size: .8em; }
         section.post-grid .post .card .content .meta hr {
