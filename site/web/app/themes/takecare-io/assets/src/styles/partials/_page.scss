@@ -339,6 +339,38 @@ article.page-content {
 				}	
 			}
 		}
+		
+		ul#goals {
+		    list-style: none;
+		    padding:0;
+		    margin: 2em 0;
+
+		    li {
+		        padding-left: 2em;
+		        margin-bottom: 1em;
+		        position: relative;
+		        font-family: $primary-font-medium;
+		        font-size: .9em;
+		        
+		        &:before {
+		            position: absolute;
+		            left: 0;
+		            top: 50%;
+		            transform: translateY(-50%);
+		        }
+		        &#mission:before {
+		            content: '\1F680';
+		        }
+
+		        &#vision:before {
+		            content: '\1F4AD';
+		        }
+
+		        &#impact:before {
+		            content: '\2728';
+		        }
+		    }
+		}
 
 		.site-link {
 			margin: 1.5em 0 1.5em; 

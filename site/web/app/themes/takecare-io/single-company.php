@@ -10,6 +10,12 @@
             $featured = wp_get_attachment_image( $featured_id, 'full' );
             $website = get_field('website');
             $address_obj = get_field('adress'); 
+            
+            $mission = get_field('mission');
+            $vision = get_field('vision'); 
+            $impact = get_field('impact'); 
+
+
             $credits = sprintf('<span class="credits">%s: %s</span>', __('Source', TakeCareIo::THEME_SLUG ), get_the_title() ); ?>
 
             <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?> >
@@ -87,7 +93,28 @@
                 
                 <section class="row">
                     <div class="container content-sm">
-                        <?php the_content(); 
+                        <?php 
+                            $goals = [
+                                [   'id' => 'mission',
+                                    'value' => $mission
+                                ],
+                                [   'id' => 'vision',
+                                    'value' => $vision
+                                ],
+                                [   'id' => 'impact',
+                                    'value' => $impact
+                                ]
+                            ];
+
+                            echo '<ul id="goals">';
+                            foreach ($goals as $goal) {
+                                if($goal['value'] !== ''){
+                                    printf('<li id="%s">%s</li>', $goal['id'], $goal['value']);
+                                }
+                            }
+                            echo '</ul>';
+                            
+                            the_content(); 
 
                             if( $website ) {
                                 echo sprintf('<a class="site-link btn btn-primary" target="_blank" href="%s">%s %s %s <i class="fa fa-external-link"></i></a>', 

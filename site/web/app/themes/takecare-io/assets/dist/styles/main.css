@@ -9485,6 +9485,29 @@ article.page-content.company .header .grid-item.featured {
       article.page-content.company .header .grid-item.featured .thumb {
         margin-left: -4.5em; } }
 
+article.page-content.company ul#goals {
+  list-style: none;
+  padding: 0;
+  margin: 2em 0; }
+  article.page-content.company ul#goals li {
+    padding-left: 2em;
+    margin-bottom: 1em;
+    position: relative;
+    font-family: "MavenPro Medium", sans-serif;
+    font-size: .9em; }
+    article.page-content.company ul#goals li:before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%); }
+    article.page-content.company ul#goals li#mission:before {
+      content: '\1F680'; }
+    article.page-content.company ul#goals li#vision:before {
+      content: '\1F4AD'; }
+    article.page-content.company ul#goals li#impact:before {
+      content: '\2728'; }
+
 article.page-content.company .site-link {
   margin: 1.5em 0 1.5em; }
 
