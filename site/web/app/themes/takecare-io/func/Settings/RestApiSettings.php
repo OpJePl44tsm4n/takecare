@@ -34,10 +34,24 @@ class RestApiSettings {
         $suggestions = array();
         
         $args = [
-            's' => $term,
             'post_type' => $post_type,
             'post_status' => array('publish')
         ];
+
+        if($term = term_exists($term, 'city')) {
+            
+            $args['tax_query'] = [                
+                [
+                  'taxonomy' => 'city',
+                  'field' => 'id',
+                  'terms' => $term['term_id']
+                ]
+            ];
+
+        } else {
+            $args['s'] = $term;
+        }
+        
         $loop = new \WP_Query($args);
         
         while( $loop->have_posts() ) {
