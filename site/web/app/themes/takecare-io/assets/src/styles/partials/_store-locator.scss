@@ -1,5 +1,40 @@
 .map-wrap {
 	position: relative;
+	
+
+	.mapboxgl-popup-content {
+		width: 300px;
+		max-width: 95vw;
+        background: $primary-bg-color;
+		display: flex;
+		align-items: center;
+		
+		div {
+			display: inline-block;
+			width: auto;
+			
+			&.content {
+				padding-left: 1em;
+			}
+
+            img { 
+				max-width: 90px; 
+            }
+
+            .adress { 
+				padding: 0; 
+            }
+        }    
+
+        a {
+        	color: $primary-color;
+
+        	span {
+        		text-decoration: underline;
+        	}	
+        }
+	}
+
 
 	.leaflet-left {
 	    left: initial;

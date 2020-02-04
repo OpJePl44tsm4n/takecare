@@ -7,7 +7,7 @@
         loadMoreButton.css({ opacity: 0}); 
         var loading = false; 
         var postOffset = loadMoreButton.data('offset') ? loadMoreButton.data('offset') : 0;
-        var nextPosts = postOffset; 
+        var pageIndex = 2; 
         var postType = loadMoreButton.data('postType');
         var cat = loadMoreButton.data('cat');
         var tax = loadMoreButton.data('tax');
@@ -17,7 +17,7 @@
 
             var data = {
                 per_page: postOffset,
-                offset: nextPosts,
+                page: pageIndex,
             };
 
             // only add a category if there is one (no cat breaks wp api)    
@@ -85,18 +85,17 @@
                         }
 
                         $('.post-grid .row').append(html);
-                        nextPosts++;
-                        loading = false; 
 
-                        if(post.post_grid_data.next_post == false){
-                            toggle_load_btns();
-                            loading = true; 
-                        }
                     } );
 
-                    // if( Object.keys( jqXHR.responseJSON ).length < postOffset )  {
-                    //     toggle_load_btns();
-                    // }
+                    loading = false; 
+                    total_pages = parseInt( jqXHR.getResponseHeader('X-WP-TotalPages'), 10 );
+
+                    if ( pageIndex == total_pages ) {
+                        toggle_load_btns();
+                    }
+
+                    pageIndex++;
                     
                 }
 
@@ -139,8 +138,6 @@
                 getNewPost();
             }
         });
-
-
 
     } );
 

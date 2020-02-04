@@ -10885,6 +10885,27 @@ ul.socials {
 
 .map-wrap {
   position: relative; }
+  .map-wrap .mapboxgl-popup-content {
+    width: 300px;
+    max-width: 95vw;
+    background: #fff;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center; }
+    .map-wrap .mapboxgl-popup-content div {
+      display: inline-block;
+      width: auto; }
+      .map-wrap .mapboxgl-popup-content div.content {
+        padding-left: 1em; }
+      .map-wrap .mapboxgl-popup-content div img {
+        max-width: 90px; }
+      .map-wrap .mapboxgl-popup-content div .adress {
+        padding: 0; }
+    .map-wrap .mapboxgl-popup-content a {
+      color: #3e9b92; }
+      .map-wrap .mapboxgl-popup-content a span {
+        text-decoration: underline; }
   .map-wrap .leaflet-left {
     left: initial;
     right: 10px; }
