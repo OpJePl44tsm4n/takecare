@@ -4,7 +4,6 @@
         // Get posts 
         $('.pagination').toggle();
         var loadMoreButton = $('.load-more__btn'); 
-        loadMoreButton.css({ opacity: 0}); 
         var loading = false; 
         var postOffset = loadMoreButton.data('offset') ? loadMoreButton.data('offset') : 0;
         var pageIndex = 2; 
@@ -105,25 +104,15 @@
 
         }
 
-
-        var isInViewport = function (elem) {
-            var bounding = elem.getBoundingClientRect();
-            return (
-                bounding.top >= 0 &&
-                bounding.left >= 0 &&
-                bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
-        };
-
         if (loadMoreButton.length) {
-            window.addEventListener('scroll', function (event) {
-                if ( !loading  && isInViewport(loadMoreButton[0])) {
-                    if (!loading) {
-                        getNewPost();   
-                    }
+
+            // Click handler for getting new posts
+            loadMoreButton.on('click', function(){
+                if (!loading) {
+                    getNewPost();
                 }
-            }, false);
+            });
+
         }
         
         function toggle_load_btns(){
@@ -132,12 +121,7 @@
         }
 
 
-        // Click handler for getting new posts
-        loadMoreButton.on('click', function(){
-            if (!loading) {
-                getNewPost();
-            }
-        });
+        
 
     } );
 

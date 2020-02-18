@@ -7,7 +7,15 @@ class CreateStoreGeojson {
 	public function __construct()
   	{	
         // Actions
-        add_action( 'save_post_store',                      array( $this, 'action__create_geojson_object') ); 
+        add_action( 'init',                      array( $this, 'action__create_geojson_object'), 99 ); 
+
+        if ( ! wp_next_scheduled( 'process_company_json' ) ) {
+            wp_schedule_event( time(), 'hourly', 'process_company_json' ); //daily
+        }
+
+        // Actions
+        add_action( 'process_company_json',                      array( $this, 'action__create_geojson_object') ); 
+
     }
 
 	/**
@@ -15,20 +23,20 @@ class CreateStoreGeojson {
     */
     public function action__create_geojson_object() 
     {
-	 	$geojson = [
+        $geojson = [
            'type'      => 'FeatureCollection',
            'features'  => []
         ]; 
 
-        $file_name = 'stores.geojson'; 
+        $file_name = 'companies.geojson'; 
         $stores = $this::prepare_store_data(); 
-        $cities = $this::prepare_city_data(); 
-       	$data = array_merge($stores, $cities);
-       	$geojson['features'] = $data;
+        // $cities = $this::prepare_city_data(); 
+        // $data = array_merge($stores, $cities);
+        $geojson['features'] = $stores;
   
-       	if(!empty( $data )) {
-       		CreateDataFile::create_json_file($geojson, $file_name); 
-       	}
+        if(!empty( $stores )) {
+            CreateDataFile::create_json_file($geojson, $file_name); 
+        }
     }    
 
 
@@ -52,13 +60,16 @@ class CreateStoreGeojson {
             foreach ( $posts as $post ) : 
                 setup_postdata( $post );
          
-                $city = get_field('city', $post->ID);
+                $terms = get_the_terms( $post->ID, 'city' );
+                $city = isset($terms[0]) ? array_pop($terms) : false;
+                $city_title = isset($city->name) ? $city->name : '';
+                $city_slug = isset($city->slug) ? $city->slug : '';
                 $store_title = $post->post_title;
                 $store_url = get_field('url', $post->ID);
-                $location_obj = get_field('location', $post->ID); 
-                $address_obj = explode(', ', $location_obj['address']);
+                $location_obj = get_field('adress', $post->ID); 
+                $address_obj = isset($location_obj['address']) ? explode(', ', $location_obj['address']) : [];
                 $address = isset($address_obj[0]) ? $address_obj[0] : '';
-                $postcode = isset($address_obj[1]) ? str_replace( ' ' . $city->name, '', $address_obj[1]) : '';
+                $postcode = isset($address_obj[1]) ? str_replace( ' ' . $city_title, '', $address_obj[1]) : '';
           
               	if(isset($location_obj['lng']) && isset($location_obj['lat'])) {
 	                $feature = array(
@@ -71,19 +82,15 @@ class CreateStoreGeojson {
 	                    'properties' => [
 	                        'name' => $store_title,
 	                        'type' => 'store',
-	                        // 'marker-color' => '#f9ed1a',
-	                        // 'marker-size' => 'small',
-	                        // 'marker-symbol' => 'circle',
-	                        'city' => $city->name,
+                            'city' => $city_title,
+	                        'city_slug' => $city_slug,
 	                        'postcode' => $postcode,
 	                        'address' => $address,
 	                        'site' => $store_url,
                             "icon" => [
                                 'className' => 'custom-marker-icon',
-                                // 'html' => '', 
                                 'iconSize' => 'null' 
                             ]
-
 	                    ]
 	                );
 	          

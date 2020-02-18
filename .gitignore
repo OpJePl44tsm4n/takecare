@@ -1,4 +1,8 @@
 
+site/web/app/themes/\.DS_Store
+
+\.DS_Store
+
 site/web/app/themes/takecare/node_modules/
 
 site/web/app/themes/takecare-io/node_modules/

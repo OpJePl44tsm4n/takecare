@@ -385,8 +385,9 @@ jQuery(document).ready(function($){
     var url = wp_api_object.ajaxUrl + "?action=search_autocomplete&post_type=company";
     $( "#s" ).autocomplete({
         source: url,
-        delay: 500,
+        delay: 200,
         minLength: 3,
+        cache: false,
         select: function( event, ui ) { 
             window.location.href = ui.item.link;
         }

@@ -4,8 +4,6 @@ use Greylabel\Greylabel;
 
 class RegisterPostTypes {
 
-
-
     /**
     *   register new post types 
     */
@@ -51,7 +49,7 @@ class RegisterPostTypes {
                 'hierarchical'        => false,
                 'public'              => true,
                 'query_var'           => true,
-                'rewrite'             => array( 'slug' => $post_type['slug'], 'with_front' => false  ),
+                'rewrite'             => array( 'slug' => $post_type['slug'], 'with_front' => false ),
                 'show_ui'             => true,
                 'show_in_menu'        => true,
                 'show_in_nav_menus'   => true,
@@ -88,6 +86,7 @@ class RegisterPostTypes {
                 'show_admin_column'     => true,
                 'public'                => true,
                 'show_in_rest'          => false,
+                'show_ui'               => true,
                 'has_archive'           => false,
             )
         );  
@@ -101,7 +100,8 @@ class RegisterPostTypes {
                 'hierarchical'          => true,
                 'show_admin_column'     => true,
                 'public'                => true,
-                'show_in_rest'          => false,
+                'show_in_rest'          => true,
+                'show_ui'               => true,
                 'has_archive'           => false,
             )
         );

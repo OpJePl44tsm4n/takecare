@@ -66,8 +66,26 @@ class UpdateExternalData {
                 }
 
             endwhile;  
-     
+        }
+
+
+        // update city 
+        $cities = get_the_terms( $post_id, 'city' );
+        $city = isset($cities[0]) ? $cities[0] : false;
+
+        if( !$city ){
+            $address_obj = get_field('adress', $post_id);
             
+            if(isset($address_obj['city'])){
+               $new_term = wp_insert_term($address_obj['city'], 'city');
+
+               if(is_wp_error($new_term)){
+                    wp_set_post_terms($post->ID, $new_term->error_data['term_exists'], 'city'); 
+               } else {
+                    wp_set_post_terms($post->ID, $new_term['term_id'], 'city'); 
+               }
+               
+            }
         }
     }
     

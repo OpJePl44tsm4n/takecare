@@ -27,21 +27,6 @@
                     $cities = get_the_terms( get_the_id(), 'city' );
                     $city = isset($cities[0]) ? $cities[0] : false;
 
-                    if( !$city ){
-                        $address_obj = get_field('adress');
-                        
-                        if(isset($address_obj['city'])){
-                           $new_term = wp_insert_term($address_obj['city'], 'city');
-
-                           if(is_wp_error($new_term)){
-                                wp_set_post_terms($post->ID, $new_term->error_data['term_exists'], 'city'); 
-                           } else {
-                                wp_set_post_terms($post->ID, $new_term['term_id'], 'city'); 
-                           }
-                           
-                        }
-                    }
-
                     if($city) {
                         echo sprintf('<a class="city" target="_blank" href="%s"><i class="fa fa-map-marker"></i> %s</a>', 
                             get_term_link($city->term_id),
