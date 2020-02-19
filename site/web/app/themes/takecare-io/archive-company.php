@@ -88,10 +88,12 @@ $offset = get_query_var('posts_per_page');
                 <?php if ($next_post) : ?>
                     <footer>
 
-                        <div class="load-more">
-                            <div class="btn btn-secondary load-more__btn" data-post-type="company" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $tax_name; ?>" data-cat="<?php echo $term_id; ?>">
+                        <div class="load-more" style="padding-bottom: 3em;">
+                
+                            <button class="btn btn-primary load-more__btn" data-post-type="company" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $category; ?>">
                                 <?php _e('Load more', TakeCareIo::THEME_SLUG )  ?>
-                            </div>
+                            </button>
+
                             <div class="load-more__no-more hidden">
                                 <?php echo  _e('No more', TakeCareIo::THEME_SLUG ); ?>
                             </div>
