@@ -10256,7 +10256,8 @@ form div.wpcf7-response-output {
       left: 0; }
   #mc_embed_signup form button {
     display: inline-block;
-    margin: 6px 0; }
+    margin: 6px 0;
+    width: auto; }
   #mc_embed_signup form #mce-responses {
     font-size: 0.7em;
     height: 3em; }

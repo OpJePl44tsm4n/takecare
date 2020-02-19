@@ -395,8 +395,7 @@ jQuery(document).ready(function($){
       return $( "<li>" )
         .append( "<div><div class=\"logo\">" + item.logo + "</div>" + item.label + "</div>" )
         .appendTo( ul );
-    };; 
-        
+    };
     
     // add swipe functionality to bootstrap carousel
     $(".carousel").on("touchstart", function(event){
