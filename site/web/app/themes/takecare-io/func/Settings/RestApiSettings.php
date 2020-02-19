@@ -29,7 +29,7 @@ class RestApiSettings {
     */
     public function action__get_search_autocomplete() 
     {   
-        $term = strtolower( $_GET['term'] );
+        $search = strtolower( $_GET['term'] );
         $post_type = strtolower( $_GET['post_type'] );
         $suggestions = array();
         
@@ -38,7 +38,7 @@ class RestApiSettings {
             'post_status' => array('publish')
         ];
 
-        if($term = term_exists($term, 'city')) {
+        if($term = term_exists($search, 'city')) {
             
             $args['tax_query'] = [                
                 [
@@ -49,7 +49,7 @@ class RestApiSettings {
             ];
 
         } else {
-            $args['s'] = $term;
+            $args['s'] = $search;
         }
         
         $loop = new \WP_Query($args);
