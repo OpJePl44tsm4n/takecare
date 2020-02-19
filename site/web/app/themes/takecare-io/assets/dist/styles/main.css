@@ -10243,7 +10243,7 @@ form div.wpcf7-response-output {
     @media (min-width: 576px) {
       #mc_embed_signup form .mc-field-group {
         width: 30%;
-        padding-right: 0.8em; } }
+        padding-right: 0.4em; } }
     #mc_embed_signup form .mc-field-group input {
       padding: 12px 15px 16px; }
     #mc_embed_signup form .mc-field-group div.mce_inline_error {
@@ -10257,7 +10257,8 @@ form div.wpcf7-response-output {
   #mc_embed_signup form button {
     display: inline-block;
     margin: 6px 0;
-    width: auto; }
+    width: auto;
+    padding: 18px 15px 16px; }
   #mc_embed_signup form #mce-responses {
     font-size: 0.7em;
     height: 3em; }
@@ -10265,7 +10266,7 @@ form div.wpcf7-response-output {
     padding: 2px 0 0; }
     .textwidget #mc_embed_signup form .mc-field-group {
       width: 100%;
-      max-width: 260px;
+      max-width: 255px;
       position: relative; }
       .textwidget #mc_embed_signup form .mc-field-group input {
         border: 2px solid #42aacb;

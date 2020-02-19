@@ -27,7 +27,7 @@
 
         @include media-breakpoint-up(sm) {
             width: 30%;
-            padding-right: 0.8em;
+            padding-right: 0.4em;
         }
 
         input {
@@ -49,6 +49,7 @@
         display: inline-block; 
         margin: 6px 0;
         width: auto;
+        padding: 18px 15px 16px;
     }
 
     #mce-responses {
@@ -62,7 +63,7 @@
 
         .mc-field-group {
             width:100%;
-            max-width: 260px;
+            max-width: 255px;
             position: relative;
             
             input {
