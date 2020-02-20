@@ -11,7 +11,8 @@ if($taxonomy !== '') {
 $featured_id = $category ? get_field('featured_image', $taxonomy . '_' . $category) : false;
 $featured = wp_get_attachment_image( $featured_id, 'full' );
 
-$offset = get_query_var('posts_per_page');
+global $wp_query;
+$offset = $wp_query->post_count;
 ?>
 
     <main id="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">

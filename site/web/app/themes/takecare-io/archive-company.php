@@ -19,7 +19,7 @@ if( is_tag() ) {
     $cat_name = $category->name;
     $featured = wp_get_attachment_image( $featured_id, 'full' );
 }
-global $wp_query
+global $wp_query;
 $offset = $wp_query->post_count;
 
 ?>
