@@ -19,8 +19,9 @@ if( is_tag() ) {
     $cat_name = $category->name;
     $featured = wp_get_attachment_image( $featured_id, 'full' );
 }
+global $wp_query
+$offset = $wp_query->post_count;
 
-$offset = get_query_var('posts_per_page');
 ?>
 
     <main id="content" class="<?php echo $taxonomy; ?>" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
@@ -90,7 +91,7 @@ $offset = get_query_var('posts_per_page');
 
                         <div class="load-more" style="padding-bottom: 3em;">
                 
-                            <button class="btn btn-primary load-more__btn" data-post-type="company" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $category; ?>">
+                            <button class="btn btn-primary load-more__btn" data-post-type="company" data-offset="<?php echo $offset; ?>" data-s="" data-tax="<?php echo $taxonomy; ?>" data-cat="<?php echo $term_id; ?>">
                                 <?php _e('Load more', TakeCareIo::THEME_SLUG )  ?>
                             </button>
 

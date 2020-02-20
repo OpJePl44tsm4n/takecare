@@ -14,13 +14,16 @@
         function getNewPost() {
             loading = true; 
 
-            var data = {
-                per_page: postOffset,
-                page: pageIndex,
-            };
+            var data = {};
+
+            // no tax 
+            if(cat == '' && tax == ''){
+                data.per_page =  postOffset;
+                data.page = pageIndex;
+            }
 
             // only add a category if there is one (no cat breaks wp api)    
-            if (cat && tax == '') {
+            if (cat && tax == '' || tax == 'category') {
                 data.categories = cat; 
             } 
 
