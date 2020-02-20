@@ -23,10 +23,8 @@
             // only add a category if there is one (no cat breaks wp api)    
             if (cat && tax == '' || tax == 'category') {
                 data.categories = cat; 
-            } 
-
-            if (tax) {
-                data[tax] = cat; 
+            } else if ( tax == 'tag') {
+                data.tags = cat; 
             }
 
             $.ajax( {

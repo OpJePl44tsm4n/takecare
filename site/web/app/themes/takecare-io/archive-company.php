@@ -21,6 +21,7 @@ if( is_tag() ) {
 }
 global $wp_query;
 $offset = $wp_query->post_count;
+$posts_per_page = get_query_var('posts_per_page');
 
 ?>
 
@@ -86,7 +87,7 @@ $offset = $wp_query->post_count;
                     </div>
                 </section>    
 
-                <?php if ($next_post) : ?>
+                <?php if ($next_post && $offset == $posts_per_page) : ?>
                     <footer>
 
                         <div class="load-more" style="padding-bottom: 3em;">

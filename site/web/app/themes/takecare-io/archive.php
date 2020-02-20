@@ -13,6 +13,7 @@ $featured = wp_get_attachment_image( $featured_id, 'full' );
 
 global $wp_query;
 $offset = $wp_query->post_count;
+$posts_per_page = get_query_var('posts_per_page');
 ?>
 
     <main id="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
@@ -62,7 +63,7 @@ $offset = $wp_query->post_count;
                 </section>    
 
                 <footer>
-                    <?php if ($next_post) : ?>
+                    <?php if ($next_post && $offset == $posts_per_page) : ?>
 
                         <div class="load-more" style="padding-bottom: 3em;">
                          
