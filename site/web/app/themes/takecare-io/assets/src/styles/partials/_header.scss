@@ -45,13 +45,16 @@ header.site-header {
 		.brand-wrapper {
 			text-align: center;
 		    display: inline-block;
-		    width: 180px;
 		    z-index: 22;
 		    -ms-transform: scale(.85);
 		    transform: scale(.85);
 			
 			@include media-breakpoint-down(md) {
 		        margin: auto;
+		    }
+
+		    img {
+		    	height: 55px;
 		    }
 
 		}
@@ -92,6 +95,7 @@ header.site-header {
 			@include media-breakpoint-up(md) {
 	            margin-left: 3em;
 	            width: auto;
+	            max-width: 360px;
 			}
 
 	        input {
@@ -102,6 +106,7 @@ header.site-header {
 	            border-top-right-radius: 0;
 	            border-bottom-right-radius: 0;
 	            outline: none;
+	            color: darken($secondary-color, 40%);
 	        }
 
 	        button { 
@@ -112,12 +117,14 @@ header.site-header {
 	            padding: 0;
 	            border-top-left-radius: 0;
 	            border-bottom-left-radius: 0;
+	            background: $secondary-color;
 
 	            i:before {
 	            	position: absolute;
 				    left: 2px;
 				    top: -2px;
 				    font-size: 1em;
+				    color: darken($secondary-color, 30%);
 	            }
 	        }
 	    }

@@ -27,14 +27,14 @@
             </form>
         </div>
    
-        <script type='text/javascript'>jQuery(document).ready(function($) {
+       <!--  <script type='text/javascript'>jQuery(document).ready(function($) {
             window.fnames = new Array(); 
             window.ftypes = new Array();
             fnames[0]='EMAIL';ftypes[0]='email';
             fnames[1]='SIGNUPTYPE';ftypes[1]='text';
             fnames[2]='LOCATION';ftypes[2]='text';
-            <?php if ($atts['name'] != false) { ?> fnames[3]='FNAME';ftypes[3]='text'; <?php } ?>
-            var $mcj = jQuery.noConflict(true);});</script>
+            <?php // if ($atts['name'] != false) { ?> fnames[3]='FNAME';ftypes[3]='text'; <?php // } ?>
+            var $mcj = jQuery.noConflict(true);});</script> -->
     
     <?php
     wp_enqueue_script( 'mc-validate', 'https://s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js', array( 'jquery' ), '', true ); 

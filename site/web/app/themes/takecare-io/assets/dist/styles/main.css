@@ -9518,16 +9518,7 @@ article.page-content.company #term-list {
     margin-right: .8em; }
 
 .navbar-collapse {
-  border: none;
-  transition: width 0.6s, height .001s;
-  padding-left: 2em;
-  top: 0px;
-  position: absolute;
-  left: 0;
-  width: 0;
-  height: 100vh;
-  z-index: 4;
-  overflow: hidden; }
+  border: none; }
   .navbar-collapse .nav-wrap {
     padding: 0 35px;
     min-width: 300px;
@@ -9588,7 +9579,8 @@ article.page-content.company #term-list {
   .navbar-collapse .nav {
     padding: 0; }
     .navbar-collapse .nav li {
-      padding: 0.4em 1em; }
+      padding: 0.4em 1em;
+      font-size: .9em; }
       .navbar-collapse .nav li .dropdown-menu {
         margin: 0;
         padding: 5px 0 8px;
@@ -9658,13 +9650,14 @@ header.site-header #main-nav.navbar {
   header.site-header #main-nav.navbar .brand-wrapper {
     text-align: center;
     display: inline-block;
-    width: 180px;
     z-index: 22;
     -ms-transform: scale(0.85);
     transform: scale(0.85); }
     @media (max-width: 991.98px) {
       header.site-header #main-nav.navbar .brand-wrapper {
         margin: auto; } }
+    header.site-header #main-nav.navbar .brand-wrapper img {
+      height: 55px; }
   header.site-header #main-nav.navbar > .container {
     max-width: 100%;
     -ms-flex-pack: left;
@@ -9692,7 +9685,8 @@ header.site-header #main-nav.navbar {
     @media (min-width: 768px) {
       header.site-header #main-nav.navbar form {
         margin-left: 3em;
-        width: auto; } }
+        width: auto;
+        max-width: 360px; } }
     header.site-header #main-nav.navbar form input {
       padding: 0 1em;
       height: 40px;
@@ -9700,7 +9694,8 @@ header.site-header #main-nav.navbar {
       width: calc(100% - 35px);
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      outline: none; }
+      outline: none;
+      color: #787878; }
     header.site-header #main-nav.navbar form button {
       display: inline-block;
       margin-top: -3px;
@@ -9708,12 +9703,14 @@ header.site-header #main-nav.navbar {
       height: 40px;
       padding: 0;
       border-top-left-radius: 0;
-      border-bottom-left-radius: 0; }
+      border-bottom-left-radius: 0;
+      background: #dedede; }
       header.site-header #main-nav.navbar form button i:before {
         position: absolute;
         left: 2px;
         top: -2px;
-        font-size: 1em; }
+        font-size: 1em;
+        color: #929292; }
 
 footer#footer {
   background: #0085A3;
