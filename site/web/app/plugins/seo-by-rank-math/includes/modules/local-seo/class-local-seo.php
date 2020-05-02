@@ -66,6 +66,8 @@ class Local_Seo {
 	 * Ajax search pages.
 	 */
 	public function search_pages() {
+		$this->has_cap_ajax( 'general' );
+
 		$term = Param::get( 'term' );
 		if ( empty( $term ) ) {
 			exit;
@@ -102,12 +104,11 @@ class Local_Seo {
 		}
 
 		$entity = [
-			'@context' => 'https://schema.org',
-			'@type'    => '',
-			'@id'      => '',
-			'name'     => '',
-			'url'      => get_home_url(),
-			'sameAs'   => $this->get_social_profiles(),
+			'@type'  => '',
+			'@id'    => '',
+			'name'   => '',
+			'url'    => get_home_url(),
+			'sameAs' => $this->get_social_profiles(),
 		];
 
 		$json_ld->add_prop( 'email', $entity );

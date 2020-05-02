@@ -445,7 +445,7 @@
                         "class": "",
                         "id": ""
                     },
-                    "taxonomy": "category",
+                    "taxonomy": "investors",
                     "field_type": "multi_select",
                     "allow_null": 0,
                     "add_term": 1,
@@ -1268,5 +1268,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1588432927
+    "modified": 1588435680
 }

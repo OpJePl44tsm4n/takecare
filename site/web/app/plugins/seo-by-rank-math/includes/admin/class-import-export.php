@@ -32,7 +32,9 @@ class Import_Export implements Runner {
 	 * Register hooks.
 	 */
 	public function hooks() {
-		$this->action( 'init', 'register_page', 1 );
+		$this->action( 'admin_init', 'handler' );
+		$this->action( 'admin_enqueue_scripts', 'enqueue', 1 );
+		$this->filter( 'rank_math/tools/pages', 'add_status_page', 30 );
 		$this->filter( 'rank_math/export/settings', 'export_other_panels', 10, 2 );
 		$this->action( 'rank_math/import/settings/pre_import', 'run_backup', 10, 0 );
 
@@ -44,8 +46,53 @@ class Import_Export implements Runner {
 	}
 
 	/**
+	 * Add subpage to Status & Tools screen.
+	 *
+	 * @param array $pages Pages.
+	 * @return array       New pages.
+	 */
+	public function add_status_page( $pages ) {
+		$pages['import_export'] = [
+			'url'   => 'status',
+			'args'  => 'view=import_export',
+			'cap'   => 'manage_options',
+			'title' => __( 'Import & Export', 'rank-math' ),
+			'class' => '\\RankMath\\Admin\\Import_Export',
+		];
+
+		return $pages;
+	}
+
+	/**
+	 * Display Import/Export tools.
+	 *
+	 * @return void
+	 */
+	public function display() {
+		include( Admin_Helper::get_view( 'import-export/main' ) );
+	}
+
+	/**
+	 * Add JSON.
+	 *
+	 * @return void
+	 */
+	public function enqueue() {
+		wp_enqueue_script( 'rank-math-import-export', rank_math()->plugin_url() . 'assets/admin/js/import-export.js' );
+		wp_enqueue_style( 'cmb2-styles' );
+		wp_enqueue_style( 'rank-math-common' );
+		wp_enqueue_style( 'rank-math-cmb2' );
+
+		Helper::add_json( 'importConfirm', esc_html__( 'Are you sure you want to import settings into Rank Math? Don\'t worry, your current configuration will be saved as a backup.', 'rank-math' ) );
+		Helper::add_json( 'restoreConfirm', esc_html__( 'Are you sure you want to restore this backup? Your current configuration will be overwritten.', 'rank-math' ) );
+		Helper::add_json( 'deleteBackupConfirm', esc_html__( 'Are you sure you want to delete this backup?', 'rank-math' ) );
+		Helper::add_json( 'cleanPluginConfirm', esc_html__( 'Are you sure you want erase traces of plugin?', 'rank-math' ) );
+	}
+
+	/**
 	 * Register admin pages for plugin.
 	 */
+	/*
 	public function register_page() {
 		new Page(
 			'rank-math-import-export',
@@ -72,6 +119,7 @@ class Import_Export implements Runner {
 		Helper::add_json( 'deleteBackupConfirm', esc_html__( 'Are you sure you want to delete this backup?', 'rank-math' ) );
 		Helper::add_json( 'cleanPluginConfirm', esc_html__( 'Are you sure you want erase traces of plugin?', 'rank-math' ) );
 	}
+	*/
 
 	/**
 	 * Handle import or export.
@@ -80,6 +128,10 @@ class Import_Export implements Runner {
 		$object_id = Param::post( 'object_id' );
 		if ( false === $object_id ) {
 			return;
+		}
+
+		if ( ! Helper::has_cap( 'general' ) ) {
+			return false;
 		}
 
 		if ( 'export-plz' === $object_id && check_admin_referer( 'rank-math-export-settings' ) ) {
@@ -133,6 +185,7 @@ class Import_Export implements Runner {
 	 */
 	public function create_backup() {
 		$this->verify_nonce( 'rank-math-ajax-nonce' );
+		$this->has_cap_ajax( 'general' );
 
 		$key = $this->run_backup();
 		if ( is_null( $key ) ) {
@@ -152,6 +205,7 @@ class Import_Export implements Runner {
 	 */
 	public function delete_backup() {
 		$this->verify_nonce( 'rank-math-ajax-nonce' );
+		$this->has_cap_ajax( 'general' );
 
 		$key = Param::post( 'key' );
 		if ( ! $key ) {
@@ -167,6 +221,7 @@ class Import_Export implements Runner {
 	 */
 	public function restore_backup() {
 		$this->verify_nonce( 'rank-math-ajax-nonce' );
+		$this->has_cap_ajax( 'general' );
 
 		$key = Param::post( 'key' );
 		if ( ! $key ) {
@@ -353,7 +408,7 @@ class Import_Export implements Runner {
 			\RankMath\Redirections\DB::add(
 				[
 					'url_to'      => $redirection['url_to'],
-					'sources'     => unserialize( $redirection['sources'] ),
+					'sources'     => maybe_unserialize( $redirection['sources'] ),
 					'header_code' => $redirection['header_code'],
 					'hits'        => $redirection['hits'],
 					'created'     => $redirection['created'],
@@ -439,7 +494,7 @@ class Import_Export implements Runner {
 	 * @return bool
 	 */
 	private function is_action_allowed( $perform ) {
-		$allowed = [ 'settings', 'postmeta', 'termmeta', 'usermeta', 'redirections', 'deactivate' ];
+		$allowed = [ 'settings', 'postmeta', 'termmeta', 'usermeta', 'redirections', 'blocks', 'deactivate' ];
 		return $perform && in_array( $perform, $allowed, true );
 	}
 }

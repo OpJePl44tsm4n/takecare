@@ -29,7 +29,6 @@ class Router {
 	public function __construct() {
 		$this->action( 'init', 'init', 1 );
 		$this->action( 'parse_query', 'request_sitemap', 1 );
-		$this->filter( 'redirect_canonical', 'redirect_canonical' );
 		$this->action( 'template_redirect', 'template_redirect', 0 );
 		$this->action( 'after_setup_theme', 'reduce_query_load', 99 );
 	}
@@ -50,17 +49,6 @@ class Router {
 	}
 
 	/**
-	 * Stop trailing slashes on sitemap.xml URLs.
-	 *
-	 * @param string $redirect The redirect URL currently determined.
-	 *
-	 * @return boolean|string $redirect
-	 */
-	public function redirect_canonical( $redirect ) {
-		return ( get_query_var( 'sitemap' ) || get_query_var( 'xsl' ) ) ? false : $redirect;
-	}
-
-	/**
 	 * Serves sitemap when needed using correct sitemap module
 	 *
 	 * @param WP_Query $query The WP_Query instance (passed by reference).
@@ -72,6 +60,7 @@ class Router {
 
 		$xsl = get_query_var( 'xsl' );
 		if ( ! empty( $xsl ) ) {
+			$this->filter( 'user_has_cap', 'filter_user_has_cap' );
 			$stylesheet = new Stylesheet;
 			$stylesheet->output( $xsl );
 			return;

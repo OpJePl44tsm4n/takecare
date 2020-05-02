@@ -49,6 +49,13 @@ class Redirection {
 	private $domain = null;
 
 	/**
+	 * Hold state.
+	 *
+	 * @var string
+	 */
+	private $is_new = true;
+
+	/**
 	 * Retrieve Redirection instance.
 	 *
 	 * @param integer $id Redirection ID.
@@ -109,6 +116,10 @@ class Redirection {
 	public function __construct( $data, $nocache = false ) {
 		$this->data    = $data;
 		$this->nocache = $nocache;
+
+		if ( isset( $data['id'] ) && $data['id'] > 0 ) {
+			$this->is_new = false;
+		}
 	}
 
 	/**
@@ -158,6 +169,15 @@ class Redirection {
 	}
 
 	/**
+	 * Is new redirection.
+	 *
+	 * @return int
+	 */
+	public function is_new() {
+		return $this->is_new;
+	}
+
+	/**
 	 * Has sources.
 	 *
 	 * @return bool
@@ -191,7 +211,7 @@ class Redirection {
 	public function add_sources( $sources ) {
 		foreach ( $sources as $key => $value ) {
 			$value['comparison'] = empty( $value['comparison'] ) ? 'exact' : $value['comparison'];
-			$this->add_source( $value['pattern'], $value['comparison'] );
+			$this->add_source( $value['pattern'], $value['comparison'], isset( $value['ignore'] ) ? 'case' : '' );
 		}
 	}
 
@@ -200,8 +220,9 @@ class Redirection {
 	 *
 	 * @param string $pattern    Pattern to add.
 	 * @param string $comparison Comparison for pattern.
+	 * @param string $ignore     Ignore flag.
 	 */
-	public function add_source( $pattern, $comparison ) {
+	public function add_source( $pattern, $comparison, $ignore = '' ) {
 		$pattern = trim( $pattern );
 		if ( empty( $pattern ) ) {
 			return;
@@ -213,6 +234,7 @@ class Redirection {
 		}
 
 		$this->data['sources'][] = [
+			'ignore'     => $ignore,
 			'pattern'    => $pattern,
 			'comparison' => $comparison,
 		];
@@ -231,7 +253,7 @@ class Redirection {
 			$processed = site_url( $processed );
 		}
 
-		$this->data['url_to'] = urldecode( $processed );
+		$this->data['url_to'] = $processed;
 	}
 
 	/**

@@ -62,6 +62,8 @@ class Ask_Review {
 	 * Set "already reviewed" flag.
 	 */
 	public function already_reviewed() {
+		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
+		$this->has_cap_ajax( 'onpage_general' );
 		update_option( 'rank_math_already_reviewed', current_time( 'timestamp' ) );
 		$this->success( 'success' );
 	}
@@ -83,7 +85,7 @@ class Ask_Review {
 			<div class="stars-wrapper">
 
 				<div class="face">
-					<div class="smiley normal">
+					<div class="smiley happy">
 						<div class="eyes">
 							<div class="eye"></div>
 							<div class="eye"></div>
@@ -94,7 +96,7 @@ class Ask_Review {
 
 				<div class="stars">
 					<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
-						<a href="https://s.rankmath.com/reviewrankmath" target="_blank">
+						<a href="https://s.rankmath.com/wpreview" target="_blank" class="highlighted">
 							<span class="dashicons dashicons-star-filled"></span>
 						</a>
 					<?php } ?>
@@ -150,7 +152,10 @@ class Ask_Review {
 					$( '#already-reviewed' ).change(function() {
 						$.ajax({
 							url: ajaxurl,
-							data: { action: 'rank_math_already_reviewed' },
+							data: {
+								action: 'rank_math_already_reviewed',
+								security: rankMath.security,
+							},
 						});
 						rating_contents.animate({
 							opacity: 0.01

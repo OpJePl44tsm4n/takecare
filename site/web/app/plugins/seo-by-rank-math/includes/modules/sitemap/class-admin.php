@@ -15,6 +15,7 @@ use RankMath\Helper;
 use RankMath\Module\Base;
 use RankMath\Admin\Options;
 use MyThemeShop\Helpers\Str;
+use MyThemeShop\Helpers\Param;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -40,10 +41,9 @@ class Admin extends Base {
 		parent::__construct();
 
 		$this->action( 'init', 'register_setting_page', 999 );
-		$this->filter( 'rank_math/sitemap/settings', 'post_type_settings' );
-		$this->filter( 'rank_math/sitemap/settings', 'taxonomy_settings' );
-		$this->filter( 'rank_math/sitemap/settings', 'special_seprator' );
-		$this->action( 'rank_math/metabox/settings/advanced', 'metabox_settings_advanced', 9 );
+		$this->filter( 'rank_math/settings/sitemap', 'post_type_settings' );
+		$this->filter( 'rank_math/settings/sitemap', 'taxonomy_settings' );
+		$this->filter( 'rank_math/settings/sitemap', 'special_seprator' );
 
 		// Attachment.
 		$this->filter( 'media_send_to_editor', 'media_popup_html', 10, 2 );
@@ -64,7 +64,7 @@ class Admin extends Base {
 				'file'  => $this->directory . '/settings/general.php',
 				'desc'  => esc_html__( 'This tab contains settings related to the XML sitemaps.', 'rank-math' ) . ' <a href="' . KB::get( 'sitemap-general' ) . '" target="_blank">' . esc_html__( 'Learn more', 'rank-math' ) . '</a>',
 				/* translators: sitemap url */
-				'after' => $this->get_notice_start() . sprintf( esc_html__( 'When sitemaps are enabled, your sitemap index can be found here: %s', 'rank-math' ), '<a href="' . $sitemap_url . '" target="_blank">' . $sitemap_url . '</a>' ) . '</p></div>',
+				'after' => $this->get_notice_start() . sprintf( esc_html__( 'Your sitemap index can be found here: %s', 'rank-math' ), '<a href="' . $sitemap_url . '" target="_blank">' . $sitemap_url . '</a>' ) . '</p></div>' . $this->get_nginx_notice(),
 			),
 		);
 
@@ -78,7 +78,7 @@ class Admin extends Base {
 			);
 		}
 
-		$tabs = $this->do_filter( 'sitemap/settings', $tabs );
+		$tabs = $this->do_filter( 'settings/sitemap', $tabs );
 
 		new Options( array(
 			'key'        => 'rank-math-options-sitemap',
@@ -220,57 +220,6 @@ class Admin extends Base {
 	 */
 
 	/**
-	 * Metabox settings in advanced tab.
-	 *
-	 * @param \CMB2 $cmb The CMB2 metabox object.
-	 */
-	public function metabox_settings_advanced( $cmb ) {
-		$cmb->add_field( array(
-			'id'         => 'rank_math_news_sitemap_genres',
-			'type'       => 'text',
-			'name'       => esc_html__( 'News Sitemap - Genres', 'rank-math' ),
-			'desc'       => wp_kses_post( __( 'A comma-separated list of properties characterizing the content of the article, such as "PressRelease" or "UserGenerated." See <a href="https://support.google.com/news/publisher/answer/93992" target="_blank">Google News content properties</a> for a list of possible values.', 'rank-math' ) ),
-			'default'    => 'Blog',
-			'show_on_cb' => array( $this, 'show_on' ),
-		) );
-
-		$cmb->add_field( array(
-			'id'         => 'rank_math_news_sitemap_keywords',
-			'type'       => 'text',
-			'name'       => esc_html__( 'News Sitemap - Keywords', 'rank-math' ),
-			'desc'       => wp_kses_post( __( 'A comma-separated list of keywords describing the topic of the article. Keywords may be drawn from, but are not limited to, the list of existing Google News keywords. More information: <a href="https://support.google.com/news/publisher/answer/116037" target="_blank">Google News keywords</a>.', 'rank-math' ) ),
-			'show_on_cb' => array( $this, 'show_on' ),
-		) );
-
-		$cmb->add_field( array(
-			'id'         => 'rank_math_news_sitemap_stock_tickers',
-			'type'       => 'text',
-			'name'       => esc_html__( 'News Sitemap - Stock Tickers', 'rank-math' ),
-			'desc'       => wp_kses_post( __( 'A comma-separated list of up to 5 stock tickers of the companies, mutual funds, or other financial entities that are the main subject of the article. Relevant primarily for business articles. More information: <a href="https://support.google.com/news/publisher/answer/74288" target="_blank">Creating a Google News Sitemap</a>.', 'rank-math' ) ),
-			'show_on_cb' => array( $this, 'show_on' ),
-		) );
-	}
-
-	/**
-	 * Show field check callback.
-	 *
-	 * @param CMB2_Field $field The current field.
-	 *
-	 * @return boolean
-	 */
-	public function show_on( $field ) {
-
-		$news_sitemap_enabled = Helper::is_module_active( 'news-sitemap' );
-		$is_post_type_news    = in_array( get_post_type(), (array) Helper::get_settings( 'sitemap.news_sitemap_post_type' ), true );
-
-		if ( $news_sitemap_enabled && $is_post_type_news ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Adds new "exclude from sitemap" checkbox to media popup in the post editor.
 	 *
 	 * @param array  $form_fields Default form fields.
@@ -333,5 +282,34 @@ class Admin extends Base {
 	 */
 	private function get_notice_start() {
 		return '<div class="cmb-row notice notice-alt notice-info info inline" style="border:0;margin:15px 0 -10px;padding: 1px 12px"><p>';
+	}
+
+	/**
+	 * Get nginx notice.
+	 *
+	 * @since 1.0.41
+	 *
+	 * @return string
+	 */
+	private function get_nginx_notice() {
+		if ( empty( Param::server( 'SERVER_SOFTWARE' ) ) ) {
+			return '';
+		}
+
+		$server_software = explode( '/', Param::server( 'SERVER_SOFTWARE' ) );
+		if ( ! in_array( 'nginx', array_map( 'strtolower', $server_software ), true ) ) {
+			return '';
+		}
+
+		return '<div class="sitemap-nginx-notice notice-warning">
+		<p>' . sprintf( __( 'Since you are using NGINX, add this code to your NGINX %s <strong>if your Sitemap pages are not loading</strong> or you can ask your hosting support to add it.', 'rank-math' ), '<a href="https://help.dreamhost.com/hc/en-us/articles/216455077-Nginx-configuration-file-locations/?utm_campaign=Rank+Math" target="_blank">' . __( 'configuration file', 'rank-math' ) . '</a>' ) . '
+		<a href="#"><span class="show">' . __( 'Click here to see the code.', 'rank-math' ) . '</span><span class="hide">' . __( 'Hide', 'rank-math' ) . '</span></a></p>
+<pre>
+# START Nginx Rewrites for Rank Math Sitemaps
+rewrite ^/sitemap_index.xml$ /index.php?sitemap=1 last;
+rewrite ^/([^/]+?)-sitemap([0-9]+)?.xml$ /index.php?sitemap=$1&sitemap_n=$2 last;
+# END Nginx Rewrites for Rank Math Sitemaps
+</pre>
+		</div>';
 	}
 }

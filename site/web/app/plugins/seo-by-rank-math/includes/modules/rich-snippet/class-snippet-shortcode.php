@@ -1,6 +1,6 @@
 <?php
 /**
- * The Rich Snippet Shortcode
+ * The Schema Shortcode
  *
  * @since      1.0.24
  * @package    RankMath
@@ -55,7 +55,7 @@ class Snippet_Shortcode {
 	}
 
 	/**
-	 * Rich Snippet shortcode.
+	 * Schema shortcode.
 	 *
 	 * @param  array $atts Optional. Shortcode arguments - currently only 'show'
 	 *                     parameter, which is a comma-separated list of elements to show.
@@ -148,6 +148,10 @@ class Snippet_Shortcode {
 			return;
 		}
 
+		if ( ! $this->can_add( $id, $post->ID ) ) {
+			return;
+		}
+
 		$id = 'event_startdate_date' === $id ? 'event_startdate' : ( 'event__enddate' === $id ? 'event_enddate' : $id );
 		if ( ! $value = Helper::get_post_meta( "snippet_{$id}", $post->ID ) ) { // phpcs:ignore
 			return;
@@ -156,7 +160,7 @@ class Snippet_Shortcode {
 		<p>
 			<strong><?php echo $field; ?>: </strong>
 			<?php
-			if ( in_array( $id, [ 'recipe_instructions', 'recipe_ingredients', 'book_editions' ], true ) ) {
+			if ( in_array( $id, [ 'recipe_instructions', 'recipe_ingredients', 'book_editions', 'event_attendance_mode' ], true ) ) {
 				$perform = "get_{$id}";
 				$this->$perform( $value );
 				return;
@@ -264,6 +268,21 @@ class Snippet_Shortcode {
 	}
 
 	/**
+	 * Get Book Editions.
+	 *
+	 * @param string $value Attendance Mode.
+	 */
+	public function get_event_attendance_mode( $value ) {
+		$hash = [
+			'online'  => __( 'Online', 'rank-math' ),
+			'offline' => __( 'Offline', 'rank-math' ),
+			'both'    => __( 'Online + Offline', 'rank-math' ),
+		];
+
+		echo ! empty( $hash[ $value ] ) ? $hash[ $value ] : __( 'Offline', 'rank-math' );
+	}
+
+	/**
 	 * Contact info shortcode, displays nicely formatted contact informations.
 	 *
 	 * @param string $type Snippet type.
@@ -323,6 +342,31 @@ class Snippet_Shortcode {
 		];
 
 		return isset( $fields[ $type ] ) ? apply_filters( 'rank_math/snippet/fields', $fields[ $type ] ) : false;
+	}
+
+	/**
+	 * Check if we can add meta data.
+	 *
+	 * @param  string $meta_key Post Meta Key.
+	 * @param  string $post_id  Post ID.
+	 *
+	 * @return bool
+	 */
+	private function can_add( $meta_key, $post_id ) {
+		if ( ! in_array( $meta_key, [ 'event_venue', 'event_venue_url', 'online_event_url', 'event_address' ], true ) ) {
+			return true;
+		}
+
+		$mode = Helper::get_post_meta( 'snippet_event_attendance_mode', $post_id );
+		if ( 'online' === $mode && in_array( $meta_key, [ 'event_venue', 'event_venue_url', 'event_address' ], true ) ) {
+			return false;
+		}
+
+		if ( 'offline' === $mode && 'online_event_url' === $meta_key ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -403,15 +447,16 @@ class Snippet_Shortcode {
 	 */
 	private function get_event_fields() {
 		return [
-			'url'                            => esc_html__( 'URL', 'rank-math' ),
 			'event_type'                     => esc_html__( 'Event Type', 'rank-math' ),
+			'event_attendance_mode'          => esc_html__( 'Event Attendance Mode', 'rank-math' ),
+			'event_status'                   => esc_html__( 'Event Status', 'rank-math' ),
 			'event_venue'                    => esc_html__( 'Venue Name', 'rank-math' ),
 			'event_venue_url'                => esc_html__( 'Venue URL', 'rank-math' ),
 			'event_address'                  => esc_html__( 'Address', 'rank-math' ),
+			'online_event_url'               => esc_html__( 'Online Event URL', 'rank-math' ),
 			'event_performer_type'           => esc_html__( 'Performer', 'rank-math' ),
 			'event_performer'                => esc_html__( 'Performer Name', 'rank-math' ),
 			'event_performer_url'            => esc_html__( 'Performer URL', 'rank-math' ),
-			'event_status'                   => esc_html__( 'Event Status', 'rank-math' ),
 			'event_startdate_date'           => esc_html__( 'Start Date', 'rank-math' ),
 			'event__enddate'                 => esc_html__( 'End Date', 'rank-math' ),
 			'event_ticketurl'                => esc_html__( 'Ticket URL', 'rank-math' ),
@@ -457,8 +502,7 @@ class Snippet_Shortcode {
 			'software_operating_system'     => esc_html__( 'Operating System', 'rank-math' ),
 			'software_application_category' => esc_html__( 'Application Category', 'rank-math' ),
 			'is_rating'                     => [
-				'value' => 'software_rating_value',
-				'count' => 'software_rating_count',
+				'value' => 'software_rating',
 			],
 		];
 	}

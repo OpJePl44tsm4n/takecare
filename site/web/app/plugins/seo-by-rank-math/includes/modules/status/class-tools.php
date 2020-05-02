@@ -42,7 +42,7 @@ class Tools {
 					<tr class='<?php echo sanitize_html_class( $id ); ?>'>
 						<th>
 							<strong class='name'><?php echo esc_html( $tool['title'] ); ?></strong>
-							<p class='description'><?php echo $tool['description']; ?></p>
+							<p><?php echo $tool['description']; ?></p>
 						</th>
 						<td class='run-tool'>
 							<a href='#' class='button button-large button-link-delete tools-action' data-action='<?php echo esc_attr( $id ); ?>' data-confirm="<?php echo isset( $tool['confirm_text'] ) ? esc_attr( $tool['confirm_text'] ) : 'false'; ?>"><?php echo esc_html( $tool['button_text'] ); ?></a>
@@ -63,6 +63,13 @@ class Tools {
 	 */
 	private function get_tools() {
 		$tools = [
+			'yoast_blocks'        => [
+				'title'        => __( 'Yoast Block Converter', 'rank-math' ),
+				'description'  => __( 'Convert FAQ Blocks created using Yoast. Use this option to easily move your previous FAQ Blocks into Rank Math.', 'rank-math' ),
+				'confirm_text' => __( 'Are you sure you want to covert Yoast blocks into Rank Math blocks? This action is irreversible.', 'rank-math' ),
+				'button_text'  => __( 'Convert Blocks', 'rank-math' ),
+			],
+
 			'clear_transients'    => [
 				'title'       => __( 'Remove Rank Math Transients', 'rank-math' ),
 				'description' => __( 'If you see any issue while using Rank Math or one of its options - clearing the Rank Math transients fixes the problem in most cases. Deleting transients does not delete ANY data added using Rank Math.', 'rank-math' ),
@@ -178,6 +185,8 @@ class Tools {
 
 	/**
 	 * Function to convert the Review schema type.
+	 *
+	 * @return string
 	 */
 	public function convert_review() {
 		$posts = Helper::get_review_posts();
@@ -196,5 +205,31 @@ class Tools {
 
 		/* translators: Number of posts updated */
 		return sprintf( __( '%1$s review Posts updated. You can find the list of all converted posts %2$s.', 'rank-math' ), $count, '<a href="' . esc_url( admin_url( 'edit.php?post_type=post&review_posts=1' ) ) . '" target="_blank">here</a>' );
+	}
+
+	/**
+	 * Yoast Block Converter
+	 *
+	 * @return string
+	 */
+	public function yoast_blocks() {
+		$posts = Yoast_Blocks::get()->find_posts();
+		if ( empty( $posts ) ) {
+			return esc_html__( 'No posts found to convert.', 'rank-math' );
+		}
+
+		Yoast_Blocks::get()->start( $posts );
+		$stored = get_option( 'rank_math_yoast_block_posts' );
+		if ( false === $stored ) {
+			$count = count( $posts );
+
+			$posts = [
+				'posts' => $posts,
+				'count' => $count,
+			];
+			update_option( 'rank_math_yoast_block_posts', $posts );
+		}
+
+		return __( 'Conversion started. A success message will be shown here once the process completes.', 'rank-math' );
 	}
 }

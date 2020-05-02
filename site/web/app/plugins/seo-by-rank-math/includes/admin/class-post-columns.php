@@ -12,7 +12,6 @@ namespace RankMath\Admin;
 
 use RankMath\Helper;
 use RankMath\Runner;
-use RankMath\Traits\Ajax;
 use RankMath\Traits\Hooker;
 use MyThemeShop\Helpers\Param;
 
@@ -23,14 +22,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class Post_Columns implements Runner {
 
-	use Hooker, Ajax;
+	use Hooker;
 
 	/**
 	 * Register hooks.
 	 */
 	public function hooks() {
 		$this->action( 'admin_init', 'init' );
-		$this->ajax( 'bulk_edit_columns', 'save' );
 	}
 
 	/**
@@ -52,76 +50,11 @@ class Post_Columns implements Runner {
 	}
 
 	/**
-	 * Save rows.
-	 */
-	public function save() {
-		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
-		$this->has_cap_ajax( 'onpage_general' );
-		$rows = Param::post( 'rows', '', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-		if ( ! $rows ) {
-			$this->error( esc_html__( 'No data found.', 'rank-math' ) );
-		}
-
-		foreach ( $rows as $post_id => $data ) {
-			$post_id = absint( $post_id );
-			if ( ! $post_id ) {
-				continue;
-			}
-
-			$this->save_row( $post_id, $data );
-		}
-
-		$this->success( 'done' );
-	}
-
-	/**
-	 * Save single row.
-	 *
-	 * @param int   $post_id Post id.
-	 * @param array $data    Post data.
-	 */
-	private function save_row( $post_id, $data ) {
-		foreach ( $data as $key => $value ) {
-			$this->save_column( $post_id, $key, $value );
-		}
-	}
-
-	/**
-	 * Save row columns.
-	 *
-	 * @param int    $post_id Post id.
-	 * @param string $column  Column name.
-	 * @param string $value   Column value.
-	 */
-	private function save_column( $post_id, $column, $value ) {
-		if ( ! in_array( $column, [ 'focus_keyword', 'title', 'description', 'image_alt', 'image_title' ], true ) ) {
-			return;
-		}
-
-		if ( 'image_title' === $column ) {
-			wp_update_post([
-				'ID'         => $post_id,
-				'post_title' => $value,
-			]);
-			return;
-		}
-
-		if ( 'focus_keyword' === $column ) {
-			$focus_keyword    = get_post_meta( $post_id, 'rank_math_' . $column, true );
-			$focus_keyword    = explode( ',', $focus_keyword );
-			$focus_keyword[0] = $value;
-			$value            = implode( ',', $focus_keyword );
-		}
-
-		$column = 'image_alt' === $column ? '_wp_attachment_image_alt' : 'rank_math_' . $column;
-		update_post_meta( $post_id, $column, $value );
-	}
-
-	/**
 	 * Register post column hooks.
 	 */
 	private function register_post_columns() {
 		foreach ( Helper::get_allowed_post_types() as $post_type ) {
+			$this->filter( 'edd_download_columns', 'add_columns', 11 );
 			$this->filter( "manage_{$post_type}_posts_columns", 'add_columns', 11 );
 			$this->action( "manage_{$post_type}_posts_custom_column", 'columns_contents', 11, 2 );
 			$this->filter( "manage_edit-{$post_type}_sortable_columns", 'sortable_columns', 11 );
@@ -169,18 +102,15 @@ class Post_Columns implements Runner {
 
 		wp_enqueue_style( 'rank-math-post-bulk-edit', rank_math()->plugin_url() . 'assets/admin/css/post-list.css', null, rank_math()->version );
 
-		$allow_editing = Helper::get_settings( 'titles.pt_' . $screen->post_type . '_bulk_editing' );
+		$allow_editing = Helper::get_settings( 'titles.pt_' . $screen->post_type . '_bulk_editing', true );
 		if ( ! $allow_editing || 'readonly' === $allow_editing ) {
 			return;
 		}
 
 		wp_enqueue_script( 'rank-math-post-bulk-edit', rank_math()->plugin_url() . 'assets/admin/js/post-list.js', null, rank_math()->version, true );
-		wp_localize_script( 'rank-math-post-bulk-edit', 'rankMath', [
-			'security'      => wp_create_nonce( 'rank-math-ajax-nonce' ),
-			'bulkEditTitle' => esc_attr__( 'Bulk Edit This Field', 'rank-math' ),
-			'buttonSaveAll' => esc_attr__( 'Save All Edits', 'rank-math' ),
-			'buttonCancel'  => esc_attr__( 'Cancel', 'rank-math' ),
-		]);
+		Helper::add_json( 'bulkEditTitle', esc_attr__( 'Bulk Edit This Field', 'rank-math' ) );
+		Helper::add_json( 'buttonSaveAll', esc_attr__( 'Save All Edits', 'rank-math' ) );
+		Helper::add_json( 'buttonCancel', esc_attr__( 'Cancel', 'rank-math' ) );
 	}
 
 	/**
@@ -195,7 +125,7 @@ class Post_Columns implements Runner {
 
 		$columns['rank_math_seo_details'] = esc_html__( 'SEO Details', 'rank-math' );
 
-		if ( Helper::get_settings( 'titles.pt_' . $post_type . '_bulk_editing' ) ) {
+		if ( Helper::get_settings( 'titles.pt_' . $post_type . '_bulk_editing', true ) ) {
 			$columns['rank_math_title']       = esc_html__( 'SEO Title', 'rank-math' );
 			$columns['rank_math_description'] = esc_html__( 'SEO Desc', 'rank-math' );
 		}
@@ -253,8 +183,8 @@ class Post_Columns implements Runner {
 			$title = Helper::get_settings( "titles.pt_{$post_type}_title" );
 		}
 		?>
-		<span class="rank-math-column-display"><?php echo $title; ?></span>
-		<span class="rank-math-column-value" data-field="title" contenteditable="true" tabindex="11"><?php echo $title; ?></span>
+		<span class="rank-math-column-display"><?php echo esc_html( $title ); ?></span>
+		<span class="rank-math-column-value" data-field="title" contenteditable="true" tabindex="11"><?php echo esc_html( $title ); ?></span>
 		<div class="rank-math-column-edit">
 			<a href="#" class="rank-math-column-save"><?php esc_html_e( 'Save', 'rank-math' ); ?></a>
 			<a href="#" class="button-link-delete rank-math-column-cancel"><?php esc_html_e( 'Cancel', 'rank-math' ); ?></a>
@@ -275,8 +205,8 @@ class Post_Columns implements Runner {
 			$description = Helper::get_settings( "titles.pt_{$post_type}_description" );
 		}
 		?>
-		<span class="rank-math-column-display"><?php echo $description; ?></span>
-		<span class="rank-math-column-value" data-field="description" contenteditable="true" tabindex="11"><?php echo $description; ?></span>
+		<span class="rank-math-column-display"><?php echo esc_html( $description ); ?></span>
+		<span class="rank-math-column-value" data-field="description" contenteditable="true" tabindex="11"><?php echo esc_html( $description ); ?></span>
 		<div class="rank-math-column-edit">
 			<a href="#" class="rank-math-column-save"><?php esc_html_e( 'Save', 'rank-math' ); ?></a>
 			<a href="#" class="button-link-delete rank-math-column-cancel"><?php esc_html_e( 'Cancel', 'rank-math' ); ?></a>
@@ -314,11 +244,11 @@ class Post_Columns implements Runner {
 		<label><?php _e( 'Focus Keyword', 'rank-math' ); ?>:</label>
 		<span class="rank-math-column-display">
 			<strong title="Focus Keyword"><?php _e( 'Keyword', 'rank-math' ); ?>:</strong>
-			<span><?php echo $keyword ? $keyword : esc_html__( 'Not Set', 'rank-math' ); ?></span>
+			<span><?php echo $keyword ? esc_html( $keyword ) : esc_html__( 'Not Set', 'rank-math' ); ?></span>
 		</span>
 
 		<span class="rank-math-column-value" data-field="focus_keyword" contenteditable="true" tabindex="11">
-			<span><?php echo $keyword; ?></span>
+			<span><?php echo esc_html( $keyword ); ?></span>
 		</span>
 
 		<?php $this->do_action( 'post/column/seo_details', $post_id ); ?>
@@ -327,6 +257,7 @@ class Post_Columns implements Runner {
 			<a href="#" class="rank-math-column-save"><?php esc_html_e( 'Save', 'rank-math' ); ?></a>
 			<a href="#" class="button-link-delete rank-math-column-cancel"><?php esc_html_e( 'Cancel', 'rank-math' ); ?></a>
 		</div>
+
 		<?php
 	}
 
@@ -340,8 +271,8 @@ class Post_Columns implements Runner {
 		if ( 'rank_math_image_title' === $column_name ) {
 			$title = get_the_title( $post_id );
 			?>
-			<span class="rank-math-column-display"><?php echo $title; ?></span>
-			<span class="rank-math-column-value" data-field="image_title" contenteditable="true" tabindex="11"><?php echo $title; ?></span>
+			<span class="rank-math-column-display"><?php echo esc_html( $title ); ?></span>
+			<span class="rank-math-column-value" data-field="image_title" contenteditable="true" tabindex="11"><?php echo esc_html( $title ); ?></span>
 			<div class="rank-math-column-edit">
 				<a href="#" class="rank-math-column-save"><?php esc_html_e( 'Save', 'rank-math' ); ?></a>
 				<a href="#" class="button-link-delete rank-math-column-cancel"><?php esc_html_e( 'Cancel', 'rank-math' ); ?></a>
@@ -353,8 +284,8 @@ class Post_Columns implements Runner {
 		if ( 'rank_math_image_alt' === $column_name ) {
 			$alt = get_post_meta( $post_id, '_wp_attachment_image_alt', true );
 			?>
-			<span class="rank-math-column-display"><?php echo $alt; ?></span>
-			<span class="rank-math-column-value" data-field="image_alt" contenteditable="true" tabindex="11"><?php echo $alt; ?></span>
+			<span class="rank-math-column-display"><?php echo esc_html( $alt ); ?></span>
+			<span class="rank-math-column-value" data-field="image_alt" contenteditable="true" tabindex="11"><?php esc_html( $alt ); ?></span>
 			<div class="rank-math-column-edit">
 				<a href="#" class="rank-math-column-save"><?php esc_html_e( 'Save', 'rank-math' ); ?></a>
 				<a href="#" class="button-link-delete rank-math-column-cancel"><?php esc_html_e( 'Cancel', 'rank-math' ); ?></a>

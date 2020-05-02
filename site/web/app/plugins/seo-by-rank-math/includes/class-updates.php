@@ -38,6 +38,11 @@ class Updates implements Runner {
 		'1.0.30'   => 'updates/update-1.0.30.php',
 		'1.0.36'   => 'updates/update-1.0.36.php',
 		'1.0.36.1' => 'updates/update-1.0.36.1.php',
+		'1.0.37'   => 'updates/update-1.0.37.php',
+		'1.0.37.3' => 'updates/update-1.0.37.3.php',
+		'1.0.39'   => 'updates/update-1.0.39.php',
+		'1.0.40'   => 'updates/update-1.0.40.php',
+		'1.0.42'   => 'updates/update-1.0.42.php',
 	];
 
 	/**
@@ -51,7 +56,7 @@ class Updates implements Runner {
 	 * Check if any update is required.
 	 */
 	public function do_updates() {
-		$installed_version = get_option( 'rank_math_version' );
+		$installed_version = get_option( 'rank_math_version', '1.0.0' );
 
 		// Maybe it's the first install.
 		if ( ! $installed_version ) {
@@ -67,7 +72,7 @@ class Updates implements Runner {
 	 * Perform all updates.
 	 */
 	public function perform_updates() {
-		$installed_version = get_option( 'rank_math_version' );
+		$installed_version = get_option( 'rank_math_version', '1.0.0' );
 
 		foreach ( self::$updates as $version => $path ) {
 			if ( version_compare( $installed_version, $version, '<' ) ) {
@@ -79,6 +84,11 @@ class Updates implements Runner {
 		// Save install date.
 		if ( false === boolval( get_option( 'rank_math_install_date' ) ) ) {
 			update_option( 'rank_math_install_date', current_time( 'timestamp' ) );
+		}
+
+		// Clear rollback option if necessary.
+		if ( rank_math()->version !== get_option( 'rank_math_rollback_version' ) ) {
+			delete_option( 'rank_math_rollback_version' );
 		}
 
 		update_option( 'rank_math_version', rank_math()->version );

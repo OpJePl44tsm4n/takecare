@@ -36,7 +36,7 @@ class AcfSettings {
         acf_update_setting('show_updates', false);
 
         // remove enqued files we don't need
-        acf_update_setting('enqueue_datepicker', false);
+        // acf_update_setting('enqueue_datepicker', false);
         acf_update_setting('enqueue_datetimepicker', false);
         // acf_update_setting('enqueue_select2', false); // this breaks the clone field! 
     }

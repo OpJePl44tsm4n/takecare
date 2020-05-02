@@ -10,7 +10,6 @@
 
 namespace RankMath\Admin\Metabox;
 
-use CMB2_hookup;
 use RankMath\CMB2;
 use RankMath\Helper;
 use RankMath\Runner;
@@ -54,11 +53,10 @@ class Metabox implements Runner {
 		$this->screen = new Screen;
 		if ( $this->screen->is_loaded() ) {
 			$this->action( 'cmb2_admin_init', 'add_main_metabox', 30 );
-			$this->action( 'cmb2_admin_init', 'add_link_suggestion_metabox', 30 );
 			$this->action( 'rank_math/admin/enqueue_scripts', 'enqueue' );
 
-			if ( 'post' === $this->screen->get_object_type() ) {
-				$this->filter( 'is_protected_meta', 'hide_rank_math_meta', 10, 2 );
+			if ( Helper::has_cap( 'link_builder' ) ) {
+				$this->action( 'cmb2_admin_init', 'add_link_suggestion_metabox', 30 );
 			}
 		}
 
@@ -73,6 +71,7 @@ class Metabox implements Runner {
 		$screen = get_current_screen();
 		$js     = rank_math()->plugin_url() . 'assets/admin/js/';
 
+		$this->enqueue_commons();
 		$this->screen->enqueue();
 		$this->screen->localize();
 		rank_math()->variables->setup_json();
@@ -81,27 +80,67 @@ class Metabox implements Runner {
 		$is_elementor = 'elementor' === Param::get( 'action' );
 
 		if ( ! $is_gutenberg && ! $is_elementor ) {
-			CMB2_hookup::enqueue_cmb_css();
-			wp_enqueue_style( 'rank-math-metabox', rank_math()->plugin_url() . 'assets/admin/css/metabox.css', [ 'rank-math-common', 'rank-math-cmb2' ], rank_math()->version );
+			\CMB2_Hookup::enqueue_cmb_css();
+			wp_enqueue_style(
+				'rank-math-metabox',
+				rank_math()->plugin_url() . 'assets/admin/css/metabox.css',
+				[
+					'rank-math-common',
+					'rank-math-cmb2',
+				],
+				rank_math()->version
+			);
 
-			wp_enqueue_script( 'jquery-caret', rank_math()->plugin_url() . 'assets/vendor/jquery.caret.min.js', [ 'jquery' ], '1.3.3', true );
-			wp_enqueue_script( 'jquery-tag-editor', $js . 'jquery.tag-editor.js', [ 'jquery-ui-autocomplete', 'jquery-caret' ], '1.0.21', true );
-			wp_enqueue_script( 'rank-math-analyzer', $js . 'assessor.js', [ 'lodash' ], rank_math()->version, true );
+			wp_enqueue_script(
+				'rank-math-metabox',
+				rank_math()->plugin_url() . 'assets/admin/js/classic.js',
+				[
+					'clipboard',
+					'wp-hooks',
+					'wp-url',
+					'wp-i18n',
+					'rank-math-common',
+					'rank-math-analyzer',
+					'rank-math-validate',
+					'tagify',
+				],
+				rank_math()->version,
+				true
+			);
 		}
 
 		$this->do_action( 'enqueue_scripts/assessor' );
 	}
 
 	/**
-	 * Hide rank math meta keys
-	 *
-	 * @param bool   $protected Whether the key is considered protected.
-	 * @param string $meta_key  Meta key.
-	 *
-	 * @return bool
+	 * Enqueque scripts common for all builders.
 	 */
-	public function hide_rank_math_meta( $protected, $meta_key ) {
-		return Str::starts_with( 'rank_math_', $meta_key ) ? true : $protected;
+	private function enqueue_commons() {
+		wp_register_script( 'rank-math-analyzer', rank_math()->plugin_url() . 'assets/admin/js/analyzer.js', [ 'lodash', 'wp-autop', 'wp-wordcount' ], rank_math()->version, true );
+
+		if ( function_exists( 'wp_set_script_translations' ) ) {
+			$this->filter( 'load_script_translation_file', 'load_script_translation_file', 10, 3 );
+			wp_set_script_translations( 'rank-math-analyzer', 'rank-math', rank_math()->plugin_dir() . 'languages/' );
+			wp_set_script_translations( 'rank-math-gutenberg', 'rank-math', rank_math()->plugin_dir() . 'languages/' );
+		}
+	}
+
+	/**
+	 * Function to replace domain with seo-by-rank-math in translation file.
+	 *
+	 * @param string|false $file   Path to the translation file to load. False if there isn't one.
+	 * @param string       $handle Name of the script to register a translation domain to.
+	 * @param string       $domain The text domain.
+	 */
+	public function load_script_translation_file( $file, $handle, $domain ) {
+		if ( 'rank-math' !== $domain ) {
+			return $file;
+		}
+
+		$data                       = explode( '/', $file );
+		$data[ count( $data ) - 1 ] = preg_replace( '/rank-math/', 'seo-by-rank-math', $data[ count( $data ) - 1 ], 1 );
+
+		return implode( '/', $data );
 	}
 
 	/**
@@ -359,6 +398,7 @@ class Metabox implements Runner {
 	 */
 	private function dont_load() {
 		return Conditional::is_heartbeat() || Conditional::is_ajax() ||
-			( class_exists( 'Vc_Manager' ) && \MyThemeShop\Helpers\Param::get( 'vc_action' ) );
+			( class_exists( 'Vc_Manager' ) && \MyThemeShop\Helpers\Param::get( 'vc_action' ) ) ||
+			is_network_admin();
 	}
 }

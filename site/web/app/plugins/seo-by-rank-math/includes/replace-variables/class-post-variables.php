@@ -13,6 +13,7 @@ namespace RankMath\Replace_Variables;
 use RankMath\Post;
 use RankMath\Paper\Paper;
 use MyThemeShop\Helpers\Str;
+use MyThemeShop\Helpers\WordPress;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -69,6 +70,28 @@ class Post_Variables extends Advanced_Variables {
 				'example'     => $this->is_post_edit && $this->args->post_excerpt ? $this->args->post_excerpt : esc_html__( 'Post Excerpt Only', 'rank-math' ),
 			],
 			[ $this, 'get_excerpt_only' ]
+		);
+
+		$this->register_replacement(
+			'seo_title',
+			[
+				'name'        => esc_html__( 'SEO Title', 'rank-math' ),
+				'description' => esc_html__( 'Custom or Generated SEO Title of the current post/page', 'rank-math' ),
+				'variable'    => 'seo_title',
+				'example'     => $this->get_title(),
+			],
+			[ $this, 'get_seo_title' ]
+		);
+
+		$this->register_replacement(
+			'seo_description',
+			[
+				'name'        => esc_html__( 'SEO Description', 'rank-math' ),
+				'description' => esc_html__( 'Custom or Generated SEO Description of the current post/page', 'rank-math' ),
+				'variable'    => 'seo_description',
+				'example'     => $this->get_excerpt(),
+			],
+			[ $this, 'get_seo_description' ]
 		);
 
 		$this->setup_post_dates_variables();
@@ -221,6 +244,40 @@ class Post_Variables extends Advanced_Variables {
 	}
 
 	/**
+	 * Custom or Generated SEO Title
+	 *
+	 * @return string
+	 */
+	public function get_seo_title() {
+		if ( is_singular() ) {
+			return Paper::get()->get_title();
+		}
+
+		$object = $this->args;
+
+		// Early Bail!
+		if ( empty( $object ) || empty( $object->ID ) ) {
+			return '';
+		}
+
+		$title = Post::get_meta( 'title', $object->ID );
+		if ( '' !== $title ) {
+			return $title;
+		}
+
+		return Paper::get_from_options( "pt_{$object->post_type}_title", $object, '%title% %sep% %sitename%' );
+	}
+
+	/**
+	 * Custom or Generated SEO Description
+	 *
+	 * @return string
+	 */
+	public function get_seo_description() {
+		return Paper::get()->get_description();
+	}
+
+	/**
 	 * Get the parent page title of the current page/CPT to use as a replacement.
 	 *
 	 * @return string|null
@@ -238,18 +295,34 @@ class Post_Variables extends Advanced_Variables {
 	 * @return string|null
 	 */
 	public function get_excerpt() {
-		$excerpt = $this->get_excerpt_only();
-		if ( ! is_null( $excerpt ) ) {
-			return $excerpt;
+		$object = $this->args;
+
+		// Early Bail!
+		if ( empty( $object ) || empty( $object->post_content ) ) {
+			return '';
 		}
 
-		if ( '' !== $this->args->post_content ) {
-			$content = Paper::should_apply_shortcode() ? do_shortcode( $this->args->post_content ) : $this->args->post_content;
-			$content = wp_strip_all_tags( $content );
-			return wp_html_excerpt( $content, 155 );
+		$keywords     = Post::get_meta( 'focus_keyword', $object->ID );
+		$post_content = Paper::should_apply_shortcode() ? do_shortcode( $object->post_content ) : $object->post_content;
+		$post_content = \preg_replace( '/<!--[\s\S]*?-->/iu', '', $post_content );
+		$post_content = wpautop( WordPress::strip_shortcodes( $post_content ) );
+		$post_content = wp_kses( $post_content, [ 'p' => [] ] );
+
+		// Remove empty paragraph tags.
+		$post_content = preg_replace( '/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $post_content );
+
+		// 4. Paragraph with the focus keyword.
+		if ( ! empty( $keywords ) ) {
+			$regex = '/<p>(.*' . str_replace( [ ',', ' ', '/' ], [ '|', '.', '\/' ], $keywords ) . '.*)<\/p>/iu';
+			\preg_match_all( $regex, $post_content, $matches );
+			if ( isset( $matches[1], $matches[1][0] ) ) {
+				return $matches[1][0];
+			}
 		}
 
-		return null;
+		// 5. The First paragraph of the content.
+		\preg_match_all( '/<p>(.*)<\/p>/iu', $post_content, $matches );
+		return isset( $matches[1], $matches[1][0] ) ? $matches[1][0] : $post_content;
 	}
 
 	/**
@@ -270,12 +343,16 @@ class Post_Variables extends Advanced_Variables {
 	 * @return string|null
 	 */
 	public function get_date( $format = '' ) {
+		if ( is_array( $format ) && empty( $format ) ) {
+			$format = '';
+		}
+
 		if ( '' !== $this->args->post_date ) {
 			$format = $format ? $format : get_option( 'date_format' );
 			return mysql2date( $format, $this->args->post_date, true );
 		}
 
-		if ( Str::is_non_empty( get_query_var( 'day' ) ) ) {
+		if ( ! empty( get_query_var( 'day' ) ) ) {
 			return get_the_date( $format );
 		}
 
@@ -284,7 +361,7 @@ class Post_Variables extends Advanced_Variables {
 			return $replacement;
 		}
 
-		return Str::is_non_empty( get_query_var( 'year' ) ) ? get_query_var( 'year' ) : null;
+		return ! empty( get_query_var( 'year' ) ) ? get_query_var( 'year' ) : null;
 	}
 
 	/**

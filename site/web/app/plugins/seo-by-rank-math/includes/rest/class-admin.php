@@ -17,7 +17,8 @@ use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Controller;
 use RankMath\Helper;
-use RankMath\Rest\Helper as RestHelper;
+use RankMath\Traits\Meta;
+use MyThemeShop\Helpers\Str;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,11 +27,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class Admin extends WP_REST_Controller {
 
+	use Meta;
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->namespace = RestHelper::BASE;
+		$this->namespace = \RankMath\Rest\Rest_Helper::BASE;
 	}
 
 	/**
@@ -44,7 +47,7 @@ class Admin extends WP_REST_Controller {
 			[
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => [ $this, 'save_module' ],
-				'permission_callback' => [ '\\RankMath\\Rest\\Helper', 'can_manage_options' ],
+				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'can_manage_options' ],
 				'args'                => $this->get_save_module_args(),
 			]
 		);
@@ -53,8 +56,9 @@ class Admin extends WP_REST_Controller {
 			$this->namespace,
 			'/updateRedirection',
 			[
-				'methods'  => WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'update_redirection' ],
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'update_redirection' ],
+				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'get_redirection_permissions_check' ],
 			]
 		);
 
@@ -64,7 +68,7 @@ class Admin extends WP_REST_Controller {
 			[
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => [ $this, 'auto_update' ],
-				'permission_callback' => [ '\\RankMath\\Rest\\Helper', 'can_manage_options' ],
+				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'can_manage_options' ],
 			]
 		);
 
@@ -74,7 +78,7 @@ class Admin extends WP_REST_Controller {
 			[
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => [ $this, 'tools_actions' ],
-				'permission_callback' => [ '\\RankMath\\Rest\\Helper', 'can_manage_options' ],
+				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'can_manage_options' ],
 			]
 		);
 
@@ -91,7 +95,7 @@ class Admin extends WP_REST_Controller {
 			[
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => [ $this, 'enable_score' ],
-				'permission_callback' => [ '\\RankMath\\Rest\\Helper', 'can_manage_options' ],
+				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'can_manage_options' ],
 			]
 		);
 
@@ -99,9 +103,10 @@ class Admin extends WP_REST_Controller {
 			$this->namespace,
 			'/updateMeta',
 			[
-				'methods'  => WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'update_metadata' ],
-				'args'     => $this->get_update_metadata_args(),
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'update_metadata' ],
+				'args'                => $this->get_update_metadata_args(),
+				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'get_object_permissions_check' ],
 			]
 		);
 	}
@@ -119,6 +124,7 @@ class Admin extends WP_REST_Controller {
 
 		$cmb->object_id    = $request->get_param( 'objectID' );
 		$cmb->data_to_save = [
+			'has_redirect'            => $request->get_param( 'hasRedirect' ),
 			'redirection_id'          => $request->get_param( 'redirectionID' ),
 			'redirection_url_to'      => $request->get_param( 'redirectionUrl' ),
 			'redirection_sources'     => \str_replace( home_url( '/' ), '', $request->get_param( 'redirectionSources' ) ),
@@ -148,16 +154,46 @@ class Admin extends WP_REST_Controller {
 		$object_type = $request->get_param( 'objectType' );
 		$meta        = $request->get_param( 'meta' );
 
+		$new_slug = true;
+		if ( isset( $meta['permalink'] ) && ! empty( $meta['permalink'] ) ) {
+			$post     = get_post( $object_id );
+			$new_slug = wp_unique_post_slug( $meta['permalink'], $post->ID, $post->post_status, $post->post_type, $post->post_parent );
+			wp_update_post(
+				[
+					'ID'        => $object_id,
+					'post_name' => $new_slug,
+				]
+			);
+			unset( $meta['permalink'] );
+		}
+
+		// Add protection.
+		remove_all_filters( 'is_protected_meta' );
+		add_filter( 'is_protected_meta', [ $this, 'only_this_plugin' ], 10, 2 );
+
+		$sanitizer = Sanitize::get();
 		foreach ( $meta as $meta_key => $meta_value ) {
 			if ( empty( $meta_value ) ) {
 				delete_metadata( $object_type, $object_id, $meta_key );
 				continue;
 			}
 
-			update_metadata( $object_type, $object_id, $meta_key, $meta_value );
+			$this->update_meta( $object_type, $object_id, $meta_key, $sanitizer->sanitize( $meta_key, $meta_value ) );
 		}
 
-		return true;
+		return $new_slug;
+	}
+
+	/**
+	 * Allow only rank math meta keys
+	 *
+	 * @param bool   $protected Whether the key is considered protected.
+	 * @param string $meta_key  Meta key.
+	 *
+	 * @return bool
+	 */
+	public function only_this_plugin( $protected, $meta_key ) {
+		return Str::starts_with( 'rank_math_', $meta_key );
 	}
 
 	/**
@@ -171,18 +207,18 @@ class Admin extends WP_REST_Controller {
 				'type'              => 'string',
 				'required'          => true,
 				'description'       => esc_html__( 'Object Type i.e. post, term, user', 'rank-math' ),
-				'validate_callback' => [ '\\RankMath\\Rest\\Helper', 'is_param_empty' ],
+				'validate_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'is_param_empty' ],
 			],
 			'objectID'   => [
 				'type'              => 'integer',
 				'required'          => true,
 				'description'       => esc_html__( 'Object unique id', 'rank-math' ),
-				'validate_callback' => [ '\\RankMath\\Rest\\Helper', 'is_param_empty' ],
+				'validate_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'is_param_empty' ],
 			],
 			'meta'       => [
 				'required'          => true,
 				'description'       => esc_html__( 'Meta to add or update data.', 'rank-math' ),
-				'validate_callback' => [ '\\RankMath\\Rest\\Helper', 'is_param_empty' ],
+				'validate_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'is_param_empty' ],
 			],
 		];
 	}
@@ -212,9 +248,10 @@ class Admin extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function enable_score( WP_REST_Request $request ) {
-		$settings = wp_parse_args( rank_math()->settings->all_raw(), [
-			'general' => '',
-		]);
+		$settings = wp_parse_args(
+			rank_math()->settings->all_raw(),
+			[ 'general' => '' ]
+		);
 
 		$settings['general']['frontend_seo_score'] = 'true' === $request->get_param( 'enable' ) ? 'on' : 'off';
 		Helper::update_all_settings( $settings['general'], null, null );
@@ -229,9 +266,10 @@ class Admin extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function auto_update( WP_REST_Request $request ) {
-		$settings = wp_parse_args( rank_math()->settings->all_raw(), [
-			'general' => '',
-		]);
+		$settings = wp_parse_args(
+			rank_math()->settings->all_raw(),
+			[ 'general' => '' ]
+		);
 
 		$settings['general']['enable_auto_update'] = 'true' === $request->get_param( 'enable' ) ? 'on' : 'off';
 		Helper::update_all_settings( $settings['general'], null, null );
@@ -249,13 +287,13 @@ class Admin extends WP_REST_Controller {
 				'type'              => 'string',
 				'required'          => true,
 				'description'       => esc_html__( 'Module slug', 'rank-math' ),
-				'validate_callback' => [ '\\RankMath\\Rest\\Helper', 'is_param_empty' ],
+				'validate_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'is_param_empty' ],
 			],
 			'state'  => [
 				'type'              => 'string',
 				'required'          => true,
 				'description'       => esc_html__( 'Module state either on or off', 'rank-math' ),
-				'validate_callback' => [ '\\RankMath\\Rest\\Helper', 'is_param_empty' ],
+				'validate_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'is_param_empty' ],
 			],
 		];
 	}

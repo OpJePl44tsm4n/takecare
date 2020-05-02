@@ -257,18 +257,20 @@ class Redirector {
 	 */
 	private function everything() {
 		$redirection = DB::match_redirections( $this->uri );
-		if ( ! $redirection ) {
+		if ( ! $redirection && $this->uri !== $this->full_uri ) {
 			$redirection = DB::match_redirections( $this->full_uri );
 		}
 
 		if ( $redirection ) {
-			Cache::add([
-				'from_url'       => $this->uri,
-				'redirection_id' => $redirection['id'],
-				'object_id'      => 0,
-				'object_type'    => 'any',
-				'is_redirected'  => '1',
-			]);
+			Cache::add(
+				[
+					'from_url'       => $this->uri,
+					'redirection_id' => $redirection['id'],
+					'object_id'      => 0,
+					'object_type'    => 'any',
+					'is_redirected'  => '1',
+				]
+			);
 			$this->set_redirection( $redirection );
 		}
 	}
@@ -330,7 +332,11 @@ class Redirector {
 			$redirection = DB::get_redirection_by_id( $redirection, 'active' );
 		}
 
-		if ( false !== $redirection && isset( $redirection['url_to'] ) ) {
+		if ( false === $redirection || ! DB::compare_sources( $redirection['sources'], $this->uri ) ) {
+			return;
+		}
+
+		if ( isset( $redirection['url_to'] ) ) {
 			$this->matched = $redirection;
 			$this->set_redirect_to();
 		}
