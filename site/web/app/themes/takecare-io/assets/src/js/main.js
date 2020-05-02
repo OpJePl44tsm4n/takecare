@@ -1,4 +1,22 @@
 
+// import $ from 'jquery';
+// window.$ = window.jQuery = $;
+
+import 'bootstrap';
+import VueSession from 'vue-session';
+
+window.Vue = require('vue');
+
+Vue.use(VueSession);
+Vue.component('user-auth', require('./components/UserAuth.vue').default);
+Vue.component('user-register', require('./components/UserRegister.vue').default);
+// Vue.component('user-actions', require('./components/UserActions.vue').default);
+
+const app = new Vue({
+    el: '#takecare'
+});
+
+
 
 var Brandclick = {
 
@@ -26,7 +44,6 @@ var Brandclick = {
         window.interaction = false; 
        
         this.addYoutubeScript();
-        this.carouselSlideActions();
         this.addTrackingListeners();
         this.inpageLinks();
         this.menuScroll();
@@ -51,7 +68,7 @@ var Brandclick = {
 
     addAnimationClassInView: function( viewElementClass, newClass ){
 
-        el = document.getElementsByClassName( viewElementClass );
+        var el = document.getElementsByClassName( viewElementClass );
 
         if (el.length) {
             Brandclick.addClass( el[0] , 'animation-init' );
@@ -108,9 +125,9 @@ var Brandclick = {
     },
 
     inpageLinks: function() {
-        links = document.querySelectorAll('a[href^="#"]');
+        var links = document.querySelectorAll('a[href^="#"]');
 
-        for (i = 0; i<links.length; i++ ) {
+        for (var i = 0; i<links.length; i++ ) {
             if(links[i].getAttribute('href') === '#' || Brandclick.hasClass(links[i],'control-btn')) {
                 continue;
             }
@@ -139,10 +156,10 @@ var Brandclick = {
     },
 
     loadYoutubeIframes: function() {
-        videoElements = document.getElementsByClassName('video-wrapper');
+        var videoElements = document.getElementsByClassName('video-wrapper');
 
         if (videoElements.length) {
-            for (i = 0; i < videoElements.length; i++) {
+            for (var i = 0; i < videoElements.length; i++) {
                
                 videoElements[i].addEventListener('click', function(e){
                     var playerElement = this.dataset.player;
@@ -168,7 +185,7 @@ var Brandclick = {
         } 
     },
     onPlayerReady: function(event) {
-        videoWrapper = event.target.a.parentNode;
+        var videoWrapper = event.target.a.parentNode;
 
         if(Brandclick.hasClass(videoWrapper,'collapse') ) {
             Brandclick.addClass(videoWrapper.parentNode, 'playing');
@@ -191,14 +208,6 @@ var Brandclick = {
         }
        
         event.target.playVideo();
-    },
-
-    carouselSlideActions: function() {
-        jQuery('.carousel').on('slide.bs.carousel', function () {
-            jQuery('.carousel iframe[src*="youtube"]').each(function(i) {
-              this.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-            });
-        });
     },
 
     addClass: function(el, className) {
@@ -256,42 +265,16 @@ var Brandclick = {
             
         }, false );
 
-        
-        // make sure we track special tracking elements
-        var trackingElements = document.querySelectorAll("[data-tracking=\"data-layer\"]");
-        for(var i = 0; i < trackingElements.length; i++) { 
-            var element = trackingElements[i]
-            element.addEventListener("click", function( event ) {
-                Brandclick.trackEvent('Generic', this.dataset.logValue);
-            }, false );
-        }
-
-        // track signup popup form
-        MailChimpSubscribe = document.getElementById('mc-embedded-subscribe-form');
-        if (typeof MailChimpSubscribe !== 'undefined' && MailChimpSubscribe !== null ) {
-            MailChimpSubscribe.addEventListener("submit", function( event ) {
-                Brandclick.trackEvent('CompleteRegistration');
-            }, false );
-        }
-
-        var callButtons = document.querySelectorAll(".track-phone button");
-        for(var i = 0; i < callButtons.length; i++) {
-            var callButton = callButtons[i];
-            callButton.addEventListener( 'click', function( event ) {
-                Brandclick.addClass(this.parentElement, "is-clicked");
-            }, false );
-        }
-        
     },
 
     onSearchSubmit: function(e) {
-        searchString = document.querySelectorAll( '#' + this.id + ' #s')[0].value;
+        var searchString = document.querySelectorAll( '#' + this.id + ' #s')[0].value;
         Brandclick.trackEvent('Search', searchString );
     },
 
     trackEvent: function(type, data, leadId) {
 
-        leadId = (typeof leadId === 'undefined') ? '' : leadId;
+        var leadId = (typeof leadId === 'undefined') ? '' : leadId;
         
         if(type === 'Generic') {
             dataLayer.push({
@@ -381,6 +364,12 @@ function onYouTubeIframeAPIReady() {
 
 
 jQuery(document).ready(function($){
+
+    $('.carousel').on('slide.bs.carousel', function () {
+        $('.carousel iframe[src*="youtube"]').each(function(i) {
+          this.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        });
+    });
 
     var url = wp_api_object.ajaxUrl + "?action=search_autocomplete&post_type=company";
     $( "#s" ).autocomplete({
@@ -477,6 +466,4 @@ jQuery(document).ready(function($){
 
 
 } );
-
-
 

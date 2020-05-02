@@ -100,6 +100,12 @@ class TakeCareIo extends Greylabel {
             'version' => self::VERSION,
             'external' => true,
         ],
+        'fontawesome' => [
+            'src' => 'https://use.fontawesome.com/releases/v5.0.6/js/all.js',
+            'dependencies' => [],
+            'version' => self::VERSION,
+            'external' => true,
+        ]
     ];
 
     /**

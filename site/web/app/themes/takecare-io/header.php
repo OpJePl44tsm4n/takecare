@@ -37,60 +37,62 @@
     <?php endif; ?>    
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Header -->
-    <header class="site-header">
-        <nav id="main-nav" class="navbar navbar-dark fixed-top transparant">
-            <div class="container">    
+    <div id="takecare">
+        
+        <!-- Header -->
+        <header class="site-header">
+            <nav id="main-nav" class="navbar navbar-expand-md navbar-dark fixed-top transparant">
+                <div class="container">    
+                        
+                    <div class="brand-wrapper">
+                        <a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="home">
+                            <?php 
+                                $custom_logo_id = get_theme_mod( 'custom_logo' );
+                                $image = isset($custom_logo_id) ? wp_get_attachment_image_url( $custom_logo_id , 'full' ) : false;
+                                $image = $image ? $image : trailingslashit(get_stylesheet_directory_uri()) . 'assets/dist/img/logo.svg';
+                            ?>
+                            <img class="img-fluid brand-logo" src="<?php echo $image ?>" alt="<?php echo get_bloginfo( 'name' ); ?> Logo">
+                        </a>
+                    </div>
+
                     
-                <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
-                    <button class="navbar-toggler" type="button">
-                        <?php /*<span><?php _e('Menu', WhiteLabelTheme::THEME_SLUG ); ?></span>*/?>
-                        <span class="navbar-toggler-icon"></span>
+                    <button id="search-collapse" class="btn btn-primary d-md-none collapsed" 
+                        data-toggle="collapse" 
+                        data-target="#search-bar" 
+                        aria-expanded="false" 
+                        aria-controls="search-bar"><i class="fa fa-search"></i>
                     </button>
-                </div>
 
-                <div class="collapse navbar-collapse" id="navbarCollapse" data-parent="#main-nav">
-                    <div class="close-btn d-flex">
-                        <button class="navbar-toggler mr-auto close" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Close navigation"><span aria-hidden="true">&times;</span></button>
+                    <form id="search-bar" class="collapse collapse-sm-only" role="search" method="get" action="<?php echo home_url(); ?>?s=">
+                        <input type="text" value="<?php echo get_search_query(); ?>" name="s" id="s" data-type="company" placeholder="<?php echo _e("Find products, services or categories in your area", TakeCareIo::THEME_SLUG ); ?>" /><button type="submit" id="searchsubmit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        <input type="hidden" class="field" name="post_type" id="post_type" value="company">
+                    </form>
+
+                    <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
+                        <button class="navbar-toggler" type="button">
+                            <?php /*<span><?php _e('Menu', WhiteLabelTheme::THEME_SLUG ); ?></span>*/?>
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
                     </div>
 
-                    <div class="nav-wrap">
-                        <?php wp_nav_menu( array( 
-                            'theme_location' => 'header-menu',
-                            'container' => false,
-                            'menu_class' => 'nav navbar-nav mr-auto', 
-                            'container_id'    => 'bs4navbar',
-                            'menu_id'         => false,
-                            'depth'           => 3,
-                            'fallback_cb'     => 'bs4navwalker::fallback',
-                            'walker' => new Greylabel\Vendor\bs4NavWalker()
-                        ) ); ?> 
+                    <div class="collapse navbar-collapse" id="navbarCollapse" data-parent="#main-nav">
+                        <div class="close-btn d-flex">
+                            <button class="navbar-toggler mr-auto close" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Close navigation"><span aria-hidden="true">&times;</span></button>
+                        </div>
+
+                        <div class="nav-wrap ml-auto">
+                            <?php wp_nav_menu( array( 
+                                'theme_location' => 'header-menu',
+                                'container' => false,
+                                'menu_class' => 'nav navbar-nav', 
+                                'container_id'    => 'bs4navbar',
+                                'menu_id'         => false,
+                                'depth'           => 3,
+                                'fallback_cb'     => 'bs4navwalker::fallback',
+                                'walker' => new Greylabel\Vendor\bs4NavWalker()
+                            ) ); ?> 
+                        </div>
                     </div>
-                </div>
-
-                <div class="brand-wrapper">
-                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="home">
-                        <?php 
-                            $custom_logo_id = get_theme_mod( 'custom_logo' );
-                            $image = isset($custom_logo_id) ? wp_get_attachment_image_url( $custom_logo_id , 'full' ) : false;
-                            $image = $image ? $image : trailingslashit(get_stylesheet_directory_uri()) . 'assets/dist/img/logo.svg';
-                        ?>
-                        <img class="img-fluid brand-logo" src="<?php echo $image ?>" alt="<?php echo get_bloginfo( 'name' ); ?> Logo">
-                    </a>
-                </div>
-
-                
-                <button id="search-collapse" class="btn btn-primary d-md-none collapsed" 
-                    data-toggle="collapse" 
-                    data-target="#search-bar" 
-                    aria-expanded="false" 
-                    aria-controls="search-bar"><i class="fa fa-search"></i>
-                </button>
-
-                <form id="search-bar" class="collapse collapse-sm-only" role="search" method="get" action="<?php echo home_url(); ?>?s=">
-                    <input type="text" value="<?php echo get_search_query(); ?>" name="s" id="s" data-type="company" placeholder="<?php echo _e("Find products, services or categories in your area", TakeCareIo::THEME_SLUG ); ?>" /><button type="submit" id="searchsubmit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                    <input type="hidden" class="field" name="post_type" id="post_type" value="company">
-                </form>
-            </div>    
-        </nav> 
-    </header>    
+                </div>    
+            </nav> 
+        </header>    

@@ -121,6 +121,22 @@ class RegisterPostTypes {
             )
         );
 
+
+        register_taxonomy(
+            'investors',
+            'company',
+            array(
+                'label'                 => __( 'Investors', Greylabel::THEME_SLUG ),
+                'rewrite'               => array( 'slug' => 'investors', 'with_front' => false ),
+                'hierarchical'          => true,
+                'show_admin_column'     => true,
+                'public'                => true,
+                'show_in_rest'          => true,
+                'show_ui'               => true,
+                'has_archive'           => true,
+            )
+        );
+
     
     } 
 

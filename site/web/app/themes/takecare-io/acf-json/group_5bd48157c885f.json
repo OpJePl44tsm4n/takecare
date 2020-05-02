@@ -151,79 +151,6 @@
             "multiple": 0
         },
         {
-            "key": "field_5e25f6a16ad48",
-            "label": "Mission",
-            "name": "mission",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "🚀",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5e25f6c16ad49",
-            "label": "Vision",
-            "name": "vision",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "💭",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5e25f6d76ad4a",
-            "label": "Impact",
-            "name": "impact",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "✨",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5e25f75dacb97",
-            "label": "Team",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0
-        },
-        {
             "key": "field_5bd4862544bbb",
             "label": "Founder",
             "name": "founder",
@@ -487,10 +414,10 @@
             "endpoint": 0
         },
         {
-            "key": "field_5c8a9902f1bdf",
-            "label": "Recipient",
-            "name": "funding_recipient",
-            "type": "text",
+            "key": "field_5ead62bb12aed",
+            "label": "Investment round",
+            "name": "Investment_round",
+            "type": "repeater",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -499,144 +426,154 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5c8a9922f1be0",
-            "label": "Investors",
-            "name": "funding_investors",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5c8a99a1f1be2",
-            "label": "Currency",
-            "name": "funding_currency",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "20",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "EUR": "EUR",
-                "USD": "USD"
-            },
-            "default_value": [],
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "return_format": "value",
-            "ajax": 0,
-            "placeholder": ""
-        },
-        {
-            "key": "field_5c8a9939f1be1",
-            "label": "Raised",
-            "name": "funding_raised",
-            "type": "number",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "80",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "min": "",
-            "max": "",
-            "step": ""
-        },
-        {
-            "key": "field_5c8a99f3f1be3",
-            "label": "Type",
-            "name": "funding_type",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "Angel": "Angel",
-                "Seed fund": "Seed fund",
-                "Venture Capital": "Venture Capital",
-                "Crowdfunding": "Crowdfunding",
-                "Equity Crowdfunding": "Equity Crowdfunding",
-                "Debt financing": "Debt financing",
-                "Grant": "Grant",
-                "IPO": "IPO",
-                "Private equity": "Private equity",
-                "Unknown": "Unknown",
-                "Token Sale": "Token Sale",
-                "ICO": "ICO"
-            },
-            "default_value": [],
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "return_format": "value",
-            "ajax": 0,
-            "placeholder": ""
-        },
-        {
-            "key": "field_5c8a9a19f1be4",
-            "label": "Date",
-            "name": "funding_date",
-            "type": "date_picker",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "display_format": "d\/m\/Y",
-            "return_format": "F j, Y",
-            "first_day": 1
-        },
-        {
-            "key": "field_5c8a9a69f1be5",
-            "label": "Source",
-            "name": "funding_source",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "block",
+            "button_label": "add Investment round",
+            "sub_fields": [
+                {
+                    "key": "field_5ead62e712aee",
+                    "label": "Investors",
+                    "name": "investors",
+                    "type": "taxonomy",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "taxonomy": "category",
+                    "field_type": "multi_select",
+                    "allow_null": 0,
+                    "add_term": 1,
+                    "save_terms": 1,
+                    "load_terms": 1,
+                    "return_format": "id",
+                    "multiple": 0
+                },
+                {
+                    "key": "field_5ead642012aef",
+                    "label": "Type",
+                    "name": "type",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "Angel": "Angel",
+                        "Seed fund": "Seed fund",
+                        "Venture Capital": "Venture Capital",
+                        "Venture Capital (Series A)": "Venture Capital (Series A)",
+                        "Venture Capital (Series B)": "Venture Capital (Series B)",
+                        "Venture Capital (Series C)": "Venture Capital (Series C)",
+                        "Venture Capital (Series D)": "Venture Capital (Series D)",
+                        "Venture Capital (Series E)": "Venture Capital (Series E)",
+                        "Venture Capital (Series F)": "Venture Capital (Series F)",
+                        "Venture Capital (Series G)": "Venture Capital (Series G)",
+                        "Venture Capital (Series H)": "Venture Capital (Series H)",
+                        "Crowdfunding": "Crowdfunding",
+                        "Equity Crowdfunding": "Equity Crowdfunding",
+                        "Debt financing": "Debt financing",
+                        "Grant": "Grant",
+                        "IPO": "IPO",
+                        "Private equity": "Private equity",
+                        "Unknown": "Unknown",
+                        "Token Sale": "Token Sale",
+                        "ICO": "ICO"
+                    },
+                    "default_value": [],
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": ""
+                },
+                {
+                    "key": "field_5ead6c5f12af2",
+                    "label": "Date",
+                    "name": "date",
+                    "type": "date_picker",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "display_format": "d\/m\/Y",
+                    "return_format": "d\/m\/Y",
+                    "first_day": 1
+                },
+                {
+                    "key": "field_5ead65fb12af1",
+                    "label": "Amount raised",
+                    "name": "amount_raised",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "60",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5ead65a212af0",
+                    "label": "Currency",
+                    "name": "currency",
+                    "type": "select",
+                    "instructions": "EUR\r\nUSD\r\nYEN",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "40",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": [],
+                    "default_value": [],
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": ""
+                },
+                {
+                    "key": "field_5ead70a612af3",
+                    "label": "News Source",
+                    "name": "news_source",
+                    "type": "url",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": ""
+                }
+            ]
         },
         {
             "key": "field_5c7533ff3ef97",
@@ -727,34 +664,6 @@
             "endpoint": 0
         },
         {
-            "key": "field_5c4a242a4f2af",
-            "label": "Type",
-            "name": "location_type",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "office": "Office",
-                "store": "Store",
-                "restaurant": "Restaurant"
-            },
-            "default_value": [
-                "office"
-            ],
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "return_format": "array",
-            "ajax": 0,
-            "placeholder": ""
-        },
-        {
             "key": "field_5c2e080c977d2",
             "label": "Location",
             "name": "location",
@@ -773,6 +682,34 @@
             "layout": "row",
             "button_label": "",
             "sub_fields": [
+                {
+                    "key": "field_5ead61b6e6243",
+                    "label": "Type",
+                    "name": "location_type",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "office": "Office",
+                        "store": "Store",
+                        "restaurant": "Restaurant"
+                    },
+                    "default_value": [
+                        "office"
+                    ],
+                    "allow_null": 1,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": ""
+                },
                 {
                     "key": "field_5c2e080c977d3",
                     "label": "Name",
@@ -910,6 +847,47 @@
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
+                },
+                {
+                    "key": "field_5ead603fd4a93",
+                    "label": "Call to action type",
+                    "name": "call_to_action_type",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "20",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "shop": "Shop",
+                        "menu": "Menu"
+                    },
+                    "default_value": [],
+                    "allow_null": 1,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": ""
+                },
+                {
+                    "key": "field_5ead612cd4a94",
+                    "label": "Call to action link",
+                    "name": "call_to_action_link",
+                    "type": "url",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "80",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": ""
                 }
             ]
         },
@@ -1286,5 +1264,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1579546493
+    "modified": 1588425560
 }

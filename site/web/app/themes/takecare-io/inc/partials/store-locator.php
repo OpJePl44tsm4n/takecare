@@ -11,10 +11,6 @@
     $store_list_content = get_sub_field('store_list_content');
 ?>
 
-<script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
-<link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
-<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v1.0.0/leaflet.markercluster.js'></script>
-
 <section class="map-wrap" style="background:#73b6e6;">
 
     <div class="map-filter card">
@@ -25,7 +21,7 @@
         <div class="collapse show" id="filterCollapse">
             <button class="ml-auto close" type="button" data-toggle="collapse" data-target="#filterCollapse" aria-controls="filterCollapse" aria-expanded="false" aria-label="Close filter"><span aria-hidden="false">&times;</span></button>
             <h2><i class="fa fa-map-marker"></i> <?php echo $title; ?></h2>
-            <input id="search" class="search-ui" placeholder="<?php echo $search_placeholder; ?>" />
+            <input id="feature-filter" class="search-ui" placeholder="<?php echo $search_placeholder; ?>" />
             <button id="user-location"><i class="fa fa-compass"></i> Show my location</button>
             <hr>
             <button id="reset-map" class="btn btn-primary"><?php echo $button_title; ?></button>
@@ -33,132 +29,184 @@
     </div>
    
 
-    <div id="map" style="height:450px;"></div>
+    <div id="map" data-tap-disabled="true" style="height:450px;"></div>
 </section>
+<script src='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
+<style type="text/css" src="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css"></style>
+<?php 
+    // wp_enqueue_script( 'mapbox-gl-js', 'https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js', array(), '', false ); 
+    // wp_enqueue_script( 'mapbox-gl-css', 'https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css', array(), '', true ); 
+    // wp_enqueue_script( 'map-js', trailingslashit(get_stylesheet_directory_uri()) . 'assets/dist/js/map.js', array('mapbox-gl-js'), '', true ); ?>
 
-  <script>
-
-    L.mapbox.accessToken = 'pk.eyJ1IjoidGh1bmRlcnBsdWdzIiwiYSI6ImNqbjBicTl0azA5Mmsza3Bjdmt3dTFpdnUifQ.Yd8Bg_gH5S1oVss6Rr6vRA';
-    var baseLocation = [<?php echo $focus_point['lat']; ?>, <?php echo $focus_point['lng']; ?>];
-
-    var map = L.mapbox.map('map')
-        .setView(baseLocation, <?php echo $zoom_level; ?>)
-        // .addLayer(L.mapbox.tileLayer('mapbox.streets'))
-    map.scrollWheelZoom.disable();
-       
-    L.mapbox.styleLayer('mapbox://styles/thunderplugs/cjn0criqe4aes2snvkcdtmbf9').addTo(map);
-        
-    var overlays = L.layerGroup().addTo(map);
-    var layers;
- 
-
-    var itemLayer = L.mapbox.featureLayer()
-    .loadURL('<?php echo wp_upload_dir()['baseurl']; ?>/brandclick/stores.geojson')
-    .on('ready', function(e) {
-        layers = e.target;
-        loadMarkers();
-    });
-
-    // we are going to load the custom icon defined in the geojson
-    itemLayer.on('layeradd', function(e) {
-      var marker = e.layer,
-        feature = marker.feature;
-      marker.setIcon(L.divIcon(feature.properties.icon));
-    });
-
-    // filters 
-    var filterValue = '',
-    storeSearch = document.getElementById('search'),
-    mapReset = document.getElementById('reset-map'),
-    userLocation = document.getElementById('user-location');
-    currentCities = [];
-
-    storeSearch.addEventListener('keyup', function(e) {
-        filterValue = this.value;
-        loadMarkers();
-    });
-
-    mapReset.addEventListener('click', function(e) {
-        filterValue = '';
-        storeSearch.value = '';
-        map.setView(baseLocation, 9);
-        loadMarkers();   
-    });
-
-    if (navigator.geolocation) {
-        userLocation.style.display = "block";
-
-        userLocation.addEventListener('click', function(e) {
-            this.className = 'loading-location';
-            navigator.geolocation.getCurrentPosition(setUserLocation);
-        });    
-    } 
-
-    function setUserLocation(position) {
-        baseLocation = [position.coords.latitude, position.coords.longitude];
-        userLocation.className = '';
-        filterValue = '';
-        loadMarkers();   
-        map.setView(baseLocation, 12);
-    }
-
-    function loadMarkers() {
-        currentCities = []; 
-        overlays.clearLayers();
-        // create a new marker group
-        var clusterGroup = new L.MarkerClusterGroup( {
-            iconCreateFunction: function(cluster) {
-                return L.mapbox.marker.icon({
-                  // show the number of markers in the cluster on the icon.
-                  'marker-symbol': cluster.getChildCount(),
-                  'marker-color': "#f9ed1a",
-                  "marker-size": "medium",
-                });
-            }
-        }).addTo(overlays);
-        // and add any markers that fit the filtered criteria to that group.
-        layers.eachLayer(function(layer) {
-
-            if ( layer.feature.properties.type == 'city' ) {
-                if ( filterValue.toLowerCase() === layer.feature.properties.slug) {
-                    map.setView([layer.feature.geometry.coordinates[1], layer.feature.geometry.coordinates[0]], 9);
-                }    
-                return;
-            }
-
-            // if filterValue contains numbers, search for postcode
-            if(/\d/.test(filterValue)){ 
-                filterValue = filterValue.toLowerCase().split(' ').join('');
-                searchField = layer.feature.properties.postcode.toLowerCase().split(' ').join('');
-            } else {
-                filterValue = filterValue.toLowerCase().split(' ').join('-');
-                searchField = layer.feature.properties.city.toLowerCase().split(' ').join('-');
-            }
-
-            if (searchField.indexOf(filterValue) !== -1) {
-                clusterGroup.addLayer(layer);
-                currentCities.push(layer.feature.properties.city.toLowerCase());
-            }
+    
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoidGh1bmRlcnBsdWdzIiwiYSI6ImNqbjBicTl0azA5Mmsza3Bjdmt3dTFpdnUifQ.Yd8Bg_gH5S1oVss6Rr6vRA';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/thunderplugs/cjn0criqe4aes2snvkcdtmbf9',
+            center: [<?php echo $focus_point['lng']; ?>, <?php echo $focus_point['lat']; ?>],
+            zoom: <?php echo $zoom_level; ?>
+        });
 
 
-            // bind the popup info to the points: 
-            var content = '<h2><i class="fa fa-bolt"></i> ' + layer.feature.properties.name + '<\/h2>' +
-                '<p>' + layer.feature.properties.address + ', ' + 
-                layer.feature.properties.city + '</p>' +
-                '<a target="_blank" href="' +layer.feature.properties.site + '" /><span><?php _e('more info', TakeCareIo::THEME_SLUG ); ?></span> <i class="fa fa-angle-right"></i></a>';
-            layer.bindPopup(content);
+        var filterEl = document.getElementById('feature-filter');
+        // holds al geojson elements 
+        var companies = []; 
 
-            // focus on the clicked marker
-            layer.on('click', function(e) {
-                map.panTo([layer.feature.geometry.coordinates[1], layer.feature.geometry.coordinates[0]]);
+
+        function normalize(string) {
+            return string.trim().toLowerCase();
+        }
+
+
+        filterEl.addEventListener('keyup', function(e) {
+            var value = normalize(e.target.value);
+             
+            // Filter visible features that don't match the input value.
+            var filtered = companies.filter(function(feature) {
+                var name = normalize(feature.properties.name);
+                var city = normalize(feature.properties.city);
+                var city_slug = normalize(feature.properties.city_slug);
+                return name.indexOf(value) > -1 || city_slug.indexOf(value) > -1 || city.indexOf(value) > -1;
             });
 
+            console.log(filtered);
+             
+            // Populate the sidebar with filtered results
+            
+             
+            // Set the filter to populate features into the layer.
+            map.setFilter('companies', [
+                'match',
+                ['get', 'name'],
+                filtered.map(function(feature) {
+                    return feature.properties.name;
+                }),
+                true,
+                false
+            ]);
         });
-    }
 
 
+        map.on('load', function() {
 
-  </script>
+            map.addSource('companies', {
+                type: 'geojson',
+                data: '<?php echo wp_upload_dir()['baseurl']; ?>/greylabel/companies.geojson',
+                cluster: true,
+                clusterMaxZoom: 14, // Max zoom to cluster points on
+                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+            });
+
+            map.addLayer({
+                id: 'clusters',
+                type: 'circle',
+                source: 'companies',
+                filter: ['has', 'point_count'],
+                paint: {
+                    // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
+                    // with three steps to implement three types of circles:
+                    //   * Blue, 20px circles when point count is less than 100
+                    //   * Yellow, 30px circles when point count is between 100 and 750
+                    //   * Pink, 40px circles when point count is greater than or equal to 750
+                    'circle-color': [
+                        'step',
+                        ['get', 'point_count'],
+                        '#51bbd6',
+                        50,
+                        '#f1f075',
+                        100,
+                        '#f28cb1'
+                    ],
+                    'circle-radius': [
+                        'step',
+                        ['get', 'point_count'],
+                        20,
+                        50,
+                        30,
+                        100,
+                        40
+                    ]
+                }
+            });
 
 
+            map.addLayer({
+                id: 'cluster-count',
+                type: 'symbol',
+                source: 'companies',
+                filter: ['has', 'point_count'],
+                layout: {
+                    'text-field': '{point_count_abbreviated}',
+                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                    'text-size': 12
+                }
+            });
  
+            map.addLayer({
+                id: 'companies',
+                type: 'circle',
+                source: 'companies',
+                filter: ['!', ['has', 'point_count']],
+                paint: {
+                    'circle-color': '#11b4da',
+                    'circle-radius': 8,
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#fff'
+                }
+            });
+
+            var companies = map.querySourceFeatures({ layers: ['companies'] });
+
+            // inspect a cluster on click
+            map.on('click', 'clusters', function(e) {
+                var features = map.queryRenderedFeatures(e.point, {
+                    layers: ['clusters']
+                });
+
+                var clusterId = features[0].properties.cluster_id;
+                map.getSource('companies').getClusterExpansionZoom(
+                    clusterId,
+                    function(err, zoom) {
+                        if (err) return;
+                         
+                        map.easeTo({
+                            center: features[0].geometry.coordinates,
+                            zoom: zoom
+                        });
+                    }
+                );
+            });
+             
+            map.on('mouseenter', 'clusters', function() {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'clusters', function() {
+                map.getCanvas().style.cursor = '';
+            });
+
+
+            map.on('click', 'companies', function(e) {
+                var coordinates = e.features[0].geometry.coordinates.slice();
+
+                var content = '<div class="img-container">%s</div><div class="content"><h3>' +e.features[0].properties.name + '</h3>' +e.features[0].properties.city +
+                '<a target="_blank" href="' +e.features[0].properties.site + '" /><span><?php _e('more info', TakeCareIo::THEME_SLUG ); ?></span> <i class="fa fa-angle-right"></i></a> </div>' ;
+            
+                 
+                // Ensure that if the map is zoomed out such that multiple
+                // copies of the feature are visible, the popup appears
+                // over the copy being pointed to.
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+                 
+                new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(content)
+                .addTo(map);
+            });
+
+        }); 
+
+    </script> 

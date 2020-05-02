@@ -51,6 +51,27 @@ button, a {
 		}
 	}
 
+	&.btn-nav {
+		border: unset;
+		background: unset;
+		border-radius: unset;
+		padding: .5em 0;
+
+		&.active {
+			position: relative;
+			font-family: $primary-font-bold;
+
+  			&:after {
+  				content: '';
+  				position: absolute;
+  				border-bottom: 3px solid $primary-text-color;
+  				width: 90%;
+  				left: 0;
+  				bottom: 0;
+  			}
+		}
+	}
+
 	&.play-btn {
 	    color: inherit !important; 
 	    padding-left: 1.5em; 
@@ -134,116 +155,3 @@ button, a {
 
    
 }    
-
-
-.woocommerce {
-	a.button,
-	button.button.single_add_to_cart_button {
-		@extend .btn;
-		text-decoration: none;
-		border: none;
-	}
-
-	a.button.checkout-button,
-	{ 
-		@extend .btn-primary;
-	}
-
-	button.button { 
-		@extend .btn;
-		@extend .btn-primary;
-
-		&:disabled {
-			padding: 12px 20px !important;
-		}
-	}
-
-	.button.add_to_cart_button,
-	button.button.single_add_to_cart_button {
-		font-size: .9rem;
-		display: inline-block;
-		max-width: initial;
-
-		@include media-breakpoint-down(xs) {
-			padding: 1rem;
-		}
-
-		&:after {
-			content: ' +';
-		}
-
-		&.loading {
-			padding: 1rem;
-
-			&:after {
-				content: '\e01c';
-				font-size: .55em;
-	    		vertical-align: unset;
-	    		position: relative;
-			    top: 0;
-			    right: 0;
-			    margin-left: 5px; 
-			}
-		}
-
-		&.added:after {
-			content: '\e017';
-			font-size: .55em;
-    		vertical-align: unset;
-		}
-		
-	}
-	
-	@include media-breakpoint-down(md) {
-		a.btn, 
-		.button.add_to_cart_button {
-			width: auto;
-			text-align: center !important;
-		}
-	}
-
-	@include media-breakpoint-down(xs) {
-		a.btn, 
-		.button.add_to_cart_button {
-			width: 100%;
-		}
-	}
-
-}
-
-.woocommerce a.button.checkout-button {
-	padding: .6rem;
-}
-
-img[aria-expanded="true"] {
-	transform: rotate(180deg);
-}
-
-img[data-toggle]:hover {
-	cursor: pointer;
-}
-
-span.certificate a{
-    padding: .5em; 
-    border: 1px solid rgba($primary-color, 3); 
-    background: rgba($primary-color, .13); 
-    display: inline-block; 
-    border-radius: 4px; 
-    max-width: 140px;
-}
-
-// #header_btn {
-// 	color: $primary-text-color;
-// 	background-color: $secondary-color;
-// 	border: none;
-
-// 	&:hover {
-// 		background-color: $primary-color-light;
-// 		color: $secondary-color;
-// 	}
-
-// 	&:focus {
-// 		background-color: $primary-color-light;
-// 		color: $primary-bg-color;
-// 	}
-// }
