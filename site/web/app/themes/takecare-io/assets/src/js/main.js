@@ -3,9 +3,11 @@
 // window.$ = window.jQuery = $;
 
 import 'bootstrap';
+import VueSession from 'vue-session';
 
 window.Vue = require('vue');
 
+Vue.use(VueSession);
 Vue.component('user-auth', require('./components/UserAuth.vue').default);
 Vue.component('user-register', require('./components/UserRegister.vue').default);
 // Vue.component('user-actions', require('./components/UserActions.vue').default);
