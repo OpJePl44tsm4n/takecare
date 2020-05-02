@@ -3,10 +3,10 @@
 * Plugin Name: Simple Custom Post Order
 * Plugin URI: https://wordpress.org/plugins-wp/simple-custom-post-order/
 * Description: Order Items (Posts, Pages, and Custom Post Types) using a Drag and Drop Sortable JavaScript.
-* Version: 2.4.7
+* Version: 2.5.0
 * Author: Colorlib
 * Author URI: https://colorlib.com/
-* Tested up to: 5.2
+* Tested up to: 5.4
 * Requires: 4.6 or higher
 * License: GPLv3 or later
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -36,7 +36,7 @@
 
 define('SCPORDER_URL', plugins_url('', __FILE__));
 define('SCPORDER_DIR', plugin_dir_path(__FILE__));
-define('SCPORDER_VERSION', '2.4.7');
+define('SCPORDER_VERSION', '2.5.0');
 
 $scporder = new SCPO_Engine();
 
@@ -46,9 +46,11 @@ class SCPO_Engine {
         if (!get_option('scporder_install'))
             $this->scporder_install();
 
+        $this->load_dependencies();
+
         add_action('admin_menu', array($this, 'admin_menu'));
 
-        add_action('admin_init', array($this, 'refresh'));
+        add_action('admin_init', array( $this, 'refresh' ) );
 
         add_action('admin_init', array($this, 'update_options'));
         add_action('admin_init', array($this, 'load_script_css'));
@@ -73,6 +75,12 @@ class SCPO_Engine {
         add_action( 'plugins_loaded', array( $this, 'load_scpo_textdomain' ) );
 
         add_filter('scpo_post_types_args',array($this,'scpo_filter_post_types'),10,2);
+
+        add_action('wp_ajax_scpo_reset_order', array($this, 'scpo_ajax_reset_order'));
+    }
+
+    private function load_dependencies() {
+        include SCPORDER_DIR . 'class-simple-review.php';
     }
 
     public function scpo_filter_post_types($args,$options){
@@ -225,11 +233,17 @@ class SCPO_Engine {
     }
 
     public function refresh() {
+
+        if ( scporder_doing_ajax() ) {
+            return;
+        }
+
         global $wpdb;
         $objects = $this->get_scporder_options_objects();
         $tags = $this->get_scporder_options_tags();
 
         if (!empty($objects)) {
+            
             foreach ($objects as $object) {
                 $result = $wpdb->get_results("
                     SELECT count(*) as cnt, max(menu_order) as max, min(menu_order) as min
@@ -585,6 +599,56 @@ class SCPO_Engine {
         $tags = isset($scporder_options['tags']) && is_array($scporder_options['tags']) ? $scporder_options['tags'] : array();
         return $tags;
     }
+
+    /**
+     *  SCPO reset order for post types/taxonomies
+     */
+    public function scpo_ajax_reset_order() {
+
+        global $wpdb;
+        if ('scpo_reset_order' == $_POST['action']) {
+            check_ajax_referer('scpo-reset-order', 'scpo_security');
+            $items = $_POST['items'];
+
+            $count   = 0;
+            $in_list = "(";
+            foreach ($items as $item) {
+
+                if ($count != 0) {
+                    $in_list .= ',';
+                }
+                $in_list .= '\'' . $item . '\'';
+                $count++;
+            }
+            $in_list .= ")";
+
+            $prep_posts_query = "UPDATE $wpdb->posts SET `menu_order` = 0 WHERE `post_type` IN $in_list";
+
+            $result = $wpdb->query($prep_posts_query);
+
+            if ($result) {
+                echo 'Items have been reset';
+            } else {
+                echo false;
+            }
+
+            wp_die();
+        }
+    }
+
+}
+
+function scporder_doing_ajax(){
+
+    if ( function_exists( 'wp_doing_ajax' ) ) {
+        return wp_doing_ajax();
+    }
+
+    if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+        return true;
+    }
+
+    return false;
 
 }
 

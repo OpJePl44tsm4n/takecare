@@ -41,7 +41,7 @@ $cmb->add_field([
 
 $cmb->add_field([
 	'id'      => 'url',
-	'type'    => 'text',
+	'type'    => 'text_url',
 	'name'    => esc_html__( 'URL', 'rank-math' ),
 	'desc'    => esc_html__( 'URL of the item.', 'rank-math' ),
 	'default' => site_url(),
@@ -121,7 +121,6 @@ $cmb->add_group_field( $opening_hours, [
 $cmb->add_group_field( $opening_hours, [
 	'id'         => 'time',
 	'type'       => 'text',
-	'default'    => '09:00-17:00',
 	'attributes' => [ 'placeholder' => esc_html__( 'e.g. 09:00-17:00', 'rank-math' ) ],
 ]);
 

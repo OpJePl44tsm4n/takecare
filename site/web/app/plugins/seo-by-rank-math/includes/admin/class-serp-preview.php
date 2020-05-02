@@ -41,7 +41,7 @@ class Serp_Preview {
 		$desktop_preview = isset( $snippet_preview['desktop'] ) ? $snippet_preview['desktop'] : '';
 		$mobile_preview  = isset( $snippet_preview['mobile'] ) ? $snippet_preview['mobile'] : '';
 		?>
-		<div class="serp-preview desktop-preview">
+		<div class="serp-preview desktop-preview serp-<?php echo esc_attr( $snippet_type ); ?>">
 
 			<div class="serp-preview-title" data-title="<?php esc_attr_e( 'Preview', 'rank-math' ); ?>" data-desktop="<?php esc_attr_e( 'Desktop Preview', 'rank-math' ); ?>" data-mobile="<?php esc_attr_e( 'Mobile Preview', 'rank-math' ); ?>">
 				<div class="alignright">
@@ -184,12 +184,25 @@ class Serp_Preview {
 			$termlink         = $this->get_termlink( $termlink, $term->taxonomy );
 			$slugs[]          = '%postname%';
 			$termlink         = str_replace( "%$term->taxonomy%", implode( '/', $slugs ), $termlink );
-			$permalink_format = home_url( user_trailingslashit( $termlink, 'category' ) );
+			$permalink_format = $this->get_home_url() . user_trailingslashit( $termlink, 'category' );
 		}
 
 		$url = untrailingslashit( esc_url( $permalink ) );
 
 		return compact( 'title_format', 'desc_format', 'url', 'permalink', 'permalink_format' );
+	}
+
+	/**
+	 * Get Home URL based on the language if Polylang plugin is active.
+	 *
+	 * @return string
+	 */
+	private function get_home_url() {
+		if ( ! function_exists( 'pll_home_url' ) ) {
+			return home_url();
+		}
+
+		return untrailingslashit( pll_home_url() );
 	}
 
 	/**
@@ -324,7 +337,7 @@ class Serp_Preview {
 		}
 
 		foreach ( $data as $key => $value ) {
-			if ( ! $value ) {
+			if ( ! $value || in_array( $key, [ 'min', 'max' ], true ) ) {
 				continue;
 			}
 
@@ -384,7 +397,7 @@ class Serp_Preview {
 		}
 
 		foreach ( $data as $key => $value ) {
-			if ( ! $value || 'event_name' === $key ) {
+			if ( ! $value || in_array( $key, [ 'event_name', 'min', 'max' ], true ) ) {
 				continue;
 			}
 
@@ -440,7 +453,7 @@ class Serp_Preview {
 		$snippet         = get_post_meta( $post->ID, 'rank_math_rich_snippet', true );
 		$wp_review_total = get_post_meta( $post->ID, 'wp_review_total', true );
 
-		if ( ! in_array( $snippet, [ 'recipe', 'product', 'event', 'restaurant', 'review', 'service', 'software' ], true ) && ! $wp_review_total ) {
+		if ( ! in_array( $snippet, [ 'book', 'course', 'event', 'product', 'recipe', 'software' ], true ) && ! $wp_review_total ) {
 			return false;
 		}
 
@@ -454,27 +467,49 @@ class Serp_Preview {
 				'in_stock' => $product->get_stock_status(),
 			];
 		} else {
-			if ( 'recipe' === $snippet ) {
+			if ( 'book' === $snippet ) {
 				$hash = [
-					'rating'   => 'recipe_rating',
-					'time'     => 'recipe_totaltime',
-					'calories' => 'recipe_calories',
+					'rating' => 'book_rating',
+					'min'    => 'book_rating_min',
+					'max'    => 'book_rating_max',
+				];
+			} elseif ( 'courses' === $snippet ) {
+				$hash = [
+					'rating' => 'course_rating',
+					'min'    => 'course_rating_min',
+					'max'    => 'course_rating_max',
+				];
+			} elseif ( 'event' === $snippet ) {
+				$hash = [
+					'event_name'  => 'name',
+					'event_date'  => 'event_startdate',
+					'event_place' => 'event_address',
+					'rating'      => 'event_rating',
+					'min'         => 'event_rating_min',
+					'max'         => 'event_rating_max',
 				];
 			} elseif ( 'product' === $snippet ) {
 				$hash = [
 					'price'    => 'product_price',
 					'currency' => 'product_currency',
 					'in_stock' => 'product_instock',
+					'rating'   => 'product_rating',
+					'min'      => 'product_rating_min',
+					'max'      => 'product_rating_max',
 				];
-			} elseif ( 'event' === $snippet ) {
+			} elseif ( 'recipe' === $snippet ) {
 				$hash = [
-					'event_date'  => 'event_startdate',
-					'event_name'  => 'name',
-					'event_place' => 'event_address',
+					'rating'   => 'recipe_rating',
+					'min'      => 'recipe_rating_min',
+					'max'      => 'recipe_rating_max',
+					'time'     => 'recipe_totaltime',
+					'calories' => 'recipe_calories',
 				];
-			} elseif ( 'restaurant' === $snippet ) {
+			} elseif ( 'software' === $snippet ) {
 				$hash = [
-					'price_range' => 'local_price_range',
+					'rating' => 'software_rating',
+					'min'    => 'software_rating_min',
+					'max'    => 'software_rating_max',
 				];
 			} else {
 				$hash = [

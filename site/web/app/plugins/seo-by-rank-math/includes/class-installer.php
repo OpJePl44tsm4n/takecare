@@ -127,6 +127,9 @@ class Installer {
 	 * Runs on activation of the plugin.
 	 */
 	private function activate() {
+		// Init to use the common filters.
+		new \RankMath\Defaults;
+
 		$current_version    = get_option( 'rank_math_version', null );
 		$current_db_version = get_option( 'rank_math_db_version', null );
 
@@ -142,6 +145,11 @@ class Installer {
 		// Update to latest version.
 		update_option( 'rank_math_version', rank_math()->version );
 		update_option( 'rank_math_db_version', rank_math()->db_version );
+
+		// Clear rollback option if necessary.
+		if ( rank_math()->version !== get_option( 'rank_math_rollback_version' ) ) {
+			delete_option( 'rank_math_rollback_version' );
+		}
 
 		// Save install date.
 		if ( false === boolval( get_option( 'rank_math_install_date' ) ) ) {
@@ -281,6 +289,8 @@ class Installer {
 			'sitemap',
 			'rich-snippet',
 			'woocommerce',
+			'buddypress',
+			'bbpress',
 			'acf',
 		];
 
@@ -316,7 +326,7 @@ class Installer {
 			'nofollow_image_links'                => 'off',
 			'new_window_external_links'           => 'on',
 			'add_img_alt'                         => 'off',
-			'img_alt_format'                      => '%title% %count(alt)%',
+			'img_alt_format'                      => ' %filename%',
 			'add_img_title'                       => 'off',
 			'img_title_format'                    => '%title% %count(title)%',
 			'breadcrumbs'                         => 'off',
@@ -413,6 +423,7 @@ class Installer {
 		$post_types   = Helper::get_accessible_post_types();
 		$post_types[] = 'product';
 
+		$titles[ 'pt_download_default_rich_snippet' ] = 'product';
 		foreach ( $post_types as $post_type ) {
 			$defaults = $this->get_post_type_defaults( $post_type );
 
@@ -422,8 +433,8 @@ class Installer {
 			$titles[ 'pt_' . $post_type . '_custom_robots' ]        = $defaults['is_custom'];
 			$titles[ 'pt_' . $post_type . '_default_rich_snippet' ] = $defaults['rich_snippet'];
 			$titles[ 'pt_' . $post_type . '_default_article_type' ] = $defaults['article_type'];
-			$titles[ 'pt_' . $post_type . '_default_snippet_name' ] = '%title%';
-			$titles[ 'pt_' . $post_type . '_default_snippet_desc' ] = '%excerpt%';
+			$titles[ 'pt_' . $post_type . '_default_snippet_name' ] = '%seo_title%';
+			$titles[ 'pt_' . $post_type . '_default_snippet_desc' ] = '%seo_description%';
 
 			if ( $this->has_archive( $post_type ) ) {
 				$titles[ 'pt_' . $post_type . '_archive_title' ] = '%title% %page% %sep% %sitename%';
@@ -461,9 +472,10 @@ class Installer {
 	 */
 	private function get_post_type_defaults( $post_type ) {
 		$rich_snippets = [
-			'post'    => 'article',
-			'page'    => 'article',
-			'product' => 'product',
+			'post'     => 'article',
+			'page'     => 'article',
+			'product'  => 'product',
+			'download' => 'product',
 		];
 
 		$defaults = [
@@ -507,6 +519,7 @@ class Installer {
 			$titles[ 'tax_' . $taxonomy . '_robots' ]        = $defaults['robots'];
 			$titles[ 'tax_' . $taxonomy . '_add_meta_box' ]  = $defaults['metabox'];
 			$titles[ 'tax_' . $taxonomy . '_custom_robots' ] = $defaults['is_custom'];
+			$titles[ 'tax_' . $taxonomy . '_description' ]   = '%term_description%';
 
 			$sitemap[ 'tax_' . $taxonomy . '_sitemap' ] = 'category' === $taxonomy ? 'on' : 'off';
 		}

@@ -40,6 +40,9 @@ class Deactivate_Survey implements Runner {
 	public function deactivate_feedback() {
 
 		check_ajax_referer( 'rank_math_deactivate_feedback_nonce', 'security' );
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			$this->error( esc_html__( 'You are not authorized to perform this action.', 'rank-math' ) );
+		}
 
 		$reason_key  = Param::post( 'reason_key', '' );
 		$reason_text = Param::post(
@@ -96,6 +99,17 @@ class Deactivate_Survey implements Runner {
 						<?php echo __( 'Quick Feedback', 'rank-math' ); ?>
 						<span class="button-close dashicons dashicons-no-alt alignright"></span>
 					</h2>
+
+					<?php if ( true === apply_filters( 'rank_math_clear_data_on_uninstall', false ) ) { ?>
+						<div class="rank-math-notice notice-alt notice-error">
+							<p>
+								<?php
+								/* translators: 1. Bold text 2. Bold text */
+								printf( __( '%1$s A filter to remove the Rank Math data from the database is present in your theme. Deactivating this plugin will remove everything related to the Rank Math plugin. %2$s', 'rank-math' ), '<strong>CAUTION:</strong>', '<strong>This action is IRREVERSIBLE.</strong>' );
+								?>
+							</p>
+						</div>
+					<?php } ?>
 
 					<p><?php echo __( 'If you have a moment, please share why you are deactivating Rank Math:', 'rank-math' ); ?></p>
 

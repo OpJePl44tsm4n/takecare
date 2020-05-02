@@ -1,6 +1,6 @@
 <?php
 /**
- * The Rich Snippet Module
+ * The Schema Module
  *
  * @since      0.9.0
  * @package    RankMath
@@ -30,14 +30,16 @@ class Admin extends Base {
 	public function __construct() {
 
 		$directory = dirname( __FILE__ );
-		$this->config([
-			'id'        => 'rich-snippet',
-			'directory' => $directory,
-			'help'      => [
-				'title' => esc_html__( 'Rich Snippet', 'rank-math' ),
-				'view'  => $directory . '/views/help.php',
-			],
-		]);
+		$this->config(
+			[
+				'id'        => 'rich-snippet',
+				'directory' => $directory,
+				'help'      => [
+					'title' => esc_html__( 'Schema Markup', 'rank-math' ),
+					'view'  => $directory . '/views/help.php',
+				],
+			]
+		);
 		parent::__construct();
 
 		$this->action( 'cmb2_admin_init', 'enqueue', 50 );
@@ -60,15 +62,19 @@ class Admin extends Base {
 			return $tabs;
 		}
 
-		Arr::insert( $tabs, [
-			'richsnippet' => [
-				'icon'       => 'dashicons',
-				'title'      => esc_html__( 'Rich Snippet', 'rank-math' ),
-				'desc'       => esc_html__( 'This tab contains snippet options.', 'rank-math' ),
-				'file'       => $this->directory . '/views/metabox-options.php',
-				'capability' => 'onpage_snippet',
+		Arr::insert(
+			$tabs,
+			[
+				'richsnippet' => [
+					'icon'       => 'dashicons',
+					'title'      => esc_html__( 'Schema', 'rank-math' ),
+					'desc'       => esc_html__( 'This tab contains snippet options.', 'rank-math' ),
+					'file'       => $this->directory . '/views/metabox-options.php',
+					'capability' => 'onpage_snippet',
+				],
 			],
-		], 3 );
+			3
+		);
 
 		return $tabs;
 	}
@@ -149,10 +155,10 @@ class Admin extends Base {
 			}
 
 			$values[ $this->camelize( $id ) ] = 'group' === $type ? $cmb->get_field( $id )->value :
-				$cmb->get_field( $id )->escaped_value();
+				$cmb->get_field( $id )->escaped_value( 'sanitize_textarea_field' );
 		}
 
-		$values['snippetType'] = $cmb->get_field( 'rank_math_rich_snippet' )->escaped_value();
+		$values['snippetType'] = $cmb->get_field( 'rank_math_rich_snippet' )->escaped_value( 'sanitize_textarea_field' );
 
 		// Default values.
 		$post_type                    = \RankMath\CMB2::current_object_type();
@@ -161,6 +167,7 @@ class Admin extends Base {
 		$values['knowledgegraphType'] = Helper::get_settings( 'titles.knowledgegraph_type' );
 
 		Helper::add_json( 'richSnippets', $values );
+		Helper::add_json( 'hasReviewPosts', ! empty( Helper::get_review_posts() ) );
 	}
 
 	/**
@@ -170,8 +177,9 @@ class Admin extends Base {
 		Helper::add_json(
 			'assessor',
 			[
-				'articleKBLink'      => KB::get( 'article' ),
-				'richSnippetsKBLink' => KB::get( 'rich-snippets' ),
+				'articleKBLink'       => KB::get( 'article' ),
+				'reviewConverterLink' => Helper::get_admin_url( 'status', 'view=tools' ),
+				'richSnippetsKBLink'  => KB::get( 'rich-snippets' ),
 			]
 		);
 	}

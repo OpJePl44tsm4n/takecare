@@ -79,6 +79,11 @@ class Admin_Bar_Menu {
 			$robots = array_unique( $robots );
 
 			$this->update_meta( $object_type, $object_id, 'rank_math_robots', $robots );
+
+			if ( 'noindex' === $what ) {
+				$this->do_action( 'sitemap/invalidate_object_type', $object_type, $object_id );
+			}
+
 			die( '1' );
 		}
 
@@ -217,7 +222,11 @@ class Admin_Bar_Menu {
 	 * Add taxonomy menu
 	 */
 	private function add_taxonomy_menu() {
-		$term   = get_queried_object();
+		$term = get_queried_object();
+		if ( empty( $term ) ) {
+			return;
+		}
+
 		$labels = get_taxonomy_labels( get_taxonomy( $term->taxonomy ) );
 		$this->add_sub_menu(
 			'tax',

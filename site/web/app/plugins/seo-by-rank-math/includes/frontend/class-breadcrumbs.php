@@ -12,6 +12,7 @@ namespace RankMath\Frontend;
 
 use RankMath\Helper;
 use RankMath\Traits\Hooker;
+use RankMath\Helpers\Security;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -266,7 +267,7 @@ class Breadcrumbs {
 	 * Search results trail.
 	 */
 	private function add_crumbs_search() {
-		$this->add_crumb( sprintf( $this->strings['search_format'], get_search_query() ), remove_query_arg( 'paged' ) );
+		$this->add_crumb( sprintf( $this->strings['search_format'], get_search_query() ), Security::remove_query_arg_raw( 'paged' ) );
 	}
 
 	/**
@@ -309,7 +310,7 @@ class Breadcrumbs {
 
 		$this->add_crumbs_post_type_archive( $post_type );
 
-		if ( ! isset( $post->ID ) ) {
+		if ( ! isset( $post->ID ) || empty( $post->ID ) ) {
 			return;
 		}
 

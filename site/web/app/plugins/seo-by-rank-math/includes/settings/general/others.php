@@ -13,16 +13,8 @@ $cmb->add_field([
 	'id'      => 'usage_tracking',
 	'type'    => 'switch',
 	'name'    => esc_html__( 'Usage Tracking', 'rank-math' ),
-	'desc'    => esc_html__( 'Help make Rank Math even more powerful by allowing us to collect non-sensitive diagnostic data and usage information.', 'rank-math' ) . ' <a href="' . KB::get( 'rm-privacy' ) . '" target="_blank">' . esc_html__( 'Find out more.', 'rank-math' ) . '</a> <br />' . '<a href="' . esc_url( Helper::get_admin_url( 'status', 'tab=status' ) ) . '">' . esc_html__( 'Show me the data', 'rank-math' ) . '</a>',
+	'desc'    => esc_html__( 'Help make Rank Math even more powerful by allowing us to collect non-sensitive diagnostic data and usage information.', 'rank-math' ) . ' <a href="' . KB::get( 'rm-privacy' ) . '" target="_blank">' . esc_html__( 'Find out more.', 'rank-math' ) . '</a>',
 	'default' => 'on',
-]);
-
-$cmb->add_field([
-	'id'      => 'enable_auto_update',
-	'type'    => 'switch',
-	'name'    => esc_html__( 'Auto Update', 'rank-math' ),
-	'desc'    => esc_html__( 'Enable auto update of the plugin', 'rank-math' ),
-	'default' => 'off',
 ]);
 
 $cmb->add_field([
@@ -84,8 +76,8 @@ $cmb->add_field([
 	'id'      => 'support_rank_math',
 	'type'    => 'switch',
 	'name'    => esc_html__( 'Support Us with a Link', 'rank-math' ),
-	/* Translators: %s is th word "nofollow" inside a HTML tag */
-	'desc'    => sprintf( esc_html__( 'If you are showing the SEO scores on the front end, this option will insert a %s backlink to RankMath.com to show your support.', 'rank-math' ), '<code>nofollow</code>' ),
+	/* Translators: %s is the word "nofollow" code tag and second one for the filter link */
+	'desc'    => sprintf( esc_html__( 'If you are showing the SEO scores on the front end, this option will insert a %1$s backlink to RankMath.com to show your support. You can change the link & the text by using this %2$s.', 'rank-math' ), '<code>follow</code>', '<a href="https://rankmath.com/kb/filters-hooks-api-developer/#change-seo-score-backlink" target="_blank">' . __( 'filter', 'rank-math' ) . '</a>' ),
 	'default' => 'on',
 	'dep'     => [ [ 'frontend_seo_score', 'on' ] ],
 ]);

@@ -12,6 +12,8 @@ namespace RankMath\Redirections;
 
 use RankMath\Helper;
 use RankMath\Traits\Hooker;
+use MyThemeShop\Helpers\Str;
+use RankMath\Helpers\Security;
 use MyThemeShop\Helpers\Param;
 use MyThemeShop\Helpers\Conditional;
 
@@ -60,7 +62,15 @@ class Redirections {
 	 * Do redirection on frontend.
 	 */
 	public function do_redirection() {
-		if ( is_customize_preview() || Conditional::is_ajax() || ! isset( $_SERVER['REQUEST_URI'] ) || empty( $_SERVER['REQUEST_URI'] ) || $this->is_script_uri_or_http_x() ) {
+		if (
+			$this->is_wp_login() ||
+			is_customize_preview() ||
+			Conditional::is_ajax() ||
+			! isset( $_SERVER['REQUEST_URI'] ) ||
+			empty( $_SERVER['REQUEST_URI'] ) ||
+			$this->is_script_uri_or_http_x() ||
+			isset( $_GET['elementor-preview'] )
+		) {
 			return;
 		}
 
@@ -108,12 +118,26 @@ class Redirections {
 				'redirections-redirect-me',
 				[
 					'title' => esc_html__( '&raquo; Redirect this page', 'rank-math' ),
-					'href'  => add_query_arg( 'url', urlencode( ltrim( Param::server( 'REQUEST_URI' ), '/' ) ), Helper::get_admin_url( 'redirections' ) ),
+					'href'  => Security::add_query_arg_raw( 'url', urlencode( ltrim( Param::server( 'REQUEST_URI' ), '/' ) ), Helper::get_admin_url( 'redirections' ) ),
 					'meta'  => [ 'title' => esc_html__( 'Redirect the current URL', 'rank-math' ) ],
 				],
 				'redirections'
 			);
 		}
+	}
+
+	/**
+	 * Check if request is WordPress login.
+	 *
+	 * @return boolean
+	 */
+	private function is_wp_login() {
+		$uri = Param::server( 'REQUEST_URI' );
+		if ( Str::contains( 'wp-admin', $uri ) || Str::contains( 'wp-login', $uri ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

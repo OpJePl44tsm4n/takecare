@@ -15,7 +15,9 @@ use RankMath\Term;
 use RankMath\User;
 use RankMath\Helper;
 use MyThemeShop\Helpers\Str;
+use RankMath\Helpers\Security;
 use MyThemeShop\Helpers\WordPress as WP_Helper;
+use RankMath\Role_Manager\Capability_Manager;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -102,7 +104,7 @@ trait WordPress {
 		$page = $page ? 'rank-math-' . $page : 'rank-math';
 		$args = wp_parse_args( $args, [ 'page' => $page ] );
 
-		return add_query_arg( $args, admin_url( 'admin.php' ) );
+		return Security::add_query_arg_raw( $args, admin_url( 'admin.php' ) );
 	}
 
 	/**
@@ -117,7 +119,7 @@ trait WordPress {
 			'view' => 'help',
 		];
 		if ( ! is_multisite() ) {
-			return add_query_arg( $args, admin_url( 'admin.php' ) );
+			return Security::add_query_arg_raw( $args, admin_url( 'admin.php' ) );
 		}
 
 		// Makes sure the plugin functions are defined before trying to use them.
@@ -125,7 +127,9 @@ trait WordPress {
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		}
 
-		return is_plugin_active_for_network( plugin_basename( RANK_MATH_FILE ) ) ? add_query_arg( $args, network_admin_url( 'admin.php' ) ) : add_query_arg( $args, admin_url( 'admin.php' ) );
+		return is_plugin_active_for_network( plugin_basename( RANK_MATH_FILE ) ) ?
+			Security::add_query_arg_raw( $args, network_admin_url( 'admin.php' ) ) :
+			Security::add_query_arg_raw( $args, admin_url( 'admin.php' ) );
 	}
 
 	/**
@@ -146,39 +150,6 @@ trait WordPress {
 	}
 
 	/**
-	 * Get default capabilities.
-	 *
-	 * @codeCoverageIgnore
-	 *
-	 * @return array
-	 */
-	public static function get_capabilities() {
-		$caps = [
-			'rank_math_titles'          => esc_html__( 'Titles & Meta Settings', 'rank-math' ),
-			'rank_math_general'         => esc_html__( 'General Settings', 'rank-math' ),
-			'rank_math_sitemap'         => esc_html__( 'Sitemap Settings', 'rank-math' ),
-			'rank_math_404_monitor'     => esc_html__( '404 Monitor Log', 'rank-math' ),
-			'rank_math_link_builder'    => esc_html__( 'Link Builder', 'rank-math' ),
-			'rank_math_redirections'    => esc_html__( 'Redirections', 'rank-math' ),
-			'rank_math_role_manager'    => esc_html__( 'Role Manager', 'rank-math' ),
-			'rank_math_search_console'  => esc_html__( 'Search Console', 'rank-math' ),
-			'rank_math_site_analysis'   => esc_html__( 'Site-Wide Analysis', 'rank-math' ),
-			'rank_math_onpage_analysis' => esc_html__( 'On-Page Analysis', 'rank-math' ),
-			'rank_math_onpage_general'  => esc_html__( 'On-Page General Settings', 'rank-math' ),
-			'rank_math_onpage_advanced' => esc_html__( 'On-Page Advanced Settings', 'rank-math' ),
-			'rank_math_onpage_snippet'  => esc_html__( 'On-Page Rich Snippet Settings', 'rank-math' ),
-			'rank_math_onpage_social'   => esc_html__( 'On-Page Social Settings', 'rank-math' ),
-			'rank_math_admin_bar'       => esc_html__( 'Top Admin Bar', 'rank-math' ),
-		];
-
-		if ( ! function_exists( 'rank_math_load_premium' ) ) {
-			unset( $caps['rank_math_link_builder'] );
-		}
-
-		return $caps;
-	}
-
-	/**
 	 * Get active capabilities.
 	 *
 	 * @codeCoverageIgnore
@@ -187,7 +158,7 @@ trait WordPress {
 	 */
 	public static function get_roles_capabilities() {
 		$data = [];
-		$caps = array_keys( self::get_capabilities() );
+		$caps = Capability_Manager::get()->get_capabilities( true );
 
 		foreach ( WP_Helper::get_roles() as $slug => $role ) {
 			self::get_role_capabilities( $slug, $caps, $data );
@@ -227,7 +198,7 @@ trait WordPress {
 	 * @param array $roles Data.
 	 */
 	public static function set_capabilities( $roles ) {
-		$caps = array_keys( self::get_capabilities() );
+		$caps = Capability_Manager::get()->get_capabilities( true );
 		foreach ( WP_Helper::get_roles() as $slug => $role ) {
 			self::set_role_capabilities( $slug, $caps, $roles );
 		}
@@ -392,6 +363,11 @@ trait WordPress {
 	 * @return bool
 	 */
 	public static function is_block_editor() {
+		// Check WordPress version.
+		if ( version_compare( get_bloginfo( 'version' ), '5.0.0', '<' ) ) {
+			return false;
+		}
+
 		$screen = get_current_screen();
 		if ( method_exists( $screen, 'is_block_editor' ) ) {
 			return $screen->is_block_editor();

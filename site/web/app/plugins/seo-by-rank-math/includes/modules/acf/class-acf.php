@@ -37,13 +37,15 @@ class ACF {
 	 * Enqueue styles and scripts for the metabox.
 	 */
 	public function enqueue() {
-		if ( Admin_Helper::is_post_edit() ) {
-			wp_enqueue_script( 'rank-math-acf-post-analysis', rank_math()->plugin_url() . 'assets/admin/js/acf-analysis.js', [ 'wp-hooks', 'rank-math-analyzer' ], rank_math()->version, true );
+		if ( Helper::is_elementor_editor() ) {
+			return;
 		}
 
-		if ( Admin_Helper::is_term_edit() ) {
-			wp_enqueue_script( 'rank-math-acf-term-analysis', rank_math()->plugin_url() . 'assets/admin/js/acf-analysis.js', [ 'wp-hooks', 'rank-math-term-metabox' ], rank_math()->version, true );
+		if ( ! Admin_Helper::is_post_edit() && ! Admin_Helper::is_term_edit() ) {
+			return;
 		}
+
+		wp_enqueue_script( 'rank-math-acf-post-analysis', rank_math()->plugin_url() . 'assets/admin/js/acf-analysis.js', [ 'wp-hooks', 'rank-math-analyzer' ], rank_math()->version, true );
 
 		Helper::add_json( 'acf', $this->get_config() );
 	}

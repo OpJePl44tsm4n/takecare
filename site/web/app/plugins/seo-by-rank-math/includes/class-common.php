@@ -36,21 +36,25 @@ class Common {
 	public function __construct() {
 		$this->action( 'loginout', 'nofollow_link' );
 		$this->filter( 'register', 'nofollow_link' );
-		$this->filter( 'rank_math/excluded_taxonomies', 'exclude_taxonomies' );
-		$this->filter( 'rank_math/excluded_post_types', 'excluded_post_types' );
 
 		// Change Permalink for primary term.
 		$this->filter( 'post_type_link', 'post_type_link', 9, 2 );
 		$this->filter( 'post_link_category', 'post_link_category', 10, 3 );
 
+		// Reorder categories listing: put primary at the beginning.
+		$this->filter( 'get_the_terms', 'reorder_the_terms', 10, 3 );
+
 		add_action( 'wp_ajax_nopriv_rank_math_overlay_thumb', [ $this, 'generate_overlay_thumbnail' ] );
 
 		// Auto-update the plugin.
-		if ( Helper::get_settings( 'general.enable_auto_update' ) ) {
+		if ( Helper::get_settings( 'general.enable_auto_update' ) && false === boolval( get_option( 'rank_math_rollback_version', false ) ) ) {
 			$this->filter( 'auto_update_plugin', 'auto_update_plugin', 10, 2 );
 			new Auto_Updater;
 		}
 
+		$this->filter( 'is_protected_meta', 'hide_rank_math_meta', 10, 2 );
+
+		new Defaults;
 		new Admin_Bar_Menu;
 	}
 
@@ -70,37 +74,6 @@ class Common {
 	}
 
 	/**
-	 * Exclude taxonomies.
-	 *
-	 * @param array $taxonomies Excluded taxonomies.
-	 *
-	 * @return array
-	 */
-	public function exclude_taxonomies( $taxonomies ) {
-		if ( ! current_theme_supports( 'post-formats' ) ) {
-			unset( $taxonomies['post_format'] );
-		}
-		unset( $taxonomies['product_shipping_class'] );
-
-		return $taxonomies;
-	}
-
-	/**
-	 * Exclude post_types.
-	 *
-	 * @param array $post_types Excluded post_types.
-	 *
-	 * @return array
-	 */
-	public function excluded_post_types( $post_types ) {
-		if ( isset( $post_types['elementor_library'] ) ) {
-			unset( $post_types['elementor_library'] );
-		}
-
-		return $post_types;
-	}
-
-	/**
 	 * Filters the category that gets used in the %category% permalink token.
 	 *
 	 * @param WP_Term $term  The category to use in the permalink.
@@ -111,8 +84,16 @@ class Common {
 	 */
 	public function post_link_category( $term, $terms, $post ) {
 		$primary_term = $this->get_primary_term( $term->taxonomy, $post->ID );
+		if ( false === $primary_term ) {
+			return $term;
+		}
 
-		return false === $primary_term ? $term : $primary_term;
+		$term_ids = array_column( $terms, 'term_id' );
+		if ( ! is_object( $primary_term ) || ! in_array( $primary_term->term_id, $term_ids, true ) ) {
+			return $term;
+		}
+
+		return $primary_term;
 	}
 
 	/**
@@ -165,9 +146,13 @@ class Common {
 	 * AJAX function to generate overlay image. Used in social thumbnails.
 	 */
 	public function generate_overlay_thumbnail() {
-		$thumbnail_id  = Param::request( 'id', 0, FILTER_VALIDATE_INT );
-		$type          = Param::request( 'type', 'play' );
-		$overlay_image = Helper::choices_overlay_images()[ $type ]['url'];
+		$thumbnail_id = Param::request( 'id', 0, FILTER_VALIDATE_INT );
+		$type         = Param::request( 'type', 'play' );
+		$choices      = Helper::choices_overlay_images();
+		if ( ! isset( $choices[ $type ] ) ) {
+			die();
+		}
+		$overlay_image = $choices[ $type ]['url'];
 		$image         = wp_get_attachment_image_src( $thumbnail_id, 'full' );
 
 		if ( ! empty( $image ) ) {
@@ -195,6 +180,65 @@ class Common {
 		}
 
 		return $update;
+	}
+
+	/**
+	 * Reorder terms for a post to put primary category to the beginning.
+	 *
+	 * @param array|WP_Error $terms    List of attached terms, or WP_Error on failure.
+	 * @param int            $post_id  Post ID.
+	 * @param string         $taxonomy Name of the taxonomy.
+	 *
+	 * @return array
+	 */
+	public function reorder_the_terms( $terms, $post_id, $taxonomy ) {
+		/**
+		 * Filter: Allow disabling the primary term feature.
+		 * 'rank_math/primary_term' is deprecated,
+		 * use 'rank_math/admin/disable_primary_term' instead.
+		 *
+		 * @param bool $return True to disable.
+		 */
+		if ( true === apply_filters_deprecated( 'rank_math/primary_term', array( false ), '1.0.43', 'rank_math/admin/disable_primary_term' )
+			|| true === $this->do_filter( 'admin/disable_primary_term', false ) ) {
+			return $terms;
+		}
+
+		$post_id = empty( $post_id ) ? $GLOBALS['post']->ID : $post_id;
+
+		// Get Primary Term.
+		$primary = absint( Helper::get_post_meta( "primary_{$taxonomy}", $post_id ) );
+		if ( ! $primary ) {
+			return $terms;
+		}
+
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			return [ $primary ];
+		}
+
+		$primary_term = null;
+		foreach ( $terms as $index => $term ) {
+			if ( $primary === $term->term_id ) {
+				$primary_term = $term;
+				unset( $terms[ $index ] );
+				array_unshift( $terms, $primary_term );
+				break;
+			}
+		}
+
+		return $terms;
+	}
+
+	/**
+	 * Hide rank math meta keys
+	 *
+	 * @param bool   $protected Whether the key is considered protected.
+	 * @param string $meta_key  Meta key.
+	 *
+	 * @return bool
+	 */
+	public function hide_rank_math_meta( $protected, $meta_key ) {
+		return Str::starts_with( 'rank_math_', $meta_key ) ? true : $protected;
 	}
 
 	/**
