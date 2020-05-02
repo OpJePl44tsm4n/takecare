@@ -540,7 +540,7 @@
                     "label": "Currency",
                     "name": "currency",
                     "type": "select",
-                    "instructions": "EUR\r\nUSD\r\nYEN",
+                    "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -548,7 +548,11 @@
                         "class": "",
                         "id": ""
                     },
-                    "choices": [],
+                    "choices": {
+                        "EUR": "EUR",
+                        "USD": "USD",
+                        "YEN": "YEN"
+                    },
                     "default_value": [],
                     "allow_null": 0,
                     "multiple": 0,
@@ -1264,5 +1268,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1588425560
+    "modified": 1588432927
 }
