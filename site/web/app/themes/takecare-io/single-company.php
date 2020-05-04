@@ -67,7 +67,7 @@
 
                                     foreach ($socials as $social) {
                                         if ($url = get_field( $social ) ) {  
-                                            $list_items .= '<li><a class="social-btn" href="'. $url .'"><i class="fa fa-' . $social . '"></i></a></li>'; 
+                                            $list_items .= '<li><a class="social-btn" href="'. $url .'"><i class="fab fa-' . $social . '"></i></a></li>'; 
                                         }
                                     }
                                  
