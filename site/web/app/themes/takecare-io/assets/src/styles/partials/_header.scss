@@ -107,6 +107,8 @@ header.site-header {
 	            border-bottom-right-radius: 0;
 	            outline: none;
 	            color: darken($secondary-color, 40%);
+	            background: lighten($secondary-color, 5%);
+	            border: none;
 	        }
 
 	        button { 
@@ -117,7 +119,8 @@ header.site-header {
 	            padding: 0;
 	            border-top-left-radius: 0;
 	            border-bottom-left-radius: 0;
-	            background: $secondary-color;
+	            color: darken($secondary-color, 40%);
+	            background: lighten($secondary-color, 5%);
 
 	            i:before {
 	            	position: absolute;

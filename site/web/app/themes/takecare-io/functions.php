@@ -83,7 +83,7 @@ class TakeCareIo extends Greylabel {
         ],
         'api' => [
             'src' => 'assets/dist/js/wp-api.min.js',
-            'dependencies' => [],
+            'dependencies' => ['jquery'],
             'version' => self::VERSION,
             'external' => false,
             'load_script' => ['is_archive', 'is_search'],

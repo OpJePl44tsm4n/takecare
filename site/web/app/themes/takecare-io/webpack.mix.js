@@ -11,6 +11,12 @@ let mix = require('laravel-mix');
  |
  */
 
+mix.webpackConfig({
+    externals: {
+        "jquery": "jQuery"
+    }
+});
+
 mix.options({
     	processCssUrls: false
 	})

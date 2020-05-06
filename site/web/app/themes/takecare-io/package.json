@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
+    "jquery-ui-bundle": "^1.12.1-migrate",
     "vue-session": "^1.0.0"
   }
 }
