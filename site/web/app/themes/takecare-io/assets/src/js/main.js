@@ -1,21 +1,17 @@
 
-// import $ from 'jquery';
-// window.$ = window.jQuery = $;
 
-// import 'jquery-ui-bundle';
 import 'bootstrap';
-// import VueSession from 'vue-session';
+import VueSession from 'vue-session';
 
-// window.Vue = require('vue');
+window.Vue = require('vue');
 
-// Vue.use(VueSession);
-// Vue.component('user-auth', require('./components/UserAuth.vue').default);
-// Vue.component('user-register', require('./components/UserRegister.vue').default);
-// Vue.component('user-actions', require('./components/UserActions.vue').default);
+Vue.use(VueSession);
+Vue.component('user-auth', require('./components/UserAuth.vue').default);
+Vue.component('user-register', require('./components/UserRegister.vue').default);
 
-// const app = new Vue({
-//     el: '#takecare'
-// });
+const app = new Vue({
+    el: '#takecare'
+});
 
 
 
