@@ -101,7 +101,6 @@ header.site-header {
 	        input {
 	            padding: 0 1em;
 	            height:40px;
-	            margin: 0;
 	            width: calc(100% - 35px);
 	            border-top-right-radius: 0;
 	            border-bottom-right-radius: 0;
@@ -113,7 +112,6 @@ header.site-header {
 
 	        button { 
 	            display: inline-block;
-	            margin-top: -3px;
 	            width: 35px;
 	            height: 40px;
 	            padding: 0;
@@ -121,7 +119,8 @@ header.site-header {
 	            border-bottom-left-radius: 0;
 	            color: darken($secondary-color, 40%);
 	            background: lighten($secondary-color, 5%);
-
+	            margin-top: -2px;
+	            
 	            i:before {
 	            	position: absolute;
 				    left: 2px;

@@ -77,6 +77,8 @@
             //     }
             // },
             async registerUser(user) {
+                var vm = this
+
                 try {
                     var urlencoded = new URLSearchParams();
                     urlencoded.append('email', user.email);
@@ -88,13 +90,14 @@
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     })
                     const data = await response.json()
-                    this.currentUser = data;
+                    vm.currentUser = data;
                 } catch (error) {
                     console.error(error)
                 }
             },
             async loginUser(user) {
-
+                var vm = this
+                
                 try {
                     var urlencoded = new URLSearchParams();
                     urlencoded.append('email', user.email);
@@ -107,9 +110,9 @@
                     }).then(function (response) {
                         console.log(response.json());
                         if (response.status === 200 && 'token' in response.body) {
-                          this.currentUser = response.body;
-                          this.$session.start()
-                          this.$session.set('jwt', response.body.token)
+                          vm.currentUser = response.body;
+                          vm.$session.start()
+                          vm.$session.set('jwt', response.body.token)
                           window.Vue.http.headers.common['Authorization'] = 'Bearer ' + response.body.token
                         }
                     }, function (err) {
