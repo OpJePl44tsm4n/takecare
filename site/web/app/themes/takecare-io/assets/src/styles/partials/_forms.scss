@@ -52,11 +52,11 @@ form {
         }
 
         &::placeholder {
-            color: rgba($primary-color, 0.5);
+            color: darken($secondary-color, 20%);
         }
 
         &:focus::placeholder {
-            color: $primary-color;
+            color: $secondary-color;
         }
 
         &.wpcf7-submit {
