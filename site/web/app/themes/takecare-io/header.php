@@ -59,8 +59,10 @@
                     <button id="search-collapse" class="btn btn-primary d-md-none collapsed" 
                         data-toggle="collapse" 
                         data-target="#search-bar" 
+                        data-parent="#main-nav"
                         aria-expanded="false" 
-                        aria-controls="search-bar"><i class="fa fa-search"></i>
+                        aria-controls="search-bar"><i class="fas fa-search"></i>
+                        <i class="fas fa-search-minus"></i>
                     </button>
 
                     <form id="search-bar" class="collapse collapse-sm-only" role="search" method="get" action="<?php echo home_url(); ?>?s=">
@@ -68,7 +70,7 @@
                         <input type="hidden" class="field" name="post_type" id="post_type" value="company">
                     </form>
 
-                    <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
+                    <div class="menu-toggler collapsed"data-toggle="collapse" data-target="#navbarCollapse" data-parent="#main-nav" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation">
                         <button class="navbar-toggler" type="button">
                             <?php /*<span><?php _e('Menu', WhiteLabelTheme::THEME_SLUG ); ?></span>*/?>
                             <span class="navbar-toggler-icon"></span>

@@ -98,6 +98,10 @@
 		}
 
 	}
+
+	&.collapsing {
+		transition: height 0.25s linear;
+	}
 	
 	&.collapse.show {
 		width: 270px;
