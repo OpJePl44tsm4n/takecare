@@ -182,7 +182,7 @@ var Brandclick = {
         } 
     },
     onPlayerReady: function(event) {
-        var videoWrapper = event.target.a.parentNode;
+        var videoWrapper = event.target.f.parentNode;
 
         if(Brandclick.hasClass(videoWrapper,'collapse') ) {
             Brandclick.addClass(videoWrapper.parentNode, 'playing');
