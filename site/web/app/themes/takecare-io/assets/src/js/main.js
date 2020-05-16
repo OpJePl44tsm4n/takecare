@@ -150,11 +150,13 @@ var Brandclick = {
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }    
+
     },
 
     loadYoutubeIframes: function() {
         var videoElements = document.getElementsByClassName('video-wrapper');
-
+        console.log(videoElements);
+        console.log('addYoutubeScript');
         if (videoElements.length) {
             for (var i = 0; i < videoElements.length; i++) {
                
@@ -183,7 +185,7 @@ var Brandclick = {
     },
     onPlayerReady: function(event) {
         var videoWrapper = event.target.f.parentNode;
-
+       
         if(Brandclick.hasClass(videoWrapper,'collapse') ) {
             Brandclick.addClass(videoWrapper.parentNode, 'playing');
             Brandclick.addClass(videoWrapper.parentNode.parentNode, 'playing-video');
@@ -354,7 +356,7 @@ Brandclick.load(function(){
     Brandclick.init();
 });
    
-function onYouTubeIframeAPIReady() {
+window.onYouTubeIframeAPIReady = function (){
     Brandclick.loadYoutubeIframes();
 }
 
