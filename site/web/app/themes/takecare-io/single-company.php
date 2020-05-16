@@ -264,7 +264,7 @@
                                     endwhile; ?>
                                 </div>    
                             <?php endif; ?>
-                        </div>
+                
                     </section>
                 <?php endif; ?>
                 
