@@ -2,8 +2,9 @@ body.ninja-mode {
     background: rgba(19,18,23,0.975 );
     
     .navbar-collapse.collapse.show,
-    .navbar-collapse.collapsing {
-         background: rgba(19,18,23,0.975 );
+    .navbar-collapse.collapsing,
+    .leaflet-popup-content {
+        background: rgba(19,18,23,0.975 ) !important;
     } 
 
     #ninja-toggle {
@@ -38,6 +39,10 @@ body.ninja-mode {
 
     h1, h2, h3, h4, p, small, li {
         color: #fff; 
+    }
+
+    a {
+        color: $primary-color
     }
     
     header.site-header #main-nav.navbar {

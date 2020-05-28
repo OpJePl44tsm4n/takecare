@@ -21,6 +21,7 @@ mix.options({
     	processCssUrls: false
 	})
 	.js('./assets/src/js/main.js', './assets/dist/js/main.min.js')
+    .js('./assets/src/js/mapbox-simple-init.js', './assets/dist/js/mapbox-simple-init.js')
 	.js('./assets/src/js/wp-api.js', './assets/dist/js/wp-api.min.js')
     .sass('./assets/src/styles/main.scss', './assets/dist/styles/main.min.css')
     .copyDirectory('./assets/src/img', './assets/dist/img')
