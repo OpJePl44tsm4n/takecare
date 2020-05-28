@@ -26,7 +26,7 @@ body.ninja-mode {
         }
     }
 
-    .fa-search path {
+    #search-collapse .fa-search path {
         fill: #fff;
     }
     
@@ -48,6 +48,10 @@ body.ninja-mode {
              color: #fff;
         }
     }
+
+    header.site-header #main-nav.navbar form {
+        background: #232129;
+    }
     
     .tertiary-bg-color {
         background: #1c1c1c;
@@ -57,7 +61,8 @@ body.ninja-mode {
         background: #232129;
         box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.55) !important;
         
-        h1 a, a {
+        h1 a, a,
+        span, button {
             color: #fff !important;
         }
         
