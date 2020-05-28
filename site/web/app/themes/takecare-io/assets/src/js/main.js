@@ -3,19 +3,82 @@
 import 'bootstrap';
 import VueSession from 'vue-session';
 
-// window.Vue = require('vue');
+window.Vue = require('vue');
 
-// Vue.use(VueSession);
-// Vue.component('user-auth', require('./components/UserAuth.vue').default);
-// Vue.component('user-register', require('./components/UserRegister.vue').default);
+Vue.use(VueSession);
+Vue.component('user-auth', require('./components/UserAuth.vue').default);
+Vue.component('user-register', require('./components/UserRegister.vue').default);
 
-// const app = new Vue({
-//     el: '#takecare'
-// });
+const app = new Vue({
+    el: '#takecare'
+});
 
+var NinjaMode = {
 
+    init: function() {
+        this.initNinjaMode();
+        this.checkNinjaMode(); 
 
-var Brandclick = {
+        return; 
+    },
+
+    initNinjaMode: function() {
+        var ninjaToggle = document.getElementById('ninja-toggle'); 
+        ninjaToggle.onclick = NinjaMode.toggleNinjaMode;
+    },
+
+    checkNinjaMode: function(){ 
+        var ninjaMode = NinjaMode.getCookie('ninja-mode');
+        var ninjaToggle = document.getElementById('ninja-toggle');
+  
+        if(ninjaMode == 'true') {
+            ninjaToggle.click();
+        } 
+    },  
+
+    toggleNinjaMode: function(e) { 
+        document.body.classList.toggle('ninja-mode'); 
+        var newTitle = this.dataset.title;
+        this.dataset.title = this.title;
+        this.title = newTitle;
+        var ninjaMode = NinjaMode.hasClass(document.body, 'ninja-mode');
+        NinjaMode.setCookie('ninja-mode', ninjaMode, 99);      
+    }, 
+
+    setCookie: function(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    },
+
+    getCookie: function(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+
+        return "";
+    },
+
+    hasClass: function(el, className) {
+        if (el.classList)
+            return el.classList.contains(className)
+        else
+            return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+    }
+};
+
+NinjaMode.init();
+
+var Takecare = {
 
     load: function(func) {
    
@@ -68,11 +131,11 @@ var Brandclick = {
         var el = document.getElementsByClassName( viewElementClass );
 
         if (el.length) {
-            Brandclick.addClass( el[0] , 'animation-init' );
+            Takecare.addClass( el[0] , 'animation-init' );
 
             window.onscroll = function() {
-                if( Brandclick.isInViewport(el[0]) ) {
-                    Brandclick.addClass( el[0], newClass );
+                if( Takecare.isInViewport(el[0]) ) {
+                    Takecare.addClass( el[0], newClass );
                 }
             }    
         }     
@@ -94,12 +157,12 @@ var Brandclick = {
             var currentScrollPos = window.pageYOffset;
 
             if (currentScrollPos > 300) {
-                if(Brandclick.hasClass(mainNav,'transparant') ) {
-                    Brandclick.removeClass(mainNav, 'transparant');
+                if(Takecare.hasClass(mainNav,'transparant') ) {
+                    Takecare.removeClass(mainNav, 'transparant');
                 }  
             } else {
-                if(!Brandclick.hasClass(mainNav,'transparant') ) {
-                    Brandclick.addClass(mainNav, 'transparant');
+                if(!Takecare.hasClass(mainNav,'transparant') ) {
+                    Takecare.addClass(mainNav, 'transparant');
                 }  
             }
             
@@ -109,12 +172,12 @@ var Brandclick = {
 
             if (prevScrollpos > currentScrollPos) {
 
-                if(Brandclick.hasClass(mainNav,'scroll-down') ) {
-                    Brandclick.removeClass(mainNav, 'scroll-down');
+                if(Takecare.hasClass(mainNav,'scroll-down') ) {
+                    Takecare.removeClass(mainNav, 'scroll-down');
                 }    
             } else {
-                if(!Brandclick.hasClass(mainNav,'scroll-down') ) {
-                    Brandclick.addClass(mainNav, 'scroll-down');
+                if(!Takecare.hasClass(mainNav,'scroll-down') ) {
+                    Takecare.addClass(mainNav, 'scroll-down');
                 }  
             }
             prevScrollpos = currentScrollPos;
@@ -125,7 +188,7 @@ var Brandclick = {
         var links = document.querySelectorAll('a[href^="#"]');
 
         for (var i = 0; i<links.length; i++ ) {
-            if(links[i].getAttribute('href') === '#' || Brandclick.hasClass(links[i],'control-btn')) {
+            if(links[i].getAttribute('href') === '#' || Takecare.hasClass(links[i],'control-btn')) {
                 continue;
             }
             links[i].addEventListener("click", function(e){
@@ -173,7 +236,7 @@ var Brandclick = {
                         },
                         videoId: this.dataset.videoId,
                         events: {
-                           'onReady': Brandclick.onPlayerReady
+                           'onReady': Takecare.onPlayerReady
                         }
                     });
 
@@ -186,24 +249,24 @@ var Brandclick = {
     onPlayerReady: function(event) {
         var videoWrapper = event.target.f.parentNode;
        
-        if(Brandclick.hasClass(videoWrapper,'collapse') ) {
-            Brandclick.addClass(videoWrapper.parentNode, 'playing');
-            Brandclick.addClass(videoWrapper.parentNode.parentNode, 'playing-video');
+        if(Takecare.hasClass(videoWrapper,'collapse') ) {
+            Takecare.addClass(videoWrapper.parentNode, 'playing');
+            Takecare.addClass(videoWrapper.parentNode.parentNode, 'playing-video');
 
             jQuery(videoWrapper).on('hide.bs.collapse', function () { 
                 event.target.pauseVideo(); 
-                Brandclick.removeClass(videoWrapper.parentNode, 'playing');
-                Brandclick.removeClass(videoWrapper.parentNode.parentNode, 'playing-video');
+                Takecare.removeClass(videoWrapper.parentNode, 'playing');
+                Takecare.removeClass(videoWrapper.parentNode.parentNode, 'playing-video');
             }); 
 
             jQuery(videoWrapper).on('show.bs.collapse', function () { 
-                Brandclick.addClass(videoWrapper.parentNode, 'playing');
-                Brandclick.addClass(videoWrapper.parentNode.parentNode, 'playing-video');
+                Takecare.addClass(videoWrapper.parentNode, 'playing');
+                Takecare.addClass(videoWrapper.parentNode.parentNode, 'playing-video');
                 event.target.playVideo(); 
             }); 
 
         } else {
-            Brandclick.addClass(videoWrapper, 'playing');
+            Takecare.addClass(videoWrapper, 'playing');
         }
        
         event.target.playVideo();
@@ -259,7 +322,7 @@ var Brandclick = {
             // get the lead tracking id
             wpcf7_lead_tracking_id = event.detail.apiResponse.wpcf7_lead_tracking_id; 
 
-            Brandclick.trackEvent('Generic', pageType, wpcf7_lead_tracking_id);
+            Takecare.trackEvent('Generic', pageType, wpcf7_lead_tracking_id);
             // jQuery('#genericModal').modal('toggle');
             
         }, false );
@@ -268,7 +331,7 @@ var Brandclick = {
 
     onSearchSubmit: function(e) {
         var searchString = document.querySelectorAll( '#' + this.id + ' #s')[0].value;
-        Brandclick.trackEvent('Search', searchString );
+        Takecare.trackEvent('Search', searchString );
     },
 
     trackEvent: function(type, data, leadId) {
@@ -352,12 +415,12 @@ var Brandclick = {
 }
 
 
-Brandclick.load(function(){
-    Brandclick.init();
+Takecare.load(function(){
+    Takecare.init();
 });
    
 window.onYouTubeIframeAPIReady = function (){
-    Brandclick.loadYoutubeIframes();
+    Takecare.loadYoutubeIframes();
 }
 
 

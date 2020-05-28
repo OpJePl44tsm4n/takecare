@@ -72,12 +72,11 @@
                 ❗Please accept the terms
             </p>
 
-            <p v-if="Object.keys(currentUser).length > 0 && currentUser.success " class="succes-message">
-                ✅ Login succesfull!
+            <p v-if="Object.keys(apiResponse).length > 0 && apiResponse.status " 
+                :class="[apiResponse.status === 'error' ? 'error-message' : 'succes-message']">
+              {{ apiResponse.message }}
             </p>
-            <p v-if="Object.keys(currentUser).length > 0 && currentUser.error" class="succes-message">
-                ❗No matching user and password found!
-            </p>
+           
 
             <button class="btn btn-primary" type="submit">Sign up</button>
 
@@ -89,7 +88,7 @@
 	export default {
 		name: 'user-register',
 		props: {
-            currentUser: new Object,
+            apiResponse: new Object,
         },
 		data() {
 			return {

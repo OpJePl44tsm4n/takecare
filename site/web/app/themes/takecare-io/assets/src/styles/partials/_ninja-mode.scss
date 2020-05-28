@@ -1,0 +1,128 @@
+body.ninja-mode {
+    background: rgba(19,18,23,0.975 );
+    
+    .navbar-collapse.collapse.show,
+    .navbar-collapse.collapsing {
+         background: rgba(19,18,23,0.975 );
+    } 
+
+    #ninja-toggle {
+        background: #374151; 
+    
+        &:before {
+            right: 59%;
+            border-color: #fff;
+            background: #d6d6d6;
+        }
+    
+        #moon {
+            opacity: 1;
+            transform: translateY(-50%) rotate(0deg);
+        }
+    
+        #sun {
+            opacity: 0;
+            transform: translateY(-50%) rotate(25deg);
+        }
+    }
+
+    .fa-search path {
+        fill: #fff;
+    }
+    
+    .navbar-toggler-icon {
+        filter: unset !important;
+        -webkit-filter: unset !important;
+    }
+
+
+    h1, h2, h3, h4, p, small, li {
+        color: #fff; 
+    }
+    
+    header.site-header #main-nav.navbar {
+        background: #232129;
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.55);
+        
+        a {
+             color: #fff;
+        }
+    }
+    
+    .tertiary-bg-color {
+        background: #1c1c1c;
+    }
+    
+    .card { 
+        background: #232129;
+        box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.55) !important;
+        
+        h1 a, a {
+            color: #fff !important;
+        }
+        
+        .meta .tag {
+             background:#535454 !important; 
+        }
+    }
+    
+    footer#footer {
+        background: #024250;
+    }
+    
+}
+
+
+#ninja-toggle {
+    border: 2px solid #d6d6d6;
+    padding: .5em; 
+    width: 60px; 
+    height: 30px;
+    position: relative;
+    border-radius: 10em;
+    outline: none;
+
+    &:before {
+        content: '';
+        position: absolute; 
+        right: 6%;
+        top: 50%; 
+        transform: translateY(-50%); 
+        width: calc(35% - 4px); 
+        height: calc(80% - 4px); 
+        border: 2px solid #ffbb52;
+        background:  #ffe1b2; 
+        border-radius: 10em;
+        transition: border-color 300ms ease, background 300ms ease,right 400ms cubic-bezier(.26,2,.46,.71);
+    }
+
+    #sun {
+        position: absolute; 
+        left: 10%;
+        top: 50%;
+        transform: translateY(-50%) rotate(0deg); 
+        width: auto; 
+        height: 75%;
+        opacity: 1;
+        transition: opacity 150ms, transform 300ms linear;
+   
+        g {
+            fill: #ffbb52;
+        }
+    }
+
+    #moon {
+        position: absolute; 
+        right: 10%;
+        top: 50%;
+        transform: translateY(-50%) rotate(25deg); 
+        width: auto; 
+        height: 75%;
+        opacity: 0;
+        transition: opacity 150ms, transform 300ms linear;
+  
+        g {
+          fill: #fff;
+        }
+    }
+}

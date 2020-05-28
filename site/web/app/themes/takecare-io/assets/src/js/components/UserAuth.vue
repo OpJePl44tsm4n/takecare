@@ -17,11 +17,11 @@
         
         <div :class="['form-wrap', showLoginForm ? 'login-active' : '']">
             <div class="form-container log-in-container">
-                <user-login :currentUser="currentUser" @login:user="loginUser" />
+                <user-login :apiResponse="apiResponse" @login:user="loginUser" />
             </div>
 
             <div class="form-container register-container">
-                <user-register :currentUser="currentUser" @register:user="registerUser" />
+                <user-register :apiResponse="apiResponse" @register:user="registerUser" />
             </div>
         </div>
 
@@ -42,8 +42,8 @@
         data() {
             return {
                 users: [],
-                currentUser: Object,
-                showLoginForm: true
+                showLoginForm: true,
+                apiResponse: Object
             } 
         },
         mounted() {
@@ -80,17 +80,17 @@
                 var vm = this
 
                 try {
-                    var urlencoded = new URLSearchParams();
-                    urlencoded.append('email', user.email);
-                    urlencoded.append('password', user.password);
-                    urlencoded.append('c_password', user.passwordCopy);
-                    const response = await fetch('https://api.takecare.io/api/register', {
+                    const formdata = new FormData();
+                    formdata.append('email', user.email);
+                    formdata.append('password', user.password);
+                    formdata.append('password_confirmation', user.passwordCopy);
+                    formdata.append('agreed_terms', user.agreeTerms);
+                    const response = await fetch('http://127.0.0.1:8000/api/register', {
                         method: 'POST',
-                        body: urlencoded,
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: formdata
                     })
                     const data = await response.json()
-                    vm.currentUser = data;
+                    vm.apiResponse = data;
                 } catch (error) {
                     console.error(error)
                 }
@@ -99,25 +99,23 @@
                 var vm = this
                 
                 try {
-                    var urlencoded = new URLSearchParams();
-                    urlencoded.append('email', user.email);
-                    urlencoded.append('password', user.password);
-                    urlencoded.append('remember', user.remember);
-                    await fetch('https://api.takecare.io/api/login', {
+                    const formdata = new FormData();
+                    formdata.append('email', user.email);
+                    formdata.append('password', user.password);
+                    formdata.append('remember', user.remember);
+                    const response = await fetch('http://127.0.0.1:8000/api/login', {
                         method: 'POST',
-                        body: urlencoded,
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    }).then(function (response) {
-                        console.log(response.json());
-                        if (response.status === 200 && 'token' in response.body) {
-                          vm.currentUser = response.body;
-                          vm.$session.start()
-                          vm.$session.set('jwt', response.body.token)
-                          window.Vue.http.headers.common['Authorization'] = 'Bearer ' + response.body.token
-                        }
-                    }, function (err) {
-                        console.log('err', err)
+                        body: formdata,
                     })
+                    const responseData = await response.json()
+                    vm.apiResponse = responseData;
+
+                    if(responseData.status == 'success'){
+                        vm.$session.start()
+                        vm.$session.set('jwt', responseData.data.token)
+                        // window.Vue.http.headers.common['Authorization'] = 'Bearer ' + response.body.token
+                    }
+                    
                 } catch (error) {
                     console.error(error)
                 }
