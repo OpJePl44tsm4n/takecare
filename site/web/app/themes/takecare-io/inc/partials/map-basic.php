@@ -4,7 +4,7 @@
         data-lat="<?php echo $focus_point['lat']; ?>" 
         data-lng="<?php echo $focus_point['lng']; ?>" 
         data-zoom="<?php echo $zoom_level; ?>"
-        data-popup='<?php echo json_encode($popup_content) ?>'
+        data-popup='<?php echo  htmlspecialchars(json_encode($popup_content)) ?>'
         style="height:450px;"></div>
 </section>
 
