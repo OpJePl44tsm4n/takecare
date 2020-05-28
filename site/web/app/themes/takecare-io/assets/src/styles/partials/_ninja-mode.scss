@@ -37,7 +37,7 @@ body.ninja-mode {
     }
 
 
-    h1, h2, h3, h4, p, small, li {
+    h1, h2, h3, h4, p, small, li, label, .close-btn button span {
         color: #fff; 
     }
 
@@ -52,10 +52,10 @@ body.ninja-mode {
         a {
              color: #fff;
         }
-    }
-
-    header.site-header #main-nav.navbar form {
-        background: #232129;
+        
+        form {
+            background: #232129;
+        }
     }
     
     .tertiary-bg-color {
@@ -67,8 +67,12 @@ body.ninja-mode {
         box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.55) !important;
         
         h1 a, a,
-        span, button {
+        span, button:not(.password-toggle) {
             color: #fff !important;
+
+            &:after {
+                border-bottom-color: #fff !important;
+            }
         }
         
         .meta .tag {
@@ -84,7 +88,7 @@ body.ninja-mode {
 
 
 #ninja-toggle {
-    border: 2px solid #d6d6d6;
+    border: 1px solid #888888;
     padding: .5em; 
     width: 60px; 
     height: 30px;
