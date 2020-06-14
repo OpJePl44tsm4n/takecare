@@ -1,1 +1,0 @@
-<!-- add custom email footer html-->
