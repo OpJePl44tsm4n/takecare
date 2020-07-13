@@ -1,0 +1,18 @@
+.account {
+    padding: 5em 0;
+
+    &:not(.logged-in) {
+    	background: url(../img/account-bg.jpg);
+    	background-position: center; 
+    	background-size: cover; 
+    }
+
+    #user-auth {
+		margin: 0 auto;
+
+     	@include media-breakpoint-up(md) {
+     		margin: 0 0 0 auto;
+		}
+     	
+    }
+}

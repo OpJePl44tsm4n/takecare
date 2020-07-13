@@ -101,6 +101,7 @@
                     password: '',
                     passwordCopy: '',
                     agreeTerms: '',
+                    is_admin : null
                 },
 			}
 		},
@@ -122,6 +123,7 @@
                     password: '',
                     passwordCopy: '',
                     agreeTerms: '',
+                    is_admin: '',
 				}
 
 				this.success = true

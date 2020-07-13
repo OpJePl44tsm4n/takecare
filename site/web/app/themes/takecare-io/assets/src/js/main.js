@@ -1,17 +1,32 @@
 
 
 import 'bootstrap';
-import VueSession from 'vue-session';
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+import Axios from 'axios'
 
-window.Vue = require('vue');
+Vue.prototype.$http = Axios
+const token = localStorage.getItem('token')
+if (token) {
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+}
 
-Vue.use(VueSession);
-Vue.component('user-auth', require('./components/UserAuth.vue').default);
-Vue.component('user-register', require('./components/UserRegister.vue').default);
+Vue.config.productionTip = false
 
-const app = new Vue({
-    el: '#takecare'
-});
+var login = new Vue({
+    el: '#takecare',
+    store,
+})
+
+if (document.getElementById('account')) {
+    var account = new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount('#account')
+}
 
 var NinjaMode = {
 

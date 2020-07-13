@@ -53,72 +53,25 @@
             toggleUserForm() {
                 this.showLoginForm = !this.showLoginForm
             },
-            // async editUser(id, updatedUser){
-            //     try {
-            //         const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
-            //             method: 'PUT', 
-            //             body: JSON.stringify(updatedUser),
-            //             headers: { 'Content-type': 'application/json; charset=UTF-8' },
-            //         }) 
-            //         const data = await response.json()
-            //         this.users = this.users.map(user => (user.id === id ? data : user) )
-            //     } catch (error) {
-            //         console.error(error)
-            //     }
-            // },
-            // async deleteUser(id) {
-            //     try {
-            //         await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
-            //             method: 'DELETE', 
-            //         }) 
-            //         this.users = this.users.filter(user => user.id !== id) 
-            //     } catch (error) {
-            //         console.error(error)
-            //     }
-            // },
+        
             async registerUser(user) {
-                var vm = this
-
-                try {
-                    const formdata = new FormData();
-                    formdata.append('email', user.email);
-                    formdata.append('password', user.password);
-                    formdata.append('password_confirmation', user.passwordCopy);
-                    formdata.append('agreed_terms', user.agreeTerms);
-                    const response = await fetch('http://127.0.0.1:8000/api/register', {
-                        method: 'POST',
-                        body: formdata
-                    })
-                    const data = await response.json()
-                    vm.apiResponse = data;
-                } catch (error) {
-                    console.error(error)
+                let data = {
+                    email: user.email,
+                    password: user.password,
+                    password_confirmation: user.passwordCopy,
+                    agreed_terms: user.agreeTerms,
                 }
+
+               this.$store.dispatch('register', data)
+               .then(() => this.$router.push('/account'))
+               .catch(err => console.log(err))
             },
             async loginUser(user) {
-                var vm = this
-                
-                try {
-                    const formdata = new FormData();
-                    formdata.append('email', user.email);
-                    formdata.append('password', user.password);
-                    formdata.append('remember', user.remember);
-                    const response = await fetch('http://127.0.0.1:8000/api/login', {
-                        method: 'POST',
-                        body: formdata,
-                    })
-                    const responseData = await response.json()
-                    vm.apiResponse = responseData;
-
-                    if(responseData.status == 'success'){
-                        vm.$session.start()
-                        vm.$session.set('jwt', responseData.data.token)
-                        // window.Vue.http.headers.common['Authorization'] = 'Bearer ' + response.body.token
-                    }
-                    
-                } catch (error) {
-                    console.error(error)
-                }
+                let email = user.email 
+                let password = user.password
+                this.$store.dispatch('login', { email, password })
+               .then(() => this.$router.push('/account'))
+               .catch(err => console.log(err))
             },
 
         }
