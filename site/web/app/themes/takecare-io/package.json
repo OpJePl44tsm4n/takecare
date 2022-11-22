@@ -21,13 +21,13 @@
     "jquery": "3.4.1",
     "laravel-mix": "^5.0.4",
     "popper.js": "^1.12",
-    "resolve-url-loader": "^3.1.1",
+    "resolve-url-loader": "^5.0.0",
     "sass": "^1.20.1",
     "sass-loader": "^8.0.0",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
